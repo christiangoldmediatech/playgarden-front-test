@@ -1,75 +1,82 @@
 <template>
-  <v-row align="center" justify="center" no-gutters>
-    <v-col cols="11" md="6">
-      <div class="image py-4 mt-md-0" :class="{mobile: $vuetify.breakpoint.smAndDown}">
-        <img alt="Smiling Girl Picture" src="@/assets/png/welcome-back.png">
-      </div>
-    </v-col>
+  <v-main class="!pg-p-0">
+    <v-row align="center" justify="center" no-gutters>
+      <v-col cols="12" sm="6">
+        <v-img
+          :src="require('@/assets/png/promo/child-with-backpack.png')"
+          cover
+          alt="Smiling Girl Picture"
+          class="pg-m-8"
+        />
+      </v-col>
 
-    <v-col cols="12" md="6">
-      <div class="form mx-auto px-4">
-        <div class="my-5 my-md-0 text-center text-md-left">
-          <underlined-title text="Welcome to Playgarden Prep" />
-        </div>
+      <v-col cols="12" md="6">
+        <div class="form mx-auto pg-px-4 pg-pb-8">
+          <div class="my-5 my-md-0 text-center text-md-left">
+            <underlined-title text="Welcome to Playgarden Prep Online!" />
+          </div>
 
-        <p class="mt-6 text-center text-md-left">
-          <span>We are happy to have you LEARN with us! </span>
-        </p>
-        <p class="text-center text-md-left">
-          <span>Please check your email to confirm account and start learning today!</span>
-        </p>
+          <p class="mt-6 text-center text-md-left">
+            <span>We are so excited to welcome your little one to the Playgarden Prep Online community!</span>
+          </p>
+          <p class="text-center text-md-left">
+            <span>Please check your email to confirm your account and start learning.</span>
+          </p>
 
-        <!-- <v-btn
-          v-if="isUserLoggedIn"
-          block
-          color="primary"
-          class="main-btn"
-          min-height="60"
-          :disabled="loading"
-          :loading="loading"
-          @click="goToLessons"
-        >
-          GO TO LESSONS
-        </v-btn> -->
-
-        <!-- <nuxt-link :to="{ name: 'auth-login' }">
-          <v-btn block color="primary">
-            RETURN TO LOG IN
-          </v-btn>
-        </nuxt-link> -->
-
-        <p class="mt-6 text-center text-md-left">
-          Didn’t receive an email?
-          <br>
-          <v-btn
-            color="primary"
+          <!-- <v-btn
+            v-if="isUserLoggedIn"
             block
-            @click="onResend"
-          >
-            RESEND EMAIL
-          </v-btn>
-        </p>
-        <p class="mt-6 text-center text-md-left">
-          Need support?
-
-          <v-btn
             color="primary"
-            small
-            text
-            @click="showContactUsModal"
+            class="main-btn"
+            min-height="60"
+            :disabled="loading"
+            :loading="loading"
+            @click="goToLessons"
           >
-            CONTACT US
-          </v-btn>
-        </p>
+            GO TO LESSONS
+          </v-btn> -->
 
-        <nuxt-link v-if="isUserLoggedIn" :to="{ name: 'auth-logout' }">
-          <v-btn block color="accent" class="mt-10">
-            LOG OUT
-          </v-btn>
-        </nuxt-link>
-      </div>
-    </v-col>
-  </v-row>
+          <!-- <nuxt-link :to="{ name: 'auth-login' }">
+            <v-btn block color="primary">
+              RETURN TO LOG IN
+            </v-btn>
+          </nuxt-link> -->
+
+          <p class="mt-6 text-center text-md-left">
+            Didn't receive an email?
+          </p>
+          <div>
+            <v-btn
+              color="primary"
+              block
+              @click="onResend"
+            >
+              RESEND EMAIL
+            </v-btn>
+          </div>
+
+          <p class="mt-6 text-center text-md-left">
+            Need support?
+
+            <v-btn
+              color="primary"
+              small
+              text
+              @click="showContactUsModal"
+            >
+              CONTACT US
+            </v-btn>
+          </p>
+
+          <nuxt-link v-if="isUserLoggedIn" :to="{ name: 'auth-logout' }">
+            <v-btn block color="accent" class="mt-4">
+              LOG OUT
+            </v-btn>
+          </nuxt-link>
+        </div>
+      </v-col>
+    </v-row>
+  </v-main>
 </template>
 
 <script>
@@ -176,19 +183,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.image {
-  max-height: 500px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  img {
-    max-width: 90%;
-  }
-  &.mobile {
-    max-height: 250px;
-  }
-}
 .form {
   max-width: 500px;
 }

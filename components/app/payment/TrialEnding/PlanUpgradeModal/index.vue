@@ -8,8 +8,9 @@
     <div class="popularity pa-2 pa-md-3 text-body-2 text-md-h6">
       Most Popular
     </div>
+
     <underlined-title
-      text="Preschool @ Home"
+      text="ONLINE PRESCHOOL"
       font-size="32px"
       font-size-mobile="22px"
       letter-spacing="1px"
@@ -56,6 +57,7 @@
 import { computed, defineComponent, useContext, useStore, onMounted, ref } from '@nuxtjs/composition-api'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
 import { TypedStore } from '@/models'
+import { useNotification } from '@/composables'
 import { Plan } from './types'
 
 const imagePath = require('@/assets/jpg/payment-upgrade.jpeg')
@@ -82,6 +84,13 @@ export default defineComponent({
     const plan = ref<Plan | null>(null)
     const upgradeStatus = ref<UpgradeStatus>('uninitiated')
 
+    const {
+      isPlanUpgradeModalVisible,
+      setIsPlanUpgradeModalVisible,
+      setIsTrialEndingPlanSelectedModalVisible,
+      setLessonUnavailability
+    } = useNotification({ store })
+
     onMounted(async () => {
       const data = await $axios.$get(PLAN_DETAILS_PATH)
       plan.value = data
@@ -93,8 +102,6 @@ export default defineComponent({
     })
 
     const planPrice = computed(() => plan.value?.priceMonthly)
-
-    const isPlanUpgradeModalVisible = computed(() => store.state.notifications.isPlanUpgradeModalVisible)
 
     const styleVaribles = computed(() => ({
       '--no-of-rows': $vuetify.breakpoint.xs ? features.value?.length : Math.round(Number(features.value?.length) / 2)
@@ -111,9 +118,14 @@ export default defineComponent({
       try {
         await $axios.$patch(PLAN_UPGRADE_PATH)
         upgradeStatus.value = 'upgraded'
+        setLessonUnavailability(false)
+        setIsPlanUpgradeModalVisible(false)
+        setIsTrialEndingPlanSelectedModalVisible(true)
       } catch (error) {
         upgradeStatus.value = 'failed'
-        console.error(error)
+        // eslint-disable-next-line no-console
+      } finally {
+        store.dispatch('auth/fetchUserInfo')
       }
     }
 

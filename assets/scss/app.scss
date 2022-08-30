@@ -3,7 +3,6 @@
 
 /* VENDOR */
 /* import them directly into nuxt.config.js */
-
 .text-transform-none {
   text-transform: none !important;
 }
@@ -114,7 +113,8 @@
 }
 
 .info-color-signup {
-  color: var(--v-black-base) !important;
+  color: #606060 !important;
+  opacity: 48.98%;
 }
 
 .carousel-text {
@@ -205,6 +205,17 @@
   }
 }
 
+.video-player-16-9-container {
+  aspect-ratio: 16/9;
+  width: 100%;
+}
+
+.v-application .background-card-learn-play {
+  background-image: url('~@/assets/png/learn-and-play-bg.png') !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .background-card {
   background-image: url('~@/assets/png/green-whirl.png') !important;
   background-repeat: no-repeat;
@@ -228,4 +239,15 @@
 
 .pg-w-full {
   width: 100%;
+}
+
+.v2-font {
+  font-family: 'Quicksand', 'Poppins', sans-serif;
+}
+
+.pg-player-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2500;
 }

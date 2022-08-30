@@ -2,13 +2,31 @@
   <v-row no-gutters class="mb-4">
     <v-col cols="12">
       <v-row no-gutters align="end" class="mb-2">
-        <img :src="category.icon" height="32" class="mr-2">
+        <template v-if="isLetter(category.curriculumType.name)">
+          <div class="mr-3">
+            <span
+              class="text-uppercase font-weight-bold portfolio-carousel-title d-flex align-center"
+            >
+              LETTER
+              <recorded-letter
+                :letter="category.curriculumType"
+                small
+                list-mode
+              />
+            </span>
+          </div>
+        </template>
+        <template v-else>
+          <div class="mr-3">
+            <span
+              class="text-uppercase font-weight-bold portfolio-carousel-title d-flex align-center"
+            >
+              {{ category.curriculumType.name }}
+            </span>
+          </div>
 
-        <div class="mx-3">
-          <span class="text-uppercase font-weight-bold text-h6">
-            {{ category.category }}
-          </span>
-        </div>
+          <img :src="category.curriculumType.icon" height="32" class="mr-2">
+        </template>
       </v-row>
     </v-col>
 
@@ -16,7 +34,7 @@
       <v-row no-gutters>
         <v-col
           v-for="upload in list"
-          :key="`category-${category.id}-card-${upload.id}`"
+          :key="`category-${category.curriculumType.id}-card-${upload.id}`"
           cols="12"
           sm="6"
           lg="3"
@@ -25,8 +43,11 @@
             :entity-id="upload.id"
             entity-type="WORKSHEET"
             :image="upload.url"
-            :created="upload.createdAt"
-            :lesson="upload.lesson"
+            :created="upload.uploadedDate"
+            :lesson="{
+              curriculumType: category.curriculumType,
+              day: upload.day
+            }"
             :child="getChild(upload)"
           />
         </v-col>
@@ -57,74 +78,117 @@
   </v-row>
 </template>
 
-<script>
-import { jsonCopy } from '@/utils'
+<script lang="ts">
+import {
+  defineComponent,
+  PropType,
+  ref,
+  computed,
+  useRoute
+} from '@nuxtjs/composition-api'
+import { useNuxtHelper, useVuetifyHelper } from '@/composables'
+import { OfflineWorksheetLesson } from '@/models'
+import { jsonCopy, isLetter } from '@/utils'
+import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 import PortfolioCard from './PortfolioCard.vue'
 
-export default {
+export default defineComponent({
   name: 'PortfolioCarousel',
 
   components: {
-    PortfolioCard
+    PortfolioCard,
+    RecordedLetter
   },
 
   props: {
     category: {
-      type: Object,
+      type: Object as PropType<OfflineWorksheetLesson>,
       required: true
     }
   },
 
-  data: () => {
-    return {
-      page: 1
-    }
-  },
+  setup(props) {
+    const nuxt = useNuxtHelper()
+    const $vuetify = useVuetifyHelper()
+    const page = ref(props.category.page ? props.category.page : 1)
+    const route = useRoute()
 
-  computed: {
-    limit () {
-      if (this.$vuetify.breakpoint.sm) {
+    const isAdmin = computed(() => {
+      return route.value.name!.includes('admin')
+    })
+
+    const limit = computed(() => {
+      if (isAdmin.value) {
+        return 20
+      }
+      if ($vuetify.breakpoint.sm) {
         return 2
       }
-      if (this.$vuetify.breakpoint.xs) {
+      if ($vuetify.breakpoint.xs) {
         return 1
       }
       return 4
-    },
+    })
 
-    total () {
-      return this.category.worksheetUploads
-        ? this.category.worksheetUploads.length
+    const total = computed(() => {
+      return props.category.worksheetUploads
+        ? props.category.worksheetUploads.length
         : 0
-    },
+    })
 
-    start () {
-      return (this.page - 1) * this.limit
-    },
+    const start = computed(() => {
+      return (page.value - 1) * limit.value
+    })
 
-    end () {
-      return this.start + this.limit < this.total
-        ? this.start + this.limit
-        : this.total
-    },
+    const end = computed(() => {
+      return start.value + limit.value < total.value
+        ? start.value + limit.value
+        : total.value
+    })
 
-    list () {
-      if (this.total > 0) {
-        const worksheets = jsonCopy(this.category.worksheetUploads)
-        return worksheets.slice(this.start, this.end)
+    const list = computed(() => {
+      if (total.value > 0) {
+        const worksheets = jsonCopy(props.category.worksheetUploads)
+        if (isAdmin.value) {
+          return worksheets
+        }
+        return worksheets.slice(start.value, end.value)
       }
       return []
+    })
+
+    function moveCarousel(direction: number) {
+      page.value += direction
+      if (isAdmin.value) {
+        nuxt.$emit('update-list-worksheets-uploads', { page: page.value })
+      }
     }
-  },
 
-  methods: {
-    moveCarousel (direction) {
-      this.page += direction
-    },
+    function getChild(upload: any) {
+      return upload.children ? upload.children : null
+    }
 
-    getChild (upload) {
-      return (upload.children) ? upload.children : null
+    return {
+      page,
+      limit,
+      total,
+      start,
+      end,
+      list,
+      moveCarousel,
+      getChild,
+      isLetter,
+      isAdmin
     }
   }
-}
+})
 </script>
+
+<style lang="scss" scoped>
+.portfolio-carousel-title {
+  color: #606060;
+  font-size: 36px;
+  line-height: 1.5;
+  letter-spacing: 5.4px;
+}
+</style>

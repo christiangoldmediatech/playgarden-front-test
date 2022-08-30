@@ -151,6 +151,7 @@ export default Vue.extend({
         this.googleAutocompleteService = new googleService.maps.places.AutocompleteService()
         this.googleGeocoder = new googleService.maps.Geocoder()
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(error)
       }
     }
@@ -271,6 +272,7 @@ export default Vue.extend({
 
             if (address) {
               this.streetString = getStreetStrFromAddressComps(address)
+              this.streetString = this.validateStreetAddress(this.streetString, placeId)
               this.$emit('input', this.streetString)
               this.$emit('address-components', { ...address, streetString: this.streetString })
             }
@@ -288,6 +290,10 @@ export default Vue.extend({
      */
     itemsFilter (item: Item, queryText: string, itemText: string): boolean {
       return true
+    },
+
+    validateStreetAddress(streetAddress: string, placeId: string) {
+      return placeId !== streetAddress ? streetAddress : ''
     },
 
     showBoldSearchedText (

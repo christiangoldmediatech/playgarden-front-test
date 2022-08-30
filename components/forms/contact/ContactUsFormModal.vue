@@ -1,11 +1,13 @@
 <template>
   <large-image-content-dialog :value="isContactUsModalVisible" :img="childFace" @close="hideContactUsModal">
-    <underlined-title
-      text="Contact Us"
-      font-size="46px"
-      font-size-mobile="22px"
-      letter-spacing="4.8px"
-    />
+    <div>
+      <underlined-title
+        text="Contact Us"
+        font-size="46px"
+        font-size-mobile="22px"
+        letter-spacing="4.8px"
+      />
+    </div>
 
     <div class="grey--text text--darken-2 caption text-md-body-2 my-3 my-md-6">
       We will be happy to answer your questions. Fill out the form and we will get back to you shortly.

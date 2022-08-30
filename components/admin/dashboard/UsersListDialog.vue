@@ -53,7 +53,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import ParentsDataTable from '@/components/admin/parents/ParentsDataTable.vue'
+import { IdleTransactionSpanRecorder } from '@sentry/tracing/dist/idletransaction'
 
 export default {
   name: 'UsersListDialog',
@@ -68,13 +70,27 @@ export default {
       loading: false,
       showPanel: false,
       name: '',
+      plans: [],
       seriesName: '',
       params: null,
       item: null
     }
   },
 
+  created () {
+    this.getPlans()
+  },
+
   methods: {
+    ...mapActions('payment', ['fetchSubscriptionPlan']),
+
+    async getPlans () {
+      try {
+        this.plans = await this.fetchSubscriptionPlan({ active: true })
+      } catch (e) {
+      }
+    },
+
     close () {
       this.$nextTick(() => {
         this.dialog = false
@@ -109,25 +125,9 @@ export default {
       }
     },
 
-    buildQueryParamsEarlyEducationOnline () {
+    buildQueryParamsPlan (planId) {
       this.params = {
-        planId: 1,
-        testUser: false,
-        stripeStatus: [this.name.toLowerCase()]
-      }
-    },
-
-    buildQueryParamsPremiumEarlyEducationOnline () {
-      this.params = {
-        planId: 2,
-        stripeStatus: [this.name.toLowerCase()],
-        testUser: false
-      }
-    },
-
-    buildQueryParamsHomeschool () {
-      this.params = {
-        planId: 3,
+        planId,
         stripeStatus: [this.name.toLowerCase()],
         testUser: false
       }
@@ -141,21 +141,25 @@ export default {
     },
 
     buildQueryParamsUsersPerStatusPlanIds () {
+      const currentPlan = this.plans.find(plan => plan.name === this.name)
       let arrayParameter = []
-      switch (this.name) {
-        case 'Homeschool':
-          arrayParameter = [3]
-          break
-        case 'Premium Early Education Online':
-          arrayParameter = [2]
-          break
-        case 'Early Education Online':
-          arrayParameter = [1]
-          break
-        case 'Trialing':
-          arrayParameter = [1, 2, 3]
-          break
+      if (currentPlan) {
+        const { id } = currentPlan
+        switch (id) {
+          case 1:
+            arrayParameter = [3]
+            break
+          case 2:
+            arrayParameter = [2]
+            break
+          case 3:
+            arrayParameter = [1]
+            break
+        }
+      } else {
+        arrayParameter = [1, 2, 3]
       }
+
       return arrayParameter
     },
 
@@ -263,6 +267,11 @@ export default {
       }
     },
 
+    getDataFilterByPlan (plan) {
+      const { id } = plan
+      this.buildQueryParamsPlan(id)
+    },
+
     open (evt, item = null) {
       this.params = null
       const { name, seriesName } = item
@@ -272,23 +281,17 @@ export default {
         this.name = seriesName
         this.seriesName = 'lineStack'
       }
+      const currentPlan = this.plans.find(plan => plan.name === seriesName)
 
-      if (this.name) {
+      if (currentPlan) {
+        this.getDataFilterByPlan(currentPlan)
+      } else if (this.name) {
         switch (this.seriesName) {
           case 'Conversions funnel':
             this.buildQueryParamsConversionTunne()
             break
           case 'Trialing':
             this.buildQueryParamsTrialing()
-            break
-          case 'Early Education Online':
-            this.buildQueryParamsEarlyEducationOnline()
-            break
-          case 'Premium Early Education Online':
-            this.buildQueryParamsPremiumEarlyEducationOnline()
-            break
-          case 'Homeschool':
-            this.buildQueryParamsHomeschool()
             break
           case 'Users per status':
             this.buildQueryParamsUsersPerStatus()
@@ -336,7 +339,6 @@ export default {
             break
         }
       }
-
       this.$nextTick(() => {
         this.dialog = true
       })

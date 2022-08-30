@@ -1,19 +1,27 @@
 <template>
-  <v-container
-    fluid
-  >
+  <v-container fluid>
     <div class="px-2">
       <v-row>
         <v-col cols="12">
           <v-card>
             <v-row>
-              <v-col class="mt-2 pl-4 text-center text-md-left" cols="12" md="8">
-                <span class="text-body-1 text-lg-h7 text-xl-h6 mt-8 mr-3 text-report text-justify">
+              <v-col
+                class="mt-2 pl-4 text-center text-md-left"
+                cols="12"
+                md="8"
+              >
+                <span
+                  class="text-body-1 text-lg-h7 text-xl-h6 mt-8 mr-3 text-report text-justify"
+                >
                   {{ `${child.firstName}'s ` }}progress report
                 </span>
               </v-col>
 
-              <v-col cols="12" md="4" class="text-center text-sm-right pt-4 pr-4">
+              <v-col
+                cols="12"
+                md="4"
+                class="text-center text-sm-right pt-4 pr-4"
+              >
                 <!-- Export Btn -->
                 <v-btn
                   class="mr-4"
@@ -41,16 +49,16 @@
             </v-row>
           </v-card>
         </v-col>
-        <v-col
-          v-for="(item, index) in getMenu"
-          :key="index"
-        >
+        <v-col v-for="(item, index) in getMenu" :key="index">
           <v-item>
             <v-card class="panel-item" @click="loadDetailReport(item.name)">
               <v-row class="px-2">
                 <v-col cols="3">
                   <v-list-item-avatar size="44">
-                    <v-img v-if="item.name === 'General'" :src="require('@/assets/svg/general.svg')" />
+                    <v-img
+                      v-if="item.name === 'General'"
+                      :src="require('@/assets/svg/general.svg')"
+                    />
                     <v-img v-else :src="item.icon" min-width="38px" />
                   </v-list-item-avatar>
                 </v-col>
@@ -70,12 +78,21 @@
         <v-col cols="12" class="pt-4">
           <v-row v-if="!$vuetify.breakpoint.xs" no-gutters>
             <v-col class="mt-10" cols="9">
-              <underlined-title class="text-h6 text-md-h4" text="Student Progress Report" /><br>
+              <underlined-title
+                class="text-h6 text-md-h4"
+                text="Student Progress Report"
+              /><br>
             </v-col>
 
             <v-col v-if="reportCardTypeSelected === 'General'" cols="12">
-              <p class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">
-                Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.
+              <p
+                class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report"
+              >
+                Playgarden Prep Online Lessons have been developed to support
+                one or more of the core areas of development. After watching a
+                video, doing the worksheet together with an adult, or actively
+                participating in a Live Class, parents will be helping in the
+                development of their child in each of the specific areas.
               </p>
             </v-col>
           </v-row>
@@ -86,10 +103,15 @@
                 <v-row class="ml-2 mr-2">
                   <v-col cols="12">
                     <div class="pt-4 mb-4">
-                      <underlined-title class="text-h6 text-md-h5" text="General Progress Report" />
+                      <underlined-title
+                        class="text-h6 text-md-h5"
+                        text="General Progress Report"
+                      />
                     </div>
                     <div>
-                      <span class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">General progress statistics for all categories.</span>
+                      <span class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">
+                        General progress statistics for all categories.
+                      </span>
                     </div>
                     <div class="mt-n8">
                       <center>
@@ -104,12 +126,18 @@
                 <v-col cols="12" class="mx-4">
                   <div class="pt-4 mb-4">
                     <center>
-                      <underlined-title class="text-h6 text-md-h5" text="General Progress Report" />
+                      <underlined-title
+                        class="text-h6 text-md-h5"
+                        text="General Progress Report"
+                      />
                     </center>
                   </div>
                   <div>
                     <center>
-                      <span class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">General progress statistics for all categories.</span>
+                      <span
+                        class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3 text-report">
+                        General progress statistics for all categories.
+                      </span>
                     </center>
                   </div>
                   <chart-report v-if="report" class="mt-n8" :report="report" />
@@ -121,13 +149,20 @@
               <v-card :class="{ 'mx-4': $vuetify.breakpoint.xs }">
                 <div v-if="loadLetterStatsData">
                   <v-skeleton-loader type="card-heading" />
-                  <v-skeleton-loader v-for="n in 5" :key="n" type="list-item-avatar-three-line, list-item-one-line, divider" />
+                  <v-skeleton-loader
+                    v-for="n in 5"
+                    :key="n"
+                    type="list-item-avatar-three-line, list-item-one-line, divider"
+                  />
                 </div>
                 <template v-else>
                   <v-row class="pt-3" no-gutters>
                     <v-col cols="7">
                       <div class="pt-4 ml-4 mb-4">
-                        <underlined-title class="text-h6 text-md-h5 mt-4 mr-4" :text="letterStatsData.name" />
+                        <underlined-title
+                          class="text-h6 text-md-h5 mt-4 mr-4"
+                          :text="letterStatsData.name"
+                        />
                       </div>
                     </v-col>
                     <v-col class="pr-3">
@@ -152,12 +187,20 @@
             <v-card v-if="!$vuetify.breakpoint.xs">
               <v-row>
                 <v-col cols="12">
-                  <detail-progress :report-card-type="reportCardTypeSelected" :report="report" :data-report-card-type="dataReportCard" />
+                  <detail-progress
+                    :report-card-type="reportCardTypeSelected"
+                    :report="report"
+                    :data-report-card-type="dataReportCard"
+                  />
                 </v-col>
               </v-row>
             </v-card>
             <v-row v-else>
-              <detail-progress :report-card-type="reportCardTypeSelected" :report="report" :data-report-card-type="dataReportCard" />
+              <detail-progress
+                :report-card-type="reportCardTypeSelected"
+                :report="report"
+                :data-report-card-type="dataReportCard"
+              />
             </v-row>
           </v-row>
         </v-col>
@@ -169,7 +212,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import FavoritesMixin from '@/mixins/FavoritesMixin.js'
+// import FavoritesMixin from '@/mixins/FavoritesMixin.js'
 import ChartReport from '@/components/app/progress-report/ChartReport.vue'
 import LetterStats from '@/components/app/progress-report/LetterStats.vue'
 import DetailProgress from '@/components/app/progress-report/DetailProgress.vue'
@@ -189,7 +232,7 @@ export default {
     CourseProgressOverlay
   },
 
-  mixins: [FavoritesMixin],
+  // mixins: [FavoritesMixin],
 
   data: () => ({
     previewMode: false,
@@ -220,7 +263,7 @@ export default {
     ...mapGetters('admin/report-card', ['types']),
     ...mapGetters('progress-report', ['report']),
 
-    disabledLetters () {
+    disabledLetters() {
       return this.letters
         .filter((letter) => {
           return !letter.enabled
@@ -228,7 +271,7 @@ export default {
         .map(({ id }) => id)
     },
 
-    getMenu () {
+    getMenu() {
       const menuGeneral = {
         name: 'General',
         icon: 'assets/svg/general.svg'
@@ -238,55 +281,67 @@ export default {
   },
 
   watch: {
-    async selectedLetter (val) {
+    async selectedLetter(val) {
       this.loadLetterStatsData = true
       await this.getDataGraphic()
       await this.getDataReport()
     }
   },
 
-  async created () {
+  async created() {
     this.selectedChild = this.$route.query.id
     this.general = true
     this.child = await this.getChildren(this.selectedChild)
     await this.getTypes()
-    const curriculumType = await this.getCurrentCurriculumType(this.selectedChild)
+    const curriculumType = await this.getCurrentCurriculumType(
+      this.selectedChild
+    )
     this.selectedLetter = curriculumType.id
     this.$nuxt.$on('detail-progress-report', (data) => {
       this.loadDetailReport(data.point.category)
     })
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     this.$nuxt.$off('detail-progress-report')
   },
 
   methods: {
     ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
     ...mapActions('admin/report-card', ['getTypes']),
-    ...mapActions('progress-report', ['getGraphicByChildrenId', 'getLastLessonChildren', 'getAllProgressExport']),
+    ...mapActions('progress-report', [
+      'getGraphicByChildrenId',
+      'getLastLessonChildren',
+      'getAllProgressExport'
+    ]),
     ...mapActions({ setChild: 'setChild' }),
     ...mapActions('children', { getChildren: 'getById' }),
-    ...mapActions('children/lesson', ['getCurrentLesson', 'getCurrentCurriculumType']),
+    ...mapActions('children/lesson', [
+      'getCurrentLesson',
+      'getCurrentCurriculumType'
+    ]),
 
-    goBack () {
+    goBack() {
       this.$router.go(-1)
     },
 
-    async fetchChildProgress () {
+    async fetchChildProgress() {
       const data = await this.getCourseProgressByChildId({
         id: this.selectedChild
       })
       this.letters = data
     },
 
-    async exportList () {
+    async exportList() {
       this.loadingExport = true
       try {
         await this.getAllProgressExport({ childId: this.selectedChild })
-        this.$snotify.success('Report created succesfully! Check your email to get it', {
-          timeout: 6000
-        })
+        this.$snotify.success(
+          'Report created succesfully! Check your email to get it',
+          {
+            timeout: 6000
+          }
+        )
       } catch (err) {
         this.$snotify.error('Export error! Try again later.', {
           timeout: 6000
@@ -296,38 +351,43 @@ export default {
       }
     },
 
-    async getDataReport () {
+    async getDataReport() {
       if (this.selectedChild) {
         const params = {}
         if (this.selectedLetter) {
           params.curriculumTypeId = this.selectedLetter
         }
-        this.letterStatsData = await this.getLastLessonChildren({ childId: this.selectedChild, params })
+        this.letterStatsData = await this.getLastLessonChildren({
+          childId: this.selectedChild,
+          params
+        })
         this.letterStatsData.curriculumTypeId = this.selectedLetter
         await this.fetchChildProgress()
         this.loadLetterStatsData = false
       }
     },
 
-    async getDataGraphic () {
+    async getDataGraphic() {
       if (this.selectedChild) {
         await this.getGraphicByChildrenId({ childId: this.selectedChild })
       }
     },
 
-    getDataGraphicMobile () {
+    getDataGraphicMobile() {
       if (this.selectedReportCard) {
         this.loadDetailReport(this.selectedReportCard)
       }
     },
 
-    loadDetailReport (reportCardType) {
+    loadDetailReport(reportCardType) {
       this.reportCardTypeSelected = reportCardType
       if (reportCardType === 'General') {
         this.general = true
       } else {
         this.general = false
-        this.dataReportCard = this.getMenu.find(menu => menu.name === reportCardType)
+        this.dataReportCard = this.getMenu.find(
+          menu => menu.name === reportCardType
+        )
       }
     }
   }

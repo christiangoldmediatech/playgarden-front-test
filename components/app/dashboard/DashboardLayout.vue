@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <div>
     <!-- <v-container v-if="showScreen" fill-height>
       <v-row justify="center" align-sm="center" fill-height>
         <v-col cols="10" sm="6" md="5">
@@ -42,7 +42,11 @@
       </v-row>
     </v-container> -->
     <v-container
-      :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }"
+      :class="{
+        'dashboard-container': !$vuetify.breakpoint.smAndDown && !previewMode,
+        'dashboard-container-preview': !$vuetify.breakpoint.smAndDown && previewMode,
+        'pg-mt-[80px]': !previewMode
+      }"
       fluid
     >
       <v-row class="fill-height" justify="center">
@@ -54,7 +58,7 @@
           lg="4"
           xl="3"
         >
-          <dashboard-panel
+          <DashboardPanel
             v-bind="{ lesson, childId, loading }"
             :next-button="canAdvance"
           />
@@ -78,9 +82,10 @@
           >
             <v-col cols="12" md="3" sm="6">
               <v-row>
-                <child-select
+                <ChildSelect
                   class="mx-3"
                   :value="value"
+                  :preview-mode="previewMode"
                   hide-details
                   :management-button="!previewMode"
                   @input="$emit('input', $event)"
@@ -93,9 +98,10 @@
                 class="mx-md-2 my-md-0 mx-sm-4 my-sm-2 mx-xs-4 my-xs-2"
                 justify="center"
               >
-                <carousel-letter
+                <CarouselLetter
                   ref="CarouselLetter"
                   :value="curriculumTypeId"
+                  :preview-mode="previewMode"
                 />
               </v-row>
             </v-col>
@@ -150,11 +156,10 @@
         </v-col>
       </v-row>
     </v-container>
-    <lesson-activity-player />
-    <lesson-teacher-video />
-    <course-progress-overlay />
-    <puzzle-pieces-dialog />
-  </v-main>
+    <LessonTeacherVideo />
+    <CourseProgressOverlay />
+    <PuzzlePiecesDialog />
+  </div>
 </template>
 
 <script>
@@ -162,7 +167,6 @@ import { mapGetters } from 'vuex'
 import { APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
 
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
-import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vue'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
@@ -175,7 +179,6 @@ export default {
 
   components: {
     DashboardPanel,
-    LessonActivityPlayer,
     LessonTeacherVideo,
     PuzzlePiecesDialog,
     ChildSelect,
@@ -236,12 +239,28 @@ export default {
     // }
     canAdvance() {
       if (this.lesson && this.childId && !this.previewMode) {
-        return true
-        // const completedCount = this.lesson.videos.map(({ viewed }) => Number(viewed && viewed.completed ? 1 : 0)).reduce((a, b) => a + b)
+        // completed all video lessons
+        const areLessonVideosCompleted = this.lesson?.videos?.every(video =>
+          Boolean(video?.viewed?.completed)
+        )
 
-        // const progress = (completedCount / this.lesson.videos.length) * 100
-        // return progress === 100
+        // completed all online worksheets
+        const areOnlineWorksheetsCompleted = this.lesson?.worksheets
+          ?.filter(worksheet => worksheet.type === 'ONLINE')
+          ?.every(worksheet => Boolean(worksheet?.completed?.completed))
+
+        // completed all lesson activities
+        const areLessonActivitiesCompleted = this.lesson?.lessonsActivities?.every(
+          activity => Boolean(activity?.activity?.viewed?.completed)
+        )
+
+        return (
+          areLessonVideosCompleted &&
+          areOnlineWorksheetsCompleted &&
+          areLessonActivitiesCompleted
+        )
       }
+
       return false
     },
 
@@ -309,6 +328,10 @@ export default {
   &-container {
     height: calc(100vh - 64px);
     max-height: calc(100vh - 64px);
+  }
+  &-container-preview {
+    height: calc(100vh - 80px);
+    max-height: calc(100vh - 80px);
   }
   &-column {
     height: 100%;

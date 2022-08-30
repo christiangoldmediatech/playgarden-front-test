@@ -5,7 +5,7 @@
         <v-col cols="12">
           <pg-loading v-if="loading" />
 
-          <template v-else>
+          <div v-else data-test-id="help-content">
             <v-row>
               <v-img
                 max-height="500"
@@ -168,7 +168,7 @@
                       />
 
                       <p class="mt-2">
-                        Contact us and we will get back to you personally.
+                        Contact us and we will get back to you soon!
                       </p>
                     </div>
 
@@ -213,25 +213,6 @@
                         </validation-provider>
                       </v-col>
                     </v-row>
-
-                    <!-- How can we help you? -->
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="How can we help you?"
-                      rules="required"
-                    >
-                      <pg-select
-                        v-model="help.issueType"
-                        clearable
-                        :disabled="sending"
-                        :error-messages="errors"
-                        :items="emailTopics"
-                        label="How can we help you?"
-                        :loading="sending"
-                        solo
-                        data-test-id="help-form-select"
-                      />
-                    </validation-provider>
 
                     <!-- Subject -->
                     <validation-provider
@@ -289,7 +270,7 @@
                 </validation-observer>
               </v-col>
             </v-row>
-          </template>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -302,16 +283,6 @@ import { computed, onMounted, ref } from '@vue/composition-api'
 
 import { useAuth, useFAQ, useFAQCategories, useHelp, useSnotifyHelper, useVuetifyHelper } from '@/composables'
 import { FAQ, FAQCategory, TypedStore } from '@/models'
-
-const EMAIL_TOPICS = {
-  ACCOUNT: 'ACCOUNT',
-  LIBRARY: 'LIBRARY',
-  DAILY_LESSONS: 'DAILY LESSONS',
-  LIVE_SESSIONS: 'LIVE SESSIONS',
-  PARENT_CORNER: 'PARENT CORNER',
-  STUDENT_CUBBY: 'STUDENT CUBBY',
-  OTHER: 'OTHER'
-}
 
 export default defineComponent({
   name: 'Help',
@@ -327,15 +298,14 @@ export default defineComponent({
     const categorySelect = ref<FAQCategory | null>(null)
     const categories = ref<FAQCategory[]>([])
     const faqs = ref<Record<number, FAQ[]>>({})
+
     const help = ref({
       name: null,
       email: null,
-      issueType: null as string | null,
       subject: null,
       description: null
     })
 
-    const emailTopics = computed(() => Object.values(EMAIL_TOPICS))
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
     const { getFAQs } = useFAQ()
@@ -386,7 +356,6 @@ export default defineComponent({
         help.value = {
           name: null,
           email: null,
-          issueType: EMAIL_TOPICS.ACCOUNT,
           subject: null,
           description: null
         }
@@ -406,7 +375,6 @@ export default defineComponent({
       categories,
       faqs,
       help,
-      emailTopics,
       isMobile,
       isLogin: isUserLoggedIn,
       onSubmit

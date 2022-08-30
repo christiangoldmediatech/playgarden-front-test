@@ -1,18 +1,24 @@
 <template>
-  <div class="pg-w-full">
+  <div class="pg-w-full" data-test-id="gift-of-learning-content">
     <!-- BACK BUTTON -->
-    <v-btn
-      color="accent"
-      class="mx-3 mx-md-6 mt-6"
-      text
+    <button
+      v-if="$route.query.mode !== 'iframe'"
+      :class="[
+        'pg-text-accent',
+        'pg-font-semibold',
+        'pg-text-lg',
+        'pg-ml-2',
+        'pg-mb-2',
+        'md:pg-ml-5'
+      ]"
       @click="goToHomePage"
     >
-      <v-icon left>
+      <v-icon color="accent">
         mdi-less-than
       </v-icon>
 
       Back
-    </v-btn>
+    </button>
 
     <div class="gift-of-learning-title primary--text mt-1 mt-md-4 px-3 px-md-6">
       Gift Of Learning Promotion
@@ -34,7 +40,10 @@
             <span class="price">$ 79.99</span>
             <span class="free-shipping">FREE SHIPPING</span>
 
-            <img class="gift-of-learning-img" src="@/assets/png/promo/gift-of-learning.png">
+            <img
+              class="gift-of-learning-img"
+              src="@/assets/png/promo/gift-of-learning.png"
+            >
           </div>
         </div>
       </v-col>
@@ -131,7 +140,9 @@
             </validation-provider>
 
             <div>
-              <span class="pg-text-[18px]">Is it a gift for yourself or someone else?</span>
+              <span class="pg-text-[18px]">
+                Is it a gift for yourself or someone else?
+              </span>
 
               <v-radio-group v-model="giftTarget" class="my-md-n2" row>
                 <v-radio value="someone-else" label="For someone else" />
@@ -264,10 +275,7 @@
             </validation-provider>
 
             <!-- STREET 2 -->
-            <validation-provider
-              v-slot="{ errors }"
-              name="Street"
-            >
+            <validation-provider v-slot="{ errors }" name="Street">
               <pg-text-field
                 v-model="form.street2"
                 :error-messages="errors"
@@ -384,16 +392,26 @@
                 <span class="price">$ 79.99</span>
                 <span class="free-shipping">FREE SHIPPING</span>
 
-                <img class="gift-of-learning-img" src="@/assets/png/promo/gift-of-learning.png">
+                <img
+                  class="gift-of-learning-img"
+                  src="@/assets/png/promo/gift-of-learning.png"
+                >
               </div>
             </template>
             <div class="mt-6 mt-md-10 mb-10">
-              <v-btn :loading="loading" block color="secondary" x-large @click="buyNow(validate)">
+              <v-btn
+                :loading="loading"
+                block
+                color="secondary"
+                x-large
+                @click="buyNow(validate)"
+              >
                 BUY NOW
               </v-btn>
 
               <div class="mt-2">
-                *Continental US only. Standard USPS shipping. Please contact us at 646-504-4716 for other shipping options.
+                *Continental US only. Standard USPS shipping. Please contact us
+                at 646-504-4716 for other shipping options.
               </div>
             </div>
           </div>
@@ -411,6 +429,14 @@ import { useSnotifyHelper } from '@/composables'
 import { axios } from '@/utils'
 
 export default defineComponent({
+  layout(context) {
+    if (context.route.query.mode === 'iframe') {
+      return 'empty'
+    } else {
+      return 'gift-of-learning'
+    }
+  },
+
   components: {
     StripeCard,
     SearchAddressAutocomplete
@@ -449,7 +475,10 @@ export default defineComponent({
         loading.value = true
         await axios.$post('/promotions', { ...form.value })
         snotify.success('Thank you for your order!')
-        window.open('https://playgardenonline.com/gift-of-leaning/thank-you', '_self')
+        window.open(
+          'https://playgardenonline.com/gift-of-leaning/thank-you',
+          '_self'
+        )
       } catch (error) {
         snotify.error('Could not buy now')
       } finally {

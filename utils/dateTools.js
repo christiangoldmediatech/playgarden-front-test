@@ -1,9 +1,37 @@
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
 
 dayjs.extend(customParseFormat)
 dayjs.extend(utc)
+dayjs.extend(timezone)
+
+export const timezoneOptions = [{
+  name: 'Hawaii Standard Time',
+  value: 'Pacific/Honolulu'
+},
+{
+  name: 'Alaska Standard Time',
+  value: 'America/Anchorage'
+},
+{
+  name: 'Pacific Standard Time',
+  value: 'America/Los_Angeles'
+},
+{
+  name: 'Mountain Standard Time',
+  value: 'America/Denver'
+},
+{
+  name: 'Central Standard Time',
+  value: 'America/Chicago'
+},
+{
+  name: 'Eastern Standard Time',
+  value: 'America/New_York'
+}
+]
 
 export const translateUTC = (date) => {
   const utcDate = dayjs.utc(date)
@@ -43,6 +71,28 @@ export const formatDate = (
   }
 
   return returnObject ? date : date.format(format)
+}
+
+export const formatTimezone = (
+  value,
+  {
+    format = 'MM-DD-YYYY HH:mm:ss',
+    fromFormat,
+    timezone,
+    returnObject = false
+  } = {}
+) => {
+  timezone = getTimezone(timezone)
+  let date = dayjs(value, fromFormat)
+  if (timezone) {
+    date = dayjs.tz(value, timezone)
+  }
+  return returnObject ? date : date.format(format)
+}
+
+export const getTimezone = (timezone) => {
+  const currentTimezone = timezoneOptions.find(item => item.value === timezone)
+  return (currentTimezone) ? timezone : 'America/New_York'
 }
 
 export const sameDay = (d1, d2) => {
@@ -100,30 +150,23 @@ export const hours24ToHours12 = (hours, minutes, am = 'am', pm = 'pm') => {
   return `${hours}:${minutes.toString().padStart(2, '0')}${am}`
 }
 
-export const getMondayFriday = (today) => {
-  const monday = new Date(today)
-  const friday = new Date(today)
-  const isSaturday = today.getDay() === 6
-  const isSunday = today.getDay() === 0
-  let offset = 0
-
-  if (isSaturday) {
-    offset = 2
-  } else if (isSunday) {
-    offset = 1
-  }
-
-  monday.setDate(today.getDate() + offset)
-  friday.setDate(today.getDate() + offset)
-  monday.setDate(today.getDate() + (1 - today.getDay()))
-  friday.setDate(today.getDate() + (5 - today.getDay()))
-
-  monday.setHours(0, 0, 0, 0)
-  friday.setHours(23, 59, 59, 999)
-
+export const getMondayFriday = (day) => {
+  const today = dayjs(day).startOf('day')
+  const monday = today.startOf('week').add(1, 'day').toDate()
+  const friday = today.endOf('week').subtract(1, 'day').toDate()
   return {
     monday,
     friday
+  }
+}
+
+export const getWeekStartAndEnd = (day) => {
+  const today = dayjs(day).startOf('day')
+  const sunday = today.startOf('week').toDate()
+  const saturday = today.endOf('week').toDate()
+  return {
+    sunday,
+    saturday
   }
 }
 

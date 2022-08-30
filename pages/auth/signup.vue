@@ -68,7 +68,7 @@
                   <span
                     class="font-weight-bold text-uppercase pg-letter-spacing-subtitle"
                   >
-                    GET 30 DAYS OF FREE TRIAL
+                    GET 15 DAYS OF FREE TRIAL
                   </span>
                   <v-row no-gutters>
                     <span class="font-weight-bold mt-3">That includes:</span>

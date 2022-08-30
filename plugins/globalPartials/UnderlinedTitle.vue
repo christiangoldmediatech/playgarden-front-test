@@ -97,19 +97,19 @@ export default {
 
     letterSpacing: {
       type: String,
-      default: '0px'
+      default: '2px'
     }
   },
 
   computed: {
-    _lineColor () {
+    _lineColor() {
       if (this.subtitle) {
         return 'rgba(254, 197, 114, 0.71)'
       }
 
       return colorMaker(this.lineColor)
     },
-    _lineColorDarkGreen () {
+    _lineColorDarkGreen() {
       if (this.subtitle) {
         return 'rgba(254, 197, 114, 0.71)'
       }
@@ -117,7 +117,7 @@ export default {
       return colorMaker(this.lineColorDarkGreen)
     },
 
-    _lineFrom () {
+    _lineFrom() {
       if (this.subtitle) {
         return '65%'
       }
@@ -125,7 +125,7 @@ export default {
       return `${this.lineFrom}%`
     },
 
-    _fontSize () {
+    _fontSize() {
       if (this.subtitle) {
         return '17px'
       }
@@ -139,7 +139,7 @@ export default {
         : this.fontSizeMobile
     },
 
-    _fontWeight () {
+    _fontWeight() {
       if (this.subtitle) {
         return 500
       }
@@ -147,7 +147,7 @@ export default {
       return this.fontWeight
     },
 
-    _paddingBottom () {
+    _paddingBottom() {
       if (this.subtitle) {
         return '3px'
       }
@@ -184,5 +184,8 @@ export default {
     var(--ut-line-color-dark-green) 80%,
     transparent 80%
   );
+}
+.text-spacing {
+  letter-spacing: 2px !important;
 }
 </style>

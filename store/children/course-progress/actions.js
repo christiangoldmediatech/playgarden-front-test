@@ -5,5 +5,9 @@ export default {
         curriculumTypeId ? `/${curriculumTypeId}` : ''
       }`
     )
+  },
+
+  getPlayAndLearnProgressByChildId(_, { id }) {
+    return this.$axios.$get(`/children/${id}/progress/play-and-learn`)
   }
 }

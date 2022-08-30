@@ -2,6 +2,7 @@
   <v-app-bar
     flat
     :height="appBarHeight"
+    :class="{ 'd-none mt-n16': scrollDown }"
     class="pg-header"
     app
   >
@@ -13,10 +14,7 @@
         :ripple="false"
         @click="handleSidebarToggle"
       >
-        <v-icon
-          large
-          class="primary--text"
-        >
+        <v-icon large class="primary--text">
           mdi-menu
         </v-icon>
       </v-btn>
@@ -24,6 +22,7 @@
       <!-- Children Select  -->
       <v-col
         cols="12"
+        sm="6"
         md="3"
         order="2"
         order-md="1"
@@ -43,7 +42,7 @@
             width="60"
           >
         </v-btn>
-        <div class="child-select mt-4 mt-md-0">
+        <div v-if="!hasUserLearnAndPlayPlan" class="child-select mt-4 mt-md-0">
           <child-select
             v-if="childId"
             v-model="childId"
@@ -54,26 +53,31 @@
 
       <v-col
         cols="12"
+        sm="6"
         md="6"
         order="1"
         order-md="2"
         class="d-flex flex-column justify-center align-center"
       >
-        <v-row
-          no-gutters
-          class="text-center"
-        >
+        <v-row no-gutters class="text-center">
           <!-- PlaygardenPrep Logo -->
           <v-col cols="12">
             <img
+              v-if="!hasUserLearnAndPlayPlan"
               alt="Playarden Prep Online Logo"
               :height="appBarLogoSize"
               :src="require('@/assets/svg/logo.svg')"
             >
+            <img
+              v-else
+              alt="Playarden Prep Online Logo"
+              :height="appBarLogoSizeLearnPlay"
+              :src="require('@/assets/png/logo-PlayandLearn.svg')"
+            >
           </v-col>
 
           <!-- Toolbar Title -->
-          <v-col cols="12">
+          <v-col v-if="!hasUserLearnAndPlayPlan" cols="12">
             <underlined-title
               text="Welcome to School!"
               :font-size="appBarTitleSize"
@@ -82,19 +86,15 @@
           </v-col>
 
           <!-- Toolbar Description -->
-          <v-col>
+          <v-col v-if="!hasUserLearnAndPlayPlan">
             <div class="text-body-1 text-md-h6">
-              We are excited for a fun-filled day of learning!
+              Are you excited for a fun-filled day of learning?
             </div>
           </v-col>
         </v-row>
       </v-col>
 
-      <v-col
-        md="3"
-        order="3"
-        class="d-none d-md-flex justify-end align-center"
-      >
+      <v-col md="3" order="3" class="d-none d-md-flex justify-end align-center">
         <!-- Profile Button -->
         <div class="text-center mx-4">
           <img
@@ -111,21 +111,14 @@
 
         <!-- Help Button -->
         <template v-if="isUserLoggedIn && !isUserInSignupProcess">
-          <v-menu
-            open-on-hover
-            offset-y
-            offset-overflow
-          >
+          <v-menu open-on-hover offset-y offset-overflow>
             <template v-slot:activator="{ on }">
               <div
                 data-test-id="help-button"
                 class="text-center clickable mx-4"
                 v-on="on"
               >
-                <img
-                  :src="require('@/assets/png/Help.png')"
-                  height="45"
-                >
+                <img :src="require('@/assets/png/Help.png')" height="45">
                 <div class="text-caption">
                   Help
                 </div>
@@ -134,7 +127,9 @@
 
             <v-card>
               <v-list dense>
-                <v-list-item>
+                <!-- Hidden by ticket: https://app.shortcut.com/gold-media-tech/story/4106/hide-video-tutorial-option -->
+
+                <!-- <v-list-item>
                   <v-btn
                     class="btn-register text--disabled"
                     :ripple="false"
@@ -154,7 +149,8 @@
 
                 <div class="px-2 py-3">
                   <v-divider />
-                </div>
+                </div> -->
+
                 <v-list-item>
                   <v-btn
                     class="btn-register text--disabled"
@@ -183,10 +179,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, useStore, useRoute, useRouter } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  computed,
+  useStore,
+  useRoute,
+  useRouter
+} from '@nuxtjs/composition-api'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
-import { useAuth, useChildRoute, useNuxtHelper, useVuetifyHelper, useAppEventBusHelper } from '@/composables'
+import {
+  useAuth,
+  useChildRoute,
+  useNuxtHelper,
+  useVuetifyHelper,
+  useAppEventBusHelper
+} from '@/composables'
 import { TypedStore, APP_EVENTS } from '@/models'
 import { useBirthdayHelpers } from '@/components/features/childBirthday/composables'
 
@@ -195,13 +203,67 @@ export default defineComponent({
     ChildSelect
   },
 
-  setup () {
+  data() {
+    return {
+      scrollDown: false,
+      currentScroll: 0
+    }
+  },
+
+  created() {
+    // eslint-disable-next-line nuxt/no-globals-in-created
+    window.addEventListener('scroll', this.toggleHeader)
+  },
+
+  destroyed() {
+    window.removeEventListener('scroll', this.toggleHeader)
+  },
+
+  methods: {
+    toggleHeader() {
+      if (this.$vuetify.breakpoint.mdAndDown) {
+        const scroll = window.scrollY
+        if (scroll > this.currentScroll) {
+          this.scrollDown = true
+          this.currentScroll = scroll
+        } else if (scroll < this.currentScroll) {
+          this.scrollDown = false
+          this.currentScroll = scroll
+        }
+      } else {
+        this.scrollDown = false
+      }
+    }
+  },
+
+  setup() {
     const vuetify = useVuetifyHelper()
     const isMobile = computed(() => vuetify.breakpoint.mobile)
+    const isMobileLandscape = computed(() => vuetify.breakpoint.smOnly)
 
-    const appBarHeight = computed(() => isMobile.value ? '220px' : '175px')
-    const appBarTitleSize = computed(() => isMobile.value ? '28px' : '60px')
-    const appBarLogoSize = computed(() => isMobile.value ? '25px' : '45px')
+    const appBarHeight = computed(() => {
+      if (store.getters['auth/hasUserLearnAndPlayPlan']) {
+        return isMobileLandscape.value
+          ? '100px'
+          : isMobile.value
+            ? '90px'
+            : '115px'
+      } else {
+        return isMobileLandscape.value
+          ? '140px'
+          : isMobile.value
+            ? '250px'
+            : '175px'
+      }
+    })
+    const appBarTitleSize = computed(() => (isMobile.value ? '28px' : '60px'))
+    const appBarLogoSize = computed(() => (isMobile.value ? '25px' : '45px'))
+    const appBarLogoSizeLearnPlay = computed(() =>
+      isMobile.value ? '35px' : '75px'
+    )
+    const hasUserLearnAndPlayPlan = computed(
+      () => store.getters['auth/hasUserLearnAndPlayPlan']
+    )
 
     const store = useStore<TypedStore>()
 
@@ -228,11 +290,13 @@ export default defineComponent({
       isUserInSignupProcess,
       childId,
       appBarTitleSize,
+      appBarLogoSizeLearnPlay,
       appBarLogoSize,
       appBarHeight,
       handleSidebarToggle,
       handleClickOnBirthdayIcon,
-      isCurrentChildsBirthday
+      isCurrentChildsBirthday,
+      hasUserLearnAndPlayPlan
     }
   }
 })

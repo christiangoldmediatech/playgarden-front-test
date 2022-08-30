@@ -2,11 +2,12 @@
 import { ref, ComputedRef } from '@nuxtjs/composition-api'
 import { jsonCopy } from '@/utils'
 import { useActivityAnalyticsApi, usePatch } from '@/composables'
+import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
 // TODO: MUST UPDATE THIS TYPE TO NEWER MEDIA OBJECT MODEL
 type CurrentVideo = {
   [key: string]: any
-  activityId: number
+  entityId: number
   type: string
 }
 
@@ -25,7 +26,25 @@ type AnalyticOperationParams = {
 
 const activityAnalyticsLoading = ref<boolean>(false)
 
-export const useActivityAnalytics = (children: ComputedRef<any[]>) => {
+function determineCurrentVideo(mediaObject?: MediaObject): CurrentVideo {
+  const currentVideo = {
+    entityId: 0,
+    type: 'Videos'
+  }
+
+  if (mediaObject) {
+    currentVideo.entityId =
+      (mediaObject.meta?.activityId || mediaObject.meta?.videoId) ?? 0
+    currentVideo.type =
+      mediaObject.meta?.type ||
+      (mediaObject.meta?.activityId ? 'Activities' : 'Videos')
+  }
+  return currentVideo
+}
+
+export const useActivityAnalytics = (
+  children: ComputedRef<any[] | undefined>
+) => {
   const {
     createActivityAnalytic,
     getActivityAnalytic,
@@ -43,13 +62,18 @@ export const useActivityAnalytics = (children: ComputedRef<any[]>) => {
       const { currentVideo, time, didFinish, startCheck } = params
 
       // Check if analytics already exists
-      let analytic = await getActivityAnalytic(currentVideo.activityId, child.id)
+      let analytic = await getActivityAnalytic(currentVideo.entityId, child.id)
+
+      // If analytic exists, use same entity type on current video
+      if (typeof analytic !== 'string' || Object.keys(analytic).length > 0) {
+        currentVideo.type = analytic.entityType
+      }
 
       if (typeof analytic === 'string' || Object.keys(analytic).length === 0) {
         // Analytic does not exist, create a new one
         const analyticPaylod = {
           childrenId: child.id,
-          entityId: currentVideo.activityId,
+          entityId: currentVideo.entityId,
           entityType: currentVideo.type,
           didFinish,
           time
@@ -66,7 +90,7 @@ export const useActivityAnalytics = (children: ComputedRef<any[]>) => {
           const params = {
             didFinish,
             time,
-            entityId: currentVideo.activityId,
+            entityId: currentVideo.entityId,
             entityType: currentVideo.type
           }
           analytic = await updateActivityAnalytic(analytic.id, params)
@@ -116,7 +140,7 @@ export const useActivityAnalytics = (children: ComputedRef<any[]>) => {
       }
 
       // Skip if loading
-      if (activityAnalyticsLoading.value) {
+      if (activityAnalyticsLoading.value || !children.value) {
         return false
       }
 
@@ -142,6 +166,7 @@ export const useActivityAnalytics = (children: ComputedRef<any[]>) => {
   return {
     activityAnalyticsLoading,
     sendActivityAnalytics,
-    patchEarned
+    patchEarned,
+    determineCurrentVideo
   }
 }

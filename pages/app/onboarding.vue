@@ -3,24 +3,22 @@
     <v-row no-gutters>
       <v-col cols="12">
         <pg-loading v-if="loading" />
-        <v-card v-else elevation="0">
-          <v-row>
-            <v-btn class="ml-3" icon @click.stop="nextStep">
-              <v-icon>
-                mdi-close
-              </v-icon>
-            </v-btn>
-            <v-row justify="end" :class="($vuetify.breakpoint.xs)? 'mt-8 mr-6' : 'mt-6 mr-6'">
-              <v-btn
-                class="text-h7 text-md-h6 mt-n6"
-                color="accent"
-                :small="$vuetify.breakpoint.xs"
-                :loading="finishing"
-                @click="onFinish"
-              >
-                START LEARNING
+        <v-card v-else elevation="0" class="mt-10">
+          <v-row justify="between" align="start">
+            <v-col cols="2">
+              <v-btn class="pg-ml-[-20px]" plain color="accent" @click.stop="nextStep">
+                <v-icon size="50" class="mr-3">
+                  mdi-chevron-left
+                </v-icon>
+                Back to home
               </v-btn>
-            </v-row>
+            </v-col>
+            <v-col cols="8">
+              <p class="text-center pg-text-[#C399ED] pg-text-3xl pg-font-bold">
+                Watch a video on how to use our online preschool!
+              </p>
+            </v-col>
+            <v-col cols="2" />
           </v-row>
           <v-stepper v-if="!none" v-model="step" class="elevation-0">
             <v-stepper-header v-if="!single">
@@ -80,15 +78,17 @@
 </template>
 
 <script>
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
-// import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
+import { useNotification } from '@/composables'
+import PgOnboardingVideoPlayer from '@/components/app/onboarding/PgOnboardingVideoPlayer.vue'
 
-export default {
+export default defineComponent({
   name: 'Onboarding',
 
-  // components: {
-  //   PgInlineVideoPlayer
-  // },
+  components: {
+    PgOnboardingVideoPlayer
+  },
 
   data: () => ({
     loading: true,
@@ -98,33 +98,46 @@ export default {
     player: null
   }),
 
+  setup() {
+    const store = useStore()
+    const Notification = useNotification({ store })
+
+    return {
+      checkIfShouldSendShippingAddressNotification:
+        Notification.checkIfShouldSendShippingAddressNotification
+    }
+  },
+
   computed: {
     ...mapGetters('auth', {
       userInfo: 'getUserInfo'
     }),
 
-    first () {
+    first() {
       return this.step === 1
     },
 
-    last () {
+    last() {
       return this.step === this.steps
     },
 
-    none () {
+    none() {
       return !this.onboardings.length
     },
 
-    single () {
+    single() {
       return this.onboardings.length === 1
     },
 
-    steps () {
+    steps() {
       return this.onboardings.length
     }
   },
 
-  async created () {
+  async created() {
+    // Remove this line when the onboarding is ready
+    this.$router.replace({ name: 'app-virtual-preschool' })
+
     try {
       const onboardings = await this.getOnboardings()
 
@@ -145,45 +158,49 @@ export default {
     }
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     this.player = null
   },
 
   methods: {
     ...mapActions('auth', ['updateAuthOnboarding']),
     ...mapActions('onboarding', ['getOnboardings']),
-    ...mapActions('notifications', ['checkIfShouldSendShippingAddressNotification']),
 
-    onPlayerReady ({ player, videos }) {
+    onPlayerReady({ player, videos }) {
       this.player = player
 
       const interval = window.setInterval(() => {
         if (this.onboardings.length) {
           // const { videos } = this.onboardings[0]
-          this.player.loadPlaylist([
-            {
-              videoId: 1,
-              title: videos.name,
-              poster: videos.thumbnail,
-              src: {
-                src: videos.videoUrl.HLS,
-                type: 'application/x-mpegURL'
+          this.player.loadPlaylist(
+            [
+              {
+                title: videos.name,
+                poster: videos.thumbnail,
+                src: {
+                  url: videos.videoUrl.HLS,
+                  type: 'application/x-mpegURL'
+                },
+                meta: {
+                  videoId: 1
+                }
               }
-            }
-          ], 0)
+            ],
+            0
+          )
           window.clearInterval(interval)
         }
       }, 50)
     },
 
-    nextStep () {
+    nextStep() {
       this.$router.push({ name: 'app-virtual-preschool' })
       // if (this.step < this.steps) {
       //   this.step++
       // }
     },
 
-    async onFinish () {
+    async onFinish() {
       this.finishing = true
 
       try {
@@ -197,5 +214,5 @@ export default {
       }
     }
   }
-}
+})
 </script>

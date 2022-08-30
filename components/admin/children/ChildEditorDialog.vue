@@ -176,7 +176,6 @@
           <v-spacer />
 
           <v-btn
-            class="white--text"
             color="green"
             :loading="loading"
             :text="$vuetify.breakpoint.smAndUp"
@@ -186,7 +185,6 @@
           </v-btn>
 
           <v-btn
-            class="white--text"
             color="red"
             :disabled="loading"
             :text="$vuetify.breakpoint.smAndUp"

@@ -107,16 +107,18 @@ export default defineComponent({
     } = useLayout({ store, route, vuetify })
     const {
       isTrialExpiringRibbonVisible,
-      checkIfShouldSendShippingAddressNotification,
       checkIfShouldShowTrialExpiringRibbon,
       checkIfShouldShowTrialExpiredModal
     } = useNotification({ store })
 
     const routeName = computed(() => route.value.name)
 
+    const hasUserLearnAndPlayPlan = computed(
+      () => store.getters['auth/hasUserLearnAndPlayPlan']
+    )
+
     watch(isUserLoggedIn, async () => {
       if (isUserLoggedIn.value === true && routeName.value !== 'shared-slug') {
-        await checkIfShouldSendShippingAddressNotification()
         await checkIfShouldShowTrialExpiredModal()
         await checkIfShouldShowTrialExpiringRibbon()
       }
@@ -139,7 +141,8 @@ export default defineComponent({
       showContent,
       toolbarStyle,
       setShowContent,
-      handleExpiredTrialCountdown
+      handleExpiredTrialCountdown,
+      hasUserLearnAndPlayPlan
     }
   }
 })

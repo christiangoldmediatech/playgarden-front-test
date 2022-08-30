@@ -11,7 +11,10 @@
             top-justify="space-between"
             @update:page="page = $event"
             @refresh="refresh(true)"
-            @search="search = $event; refresh(false)"
+            @search="
+              search = $event
+              refresh(false)
+            "
             @edit-item="$emit('open-editor', $event)"
             @remove-item="remove"
           >
@@ -104,28 +107,28 @@ export default {
   },
 
   watch: {
-    items () {
+    items() {
       this.checkStatus()
     }
   },
 
-  created () {
-    this.getCategories()
+  created() {
+    this.fetchCategories()
     this.refresh()
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     clearInterval(this.checkStatusInterval)
   },
 
   methods: {
     ...mapActions('parents-corner', [
-      'getCategories',
-      'getVideos',
+      'fetchCategories',
+      'fetchVideos',
       'deleteVideo'
     ]),
 
-    async refresh (clear = false) {
+    async refresh(clear = false) {
       try {
         this.loading = true
 
@@ -133,7 +136,10 @@ export default {
           this.search = null
         }
 
-        await this.getVideos({ name: this.search, categoryId: this.categoryId })
+        await this.fetchVideos({
+          name: this.search,
+          categoryId: this.categoryId
+        })
       } catch (e) {
         Promise.reject(e)
       } finally {
@@ -141,7 +147,7 @@ export default {
       }
     },
 
-    remove ({ id, video }) {
+    remove({ id, video }) {
       this.$nuxt.$emit('open-prompt', {
         title: 'Delete parent\'s corner video?',
         message: `Are you sure you want to delete <b>${video.name}</b>?`,
@@ -152,8 +158,10 @@ export default {
       })
     },
 
-    checkStatus () {
-      if (this.items.filter(data => data.video.status !== 'COMPLETED').length > 0) {
+    checkStatus() {
+      if (
+        this.items.filter(data => data.video.status !== 'COMPLETED').length > 0
+      ) {
         if (this.checkStatusInterval === null) {
           this.checkStatusInterval = setInterval(() => {
             this.refresh()

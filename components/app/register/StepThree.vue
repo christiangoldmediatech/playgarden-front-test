@@ -1,18 +1,12 @@
 <template>
   <v-row>
     <v-col>
-      <v-row
-        class="flex-column flex-md-row mt-3"
-        justify="center"
-      >
-        <v-col
-          cols="12"
-          md="6"
-        >
+      <v-row class="mt-3 flex-column flex-md-row" justify="center">
+        <v-col cols="12" md="6">
           <v-img
             v-if="$vuetify.breakpoint.smAndUp"
             max-width="550"
-            :src="require('@/assets/svg/child-information.svg')"
+            :src="require('@/assets/jpg/child-information.JPG')"
           />
         </v-col>
         <v-col
@@ -22,7 +16,11 @@
           xs="12"
           :class="{ 'mt-n14 px-8': !$vuetify.breakpoint.smAndUp }"
         >
-          <short-register-form :class="{ 'px-2': !$vuetify.breakpoint.smAndUp }" :loading="loading" @click:submit="onSubmit" />
+          <ShortRegisterForm
+            :class="{ 'px-2': !$vuetify.breakpoint.smAndUp }"
+            :loading="loading"
+            @click:submit="onSubmit"
+          />
         </v-col>
       </v-row>
     </v-col>
@@ -31,12 +29,9 @@
 
 <script>
 import { mapActions } from 'vuex'
-import {
-  defineComponent,
-  useRoute
-} from '@nuxtjs/composition-api'
+import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 
-import { useUTM } from '@/composables/utm/use-utm.composable'
+import { useUTM } from '@/composables/web/utm'
 import ShortRegisterForm from '@/components/forms/children/ShortRegisterForm.vue'
 
 export default defineComponent({
@@ -67,7 +62,7 @@ export default defineComponent({
       updateChild: 'update'
     }),
 
-    goToLessons () {
+    goToLessons() {
       this.$router.push({
         name: 'app-onboarding',
         query: {
@@ -76,7 +71,7 @@ export default defineComponent({
       })
     },
 
-    async onSubmit (children) {
+    async onSubmit(children) {
       this.loading = true
 
       try {
@@ -90,7 +85,7 @@ export default defineComponent({
 
         await this.fetchUserInfo()
 
-        this.$snotify.success('Children have been stored successfully!')
+        this.$snotify.success('Child information has been saved!')
         this.goToLessons()
       } catch (e) {
       } finally {

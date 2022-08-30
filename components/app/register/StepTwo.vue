@@ -1,98 +1,85 @@
 <template>
-  <v-row no-gutters>
-    <v-col>
-      <v-row
-        no-gutters
+  <div
+    :class="[
+      'pg-px-4',
+      'lg:pg-pb-32',
+    ]"
+  >
+    <div
+      :class="[
+        'pg-flex',
+        'pg-flex-col',
+        'pg-mx-auto',
+        'pg-max-w-[768px]',
+        'lg:pg-max-w-[1300px]',
+      ]"
+    >
+      <div class="pg-my-6">
+        <BackButton @click="handleGoBack" />
+      </div>
+
+      <!-- CONTENT -->
+      <div
+        :class="[
+          'pg-grid',
+          'pg-grid-cols-1',
+          'sm:pg-mt-12',
+          'lg:pg-grid-cols-12',
+          'lg:pg-gap-24',
+        ]"
       >
-        <v-col
-          class="px-12 mt-1 mt-md-12"
-          cols="12"
-          md="6"
-          lg="6"
-          xl="6"
+        <!-- LEFT -->
+        <div class="pg-col-span-full lg:pg-col-span-7">
+          <StripePayForm
+            :loading="loading"
+            :button-text="getTextButton"
+            :is-free-for-days-text-visible="!isUserInactive"
+            :is-trial-text-visible="!isUserInactive"
+            :is-not-charged-text-visbile="!isUserInactive"
+            @click:submit="onSubmit"
+          />
+        </div>
+
+        <!-- RIGHT -->
+        <div
+          :class="[
+            'pg-col-span-full',
+            'pg-flex',
+            'pg-flex-col',
+            'pg-justify-center',
+            'pg-mt-14',
+            'pg-mx-auto',
+            'lg:pg-col-span-5',
+            'lg:pg-mt-0',
+          ]"
         >
-          <stripe-pay-form :loading="loading" @click:submit="onSubmit" />
-        </v-col>
-        <v-col
-          cols="12"
-          md="6"
-          lg="6"
-          xl="6"
-        >
-          <template>
-            <v-row :class="($vuetify.breakpoint.smAndUp) ? '' : 'pt-1 px-8'">
-              <v-col cols="12" :class="(!$vuetify.breakpoint.smAndUp) ? 'text-center' : 'mt-1 mb-8 px-10'">
-                <v-layout row wrap align-center justify-center>
-                  <v-card class="elevation-2 mx-10">
-                    <v-container>
-                      <v-layout column align-center justify-center>
-                        <card-playgarden />
-                        <card-know-more v-if="!showCardPlaygarden" @toggleCard="showCardPlaygarden = !showCardPlaygarden" />
-                      </v-layout>
-                    </v-container>
-                  </v-card>
-                </v-layout>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col v-if="showCardPlaygarden" cols="12" class="mt-4">
-                <v-btn
-                  block
-                  text
-                  @click="showCardPlaygarden = !showCardPlaygarden"
-                >
-                  <p>
-                    <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
-                      WANT TO KNOW MORE ABOUT
-                    </span> <br>
-                    <span :class="($vuetify.breakpoint.smAndUp) ? 'free-trial' : 'free-trial-mobile'">
-                      YOUR FREE TRIAL ?
-                    </span>
-                  </p>
-                  <v-icon class="ml-2">
-                    mdi-chevron-down
-                  </v-icon>
-                </v-btn>
-              </v-col>
-              <v-col v-if="!$vuetify.breakpoint.smAndUp" cols="12">
-                <div>
-                  <p>
-                    <center>
-                      <span class="font-weight-bold text-completely">
-                        Playgarden Prep Online is COMPLETELY FREE for the next 30 days.
-                      </span>
-                    </center>
-                  </p>
-                  <v-divider />
-                  <p>
-                    <center class="ml-2">
-                      <span class="info-pay">
-                        You can cancel your trial and membership anytime from the account settings.<br> Once your free trial ends you will be placed on the <span class="option-standar">Standard</span> monthly plan, you can change plans at any time in your profile page.
-                      </span>
-                    </center>
-                  </p>
-                </div>
-              </v-col>
-            </v-row>
-          </template>
-        </v-col>
-      </v-row>
-    </v-col>
-  </v-row>
+          <CardPlaygarden
+            :value="showCardPlaygarden"
+            :is-user-inactive="isUserInactive"
+            @input="showCardPlaygarden = !showCardPlaygarden"
+          />
+          <div class="pg-py-2" />
+          <CardKnowMore
+            v-if="!isUserInactive"
+            :value="!showCardPlaygarden"
+            @input="showCardPlaygarden = !showCardPlaygarden"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-import {
-  defineComponent,
-  useRoute
-} from '@nuxtjs/composition-api'
+import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 
-import { useUTM } from '@/composables/utm/use-utm.composable'
+import { useUTM } from '@/composables/web/utm'
 
 import StripePayForm from '@/components/forms/payment/StripePayForm'
-import CardPlaygarden from './CardPlaygarden'
-import CardKnowMore from './CardKnowMore'
+import BackButton from '@/components/shared/BackButton/BackButton.vue'
+import CardPlaygarden from './CardPlaygarden.vue'
+import CardKnowMore from './CardKnowMore.vue'
 
 export default defineComponent({
   name: 'StepTwo',
@@ -100,16 +87,23 @@ export default defineComponent({
   components: {
     StripePayForm,
     CardPlaygarden,
-    CardKnowMore
+    CardKnowMore,
+    BackButton
+  },
+
+  props: {
+    mode: {
+      type: String,
+      default: '',
+      required: false
+    }
   },
 
   data: vm => ({
     loading: false,
     showCardPlaygarden: true,
-    coupon: null,
-    mode: vm.$route.params.mode
-      ? vm.$route.params.mode
-      : ''
+    hiddenCardFamily: false,
+    coupon: null
   }),
 
   setup() {
@@ -121,35 +115,59 @@ export default defineComponent({
     }
   },
 
+  watch: {
+    showCardPlaygarden() {
+      this.hiddenCardFamily = !this.hiddenCardFamily
+    }
+  },
+
+  computed: {
+    getTextButton() {
+      return this.mode === 'activate-user'
+        ? 'REACTIVATE ACCOUNT'
+        : 'START YOUR FREE TRIAL'
+    },
+    isUserInactive() {
+      return this.mode === 'activate-user'
+    }
+  },
+
   methods: {
     ...mapActions('auth', ['fetchUserInfo']),
 
-    ...mapActions('payment', [
-      'payShorterSubscription',
-      'validateCard'
-    ]),
+    ...mapActions('payment', ['payShorterSubscription', 'validateCard']),
 
-    async goToStepThree () {
+    handleGoBack () {
+      this.$router.push({
+        name: 'app-payment-plan',
+        query: {
+          process: 'signup',
+          step: '2'
+        }
+      })
+    },
+
+    async goToNextStep() {
       let page = {}
       if (this.mode === 'activate-user') {
         await this.fetchUserInfo()
         page = {
-          name: 'app-account-index'
+          name: 'app-payment-plan'
         }
       } else {
         page = {
           name: 'app-children',
           query: {
-            step: 3,
+            step: 4,
             process: 'signup',
-            ...this.utmContent
+            ...this.utmContent.utmContent.value
           }
         }
       }
       this.$router.push(page)
     },
 
-    async onSubmit (cardData) {
+    async onSubmit(cardData) {
       this.loading = true
 
       try {
@@ -160,9 +178,8 @@ export default defineComponent({
         if (cardData.promotion_id) {
           dataSubscrition.promotion_id = cardData.promotion_id
         }
-
         await this.payShorterSubscription(dataSubscrition)
-        this.goToStepThree()
+        this.goToNextStep()
       } catch (e) {
       } finally {
         this.loading = false
@@ -193,7 +210,8 @@ export default defineComponent({
   font-weight: 500;
 }
 
-.total, .total-cost {
+.total,
+.total-cost {
   color: #606060;
   line-height: 1.5;
   font-size: 22px;
@@ -253,7 +271,7 @@ export default defineComponent({
 }
 .text-completely {
   font-size: 12px !important;
-  color: rgba(96, 96, 96, 0.8) !important;
+  color: #606060 !important;
 }
 .list-scroll {
   max-height: 500px;

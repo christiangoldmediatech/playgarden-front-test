@@ -1,6 +1,8 @@
 <template>
-  <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
-    <v-card-text class="text-center font-weight-bold text-h5 grey--text text--darken-2">
+  <v-card class="pa-4 px-md-6 px-xl-10 py-md-6 card-custom-border">
+    <v-card-text
+      class="text-center font-weight-bold text-h5 grey--text text--darken-2"
+    >
       BILLING HISTORY
     </v-card-text>
 
@@ -13,7 +15,7 @@
       </v-col>
     </v-row>
 
-    <v-divider />
+    <v-divider class="mb-3" />
 
     <v-row>
       <v-col cols="12">
@@ -25,11 +27,19 @@
           <v-col class="d-flex" cols="7">
             <div>
               <div>
-                ${{ latestBilling.totalFormatted }} {{ latestBilling.currency.toUpperCase() }} /{{ latestBilling.period }} plan
+                ${{ latestBilling.totalFormatted }}
+                {{ latestBilling.currency.toUpperCase() }} /{{
+                  latestBilling.period
+                }}
+                plan
               </div>
 
               <div class="text-right">
-                <a class="accent--text text-caption text-decoration-underline" :href="latestBilling.invoiceUrl" target="_blank">
+                <a
+                  class="accent--text text-caption text-decoration-underline"
+                  :href="latestBilling.invoiceUrl"
+                  target="_blank"
+                >
                   View Invoice
                 </a>
               </div>
@@ -69,7 +79,7 @@ export default defineComponent({
     }
   },
 
-  setup (props) {
+  setup(props) {
     const { billings, getBillingHistory } = useBilling()
     const dialog = ref(false)
 

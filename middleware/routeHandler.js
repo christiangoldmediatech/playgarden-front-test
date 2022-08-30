@@ -4,6 +4,12 @@ import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscripti
 import routeHandlerIgnoredRoutes from '~/utils/consts/routeHandlerIgnoredRoutes.json'
 
 export default async function ({ redirect, route, store, app, req }) {
+  const redirectLogout = (route.query.logout)
+
+  if (redirectLogout) {
+    return redirect({ name: 'auth-logout' })
+  }
+
   const isIgnoredRoute = !!routeHandlerIgnoredRoutes[route.name]
 
   if (isIgnoredRoute) {
@@ -84,6 +90,21 @@ export default async function ({ redirect, route, store, app, req }) {
     return
   }
 
+  const goToPage = (user) => {
+    if (user.stripeStatus === 'active') {
+      if (user.planSelected.id === 2 || user.planSelected.id === 3) {
+        return 'app-virtual-preschool'
+      }
+
+      if (user.planSelected.id === 1) {
+        // return 'app-learn-play'
+        return 'app-virtual-preschool'
+      }
+    } else {
+      return 'app-virtual-preschool'
+    }
+  }
+
   /**
    * ROLE REDIRECT
    */
@@ -98,7 +119,7 @@ export default async function ({ redirect, route, store, app, req }) {
       ? redirect({ name: 'admin-agenda' })
       : redirect({ name: 'admin-dashboard' })
   } else if ((isUnauthenticatedRoute || isAdminRoute) && isUserRole) {
-    return redirect({ name: 'app-virtual-preschool' })
+    return redirect({ name: goToPage(user) })
   }
 
   /**
@@ -108,7 +129,7 @@ export default async function ({ redirect, route, store, app, req }) {
   const shouldRedirectToAccount =
     !parentSubscriptionWhitelistedRoutes[route.name] &&
     get(user, 'role.id') === 3 /* PARENT */ &&
-    (!user.subscription || user.subscription.status === 'canceled' || user.subscription.status === 'incomplete_expired')
+    (user?.subscription?.status === 'canceled' || user?.subscription?.status === 'incomplete_expired')
 
   if (shouldRedirectToAccount) {
     return redirect({ name: 'app-inactive-subscription' })

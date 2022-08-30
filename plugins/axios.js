@@ -1,6 +1,6 @@
 import { setAxios } from '@/utils'
 
-export default function ({ $axios, redirect, store, app }) {
+export default function ({ $axios, redirect, store, app, route }) {
   $axios.setBaseURL(process.env.apiBaseUrl)
 
   $axios.onRequest((config) => {
@@ -28,7 +28,7 @@ export default function ({ $axios, redirect, store, app }) {
         : error.response.data.message
     }
 
-    if (error.response.status === 401) {
+    if (error.response.status === 401 && route.name !== 'auth-login') {
       store.dispatch('auth/logout', { redirect })
     }
 

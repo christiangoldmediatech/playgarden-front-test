@@ -1,6 +1,4 @@
-import { NotificationState } from './types'
-
-export default (): NotificationState => ({
+export default () => ({
   expiringRibbonHeightDesktop: 54, // update if ribbon content is modified
   expiringRibbonHeightMobile: 101, // update if ribbon content is modified
   isTrialExpiringRibbonVisible: false,
@@ -11,6 +9,11 @@ export default (): NotificationState => ({
   isTrialEndingWeekFourModalVisible: false,
   isPlanUpgradeModalVisible: false,
   isTrialEndingPlanSelectedModalVisible: false,
+  isTrialEndingForLastDayModalVisible: false,
+  isCreditCardModalVisible: false,
+  isEmailConflictModalVisible: false,
+  isAccountInactiveModalVisible: false,
+  isCanceledTrialModalVisible: false,
   notificationCard: {
     isVisible: false,
     title: '',

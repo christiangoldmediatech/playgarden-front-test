@@ -141,9 +141,6 @@
             </validation-provider>
           </v-col>
         </v-row>
-        <div class="grey--text text--darken-2 text-center caption text-md-body-2 my-3 my-md-6">
-          *Limited to 1 introductory learning package per family, in the territorial US and Canada only.
-        </div>
         <v-btn
           block
           :color="saveButtonColor"
@@ -365,22 +362,6 @@ export default {
       try {
         this.disableAxiosGlobal()
         const draft = await this.getShippingAddress()
-
-        if (!draft && !this.editByDefault) {
-          this.$store.commit('notifications/SET_NOTIFICATION_CARD', {
-            title: 'WE WANT TO SEND YOU A WELCOME KIT!',
-            description: 'We require a shipping address in order to send the Welcome Kit with our first Workbook.',
-            action: () => {
-              this.isEditing = true
-              this.$scrollTo('#shipping-address-form', { offset: -100 })
-            },
-            image: require('@/assets/png/megaphone.png'),
-            actionText: 'To edit this information,' // ...click here
-          })
-
-          return
-        }
-
         this.draft = draft || { ...draftDefault }
       } catch (e) {
         this.$snotify.warning('Could not fetch shipping address', 'Error', {

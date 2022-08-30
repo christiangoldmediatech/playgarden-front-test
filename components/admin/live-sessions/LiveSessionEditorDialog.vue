@@ -197,6 +197,24 @@
 
             <validation-provider
               v-slot="{ errors }"
+              name="timezone"
+              rules="required"
+              class="mb-6"
+            >
+              <pg-select
+                v-model="selectedTimezone"
+                :error-messages="errors"
+                item-text="name"
+                item-value="value"
+                solo
+                placeholder="Timezone"
+                :items="timezoneOptions"
+                class="select"
+              />
+            </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors }"
               name="Description"
               rules="required"
             >
@@ -222,6 +240,7 @@
             </validation-provider>
 
             <validation-provider
+              v-if="!createLink"
               v-slot="{ errors }"
               name="Link"
               rules="required|url"
@@ -233,6 +252,16 @@
                 solo-labeled
               />
             </validation-provider>
+
+            <span>Automatically create link:</span>
+            <v-switch
+              v-model="createLink"
+              class="mx-1 my-1 pa-0"
+              dense
+              hide-details
+              inset
+              :label="createLink ? 'Enabled' : 'Disabled'"
+            />
 
             <validation-provider
               v-slot="{ errors }"
@@ -375,21 +404,21 @@
           <v-spacer />
 
           <v-btn
-            class="white--text"
             color="green"
+            :dark="!isDesktop"
+            :text="isDesktop"
             :disabled="invalid"
             :loading="loading"
-            :text="$vuetify.breakpoint.smAndUp"
             @click.stop="passes(save)"
           >
             Save
           </v-btn>
 
           <v-btn
-            class="white--text"
             color="orange"
+            :dark="!isDesktop"
+            :text="isDesktop"
             :disabled="loading"
-            :text="$vuetify.breakpoint.smAndUp"
             @click.stop="close"
           >
             Cancel
@@ -397,10 +426,10 @@
 
           <v-btn
             v-if="id"
-            class="white--text"
             color="red"
+            :dark="!isDesktop"
+            :text="isDesktop"
             :disabled="loading"
-            :text="$vuetify.breakpoint.smAndUp"
             @click="remove(item.title)"
           >
             Delete
@@ -413,8 +442,14 @@
 
 <script>
 import dayjs from 'dayjs'
-import { stringsToDate } from '@/utils/dateTools'
 import { mapActions, mapGetters } from 'vuex'
+import { timezoneOptions } from '@/utils/dateTools'
+
+const utc = require('dayjs/plugin/utc')
+const timezone = require('dayjs/plugin/timezone')
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
 function generateItemTemplate () {
   return {
     activityTypeId: null,
@@ -452,6 +487,8 @@ export default {
     timeEnd: null,
     menuDateStart: false,
     menuDateEnd: false,
+    selectedTimezone: 'America/New_York',
+    timezoneOptions,
     menuTimeStart: false,
     menuTimeEnd: false,
     dialog: false,
@@ -465,11 +502,14 @@ export default {
     player: null,
     file: null,
     image: null,
+    createLink: false,
     item: generateItemTemplate()
   }),
   computed: {
     ...mapGetters('admin/activity', ['types']),
     ...mapGetters('admin/curriculum', { curriculumTypes: 'types' }),
+    ...mapGetters('auth', ['getUserInfo']),
+
     dataStartFormatted () {
       return this.dateStart ? dayjs(this.dateStart).format('MM/DD/YYYY') : null
     },
@@ -479,6 +519,9 @@ export default {
     title () {
       const meetingType = (this.mode === 'LiveClass') ? 'Live Class' : 'Playdate'
       return this.id === null ? `New ${meetingType}` : `Edit ${meetingType}`
+    },
+    isDesktop() {
+      return this.$vuetify.breakpoint.smAndUp
     }
   },
 
@@ -487,11 +530,18 @@ export default {
       if (val === 'Playdate') {
         this.item.spots = (this.item.spots) ? this.item.spots : null
       }
+    },
+    createLink (val) {
+      if (val) {
+        this.item.link = null
+      }
     }
   },
   created () {
     this.getTypes({ extra: true })
     this.getCurriculumTypes()
+    const { timezone } = this.getUserInfo
+    this.selectedTimezone = timezone
   },
   methods: {
     ...mapActions('live-sessions', ['createLiveSession', 'updateLiveSession', 'deleteLiveSession']),
@@ -499,6 +549,9 @@ export default {
     ...mapActions('admin/curriculum', {
       getCurriculumTypes: 'getTypes'
     }),
+    ...mapActions('admin/users', ['setTimezone']),
+    ...mapActions('auth', ['fetchUserInfo']),
+
     onPlayerReady (player) {
       this.player = player
     },
@@ -541,6 +594,23 @@ export default {
           await this.close()
         }
       })
+    },
+    loadFormatTimezone (item) {
+      if (item.dateStart) {
+        this.dateStart = dayjs(item.dateStart).tz(this.selectedTimezone).format('YYYY-MM-DD')
+        this.timeStart = dayjs(item.dateStart).tz(this.selectedTimezone).format('HH:mm')
+
+        this.dateEnd = dayjs(item.dateEnd).tz(this.selectedTimezone).format('YYYY-MM-DD')
+        this.timeEnd = dayjs(item.dateEnd).tz(this.selectedTimezone).format('HH:mm')
+      }
+    },
+    async loadCurrentTimezone () {
+      await this.setTimezone({ timezone: this.selectedTimezone })
+      await this.fetchUserInfo()
+      const { timezone } = this.getUserInfo
+      if (timezone) {
+        this.selectedTimezone = timezone
+      }
     },
     close () {
       this.$nextTick(() => {
@@ -588,10 +658,11 @@ export default {
           this.item.file = filePath
         }
       }
-      const start = stringsToDate(this.dateStart, this.timeStart)
-      const end = stringsToDate(this.dateEnd, this.timeEnd)
-      this.item.dateStart = start
-      this.item.dateEnd = end
+
+      const timezoneStart = dayjs.tz(`${this.dateStart} ${this.timeStart}`, this.selectedTimezone).format()
+      this.item.dateStart = dayjs(timezoneStart).utc().format()
+      const timezoneEnd = dayjs.tz(`${this.dateEnd} ${this.timeEnd}`, this.selectedTimezone).format()
+      this.item.dateEnd = dayjs(timezoneEnd).utc().format()
       this.item.active = (this.item.active) ? 'true' : 'false'
       try {
         if (this.id === null) {
@@ -599,9 +670,10 @@ export default {
         } else {
           await this.updateLiveSession({ id: this.id, data: this.item })
         }
-        this.$emit('saved')
         this.$nuxt.$emit('update-calendar')
         this.close()
+        this.loadCurrentTimezone()
+        this.$emit('saved')
       } catch (err) {
       } finally {
         this.loading = false
@@ -621,16 +693,10 @@ export default {
         }
       })
 
-      if (item.dateStart) {
-        const dateStart = new Date(item.dateStart)
-        this.dateStart = `${dateStart.getFullYear()}-${(dateStart.getMonth() + 1).toString().padStart(2, '0')}-${dateStart.getDate().toString().padStart(2, '0')}`
-        this.timeStart = `${dateStart.getHours().toString().padStart(2, '0')}:${dateStart.getMinutes().toString().padStart(2, '0')}`
+      if (item.dateStart && item.dateEnd) {
+        this.loadFormatTimezone(item)
       }
-      if (item.dateEnd) {
-        const dateEnd = new Date(item.dateEnd)
-        this.dateEnd = `${dateEnd.getFullYear()}-${(dateEnd.getMonth() + 1).toString().padStart(2, '0')}-${dateEnd.getDate().toString().padStart(2, '0')}`
-        this.timeEnd = `${dateEnd.getHours().toString().padStart(2, '0')}:${dateEnd.getMinutes().toString().padStart(2, '0')}`
-      }
+
       if (item.activityType) {
         this.item.activityTypeId = item.activityType.id
       }

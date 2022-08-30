@@ -1,28 +1,13 @@
 <template>
-  <v-row>
-    <v-row no-gutters>
-      <v-btn
-        color="accent"
-        nuxt
-        text
-        @click="goBack"
-      >
-        <v-icon left>
-          mdi-less-than
-        </v-icon>
-
-        Back
-      </v-btn>
-    </v-row>
-    <v-col cols="12">
-      <step-two />
-    </v-col>
-  </v-row>
+  <div>
+    <StepTwo :mode="mode" />
+  </div>
 </template>
 
 <script>
 
 import StepTwo from '@/components/app/register/StepTwo'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Index',
@@ -32,13 +17,17 @@ export default {
   },
 
   data: vm => ({
-    currentStep: 2,
+    currentStep: 3,
     mode: vm.$route.params.mode
       ? vm.$route.params.mode
       : ''
   }),
 
   computed: {
+    ...mapGetters('auth', {
+      userInfo: 'getUserInfo'
+    }),
+
     getStep () {
       return this.currentStep
     }
@@ -53,6 +42,7 @@ export default {
         conversionLabel: 'SvccCMTX0voBEMTdsckD'
       })
     }
+    this.mode = (this.userInfo.registerStepType === 'CANCELED') ? 'activate-user' : this.mode
   },
 
   mounted () {

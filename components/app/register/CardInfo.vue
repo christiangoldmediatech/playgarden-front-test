@@ -1,143 +1,95 @@
 <template>
-  <div>
-    <div class="text-center text-button font-weight-bold mb-n4">
-      <img
-        src="@/assets/png/gift-icon.png"
-        class="mr-2"
-        width="18px"
-      >
+  <div
+    :class="[
+      'pg-flex',
+      'pg-flex-col',
+      'pg-py-6',
+      'pg-px-8',
+      'pg-text-center',
+      'pg-shadow-[0px_8px_24px_rgba(0,0,0,0.15)]',
+      'pg-rounded-lg',
+      'pg-bg-white',
+      'pg-max-w-[500px]',
+      'lg:pg-px-10',
+      'lg:pg-w-[500px]',
+      'lg:pg-h-[500px]'
+    ]"
+  >
+    <!-- TITLE -->
+    <div>
       <template>
-        <span class="free-trial-info">
-          YOUR 30 DAY FREE TRIAL
-        </span>
-        <br>
-        <span class="free-trial-info">
-          INCLUDES THE PREMIUM + PLAN
-        </span>
+        <UnderlinedTitle
+          text="Give your child an immersive educational experience at home!"
+          font-size="24px"
+          font-size-mobile="20px"
+        />
       </template>
     </div>
-    <v-card-text>
-      <div>
-        <center>
-          <v-row>
-            <span class="font-weight-bold ml-2 mt-2">That includes:</span>
-          </v-row>
-          <v-row>
-            <ul class="info-card">
-              <li
-                class="register-item text-left"
-              >
-                <small class="text-trial">
-                  A Daily Learning Schedule
-                </small>
-              </li>
-              <li
-                class="register-item text-left"
-              >
-                <small class="text-trial">
-                  Access to over 1,200 lessons
-                </small>
-              </li>
-              <li
-                class="register-item text-left"
-              >
-                <small class="text-trial">
-                  Live Classes with Playgarden Prep Teachers
-                </small>
-              </li>
-              <li
-                class="register-item text-left"
-              >
-                <small class="text-trial">
-                  Workbooks delivered to your home
-                </small>
-              </li>
-              <li
-                class="register-item text-left"
-              >
-                <small class="text-trial">
-                  Educational Playdates
-                </small>
-              </li>
-            </ul>
-          </v-row>
-          <v-row justify="center">
-            <center v-if="$vuetify.breakpoint.smAndUp">
-              <v-alert
-                class="mt-4 info-much-more"
-                color="red orange"
-                dark
-              >
-                <span class="mp-2 much-info">
-                  AND MUCH MORE!!
-                </span>
-              </v-alert>
-            </center>
-            <div v-else class="justify-center mx-4 mx-sm-0">
-              <v-alert
-                class="mt-8 info-much-more px-8"
-                color="red orange"
-                dark
-              >
-                <span class="mp-2 much-info">
-                  AND MUCH MORE!!
-                </span>
-              </v-alert>
-            </div>
-            <div class="mt-2">
-              <span
-                class="text-header-info"
-              >
-                * You can cancel your membership any <br class="d-block d-sm-none">time from the account settings.
-              </span>
-            </div>
-          </v-row>
-        </center>
-      </div>
-    </v-card-text>
+
+    <!-- CONTENT -->
+    <div class="pg-text-base lg:pg-text-xl pg-text-black pg-mt-4">
+      Start learning now; cancel any time!
+    </div>
+
+    <!-- IMAGE -->
+    <section class="position-circle mt-6">
+      <div class="circle ring-1" />
+      <div class="circle ring-2" />
+      <div class="circle core d-flex flex-column align-center justify-center" />
+    </section>
   </div>
 </template>
 
 <script>
+import { defineComponent } from '@nuxtjs/composition-api'
 
-export default {
+export default defineComponent({
   name: 'CardInfo'
-}
+})
 </script>
 
 <style lang="scss" scoped>
-ul.info-card {
-  list-style: none; /* Remove default bullets */
+$outerCircleSize: 250px;
+$circleSizeDifference: 20px;
+
+$ring2Size: calc(#{$outerCircleSize} - #{$circleSizeDifference});
+$coreSize: calc(#{$outerCircleSize} - 2 * #{$circleSizeDifference});
+
+.position-circle {
+  position: relative;
 }
-ul.info-card li::before {
-  content: "●";
-  font-size: 24px !important;
-  color: var(--v-accent-base); /* Change the color */
-  font-weight: bold; /* If you want it to be bold */
-  display: inline-block; /* Needed to add space between the bullet and the text */
-  width: 0.7em; /* Also needed for space (tweak if needed) */
-  margin-left: -1rem; /* Also needed for space (tweak if needed) */
-  margin-top: 10px;
+
+.img-icon {
+  max-height: 210px;
+  max-width:  210px;
 }
-.free-trial-info {
-  font-size: 18px;
-  color: #606060;
-}
-.text-trial {
-  margin-top: 14px;
-  font-size: 14px !important;
+
+.circle {
+  width: $outerCircleSize;
+  height: $outerCircleSize;
+  border-radius: 50%;
   position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
 }
-.much-info {
-  color: var(--v-accent-base);
-  font-size: 17px !important;;
-  font-weight: bold !important;;
+
+.ring-1 {
+  background-color: var(--v-primary-base);
 }
-.text-header-info {
-  font-size: 14px !important;
+
+.ring-2 {
+  top: calc(#{$circleSizeDifference} / 2);
+  width: $ring2Size;
+  height: $ring2Size;
+  background-color: var(--v-secondary-base);
 }
-.info-much-more {
-  background-color: rgba(248, 152, 56, 0.3) !important;
-  min-height: 32px !important;
+
+.core {
+  top: $circleSizeDifference;
+  background:url(@/assets/png/login-card-child.png);
+  width: $coreSize;
+  height: $coreSize;
+  background-color: white;
 }
 </style>

@@ -1,4 +1,5 @@
 import { snotifyError } from '@/utils/vuex'
+import { getTimezone } from '@/utils/dateTools'
 
 export default {
   createLiveSession (_, data) {
@@ -19,7 +20,7 @@ export default {
     })
   },
 
-  getLiveSessions ({ commit }, params) {
+  getLiveSessions({ commit }, params) {
     return new Promise((resolve, reject) =>
       this.$axios
         .$get('/live-sessions', { params })
@@ -42,25 +43,30 @@ export default {
     return this.$axios.$patch(`/live-sessions/${id}/recover`)
   },
 
-  async getUserLiveSessions ({ commit }, { monday, friday, admin }) {
+  async getUserLiveSessions ({ commit, rootGetters }, { sunday, saturday, admin }) {
     try {
       let data
       const params = {
         limit: 100,
         page: 1,
         type: 'LiveClass',
-        startDate: monday,
-        endDate: friday
+        startDate: sunday,
+        endDate: saturday
       }
 
       if (!admin) {
         params.active = true
       }
-      const { total, meetings } = data = await this.$axios.$get('/live-sessions', {
+      const { total, meetings, block } = data = await this.$axios.$get('/live-sessions', {
         params
       })
+      const userInfo = rootGetters['auth/getUserInfo']
+      const timezone = (userInfo.timezone) ? userInfo.timezone : 'America/New_York'
+      const currentTimezone = getTimezone(timezone)
       commit('SET_SESSIONS', meetings)
+      commit('SET_TIMEZONE', currentTimezone)
       commit('SET_TOTAL', total)
+      commit('SET_BLOCK', block)
       return data
     } catch (error) {
       return Promise.reject(error)

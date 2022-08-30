@@ -1,5 +1,11 @@
 <template>
-  <v-overlay v-model="dialog" class="entry-overlay" :dark="false" light z-index="2000">
+  <v-overlay
+    v-model="dialog"
+    class="entry-overlay"
+    :dark="false"
+    light
+    z-index="2000"
+  >
     <div class="entry-container">
       <v-card class="entry-card">
         <template v-if="entry">
@@ -149,7 +155,7 @@ export default {
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
 
-    isCooking () {
+    isCooking() {
       let isCooking = false
 
       if (this.entry) {
@@ -162,7 +168,10 @@ export default {
         // check activity type
         if (this.entry.activityType && this.entry.activityType.name) {
           const activityName = this.entry.activityType.name.toLowerCase()
-          if (activityName.includes('cooking') || activityName.includes('nutrition')) {
+          if (
+            activityName.includes('cooking') ||
+            activityName.includes('nutrition')
+          ) {
             isCooking = true
           }
         }
@@ -171,29 +180,32 @@ export default {
       return isCooking
     },
 
-    downloadTarget () {
+    downloadTarget() {
+      if (this.isCooking) {
+        return '_blank'
+      }
       return this.entry.downloadNewTab ? '_blank' : '_self'
     },
 
-    isLive () {
+    isLive() {
       const today = new Date()
       const start = new Date(this.entry.dateStart)
       const end = new Date(this.entry.dateEnd)
 
       return (
-        today.getTime() >= (start.getTime() - (30 * 60 * 1000)) &&
-        today.getTime() <= (end.getTime() + (30 * 60 * 1000))
+        today.getTime() >= start.getTime() - 30 * 60 * 1000 &&
+        today.getTime() <= end.getTime() + 30 * 60 * 1000
       )
     },
 
-    past () {
+    past() {
       const today = new Date()
       const end = new Date(this.entry.dateEnd)
 
-      return today.getTime() >= end.getTime() + (30 * 60 * 1000)
+      return today.getTime() >= end.getTime() + 30 * 60 * 1000
     },
 
-    isRecorded () {
+    isRecorded() {
       return (
         this.entry.videos &&
         this.entry.videos.videoUrl &&
@@ -201,14 +213,14 @@ export default {
       )
     },
 
-    ages () {
+    ages() {
       if (this.entry && !isNaN(this.entry.ages)) {
         return `2${this.entry.ages > 2 ? ' - ' + this.entry.ages : ''}`
       }
       return 'All ages'
     },
 
-    date () {
+    date() {
       if (this.entry) {
         const date = new Date(this.entry.dateStart)
         const endDate = new Date(this.entry.dateEnd)
@@ -230,7 +242,7 @@ export default {
   },
 
   watch: {
-    dialog (val) {
+    dialog(val) {
       if (val) {
         document.querySelector('html').style.overflowY = 'hidden'
       } else {
@@ -239,7 +251,7 @@ export default {
     }
   },
 
-  created () {
+  created() {
     this.$nuxt.$on('open-entry-dialog', (entry) => {
       this.entry = entry
       this.dialog = true
@@ -249,7 +261,7 @@ export default {
   methods: {
     ...mapActions('live-sessions', ['saveAttendance']),
 
-    doSaveAttendance () {
+    doSaveAttendance() {
       this.saveAttendance(this.entry.id)
       this.$gtm.push({
         event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_ZOOM_LINK_CLICKED,
@@ -260,22 +272,37 @@ export default {
       })
     },
 
-    openVideo () {
-      this.$nuxt.$emit('open-recorded-class-player', {
-        playlist: [
-          {
-            title: this.entry.title,
-            videoId: this.entry.id,
-            src: [
-              {
-                src: this.entry.videos.videoUrl.HLS,
-                type: 'application/x-mpegURL'
-              }
-            ]
+    openVideo() {
+      let title = this.entry.title
+      let author
+      if (
+        this.entry.activityType &&
+        this.entry.activityType.name &&
+        this.entry.teacher
+      ) {
+        title = this.entry.activityType.name
+        author = `with ${this.entry.teacher}`
+      }
+      let videoIcon
+      if (this.entry.activityType && this.entry.activityType.icon) {
+        videoIcon = this.entry.activityType.icon
+      }
+
+      this.$nuxt.$emit('open-recorded-class-player', [
+        {
+          title,
+          src: {
+            url: this.entry.videos.videoUrl.HLS,
+            type: 'application/x-mpegURL'
+          },
+          meta: {
+            videoId: this.entry.videos.id,
+            author,
+            videoIcon,
+            videoType: 'RECORDED CLASS:'
           }
-        ],
-        index: 0
-      })
+        }
+      ])
       this.$gtm.push({
         event: TAG_MANAGER_EVENTS.LIVE_CLASSES_WATCH_RECORDED_VIDEO,
         userId: this.getUserInfo.id,
@@ -318,7 +345,7 @@ export default {
       background-color: white;
       box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
       border-radius: 50%;
-      border: solid 10px #68C453;
+      border: solid 10px #68c453;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -331,7 +358,7 @@ export default {
         left: auto;
         z-index: auto;
         margin: 12px;
-        border: solid 5px #68C453;
+        border: solid 5px #68c453;
       }
       &-img {
         width: 90px;

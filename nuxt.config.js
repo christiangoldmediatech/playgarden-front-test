@@ -7,9 +7,16 @@ const baseRouteProd = '/school/'
 export default {
   /*
    ** Nuxt rendering mode
-   ** See https://nuxtjs.org/api/configuration-mode
+   ** See https://nuxtjs.org/docs/configuration-glossary/configuration-target#the-target-property
    */
-  mode: 'universal',
+  ssr: false,
+
+  /*
+   ** Nuxt target
+   ** See https://nuxtjs.org/api/configuration-target
+   */
+  target: 'server',
+
   paralell: true,
   cache: true,
   server: {
@@ -25,11 +32,6 @@ export default {
     '~/middleware/serverAuthByCookie',
     { path: '/healthcheck', handler: '~/middleware/healthCheck.js' }
   ],
-  /*
-   ** Nuxt target
-   ** See https://nuxtjs.org/api/configuration-target
-   */
-  target: 'server',
   /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
@@ -59,6 +61,12 @@ export default {
         type: 'text/css',
         href:
           'https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;700;900&display=swap'
+      },
+      {
+        rel: 'stylesheet',
+        type: 'text/css',
+        href:
+          'https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap'
       },
       {
         rel: 'stylesheet',
@@ -98,7 +106,8 @@ export default {
     },
     './assets/scss/pg-components/index.scss',
     './assets/scss/app.scss',
-    './assets/scss/pg-icons.scss'
+    './assets/scss/pg-icons.scss',
+    './assets/css/main.css'
   ],
   /*
    ** Plugins to load before mounting the App
@@ -135,6 +144,8 @@ export default {
    ** Nuxt.js dev-modules
    */
   buildModules: [
+    'nuxt-typed-vuex',
+    '@nuxt/postcss8',
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxt/typescript-build',
@@ -265,6 +276,12 @@ export default {
     },
     babel: {
       plugins: [['@babel/plugin-proposal-private-methods', { loose: true }]]
+    },
+    postcss: {
+      plugins: {
+        tailwindcss: {},
+        autoprefixer: {}
+      }
     }
   },
   env: {
@@ -280,7 +297,8 @@ export default {
     dropBoxApiKey: process.env.DROPBOX_API_KEY || '',
     baseRouteProd,
     googlePlacesAPI: process.env.GOOGLE_PLACES_API_KEY || 'AIzaSyDh0lrueon0BEux1pIuT40ivuEI92qJr3o',
-    kidsCornerUrl: process.env.KIDS_CORNER_URL || 'http://localhost:8081'
+    kidsCornerUrl: process.env.KIDS_CORNER_URL || 'http://localhost:8081',
+    playgardenAdminUrl: process.env.PLAYGARDEN_ADMMIN_URL || 'http://localhost:8081'
   },
   router: {
     base: process.env.TEST_ENV === 'production' ? baseRouteProd : '/',

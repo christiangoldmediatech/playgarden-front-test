@@ -1,46 +1,59 @@
 <template>
-  <div :style="`height: ${height}`">
-    <v-img
-      :src="section.imageUrl"
-      gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
-      cover
-      tile
-      height="100%"
-      position="top center"
-      @click="$emit('click', section)"
-    >
-      <div class="section-content">
-        <!-- Start Playing Button -->
-        <img
-          :data-test-id="`vp-section-${section.title}`"
-          :style="`top: ${startPlayingTop}`"
-          class="section-start-playing"
-          src="@/assets/png/virtual-preschool/Start Playing.png"
+  <v-hover v-slot="{ hover }">
+    <div class="pg-h-auto pg-relative">
+      <v-img
+        :src="section.imageUrl"
+        gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
+        class="pg-rounded-md"
+        cover
+        tile
+        height="100%"
+        position="top center"
+        @click="$emit('click', section)"
+      >
+        <!-- Section Button -->
+        <div
+          :class="{
+            'section-top': !$vuetify.breakpoint.smAndDown,
+            translucent: hover,
+            'section-btn': $vuetify.breakpoint.smAndDown
+          }"
         >
-
-        <!-- Lady -->
-        <img class="section-lady" :src="section.teacherUrl">
-
-        <!-- Bubble -->
-        <div class="section-bubble" />
-
-        <!-- Bubble Text -->
-        <div class="section-bubble-text">
-          {{ section.message }}
-          <v-btn icon class="my-n4 mx-n2">
-            <v-icon class="white--text" size="22" @click.stop="$emit('click:play', section)">
-              mdi-volume-high
-            </v-icon>
-          </v-btn>
+          <div>{{ section.title }}</div>
         </div>
-      </div>
 
-      <!-- Section Button -->
-      <div class="section-btn">
-        <div>{{ section.title }}</div>
-      </div>
-    </v-img>
-  </div>
+        <div class="section-content">
+          <!-- Start Playing Button -->
+          <img
+            :data-test-id="`vp-section-${section.title}`"
+            :style="small ? `top: 75%; height: 60%;` : `top: 50%; height: 35%;`"
+            class="section-start-playing"
+            src="@/assets/png/virtual-preschool/Start Playing.png"
+          >
+
+          <!-- Lady -->
+          <img class="section-lady" :src="section.teacherUrl">
+
+          <!-- Bubble -->
+          <div class="section-bubble" />
+
+          <!-- Bubble Text -->
+          <div class="section-bubble-text">
+            {{ section.message }}
+            <v-btn icon class="my-n4 mx-n2">
+              <v-icon
+                class="white--text"
+                size="22"
+                @click.stop="$emit('click:play', section)"
+              >
+                mdi-volume-high
+              </v-icon>
+            </v-btn>
+          </div>
+        </div>
+      </v-img>
+    </div>
+  </v-hover>
 </template>
 
 <script lang="ts">
@@ -62,19 +75,13 @@ export default defineComponent({
       type: Object as PropType<Section>,
       default: () => ({})
     },
-
-    height: {
-      type: String,
-      default: '50%'
-    },
-
-    startPlayingTop: {
-      type: String,
-      default: '50%'
+    small: {
+      type: Boolean,
+      default: false
     }
   },
 
-  setup () {
+  setup() {
     return {}
   }
 })
@@ -136,7 +143,6 @@ export default defineComponent({
 
   &-start-playing {
     cursor: pointer;
-    height: 35%;
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -147,8 +153,7 @@ export default defineComponent({
     bottom: 10px;
     left: 10px;
 
-    background: rgba(178, 230, 141, 0.2);
-    border: 4px solid #B2E68D;
+    background: rgb(104, 196, 83);
     box-sizing: border-box;
     border-radius: 8px;
     cursor: pointer;
@@ -156,15 +161,34 @@ export default defineComponent({
     & div {
       color: white;
       font-size: 18px;
-      font-weight: bold;
+      font-weight: 500;
       text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-      padding-top: 4px;
-      padding-bottom: 4px;
-      padding-left: 12px;
-      padding-right: 12px;
+      padding: 8px 12px;
     }
   }
+
+  &-top {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+
+    background: rgb(104, 196, 83);
+    box-sizing: border-box;
+    border-radius: 8px;
+    cursor: pointer;
+
+    & div {
+      color: white;
+      font-size: 18px;
+      font-weight: 500;
+      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      padding: 8px 12px;
+    }
+  }
+}
+
+.translucent {
+  opacity: 0.25;
 }
 
 @media (min-width: $breakpoint-md) {

@@ -1,62 +1,72 @@
 <template>
   <v-app-bar
     app
-    class="pg-app-bar"
-    color="white"
-    elevation="1"
+    class="pb-4 pg-app-bar paper-bg"
+    :class="{
+      'pg-app-bar-height': !isUserLoggedIn && $vuetify.breakpoint.mdAndUp,
+      'pg-app-bar-mobile-height':
+        !isUserLoggedIn && !$vuetify.breakpoint.mdAndUp,
+      'd-none mt-n16': scrollDown
+    }"
+    color="transparent"
+    flat
+    prominent
   >
     <v-row
-      class="flex-nowrap"
+      class="flex-nowrap pb-10"
       align="center"
       justify="space-between"
       no-gutters
     >
-      <!-- HAMBURGER MENU -->
+      <!-- Logo -->
       <v-col class="d-flex align-center" cols="auto">
-        <v-app-bar-nav-icon
-          class="primary pg-app-bar-nav-icon hidden-md-and-up"
-          :class="{ isMd: $vuetify.breakpoint.md }"
-          color="white"
-          tile
-          large
-          @click.stop="toggleDrawer"
-        />
-
-        <v-toolbar-title class="mx-3">
-          <!-- <nuxt-link
-            :to="{
-              name: 'app-virtual-preschool',
-            }"
-          > -->
+        <v-toolbar-title class="mx-3 mt-1">
           <v-img
+            class="mx-4 cursor-link"
             alt="Playarden Prep Online Logo"
-            contain
-            max-height="50"
-            :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
-            :src="require('@/assets/svg/logo.svg')"
+            :max-width="$vuetify.breakpoint.mdAndUp ? 100 : 70"
+            :src="require('@/assets/png/rainbow-logo.png')"
+            @click="handleLogoClick"
           />
-          <!-- </nuxt-link> -->
         </v-toolbar-title>
       </v-col>
 
-      <v-col class="d-flex align-center pr-3" cols="auto">
+      <v-col class="pr-3 d-flex align-center" cols="auto">
         <!-- ITEMS -->
-        <div v-if="getVerifyEmail" class="hidden-sm-and-down">
+        <div v-if="getVerifyEmail" class="mt-5 hidden-sm-and-down">
           <v-toolbar-items>
-            <v-btn
-              v-for="(item, index) in items"
-              :key="`${_uid}-${index}`"
-              class="text-none link-text px-2 px-lg-4"
-              active-class="custom-active"
-              text
-              :ripple="true"
-              :exact="item.exact"
-              nuxt
-              :data-test-id="item.to.name"
-              :to="item.to"
-              v-text="item.title"
-            />
+            <template v-for="(item, index) in items">
+              <!-- EXTERNAL LINK -->
+              <v-btn
+                v-if="item.external && !item.hidden"
+                :key="`${_uid}-${index}`"
+                class="px-2 text-none link-text px-lg-4"
+                active-class="custom-active"
+                text
+                @click="openLink(item.link)"
+              >
+                {{ item.title }}
+              </v-btn>
+
+              <!-- INTERNAL LINK -->
+              <v-btn
+                v-else-if="!item.hidden"
+                :key="`${_uid}-${index}`"
+                class="px-2 text-none link-text px-lg-4"
+                active-class="custom-active"
+                text
+                :ripple="true"
+                :exact="item.exact"
+                nuxt
+                :data-test-id="item.to.name"
+                :to="item.to"
+                v-text="item.title"
+              />
+            </template>
           </v-toolbar-items>
+        </div>
+        <div v-if="!isUserLoggedIn" class="hidden-sm-and-down">
+          <menu-landing-page class="mt-7" />
         </div>
         <!--divider icon profile and help-->
         <v-divider
@@ -69,27 +79,15 @@
 
         <!-- AUTH BUTTONS -->
         <div class="pg-app-bar-buttons auth-buttons">
-          <v-btn
-            v-if="!isUserLoggedIn"
-            class="px-13 ml-3 btn-register"
-            color="accent"
-            nuxt
-            text
-            data-test-id="register-button"
-            :to="{ name: 'auth-parent' }"
-          >
-            REGISTER
-          </v-btn>
-
           <v-img
             v-if="isUserLoggedIn && !isUserInSignupProcess && getVerifyEmail"
-            class="clickable account-btn mx-2"
+            class="mx-2 clickable account-btn"
             :src="require('@/assets/svg/account-profile.svg')"
             @click="goToAccount"
           />
           <v-btn
             v-if="previewMode"
-            class="px-13 ml-3"
+            class="ml-3 px-13"
             color="accent"
             nuxt
             :to="{ name: 'admin-curriculum-management' }"
@@ -99,22 +97,12 @@
 
           <v-btn
             v-else-if="isUserLoggedIn && isUserInSignupProcess"
-            class="px-13 ml-3"
+            class="ml-3 px-13"
             color="accent"
             nuxt
             :to="{ name: 'auth-logout' }"
           >
             LOG OUT
-          </v-btn>
-
-          <v-btn
-            v-else-if="!isUserLoggedIn"
-            class="px-13 ml-3"
-            color="accent"
-            nuxt
-            :to="{ name: 'auth-login' }"
-          >
-            LOGIN
           </v-btn>
         </div>
 
@@ -123,7 +111,7 @@
           <v-menu open-on-hover offset-y>
             <template v-slot:activator="{ on }">
               <v-img
-                class="clickable account-btn mx-2 pg-app-bar-buttons hidden-sm-and-down auth-buttons"
+                class="mx-2 clickable account-btn pg-app-bar-buttons hidden-sm-and-down auth-buttons"
                 :src="require('@/assets/png/Help.png')"
                 v-on="on"
               />
@@ -131,7 +119,9 @@
 
             <v-card>
               <v-list dense>
-                <v-list-item>
+                <!-- Hidden by ticket: https://app.shortcut.com/gold-media-tech/story/4106/hide-video-tutorial-option -->
+
+                <!-- <v-list-item>
                   <v-btn
                     class="btn-register text--disabled"
                     :ripple="false"
@@ -153,7 +143,8 @@
 
                 <div class="px-2 py-3">
                   <v-divider />
-                </div>
+                </div> -->
+
                 <v-list-item>
                   <v-btn
                     class="btn-register text--disabled"
@@ -176,12 +167,27 @@
         </div>
         <!-- Profile/help/Tutorial Menu end-->
 
+        <!-- HAMBURGER MENU -->
+        <v-app-bar-nav-icon
+          class="pg-app-bar-nav-icon hidden-md-and-up"
+          :class="{ 'is-md': $vuetify.breakpoint.md }"
+          color="primary"
+          tile
+          x-large
+          data-test-id="hamburger-menu"
+          @click.stop="toggleDrawer"
+        />
+
         <!-- MOBILE ICONS -->
-        <div v-if="getVerifyEmail" class="hidden-xs-only pg-app-bar-buttons mobile-icons">
+        <div
+          v-if="getVerifyEmail"
+          class="hidden-xs-only pg-app-bar-buttons mobile-icons"
+        >
           <img
             v-if="isUserLoggedIn && !isUserInSignupProcess"
             class="clickable account-btn"
             src="@/assets/svg/account.svg"
+            data-test-id="account-button"
             @click="goToAccount"
           >
 
@@ -200,23 +206,6 @@
               mdi-login
             </v-icon>
           </v-btn>
-
-          <!-- <v-btn
-            :color="isUserLoggedIn ? 'primary' : 'accent'"
-            active-class="transparent--text"
-            icon
-            nuxt
-            small
-            :to="{ name: isUserLoggedIn ? 'auth-logout' : 'auth-login' }"
-          >
-            <v-icon v-if="isUserLoggedIn" color="accent">
-              mdi-logout
-            </v-icon>
-
-            <v-icon v-else color="primary">
-              mdi-login
-            </v-icon>
-          </v-btn> -->
         </div>
       </v-col>
     </v-row>
@@ -224,10 +213,16 @@
 </template>
 
 <script>
+import unauthenticatedRoutes from '@/utils/consts/unauthenticatedRoutes.json'
+import MenuLandingPage from '@/components/app/header/MenuLandingPage.vue'
 import computedMixin from './computed'
 
 export default {
   name: 'ApplicationHeader',
+
+  components: {
+    MenuLandingPage
+  },
 
   mixins: [computedMixin],
 
@@ -239,13 +234,60 @@ export default {
     }
   },
 
+  data() {
+    return {
+      scrollDown: false,
+      currentScroll: 0
+    }
+  },
+
+  created() {
+    // eslint-disable-next-line nuxt/no-globals-in-created
+    window.addEventListener('scroll', this.toggleHeader)
+  },
+
+  destroyed() {
+    window.removeEventListener('scroll', this.toggleHeader)
+  },
+
   methods: {
-    toggleDrawer () {
+    toggleDrawer() {
       this.$nuxt.$emit('toggle-nav-drawer')
     },
 
-    goToAccount () {
+    goToAccount() {
       this.$router.push({ name: 'app-account-index' })
+    },
+
+    handleLogoClick() {
+      if (
+        unauthenticatedRoutes[this.$route.name] ||
+        this.isUserInSignupProcess
+      ) {
+        window.open(process.env.frontendUrl, '_self')
+        return
+      }
+
+      this.$router.push({ name: 'app-virtual-preschool' })
+    },
+
+    openLink(link) {
+      window.open(link, '_self')
+    },
+
+    toggleHeader(e) {
+      if (this.$vuetify.breakpoint.mdAndDown) {
+        const scroll = window.scrollY
+        if (scroll > this.currentScroll) {
+          this.scrollDown = true
+          this.currentScroll = scroll
+        } else if (scroll < this.currentScroll) {
+          this.scrollDown = false
+          this.currentScroll = scroll
+        }
+      } else {
+        this.scrollDown = false
+      }
     }
   }
 }
@@ -264,7 +306,7 @@ export default {
 .pg-app-bar-nav-icon {
   height: 56px !important;
   width: 56px !important;
-  &.isMd {
+  &.is-md {
     height: 64px !important;
     width: 64px !important;
   }
@@ -289,6 +331,10 @@ export default {
   }
 }
 
+.cursor-link {
+  cursor: pointer !important;
+}
+
 .account-btn {
   vertical-align: middle;
   width: 24px;
@@ -301,21 +347,6 @@ export default {
   }
 }
 
-// .pg-app-bar-col {
-//   max-width: 1200px;
-
-//   &.full-width {
-//     max-width: 1600px;
-//     padding-left: 24px;
-//     padding-right: 24px;
-
-//     &.mobile {
-//       padding-left: 0px;
-//       padding-right: 0px;
-//     }
-//   }
-// }
-
 .v-btn--active.custom-active {
   &::before {
     opacity: 0 !important;
@@ -325,7 +356,7 @@ export default {
     position: absolute;
     bottom: 0;
     left: 20%;
-    content: "";
+    content: '';
     z-index: -1;
     border-bottom: 2px solid var(--v-primary-base);
     border-radius: 7px;
@@ -346,9 +377,31 @@ export default {
 }
 
 .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
+  height: 170px !important;
+}
+
+@media screen and (max-width: 959px) {
+  .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
+    height: 120px !important;
+  }
+}
+
+.pg-app-bar-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
+  height: 212px !important;
 }
 .btn-register:before {
   background-color: transparent !important;
+}
+
+.paper-bg {
+  background-image: url('~@/assets/png/paper-header.png');
+  background-size: cover;
+  background-position: center bottom;
+
+  @media screen and (max-width: 768px) {
+    background-image: url('~@/assets/png/paper-header-mobile.png');
+    background-size: cover;
+    background-position: center bottom;
+  }
 }
 </style>

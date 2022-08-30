@@ -1,128 +1,108 @@
 <template>
-  <v-row>
-    <v-card-title primary-title>
-      <h4 v-if="$vuetify.breakpoint.smAndUp">
-        Our family loves Playgarden Prep Online!
-      </h4>
-      <v-btn
-        v-else
-        block
-        text
-      >
-        <p :class="($vuetify.breakpoint.smAndUp) ? 'text-center free-trial-info' : 'text-center free-trial-info-mobile'">
-          <span>Our family loves </span> Playgarden <br>
-          <span>Prep Online!</span>
-        </p>
-      </v-btn>
-    </v-card-title>
-    <v-card-text>
-      <div class="text-mdi-monitor">
-        <center class="text-pay-information">
-          “We have seen Liam learn a lot through the platform <br>
-          and appreciate your team creating it during this time. <br>
-          Features we love:
-
-          <div class="pb-10">
-            <v-row>
-              <ul class="info-card">
-                <li
-                  class="register-item text-left"
-                >
-                  <small class="text-trial">
-                    Workbook exercises
-                  </small>
-                </li>
-                <li
-                  class="register-item text-left"
-                >
-                  <small class="text-trial">
-                    Library (Liam has many favorites)
-                  </small>
-                </li>
-                <li
-                  class="register-item text-left"
-                >
-                  <small class="text-trial">
-                    Liam looks forward to cooking and reading with Miss Lucy so much”
-                  </small>
-                </li>
-              </ul>
-            </v-row>
-          </div>
-          <span
-            class="info-mother
-            mt-8"
-          >
-            - Mother of 3 year old Liam
-          </span>
-        </center>
+  <div>
+    <div
+      :class="[
+        'pg-relative',
+        'pg-transition-shadow',
+        'pg-flex',
+        'pg-flex-col',
+        'pg-py-6',
+        'pg-px-8',
+        'pg-text-center',
+        'pg-rounded-lg',
+        'pg-bg-white',
+        'pg-max-w-[500px]',
+        'lg:pg-px-10',
+        'lg:pg-w-[500px]',
+        {
+          'pg-shadow-[0px_8px_24px_rgba(0,0,0,0.15)]': isOpen,
+        }
+      ]"
+    >
+      <!-- ARROW -->
+      <div class="pg-absolute pg-right-4 pg-top-4">
+        <v-btn icon @click="$emit('input', !value)">
+          <v-icon size="42">
+            {{ isOpen ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
+          </v-icon>
+        </v-btn>
       </div>
-    </v-card-text>
-  </v-row>
+
+      <!-- TITLE -->
+      <div class="pg-text-center">
+        <UnderlinedTitle
+          font-size="26px"
+          font-size-mobile="20px"
+          text="Our family loves Playgarden Prep Online!"
+        />
+      </div>
+
+      <div
+        :class="[
+          'pg-transition-[max-height]',
+          'pg-overflow-hidden',
+          'pg-duration-500',
+          {
+            'pg-max-h-screen': isOpen,
+            'pg-max-h-0': isClose,
+          }
+        ]"
+        class="pg-text-center"
+      >
+        <p class="pg-text-center pg-mt-5">
+          Still not sure? Call us, text us, email us, We'll be happy to explain
+          our program in more detail
+        </p>
+
+        <img
+          src="@/assets/png/Miss Sarah.png"
+          alt="Miss Sarah"
+          class="pg-block pg-mx-auto pg-w-[150px] pg-mt-5 pg-rounded-[50%]"
+        >
+
+        <div class="pg-text-center pg-mt-5">
+          <span>
+            Miss Sarah
+          </span>
+          <br>
+          <a class="blue--text" href="tel:646-504-4716">646-504-4716 </a>
+          <br>
+          <a
+            class="black--text"
+            href="mailto:hello@playgardenprep.com"
+          >hello@playgardenprep.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
-<script>
+<script lang="ts">
+import { computed, defineComponent } from '@nuxtjs/composition-api'
 
-export default {
+export default defineComponent({
   name: 'CardPlaygarden',
 
-  data: vm => ({})
-}
+  props: {
+    value: {
+      type: Boolean,
+      default: true
+    },
+
+    isUserInactive: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  setup(props) {
+    const isOpen = computed(() => props.value)
+    const isClose = computed(() => !props.value)
+
+    return {
+      isOpen,
+      isClose
+    }
+  }
+})
 </script>
-
-<style lang="scss" scoped>
-ul.info-card {
-  list-style: none; /* Remove default bullets */
-}
-ul.info-card li::before {
-  content: "●";
-  font-size: 24px !important;
-  color: var(--v-accent-base); /* Change the color */
-  font-weight: bold; /* If you want it to be bold */
-  display: inline-block; /* Needed to add space between the bullet and the text */
-  width: 0.7em; /* Also needed for space (tweak if needed) */
-  margin-left: -1rem; /* Also needed for space (tweak if needed) */
-  margin-top: 10px;
-}
-.free-trial-info {
-  font-size: 18px;
-}
-.free-trial-info-mobile {
-  font-size: 16px;
-}
-.text-trial {
-  margin-top: 14px;
-  font-size: 14px !important;
-  position: absolute;
-}
-.much-info {
-  color: var(--v-accent-base);
-}
-.text-header-info {
-  font-size: 14px !important;
-}
-
-.free-trial {
-  font-size: 22px !important;
-}
-.free-trial-mobile {
-  font-size: 18px !important;
-}
-
-.info-mother {
-  color: #A6A6A6 !important;
-}
-
-.info-much-more {
-  background-color: rgba(248, 152, 56, 0.3) !important;
-}
-
-.text-pay-information {
-  font-size: 14px;
-  font-style: italic;
-}
-
-.text-pay-get {
-  font-size: 14px;
-}
-</style>

@@ -1,167 +1,158 @@
 <template>
-  <video-player-dialog
-    :id="dialogContainerId"
-    ref="videoPlayerDialog"
-    v-model="dialog"
-    @close="handleClose"
-  >
-    <pg-video-js-player
-      ref="videoPlayer"
-      autoplay
-      show-next-up
-      show-restart
-      show-steps
-      :show-favorite="lesson && !lesson.previewMode"
-      show-cast
-      show-video-skip
-      use-standard-poster
-      next-puzzle
-      :next-unlock-image="puzzlePiece ? puzzlePiece.puzzle.image : null"
-      :next-unlock-number="remaining"
-      :no-seek="noSeek"
-      :fullscreen-override="handleFullscreen"
-      no-auto-track-change
-      :on-next-up-click="player ? player.skipVideo : undefined"
-      @ready="onReady"
-      @playlist-index-change="updateIndex"
-    />
-    <lesson-activities-finished-dialog v-model="showFinished" @next-finished="handleAdvanceClose" />
-  </video-player-dialog>
+  <div class="pg-player-wrapper">
+    <PgVideoPlayer
+      id="lessonActivityPlayer"
+      :control-config="{
+        favorite: shouldShowFavorite,
+        unlock: (toUnlock && puzzlePieceImg !== null)
+      }"
+      :next-unlock-image="puzzlePieceImg"
+      :unlock-number="toUnlock"
+      unlock-text="PUZZLE PIECE"
+      force-default-poster
+      v-bind="{
+        isFavoritesLoading
+      }"
+      @ready="onPlayerReady"
+      @on-favorites-clicked="onFavoritesClicked"
+      v-on="callbacks"
+    >
+      <template v-if="puzzlePieceImg" #unlock-image>
+        <img class="puzzle-piece-img" :src="puzzlePieceImg" @click="onPuzzlePieceClick">
+      </template>
+      <LessonActivitiesFinishedDialog
+        v-model="isLessonActivitiesFinished"
+        attach="#lessonActivityPlayer"
+        @next-finished="onNextLesson"
+      />
+      <PuzzleClipPath />
+    </PgVideoPlayer>
+  </div>
 </template>
 
-<script>
-import { mapGetters, mapState } from 'vuex'
-import VideoAnalyticsMixin from '@/mixins/VideoAnalyticsMixin.js'
-import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
-import DashboardMixin from '@/mixins/DashboardMixin'
-import SaveActivityProgress from '@/mixins/SaveActivityProgressMixin.js'
-import Fullscreen from '@/mixins/FullscreenMixin.js'
-import { jsonCopy } from '@/utils/objectTools'
+<script lang="ts">
+import { computed, defineComponent, onBeforeMount, onBeforeUnmount, ref, useRoute, useRouter, useStore, watch } from '@nuxtjs/composition-api'
+
+// @ts-ignore
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
+import { useFavorites, useFavoritesApi, useGtmHelper, useIsLessonActivitiesFinished, useLessonActivitiesPlayerCallbacks, useNuxtHelper } from '@/composables'
+import { PlayerInstance, PlayerInstanceEvent } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
+import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
+import PuzzleClipPath from '@/components/PuzzleClipPath.vue'
 
 import LessonActivitiesFinishedDialog from '@/components/app/dashboard/LessonActivitiesFinishedDialog.vue'
+import { TypedStore } from '@/models'
 
-export default {
+type LessonActivityPlayerParams = {
+  playlist: MediaObject[],
+  index: number
+}
+
+export default defineComponent({
   name: 'LessonActivityPlayer',
 
   components: {
-    LessonActivitiesFinishedDialog
+    PgVideoPlayer,
+    LessonActivitiesFinishedDialog,
+    PuzzleClipPath
   },
 
-  mixins: [VideoPlayerDialogMixin, DashboardMixin, SaveActivityProgress, Fullscreen, VideoAnalyticsMixin],
+  setup() {
+    const store = useStore<TypedStore>()
+    const route = useRoute()
+    const router = useRouter()
+    const nuxt = useNuxtHelper()
+    const gtm = useGtmHelper()
+    let player: PlayerInstance
 
-  data: () => {
-    return {
-      showFinishedVal: false,
-      advanceClosing: false
+    // Favorites section
+    const isFavoritesLoading = ref(false)
+    const { curatePlaylist } = useFavorites()
+    const { handleFavoritesClicked } = useFavoritesApi({ store, gtm, isHandlingFavorites: isFavoritesLoading })
+
+    async function onFavoritesClicked(event: PlayerInstanceEvent) {
+      await handleFavoritesClicked(event)
+      player.replacePlaylist(curatePlaylist(player.getPlaylist()))
     }
-  },
 
-  computed: {
-    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
-    ...mapState('children/lesson', ['puzzlePiece']),
+    // Show favorite control when not in admin preview mode
+    const shouldShowFavorite = computed(() => {
+      const previewMode = !store.getters['admin/curriculum/getLesson']?.previewMode ?? true
+      return previewMode
+    })
 
-    showFinished () {
-      return this.dialog && this.showFinishedVal
-    },
-
-    remaining () {
-      if (this.lesson) {
-        let count = 0
-        this.lesson.lessonsActivities.forEach((lessonActivity) => {
-          count += Number(Boolean(lessonActivity.activity && lessonActivity.activity.viewed && lessonActivity.activity.viewed.completed))
-        })
-        return this.lesson.lessonsActivities.length - count
+    // Get player instance
+    const callbacks = ref<any>({})
+    const { isLessonActivitiesFinished } = useIsLessonActivitiesFinished()
+    watch(isLessonActivitiesFinished, (val) => {
+      if (!val) {
+        player.close(false)
       }
-      return 0
-    },
-
-    noSeek () {
-      // if (!['production', 'staging'].includes(process.env.testEnv)) {
-      //   return false
-      // }
-      // if (this.currentVideo && (this.currentVideo.viewed === null || this.currentVideo.viewed.completed === false)) {
-      //   return true
-      // }
-      return false
+    })
+    function onPlayerReady(instance: PlayerInstance) {
+      player = instance
+      const { playerEvents } = useLessonActivitiesPlayerCallbacks({ store, route, router, nuxt, playerInstance: player })
+      callbacks.value = playerEvents
     }
-  },
 
-  created () {
-    this.$nuxt.$on('open-lesson-activity-player', (params) => {
-      this.open(params)
-      this.$nextTick(() => {
-        if (this.$refs.videoPlayer) {
-          this.$refs.videoPlayer.popControls()
-        }
+    onBeforeMount(() => {
+      nuxt.$on('open-lesson-activity-player', ({ playlist, index }: LessonActivityPlayerParams) => {
+        const curatedPlaylist = curatePlaylist(playlist)
+        player.loadPlaylist(curatedPlaylist, index)
+        player.open()
+        player.handleFullscreen()
+        player.popControls()
+        player.play()
       })
     })
-  },
 
-  methods: {
-    onReady (player) {
-      this.player = player
+    onBeforeUnmount(() => {
+      nuxt.$off('open-lesson-activity-player')
+      isLessonActivitiesFinished.value = false
+    })
 
-      const callbacks = {
-        onBeforePause: () => {
-          this.saveActivityProgress()
-        },
-        onBeforeSkip: () => {
-          this.player.pause()
-          this.saveActivityProgress(true)
-        },
-        onSkip: () => {
-          if (this.lastVideo) {
-            this.player.seek(this.player.duration())
-            this.showFinishedVal = true
-            this.player.trigger('ended')
-          } else {
-            this.player.nextVideo()
-          }
-        },
-        onBeforeEnded: () => {
-          this.saveActivityProgress()
-        },
-        onEnded: () => {
-          if (!this.lastVideo) {
-            this.player.nextVideo()
-          } else {
-            this.showFinishedVal = true
-          }
-        },
-        onBeforeClosed: () => {
-          if (this.advanceClosing) {
-            this.advanceClosing = false
-          } else {
-            this.saveActivityProgress()
-          }
-        }
+    // Close player when we close the lesson completed dialog
+    function onNextLesson() {
+      // player.close()
+      isLessonActivitiesFinished.value = false
+    }
+
+    // Puzzle piece image
+    const puzzlePieceImg = computed(() => {
+      const puzzlePiece: any = store.state.children.lesson?.puzzlePiece ?? {} as any
+      return puzzlePiece?.puzzle?.image ?? null
+    })
+
+    // Videos to watch before unlocking puzzle piece
+    const toUnlock = computed(() => {
+      const lesson = store.getters['admin/curriculum/getLesson']
+      if (lesson) {
+        let count = 0
+        lesson.lessonsActivities.forEach((lessonActivity: any) => {
+          count += Number(Boolean(lessonActivity.activity && lessonActivity.activity.viewed && lessonActivity.activity.viewed.completed))
+        })
+        return lesson.lessonsActivities.length - count
       }
-      this.setupVideoAnalytics(player, callbacks)
+      return 0
+    })
 
-      player.on('dispose', () => {
-        this.player = null
-      })
-    },
+    // Skip to next video when clicking on next up puzzle piece image
+    function onPuzzlePieceClick() {
+      player.skip()
+    }
 
-    updateIndex (index) {
-      if (this.index !== index) {
-        const nextVideo = jsonCopy(this.playlist[index])
-        const completedRoute = this.generateNuxtRoute('lesson-completed')
-        if (!nextVideo.ignoreVideoProgress || nextVideo.ignoreVideoProgress === false) {
-          this.$router.push(this.generateNuxtRoute('lesson-activities', { id: this.playlist[index].activityId }))
-        } else if (this.$route.name !== completedRoute.name && this.lessonCompleted) {
-          this.$router.push(completedRoute)
-        }
-        this.index = index
-      }
-    },
-
-    handleAdvanceClose () {
-      this.advanceClosing = true
-      this.handleClose()
-      this.showFinishedVal = false
-      this.dialog = false
+    return {
+      shouldShowFavorite,
+      isFavoritesLoading,
+      isLessonActivitiesFinished,
+      callbacks,
+      onFavoritesClicked,
+      onNextLesson,
+      onPlayerReady,
+      puzzlePieceImg,
+      toUnlock,
+      onPuzzlePieceClick
     }
   }
-}
+})
 </script>

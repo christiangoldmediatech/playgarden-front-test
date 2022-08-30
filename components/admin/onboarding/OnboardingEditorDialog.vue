@@ -66,10 +66,14 @@
                         </v-icon>
                       </v-avatar>
                     </template>
-                    <pg-video-player
-                      inline
-                      @ready="onPlayerReady"
-                    />
+
+                    <div class="video-player-16-9-container">
+                      <pg-video-player
+                        :control-config="{ favorite: false }"
+                        inline
+                        @ready="onPlayerReady"
+                      />
+                    </div>
                   </v-badge>
                 </div>
               </template>
@@ -150,7 +154,6 @@
           <v-spacer />
 
           <v-btn
-            class="white--text"
             color="green"
             :disabled="invalid"
             :loading="loading"
@@ -161,7 +164,6 @@
           </v-btn>
 
           <v-btn
-            class="white--text"
             color="red"
             :disabled="loading"
             :text="$vuetify.breakpoint.smAndUp"
@@ -237,8 +239,11 @@ export default {
     },
 
     close () {
+      this.dialog = false
+      if (this.player) {
+        this.player.pause()
+      }
       this.$nextTick(() => {
-        this.dialog = false
         this.loading = false
         // this.$refs.obs.reset()
       })

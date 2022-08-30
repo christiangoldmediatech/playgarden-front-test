@@ -30,6 +30,7 @@
             :to-unlock="toUnlock"
             :should-show-progress="shouldShowProgress"
             :activity-type-name="activityTypeName"
+            :activity-type-id="activityTypeId"
             @display-badge="displayBadge"
           />
         </div>
@@ -41,6 +42,7 @@
           :to-unlock="toUnlock"
           :should-show-progress="shouldShowProgress"
           :activity-type-name="activityTypeName"
+          :activity-type-id="activityTypeId"
           @display-badge="displayBadge"
         />
       </v-row>
@@ -112,6 +114,10 @@ export default {
     activityTypeName: {
       type: String,
       default: ''
+    },
+    activityTypeId: {
+      type: Number,
+      default: 0
     }
   },
 

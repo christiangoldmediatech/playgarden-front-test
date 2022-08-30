@@ -1,99 +1,94 @@
 <template>
-  <video-player-dialog
-    :id="dialogContainerId"
-    ref="videoPlayerDialog"
-    v-model="dialog"
-    :z-index="3500"
-    @close="handleClose"
-  >
-    <pg-video-js-player
-      ref="videoPlayer"
-      autoplay
-      use-standard-poster
-      show-cast
-      show-restart
-      show-steps
-      :fullscreen-override="handleFullscreen"
-      :show-next-up="false"
-      no-auto-track-change
-      @ready="onReady"
-      @pause="saveProgress"
-      @ended="close"
-    />
-  </video-player-dialog>
+  <PgVideoPlayer
+    :control-config="{
+      favorite: false,
+      title: false,
+      prevTrack: false,
+      nextTrack: false
+    }"
+    force-default-poster
+    @ready="onPlayerReady"
+    v-on="callbacks"
+  />
 </template>
 
-<script>
-import { mapActions } from 'vuex'
-import VideoAnalyticsMixin from '@/mixins/VideoAnalyticsMixin.js'
-import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
-import DashboardMixin from '@/mixins/DashboardMixin'
-import Fullscreen from '@/mixins/FullscreenMixin.js'
+<script lang="ts">
+import { defineComponent, onBeforeMount, onBeforeUnmount, ref, useStore } from '@nuxtjs/composition-api'
 
-export default {
+// @ts-ignore
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
+import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
+import { useNuxtHelper, useChildLesson, useDashboardTeacherVideoCallbacks, useChild } from '@/composables'
+import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
+import { axios } from '@/utils'
+import { TypedStore } from '@/models'
+
+export default defineComponent({
   name: 'LessonTeacherVideo',
 
-  mixins: [VideoPlayerDialogMixin, DashboardMixin, Fullscreen, VideoAnalyticsMixin],
-
-  data: () => {
-    return {
-      isSavingProgress: false
-    }
+  components: {
+    PgVideoPlayer
   },
 
-  computed: {
-  },
+  setup() {
+    let player: PlayerInstance
 
-  created () {
-    this.$nuxt.$on('open-lesson-teacher-video', (params) => {
-      this.open(params)
-    })
-  },
-
-  methods: {
-    ...mapActions('children/lesson', ['saveWorksheetVideoProgress']),
-
-    onReady (player) {
-      this.player = player
-      this.setupVideoAnalytics(player)
-      player.on('dispose', () => {
-        this.player = null
+    const nuxt = useNuxtHelper()
+    onBeforeMount(() => {
+      nuxt.$on('open-lesson-teacher-video', ({ playlist }: { playlist: MediaObject[] }) => {
+        player.loadPlaylist(playlist)
+        player.open()
+        player.play()
       })
-    },
+    })
 
-    close () {
-      this.saveProgress()
-      this.handleClose()
-      this.dialog = false
-    },
+    onBeforeUnmount(() => {
+      nuxt.$off('open-lesson-teacher-video')
+    })
 
-    async saveProgress () {
+    const store = useStore<TypedStore>()
+    const { saveWorksheetVideoProgress } = useChildLesson({ store, axios })
+
+    let isSavingProgress = false
+    async function saveProgress () {
       try {
-        // Skip if already saving
-        if (this.isSavingProgress) {
+        if (isSavingProgress) {
           return
         }
 
-        // Get data
-        const { videoId } = this.player.getMediaObject()
-        const time = this.player.currentTime()
-        const duration = this.player.duration()
+        const currentTrack = player.getCurrentTrack()
+        const videoId = currentTrack?.meta?.videoId ?? 0
+        const time = player.getCurrentTime()
+        const duration = player.getDuration()
         const completed = (duration - time) <= 15
 
         // Start saving
-        this.isSavingProgress = true
+        isSavingProgress = true
 
-        await this.saveWorksheetVideoProgress({
-          videoId,
-          time,
-          completed
-        })
+        await saveWorksheetVideoProgress(videoId, time, completed)
       } catch (error) {
         return Promise.reject(error)
       } finally {
-        this.isSavingProgress = false
+        isSavingProgress = false
       }
     }
+
+    const callbacks = ref<any>(undefined)
+    const { currentChildren } = useChild({ store })
+    function onPlayerReady(instance: PlayerInstance) {
+      player = instance
+      const { playerEvents } = useDashboardTeacherVideoCallbacks({
+        children: currentChildren,
+        playerInstance: player,
+        saveProgress
+      })
+      callbacks.value = playerEvents
+    }
+
+    return {
+      onPlayerReady,
+      callbacks
+    }
   }
-}
+})
 </script>

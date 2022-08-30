@@ -1,213 +1,185 @@
 <template>
-  <v-footer class="text-center justify-center white" padless tile>
-    <div class="green-line green-line-1" />
-    <div class="green-line green-line-2" />
+  <v-footer
+    :class="[
+      'pg-bg-[url(@/assets/png/gift-of-learning/bottom-paper.png)]',
+      'pg-bg-cover',
+      'pg-bg-[center_top_-2rem]',
+      'lg:pg-bg-top'
+    ]"
+    :height="footerHeight"
+    app
+    absolute
+    color="transparent"
+  >
+    <div class="pg-flex pg-flex-col pg-w-full pg-relative">
+      <div
+        :class="[
+          'pg-w-full',
+          'pg-flex',
+          'pg-flex-col',
+          'pg-justify-between',
+          'pg-max-w-[1150px]',
+          'pg-mt-48',
+          'pg-mx-auto',
+          'lg:pg-mt-36',
+          'lg:pg-flex-row'
+        ]"
+      >
+        <!-- LOGO -->
+        <div class="pg-flex pg-justify-center pg-items-center">
+          <img src="@/assets/png/rainbow-logo.png" class="pg-h-[180px]">
+        </div>
 
-    <v-card
-      flat
-      tile
-      class="pt-6 footer-wrapper-card"
-    >
-      <v-card-text class="py-0">
-        <v-row>
-          <v-col cols="12" sm="6" md="3">
-            <nuxt-link
-              :to="{
-                name: 'app-virtual-preschool',
-              }"
+        <!-- LINKS -->
+        <div
+          class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0"
+        >
+          <a v-for="link in links" :key="link.name" :href="link.href">
+            <span
+              class="pg-inline-block pg-text-lg pg-text-black pg-font-medium"
             >
-              <v-img
-                alt="Playgarden Prep's Logo"
-                class="mb-3"
-                contain
-                :max-width="$vuetify.breakpoint.smAndUp ? '400' : '100%'"
-                :src="require('~/assets/svg/logo.svg')"
-              />
-            </nuxt-link>
+              {{ link.name }}
+            </span>
+          </a>
+        </div>
 
-            <div class="align-center d-flex justify-center justify-md-start">
-              <a target="_blank" href="https://www.facebook.com/Playgarden-Online-108368577679635">
-                <img
-                  alt="Facebook"
-                  class="clickable mr-1"
-                  src="@/assets/svg/social-media/facebook.svg"
-                >
-              </a>
+        <!-- ONLINE SCHOOL -->
+        <div
+          class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0"
+        >
+          <div
+            class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold"
+          >
+            Online School
+          </div>
 
-              <a
-                target="_blank"
-                href="https://www.instagram.com/playgardenprep/"
-              >
-                <img
-                  alt="Instagram"
-                  class="clickable mx-1"
-                  src="@/assets/svg/social-media/instagram.svg"
-                >
-              </a>
+          <a
+            href="mailto:hello@playgardenprep.com"
+            class="pg-font-medium !pg-text-[#707070]"
+          >
+            hello@playgardenprep.com
+          </a>
 
-              <a
-                target="_blank"
-                href="mailto:online@playgardenprep.com"
-                class="clickable d-flex justify-center mx-1 social-media-circle circle-email"
-              >
-                <img alt="Email" src="@/assets/svg/social-media/email.svg">
-              </a>
+          <a href="tel:646-504-4716" class="pg-font-medium !pg-text-[#707070]">
+            <div>646-504-4716</div>
+          </a>
 
-              <a target="_blank" href="https://twitter.com/playgarden_prep">
-                <img
-                  alt="Twitter"
-                  class="clickable mx-1"
-                  src="@/assets/svg/social-media/twitter.svg"
-                >
-              </a>
-            </div>
-          </v-col>
+          <div class="pg-font-medium pg-text-black">
+            95 Franklin Street
+          </div>
 
-          <v-col class="text-center" cols="12" sm="6" md="">
-            <v-row
-              no-gutters
-              justify="center"
-              align="start"
-              class="footer-ref-links"
-            >
-              <v-col>
-                <a
-                  class="d-block link-text mb-1 mt-1"
-                  target="_blank"
-                  href="https://playgardenprep.com/"
-                >Playgarden Prep</a>
+          <div class="pg-font-medium pg-text-black">
+            New York, NY 10013
+          </div>
+        </div>
 
-                <nuxt-link
-                  class="d-block link-text mb-1"
-                  :to="{ name: 'terms-conditions' }"
-                  v-text="'Terms of Use'"
-                />
+        <!-- UPPER EAST SIDE -->
+        <div
+          class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0"
+        >
+          <div
+            class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold"
+          >
+            Upper East Side
+          </div>
 
-                <nuxt-link
-                  class="d-block link-text mb-1"
-                  :to="{ name: 'privacy-policy' }"
-                  v-text="'Privacy Policy'"
-                />
+          <a
+            href="mailto:ues@playgardenprep.com"
+            class="pg-font-medium !pg-text-[#707070]"
+          >
+            ues@playgardenprep.com
+          </a>
 
-                <nuxt-link
-                  class="d-block link-text mb-2"
-                  :to="{ name: 'help' }"
-                  v-text="'Help'"
-                />
-              </v-col>
-            </v-row>
-          </v-col>
+          <a href="tel:212-965-9718" class="pg-font-medium !pg-text-[#707070]">
+            <div>212-965-9718</div>
+          </a>
 
-          <v-col class="text-center" cols="12" sm="4" md="">
-            <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
-              <span class="info-footer-title">Online School</span>
-            </p>
+          <div class="pg-font-medium pg-text-black">
+            1366 Madison Avenue
+          </div>
 
-            <p class="text-footer-contact">
-              <a href="mailto:hello@playgardenprep.com">hello@playgardenprep.com</a><br>
-              <a href="tel:646-504-4716">646-504-4716</a>
-            </p>
+          <div class="pg-font-medium pg-text-black">
+            New York, NY 10128
+          </div>
+        </div>
 
-            <p class="text-footer-contact">
-              95 Franklin St,<br>
-              New York, NY 10013
-            </p>
-            <br>
-          </v-col>
+        <!-- TRIBECA -->
+        <div
+          class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0"
+        >
+          <div
+            class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold"
+          >
+            Tribeca
+          </div>
 
-          <v-col class="text-center" cols="12" sm="4" md="">
-            <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
-              <span class="info-footer-title">Upper East Side</span>
-            </p>
+          <a
+            href="mailto:tribeca@playgardenprep.com"
+            class="pg-font-medium !pg-text-[#707070]"
+          >
+            tribeca@playgardenprep.com
+          </a>
 
-            <p class="mb-1 mt-2 mt-md-8 text-footer-contact" />
+          <a href="tel:212-965-9717" class="pg-font-medium !pg-text-[#707070]">
+            <div>212-965-9717</div>
+          </a>
 
-            <p class="text-footer-contact">
-              1366 Madison Avenue<br>
-              New York, NY 10128
-            </p>
-            <br>
-          </v-col>
+          <div class="pg-font-medium pg-text-black">
+            95 Franklin Street
+          </div>
 
-          <v-col class="text-center" cols="12" sm="4" md="">
-            <p class="font-weight-bold mb-1 mt-0 primary--text text-h5">
-              <span class="info-footer-title">
-                Tribeca
-              </span>
-            </p>
+          <div class="pg-font-medium pg-text-black">
+            New York, NY 10013
+          </div>
+        </div>
+      </div>
 
-            <p class="mb-1 mt-2 mt-md-8 text-footer-contact" />
+      <!-- DASHED LINE -->
+      <div
+        class="pg-border-0 pg-border-b-[0.5px] pg-border-black pg-border-dashed pg-my-7"
+      />
 
-            <p class="text-footer-contact">
-              95 Franklin Street<br>
-              New York, NY 10013
-            </p>
-            <br>
-          </v-col>
-        </v-row>
-      </v-card-text>
+      <!-- COPYRIGHT -->
+      <div class="pg-text-center pg-text-xs pg-text-black pg-mb-10">
+        2020 - {{ new Date().getFullYear() }} © Playgarden Prep. All rights
+        reserved.
+      </div>
 
-      <v-divider class="mx-sm-8 mx-md-16" />
-
-      <v-row no-gutters>
-        <v-col class="pa-3 text-center text-footer" cols="12">
-          2020
-
-          <template v-if="new Date().getFullYear() > 2020">
-            - {{ new Date().getFullYear() }}
-          </template>
-
-          &copy; Playgarden Prep. All rights reserved.
-        </v-col>
-      </v-row>
-    </v-card>
+      <!-- COLOR DASHES -->
+      <img
+        src="@/assets/svg/gift-of-learning/bottom-color-dashes.svg"
+        class="pg-absolute pg-bottom-0 pg-left-0 pg-right-0 pg-mx-auto pg-w-full lg:pg-w-auto"
+      >
+    </div>
   </v-footer>
 </template>
 
-<script>
-export default {
-  name: 'DefaultFooter',
+<script lang="ts">
+import { useVuetifyHelper } from '@/composables'
+import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
 
-  props: {
-    fullWidth: {
-      type: Boolean,
-      required: false,
-      default: false
+export default defineComponent({
+  setup() {
+    const vuetify = useVuetifyHelper()
+    const isMobile = computed(() => vuetify.breakpoint.mdAndDown)
+    const footerHeight = computed(() => (isMobile.value ? '1280px' : '435px'))
+
+    const links = ref<{ name: string; href: string }[]>([
+      { name: 'Playgarden Prep', href: 'https://playgardennyc.com/' },
+      { name: 'Preschool', href: 'https://playgardennyc.com/preschool/' },
+      { name: 'Terms of Use', href: 'https://playgardennyc.com/terms-of-use/' },
+      {
+        name: 'Privacy Policy',
+        href: 'https://playgardennyc.com/privacy-policy/'
+      },
+      { name: 'Help', href: 'https://playgardenonline.com/school/help' }
+    ])
+
+    return {
+      links,
+      isMobile,
+      footerHeight
     }
   }
-}
+})
 </script>
-
-<style lang="scss" scoped>
-.footer-wrapper-card {
-  width: 100%;
-  max-width: 1200px;
-  &.full-width {
-    max-width: 1600px;
-  }
-}
-.text-footer {
-  font-size: 11px;
-  font-weight: 300;
-}
-
-.link-text {
-  color: var(--v-black-base);
-}
-
-.social-media-circle {
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  margin-top: -5px;
-  background-color: var(--v-primary-base);
-}
-
-.info-footer-title {
-  color: #68C453 !important;
-}
-
-.footer-ref-links {
-  height: 100%;
-}
-</style>

@@ -49,7 +49,11 @@
                       block
                       @click.stop="nextVideo"
                     >
-                      <img class="patch-earned-play-btn-icon" height="30px;" src="@/assets/svg/play-button.svg">
+                      <img
+                        class="patch-earned-play-btn-icon"
+                        height="30px;"
+                        src="@/assets/svg/play-button.svg"
+                      >
                       <template v-if="$vuetify.breakpoint.xsOnly">
                         Next video
                       </template>
@@ -107,14 +111,14 @@ export default {
 
     player: {
       validator: (val) => {
-        return (typeof val === 'object' || val === null)
+        return typeof val === 'object' || val === null
       },
       required: true
     },
 
     icon: {
       validator: (val) => {
-        return (typeof val === 'string' || val === null)
+        return typeof val === 'string' || val === null
       },
       required: true
     },
@@ -135,26 +139,26 @@ export default {
   },
 
   computed: {
-    returnText () {
+    returnText() {
       if (this.$route.name === 'app-library') {
         return 'Return to Library'
       }
-      return 'Return to Dashboard'
+      return 'Return to Lesson'
     }
   },
 
   methods: {
-    nextVideo () {
+    nextVideo() {
       this.player.nextVideo()
       this.close()
     },
 
-    returnTo () {
+    returnTo() {
       this.$emit('return')
       this.close()
     },
 
-    close () {
+    close() {
       this.$emit('input', false)
     }
   }

@@ -27,6 +27,10 @@ export default {
     await this.$axios.$patch(`/users/${data.userId}/plan`, data)
   },
 
+  async setTimezone (ctx, data) {
+    await this.$axios.$patch('/users/set/timezone', data)
+  },
+
   async updateUserPasswordByAdmin (ctx, data) {
     await this.$axios.$patch(`/users/${data.id}/password`, data.data)
   },

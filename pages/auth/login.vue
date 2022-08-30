@@ -1,11 +1,11 @@
 <template>
-  <v-container>
-    <v-row align="center" justify="center" no-gutters class="py-0 py-md-16">
+  <v-container :class="{'mt-n14': !$vuetify.breakpoint.mdAndUp}">
+    <v-row :class="{'mt-n4': !$vuetify.breakpoint.mdAndUp}" align="center" justify="center" no-gutters class="py-0 py-md-16">
       <v-col cols="12" md="6">
         <!-- BACK BUTTON -->
         <v-row>
           <v-btn
-            class="text-none mt-n10 pl-md-n16 go-back"
+            class="text-none mt-4 pl-md-n16 go-back"
             color="accent"
             href="https://playgardenonline.com/"
             text
@@ -30,11 +30,22 @@
       <v-col cols="12" md="6" class="px-0 px-md-4">
         <div class="login-form">
           <!-- FORM TITLE -->
-          <div class="my-5 mb-md-2 mt-md-0 text-center text-md-left">
+          <div class="my-5 text-center mb-md-2 mt-md-0 text-md-left">
             <underlined-title text="Welcome back!" />
           </div>
 
           <!-- FORM LOADING -->
+          <v-alert
+            v-if="errorMessage"
+            border="left"
+            color="orange"
+            dense
+            outlined
+            text
+            type="warning"
+          >
+            {{ errorMessage }}
+          </v-alert>
           <pg-loading v-if="loadingDataSocial" />
 
           <!-- LOGIN FORM -->
@@ -90,8 +101,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
+import { mapActions, mapGetters } from 'vuex'
+import { UserRole } from '@/models'
 import LoginForm from '@/components/forms/auth/LoginForm.vue'
 
 export default {
@@ -110,6 +121,9 @@ export default {
   },
 
   computed: {
+    ...mapGetters('auth', {
+      userInfo: 'getUserInfo'
+    }),
     inInvitationProcess () {
       const { query } = this.$route
 
@@ -122,8 +136,12 @@ export default {
 
     isKidsCornerRedirect () {
       const { query } = this.$route
-
       return query.kidsCornerRedirect === 'true'
+    },
+
+    isPlaygardenAdminRedirect () {
+      const { query } = this.$route
+      return query.playgardenAdminRedirect === 'true'
     }
   },
 
@@ -137,9 +155,15 @@ export default {
       // Go to kids corner
       window.open(`${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
     }
+
+    if (this.isPlaygardenAdminRedirect && this.$store.getters['auth/isUserLoggedIn']) {
+      // Go to Playgarden admin
+      window.open(`${process.env.playgardenAdminUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
+    }
   },
 
   methods: {
+    ...mapActions('auth', ['fetchUserInfo']),
     getProviderSignIn (provider) {
       let nameProvider = ''
       switch (provider) {
@@ -201,11 +225,24 @@ export default {
         } else if (this.$route.query.redirect) {
           await this.$router.push(decodeURIComponent(this.$route.query.redirect))
         } else {
-          await this.$router.push({ name: 'app-virtual-preschool' })
+          await this.$router.push({ name: this.goToPage(user) })
         }
       } catch (e) {
         this.loadingDataSocial = false
         await this.onFailLoginSocial(user)
+      }
+    },
+
+    goToPage (user) {
+      if (user.stripeStatus === 'active') {
+        if (user.planSelected.id === 2 || user.planSelected.id === 3) {
+          return 'app-virtual-preschool'
+        }
+        if (user.planSelected.id === 1) {
+          return 'app-virtual-preschool'
+        }
+      } else {
+        return 'app-virtual-preschool'
       }
     },
 
@@ -239,6 +276,7 @@ export default {
         this.errorMessage = ''
 
         await this.login(data)
+        await this.fetchUserInfo()
 
         if (this.isKidsCornerRedirect) {
           // Go to kids corner
@@ -250,11 +288,13 @@ export default {
           })
         } else if (this.$route.query.redirect) {
           await this.$router.push(decodeURIComponent(this.$route.query.redirect))
+        } else if (this.userInfo.role.id === UserRole.SUPER_ADMIN) {
+          window.open(`${process.env.playgardenAdminUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
         } else {
-          await this.$router.push({ name: 'app-virtual-preschool' })
+          await this.$router.push({ name: this.goToPage(this.userInfo) })
         }
       } catch (error) {
-        this.errorMessage = 'Sorry! Wrong email or password'
+        this.errorMessage = 'Oops! The password you entered is incorrect. Please try again, or try resetting your password.'
       } finally {
         this.loading = false
       }

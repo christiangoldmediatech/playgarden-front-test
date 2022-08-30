@@ -71,7 +71,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <upload-offline-worksheet v-model="dialog" />
+    <upload-offline-worksheet-dialog v-model="dialog" />
 
     <!-- <teacher-video-overlay
       v-model="teachersVideoDialog"
@@ -85,13 +85,13 @@
 import { mapGetters } from 'vuex'
 import { APP_EVENTS } from '@/models'
 
-import UploadOfflineWorksheet from './UploadOfflineWorksheet.vue'
+import UploadOfflineWorksheetDialog from './UploadOfflineWorksheetDialog.vue'
 
 export default {
   name: 'OfflineWorksheetCard',
 
   components: {
-    UploadOfflineWorksheet
+    UploadOfflineWorksheetDialog
   },
 
   data: () => {
@@ -174,10 +174,12 @@ export default {
       const playlist = [
         {
           title: '',
-          videoId: this.offlineWorksheet.videoDetail.id,
           src: {
-            src: this.offlineWorksheet.videoDetail.videoUrl.HLS,
+            url: this.offlineWorksheet.videoDetail.videoUrl.HLS,
             type: 'application/x-mpegURL'
+          },
+          meta: {
+            videoId: this.offlineWorksheet.videoDetail.id
           }
         }
       ]

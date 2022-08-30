@@ -1,10 +1,17 @@
 {
-    "auth-verify-email": 1,
-    "auth-verify-playdate": 1,
-    "help": 1,
-    "jwt-recovery": 1,
-    "privacy-policy": 1,
-    "terms-conditions": 1,
-    "shared-slug": 1,
-    "promo-gift-of-learning": 1
-  }
+  "auth-verify-email": 1,
+  "auth-verify-playdate": 1,
+  "help": 1,
+  "jwt-recovery": 1,
+  "privacy-policy": 1,
+  "terms-conditions": 1,
+  "shared-slug": 1,
+  "promo-gift-of-learning": 1,
+  "app-learn-play-preview": 1,
+  "admin-curriculum-management-lessonId-preview": 1,
+  "admin-curriculum-management-lessonId-preview-lesson-activities": 1,
+  "admin-curriculum-management-lessonId-preview-lesson-completed": 1,
+  "admin-curriculum-management-lessonId-preview-lesson-videos": 1,
+  "admin-curriculum-management-lessonId-preview-offline-worksheet": 1,
+  "admin-curriculum-management-lessonId-preview-online-worksheet": 1
+}

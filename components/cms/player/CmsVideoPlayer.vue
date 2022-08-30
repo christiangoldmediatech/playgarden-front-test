@@ -1,53 +1,68 @@
 <template>
-  <video-player-dialog
-    :id="dialogContainerId"
-    ref="videoPlayerDialog"
-    v-model="dialog"
-    @close="handleClose"
-  >
-    <pg-video-js-player
-      ref="videoPlayer"
-      autoplay
-      show-next-up
-      show-steps
-      show-favorite
-      show-cast
-      :fullscreen-override="handleFullscreen"
-      @ready="onReady"
-    />
-  </video-player-dialog>
+  <PgVideoPlayer
+    v-bind="{ isFavoritesLoading }"
+    @on-favorites-clicked="onFavoritesClicked"
+    @ready="onPlayerReady"
+  />
 </template>
 
-<script>
-import VideoPlayerDialogMixin from '@/mixins/VideoPlayerDialogMixin.js'
-import Fullscreen from '@/mixins/FullscreenMixin.js'
-import DashboardOverrides from '@/mixins/DashboardOverridesMixin.js'
-// import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
-// import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
+<script lang="ts">
+import { defineComponent, ref, onBeforeMount, useStore } from '@nuxtjs/composition-api'
 
-export default {
+// @ts-ignore
+import PgVideoPlayer from '@gold-media-tech/pg-video-player'
+import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
+import { useFavorites, useFavoritesApi, useGtmHelper, useNuxtHelper } from '@/composables'
+import { PlayerInstance, PlayerInstanceEvent } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
+
+export default defineComponent({
   name: 'CmsVideoPlayer',
 
-  // components: {
-  //   VideoPlayerDialog,
-  //   PgVideoJsPlayer
-  // },
-
-  mixins: [VideoPlayerDialogMixin, DashboardOverrides, Fullscreen],
-
-  created () {
-    this.$nuxt.$on('open-cms-video-player', (params) => {
-      this.open(params)
-    })
+  components: {
+    PgVideoPlayer
   },
 
-  methods: {
-    onReady (player) {
-      this.player = player
-      player.on('dispose', () => {
-        this.player = null
+  setup() {
+    let player: PlayerInstance
+    const playlist = ref<MediaObject[]>([])
+
+    function onPlayerReady(instance: PlayerInstance) {
+      player = instance
+    }
+
+    // Activation Setup
+    function openPlayer() {
+      player.open()
+      player.loadPlaylist(playlist.value)
+      player.play()
+    }
+
+    const nuxt = useNuxtHelper()
+    onBeforeMount(() => {
+      nuxt.$on('open-cms-video-player', (params: MediaObject[]) => {
+        playlist.value = params
+        openPlayer()
       })
+    })
+
+    // Favorites
+    const store = useStore()
+    const gtm = useGtmHelper()
+    const isFavoritesLoading = ref(false)
+    const { curatePlaylist, favoriteVideoIds } = useFavorites()
+    const { handleFavoritesClicked } = useFavoritesApi({ store, gtm, isHandlingFavorites: isFavoritesLoading })
+
+    async function onFavoritesClicked (event: PlayerInstanceEvent) {
+      await handleFavoritesClicked(event)
+      playlist.value = curatePlaylist(playlist.value, favoriteVideoIds.value)
+      player.replacePlaylist(playlist.value)
+    }
+
+    return {
+      onPlayerReady,
+      onFavoritesClicked,
+      isFavoritesLoading
     }
   }
-}
+})
 </script>

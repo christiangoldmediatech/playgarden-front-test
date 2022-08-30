@@ -40,7 +40,7 @@
       </p>
     </completed-dialog>
 
-    <upload-offline-worksheet v-model="uploadDialog" />
+    <upload-offline-worksheet-dialog v-model="uploadDialog" />
   </v-card>
 </template>
 
@@ -50,10 +50,11 @@ import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import { APP_EVENTS } from '@/models'
 
 import CompletedDialog from '@/components/app/dashboard/CompletedDialog'
-import UploadOfflineWorksheet from '../UploadOfflineWorksheet.vue'
+import UploadOfflineWorksheetDialog from '../UploadOfflineWorksheetDialog.vue'
 import OwHeader from './OwHeader.vue'
 import OwConnectingPairs from './OwConnectingPairs.vue'
 import OwTapCorrect from './OwTapCorrect.vue'
+import OwAudio from './OwAudio.vue'
 
 export default {
   name: 'OwCard',
@@ -62,7 +63,8 @@ export default {
     OwHeader,
     OwConnectingPairs,
     OwTapCorrect,
-    UploadOfflineWorksheet,
+    OwAudio,
+    UploadOfflineWorksheetDialog,
     CompletedDialog
   },
 
@@ -107,6 +109,8 @@ export default {
           return 'ow-connecting-pairs'
         } else if (type === 'TAP_CORRECT') {
           return 'ow-tap-correct'
+        } else if (type === 'AUDIO') {
+          return 'ow-audio'
         }
       }
       return ''
@@ -135,10 +139,12 @@ export default {
           const playlist = [
             {
               title: '',
-              videoId: this.offlineWorksheet.videoDetail.id,
               src: {
-                src: this.offlineWorksheet.videoDetail.videoUrl.HLS,
+                url: this.offlineWorksheet.videoDetail.videoUrl.HLS,
                 type: 'application/x-mpegURL'
+              },
+              meta: {
+                videoId: this.offlineWorksheet.videoDetail.id
               }
             }
           ]
@@ -205,19 +211,24 @@ export default {
 
               const playlist = validActivities.map(({ id, activity }) => {
                 return {
-                  title: activity.videos.name,
+                  title: activity.activityType.name,
                   description: activity.videos.description,
-                  activityType: activity.activityType,
-                  curriculumType: activity.curriculumType,
+                  poster: activity.videos.thumbnail,
                   src: {
-                    src: activity.videos.videoUrl.HLS,
+                    url: activity.videos.videoUrl.HLS,
                     type: 'application/x-mpegURL'
                   },
-                  poster: activity.videos.thumbnail,
-                  lessonActivityId: id,
-                  activityId: activity.id,
-                  videoId: activity.videos.id,
-                  viewed: activity.viewed
+                  meta: {
+                    videoId: activity.videos.id,
+                    author: `with ${activity.videos.name}`,
+                    videoType: 'LESSON ACTIVITIES',
+                    videoIcon: activity.activityType.icon,
+                    lessonActivityId: id,
+                    activityId: activity.id,
+                    activityType: activity.activityType,
+                    curriculumType: activity.curriculumType,
+                    viewed: activity.viewed
+                  }
                 }
               })
 

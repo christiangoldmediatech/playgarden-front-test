@@ -1,22 +1,29 @@
 <template>
-  <dashboard-layout
-    v-model="selectedChild"
-    v-bind="{ lesson, loading, childId: childrenIds }"
-  >
-    <nuxt-child />
-  </dashboard-layout>
+  <v-main class="pt-10 pt-sm-6 pt-md-16 mt-8">
+    <pg-loading :loading="loading" fullscreen>
+      <DashboardLayout
+        v-model="selectedChild"
+        v-bind="{ lesson, loading, childId: childrenIds }"
+      >
+        <nuxt-child />
+      </DashboardLayout>
+    </pg-loading>
+    <LessonActivityPlayer />
+  </v-main>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import DashboardLayout from '@/components/app/dashboard/DashboardLayout.vue'
+import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import DashboardMixin from '@/mixins/DashboardMixin.js'
 import { APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
 
 export default {
   name: 'Dashboard',
   components: {
-    DashboardLayout
+    DashboardLayout,
+    LessonActivityPlayer
   },
   mixins: [DashboardMixin],
   data: () => {
@@ -72,6 +79,9 @@ export default {
         }
       })
     }
+
+    this.loading = true
+
     if (this.overrideMode) {
       const currentChild = this.currentChild[0].id
       await this.getAllChildren()
