@@ -132,7 +132,7 @@ export default async function ({ redirect, route, store, app, req }) {
   const shouldRedirectToAccount =
     !parentSubscriptionWhitelistedRoutes[route.name] &&
     get(user, 'role.id') === 3 /* PARENT */ &&
-    (!user.subscription || user.subscription.status === 'canceled' || user.subscription.status === 'incomplete_expired')
+    (user?.subscription?.status === 'canceled' || user?.subscription?.status === 'incomplete_expired')
 
   if (shouldRedirectToAccount) {
     return redirect({ name: 'app-inactive-subscription' })

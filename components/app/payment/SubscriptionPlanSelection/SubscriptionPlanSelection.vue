@@ -94,7 +94,7 @@
             </v-btn>
 
             <!-- Call to enroll -->
-            <div v-else-if="plan.name === 'Homeschool'" class="pg-text-center">
+            <div v-else-if="plan.name.toUpperCase() === 'HOMESCHOOL'" class="pg-text-center">
               <div class="accent--text pg-text-2xl pg-font-bold">
                 Call to enroll
               </div>
@@ -107,6 +107,7 @@
               v-else
               outlined
               block
+              :loading="loading"
               :color="colors[i]"
               @click="onSubmit(plan)"
             >
@@ -146,6 +147,7 @@ import {
 } from '@/composables'
 
 import { UserFlow } from '@/models'
+import CreditCardModal from '@/components/app/payment/CreditCardModal.vue'
 import PlanDescription from './PlanDescription.vue'
 
 const colors = ['#C399ED', '#96D5DE', '#FAA938', '#B2E68D']
@@ -154,8 +156,7 @@ export default defineComponent({
   name: 'SubscriptionPlanSelection',
 
   components: {
-    CreditCardModal: () =>
-      import('@/components/app/payment/CreditCardModal.vue'),
+    CreditCardModal,
     PlanDescription
   },
 
@@ -167,7 +168,10 @@ export default defineComponent({
       default: undefined
     },
 
-    inSignUpProcess: Boolean,
+    inSignUpProcess: {
+      type: Boolean,
+      default: false
+    },
 
     noAddress: Boolean,
 
@@ -287,29 +291,38 @@ export default defineComponent({
       const plan = this.getSubmittableData()
       plan.id = this.selectedPlan.id
       plan.type = this.billAnnually ? 'annual' : 'monthly'
-      try {
-        /**
-         * If the user does not have a credit card and is in flow NO_CREDITCARD,
-         * ask them to register a credit card.
-         */
-        if (this.Auth.userInfo.value.flow === UserFlow.NOCREDITCARD) {
-          const userCards = await this.Billing.fetchBillingCards()
+      plan.fromPlaydates = this.fromPlaydates
 
-          if (userCards?.length === 0) {
-            this.isCreditCardModalVisible = true
-            this.loading = false
-            return
+      try {
+        if (this.inSignUpProcess) {
+          await this.selectSubscriptionPlan(plan)
+          await this.Auth.fetchUserInfo()
+          this.$emit('click:submit')
+        } else {
+          /**
+           * If the user does not have a credit card and is in flow NO_CREDITCARD,
+           * ask them to register a credit card.
+           */
+          if (this.Auth.userInfo.value.flow === UserFlow.NOCREDITCARD) {
+            const userCards = await this.Billing.fetchBillingCards()
+
+            if (userCards?.length === 0) {
+              this.isCreditCardModalVisible = true
+              this.loading = false
+              return
+            }
           }
+
+          await this.selectSubscriptionPlan(plan)
+          await this.Auth.fetchUserInfo()
+          this.setIsTrialEndingPlanSelectedModalVisible(true)
+          this.$nuxt.$emit('plan-membership-changed')
+
+          this.$emit('click:submit', {
+            draft: plan,
+            draftAddress: this.draftAddress
+          })
         }
-        plan.fromPlaydates = this.fromPlaydates
-        await this.selectSubscriptionPlan(plan)
-        await this.Auth.fetchUserInfo()
-        this.setIsTrialEndingPlanSelectedModalVisible(true)
-        this.$nuxt.$emit('plan-membership-changed')
-        this.$emit('click:submit', {
-          draft: plan,
-          draftAddress: this.draftAddress
-        })
       } catch (e) {
         this.$snotify.error('Could not select plan. Please, try again later.')
       } finally {

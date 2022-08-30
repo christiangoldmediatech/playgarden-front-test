@@ -1,23 +1,7 @@
 <template>
-  <v-row>
-    <v-row no-gutters>
-      <v-btn
-        color="accent"
-        nuxt
-        text
-        @click="goBack"
-      >
-        <v-icon left>
-          mdi-less-than
-        </v-icon>
-
-        Back
-      </v-btn>
-    </v-row>
-    <v-col cols="12">
-      <step-two :mode="mode" />
-    </v-col>
-  </v-row>
+  <div>
+    <StepTwo :mode="mode" />
+  </div>
 </template>
 
 <script>
@@ -33,7 +17,7 @@ export default {
   },
 
   data: vm => ({
-    currentStep: 2,
+    currentStep: 3,
     mode: vm.$route.params.mode
       ? vm.$route.params.mode
       : ''

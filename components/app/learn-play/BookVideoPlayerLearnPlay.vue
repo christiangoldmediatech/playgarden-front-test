@@ -52,42 +52,50 @@
         </pg-video-player>
       </div>
     </template>
-    <v-card v-else class="mb-4" width="100%">
-      <v-skeleton-loader type="card" />
-    </v-card>
-    <span class="title-dashboard">
-      Books of the week
-    </span>
-    <v-card class="mt-2">
-      <v-row
-        v-if="getRelatedBooks.length > 0"
-        class="book-images-container ma-0"
-        :class="{
-          'book-images-container-overflowed': getRelatedBooks.length > 3
-        }"
-      >
-        <v-col
-          v-for="(book, index) in getRelatedBooks"
-          :key="`book-item-${index}`"
-          cols="12"
-          md="4"
+    <template v-else>
+      <v-card class="mb-4" width="100%">
+        <v-skeleton-loader type="card" />
+      </v-card>
+      <span class="title-dashboard">
+        Books of the week
+      </span>
+      <v-card class="mt-2">
+        <v-row class="mx-2 my-2">
+          <v-col v-for="n in 3" :key="`book-load-item-${n}`" cols="4">
+            <v-skeleton-loader type="image" />
+          </v-col>
+        </v-row>
+      </v-card>
+    </template>
+    <template v-if="getRelatedBooks.length > 0">
+      <span class="title-dashboard">
+        Books of the week
+      </span>
+      <v-card class="mt-2">
+        <v-row
+          class="book-images-container ma-0"
+          :class="{
+            'book-images-container-overflowed': getRelatedBooks.length > 3
+          }"
         >
-          <a :href="book.url" target="_blank">
-            <img
-              :src="book.image"
-              class="book-cover"
-              width="100%"
-              height="100%"
-            >
-          </a>
-        </v-col>
-      </v-row>
-      <v-row v-else class="mx-2 my-2">
-        <v-col v-for="n in 3" :key="`book-load-item-${n}`" cols="4">
-          <v-skeleton-loader type="image" />
-        </v-col>
-      </v-row>
-    </v-card>
+          <v-col
+            v-for="(book, index) in getRelatedBooks"
+            :key="`book-item-${index}`"
+            cols="12"
+            md="4"
+          >
+            <a :href="book.url" target="_blank">
+              <img
+                :src="book.image"
+                class="book-cover"
+                width="100%"
+                height="100%"
+              >
+            </a>
+          </v-col>
+        </v-row>
+      </v-card>
+    </template>
   </div>
 </template>
 

@@ -3,7 +3,8 @@
     :class="[
       'pg-bg-[url(@/assets/png/play-learn/acuarela-yellow.png)]',
       'pg-bg-[center_right_-8rem]',
-      'lg:pg-pb-32'
+      'pg-px-4',
+      'lg:pg-pb-32',
     ]"
   >
     <div
@@ -12,7 +13,6 @@
         'pg-flex-col',
         'pg-mx-auto',
         'pg-max-w-[768px]',
-        'pg-px-4',
         'lg:pg-max-w-[1300px]',
       ]"
     >
@@ -25,7 +25,7 @@
         :class="[
           'pg-grid',
           'pg-grid-cols-1',
-          'lg:pg-mt-12',
+          'sm:pg-mt-12',
           'lg:pg-grid-cols-12',
           'lg:pg-gap-24',
         ]"
@@ -62,8 +62,9 @@
             'pg-flex-col',
             'pg-justify-center',
             'pg-mt-14',
+            'pg-mx-auto',
             'lg:pg-col-span-5',
-            'lg:pg-mt-0'
+            'lg:pg-mt-0',
           ]"
         >
           <StepTwoCardSummary :value="toggleInfo" @input="toggleInfo = $event" />
@@ -76,8 +77,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useContext, useRouter } from '@nuxtjs/composition-api'
-import BackButton from '@/components/app/learn-play/BackButton/BackButton.vue'
+import { defineComponent, ref, useRouter } from '@nuxtjs/composition-api'
+import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import StepTwoCardSummary from '@/components/app/learn-play/StepTwoCardSummary/StepTwoCardSummary.vue'
 import StepTwoCardDetail from '@/components/app/learn-play/StepTwoCardDetail/StepTwoCardDetail.vue'
 import StripePayForm from '@/components/forms/payment/StripePayForm.vue'
@@ -99,14 +100,13 @@ export default defineComponent({
   setup() {
     const snotify = useSnotifyHelper()
     const router = useRouter()
-    const { $axios } = useContext()
-    const Payment = usePayment({ axios: $axios })
+    const Payment = usePayment()
 
     const isLoading = ref(false)
     const toggleInfo = ref(true)
 
     function handleGoBack() {
-      router.go(-1)
+      router.push({ name: 'app-payment-plan', query: { process: 'signup', step: '2' } })
     }
 
     async function handleSubmit(data: CardData) {
@@ -134,7 +134,7 @@ export default defineComponent({
       router.push({
         name: 'app-play-learn-children',
         query: {
-          step: '3',
+          step: '4',
           process: 'signup'
         }
       })

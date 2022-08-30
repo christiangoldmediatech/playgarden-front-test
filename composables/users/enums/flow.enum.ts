@@ -1,0 +1,4 @@
+export enum Flow {
+  CREDITCARD = 'CREDITCARD',
+  NOCREDITCARD = 'NOCREDITCARD'
+}

@@ -144,6 +144,7 @@ export default {
    ** Nuxt.js dev-modules
    */
   buildModules: [
+    'nuxt-typed-vuex',
     '@nuxt/postcss8',
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',

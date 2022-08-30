@@ -119,7 +119,9 @@
 
             <v-card>
               <v-list dense>
-                <v-list-item>
+                <!-- Hidden by ticket: https://app.shortcut.com/gold-media-tech/story/4106/hide-video-tutorial-option -->
+
+                <!-- <v-list-item>
                   <v-btn
                     class="btn-register text--disabled"
                     :ripple="false"
@@ -141,7 +143,8 @@
 
                 <div class="px-2 py-3">
                   <v-divider />
-                </div>
+                </div> -->
+
                 <v-list-item>
                   <v-btn
                     class="btn-register text--disabled"

@@ -66,7 +66,7 @@
           'pg-overflow-hidden',
           'pg-duration-500',
           {
-            'pg-max-h-screen': isOpen,
+            'pg-max-h-[1000px]': isOpen,
             'pg-max-h-0': isClose
           }
         ]"

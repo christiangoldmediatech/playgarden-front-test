@@ -1,98 +1,85 @@
 <template>
-  <v-row no-gutters>
-    <v-col>
-      <v-row no-gutters>
-        <!-- STRIPE FORM -->
-        <v-col class="px-12 mt-1 mt-md-12" cols="12" md="6" lg="6" xl="6">
-          <stripe-pay-form
+  <div
+    :class="[
+      'pg-px-4',
+      'lg:pg-pb-32',
+    ]"
+  >
+    <div
+      :class="[
+        'pg-flex',
+        'pg-flex-col',
+        'pg-mx-auto',
+        'pg-max-w-[768px]',
+        'lg:pg-max-w-[1300px]',
+      ]"
+    >
+      <div class="pg-my-6">
+        <BackButton @click="handleGoBack" />
+      </div>
+
+      <!-- CONTENT -->
+      <div
+        :class="[
+          'pg-grid',
+          'pg-grid-cols-1',
+          'sm:pg-mt-12',
+          'lg:pg-grid-cols-12',
+          'lg:pg-gap-24',
+        ]"
+      >
+        <!-- LEFT -->
+        <div class="pg-col-span-full lg:pg-col-span-7">
+          <StripePayForm
             :loading="loading"
             :button-text="getTextButton"
+            :is-free-for-days-text-visible="!isUserInactive"
+            :is-trial-text-visible="!isUserInactive"
+            :is-not-charged-text-visbile="!isUserInactive"
             @click:submit="onSubmit"
           />
-        </v-col>
+        </div>
 
-        <v-col cols="12" md="6" lg="6" xl="6">
-          <template>
-            <v-row>
-              <v-col
-                cols="12"
-                :class="
-                  !$vuetify.breakpoint.smAndUp
-                    ? 'text-center'
-                    : 'mt-1 mb-8 px-10'
-                "
-              >
-                <v-layout row wrap align-center justify-center>
-                  <v-card class="pg-mt-4 elevation-2 mx-10">
-                    <v-container>
-                      <v-layout column align-center justify-center>
-                        <card-playgarden
-                          :show-content="showCardPlaygarden"
-                          @toggle="showCardPlaygarden = !showCardPlaygarden"
-                        />
-                        <card-know-more
-                          v-if="!showCardPlaygarden"
-                          @toggleCard="showCardPlaygarden = !showCardPlaygarden"
-                        />
-                      </v-layout>
-                    </v-container>
-                  </v-card>
-                </v-layout>
-              </v-col>
-            </v-row>
-            <v-container>
-              <v-divider class="mt-7 mb-1 my-md-0" />
-            </v-container>
-            <v-row>
-              <v-col v-if="showCardPlaygarden" cols="12" class="mt-4 mb-5">
-                <v-btn
-                  block
-                  text
-                  @click="showCardPlaygarden = !showCardPlaygarden"
-                >
-                  <p>
-                    <span
-                      :class="
-                        $vuetify.breakpoint.smAndUp
-                          ? 'free-trial'
-                          : 'free-trial-mobile'
-                      "
-                    >
-                      WANT TO KNOW MORE ABOUT
-                    </span>
-                    <br>
-                    <span
-                      :class="
-                        $vuetify.breakpoint.smAndUp
-                          ? 'free-trial'
-                          : 'free-trial-mobile'
-                      "
-                    >
-                      YOUR <span class="green--text">FREE TRIAL</span>?
-                    </span>
-                  </p>
-                  <v-icon class="ml-2">
-                    mdi-chevron-down
-                  </v-icon>
-                </v-btn>
-              </v-col>
-            </v-row>
-          </template>
-        </v-col>
-      </v-row>
-    </v-col>
-  </v-row>
+        <!-- RIGHT -->
+        <div
+          :class="[
+            'pg-col-span-full',
+            'pg-flex',
+            'pg-flex-col',
+            'pg-justify-center',
+            'pg-mt-14',
+            'pg-mx-auto',
+            'lg:pg-col-span-5',
+            'lg:pg-mt-0',
+          ]"
+        >
+          <CardPlaygarden
+            :value="showCardPlaygarden"
+            :is-user-inactive="isUserInactive"
+            @input="showCardPlaygarden = !showCardPlaygarden"
+          />
+          <div class="pg-py-2" />
+          <CardKnowMore
+            v-if="!isUserInactive"
+            :value="!showCardPlaygarden"
+            @input="showCardPlaygarden = !showCardPlaygarden"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 
-import { useUTM } from '@/composables/utm/use-utm.composable'
+import { useUTM } from '@/composables/web/utm'
 
 import StripePayForm from '@/components/forms/payment/StripePayForm'
-import CardPlaygarden from './CardPlaygarden'
-import CardKnowMore from './CardKnowMore'
+import BackButton from '@/components/shared/BackButton/BackButton.vue'
+import CardPlaygarden from './CardPlaygarden.vue'
+import CardKnowMore from './CardKnowMore.vue'
 
 export default defineComponent({
   name: 'StepTwo',
@@ -100,7 +87,8 @@ export default defineComponent({
   components: {
     StripePayForm,
     CardPlaygarden,
-    CardKnowMore
+    CardKnowMore,
+    BackButton
   },
 
   props: {
@@ -115,8 +103,7 @@ export default defineComponent({
     loading: false,
     showCardPlaygarden: true,
     hiddenCardFamily: false,
-    coupon: null,
-    mode: vm.$route.params.mode ? vm.$route.params.mode : ''
+    coupon: null
   }),
 
   setup() {
@@ -139,6 +126,9 @@ export default defineComponent({
       return this.mode === 'activate-user'
         ? 'REACTIVATE ACCOUNT'
         : 'START YOUR FREE TRIAL'
+    },
+    isUserInactive() {
+      return this.mode === 'activate-user'
     }
   },
 
@@ -147,7 +137,17 @@ export default defineComponent({
 
     ...mapActions('payment', ['payShorterSubscription', 'validateCard']),
 
-    async goToStepThree() {
+    handleGoBack () {
+      this.$router.push({
+        name: 'app-payment-plan',
+        query: {
+          process: 'signup',
+          step: '2'
+        }
+      })
+    },
+
+    async goToNextStep() {
       let page = {}
       if (this.mode === 'activate-user') {
         await this.fetchUserInfo()
@@ -158,9 +158,9 @@ export default defineComponent({
         page = {
           name: 'app-children',
           query: {
-            step: 3,
+            step: 4,
             process: 'signup',
-            ...this.utmContent
+            ...this.utmContent.utmContent.value
           }
         }
       }
@@ -179,7 +179,7 @@ export default defineComponent({
           dataSubscrition.promotion_id = cardData.promotion_id
         }
         await this.payShorterSubscription(dataSubscrition)
-        this.goToStepThree()
+        this.goToNextStep()
       } catch (e) {
       } finally {
         this.loading = false

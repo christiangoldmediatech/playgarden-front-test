@@ -1,257 +1,189 @@
 <template>
-  <v-row
-    class="flex-column flex-md-row"
-    justify="center"
-    no-gutters
-    data-test-id="signup-content"
-  >
-    <v-col cols="12" class="ml-md-14">
-      <p class="text-center text-md-left">
-        <underlined-title
-          class="pg-box-decoration-clone text-h6 text-md-h4 ml-sm-4"
-          text="PLAYGARDEN PREP'S ONLINE PRESCHOOL IS COMPLETELY FREE FOR THE FIRST 15 DAYS!"
-        />
-      </p>
-    </v-col>
-    <v-col
-      class="px-sm-12 px-6 mt-1 mt-md-12"
-      cols="12"
-      sm="12"
-      xs="12"
-      md="6"
-      lg="6"
-      xl="6"
+  <div>
+    <div
+      :class="[
+        'pg-flex',
+        'pg-flex-col',
+        'pg-mx-auto',
+        'pg-max-w-[768px]',
+        'pg-px-4',
+        'lg:pg-pb-16',
+        'lg:pg-px-8',
+        'lg:pg-max-w-[1300px]',
+        'lg:pg-bg-[url(@/assets/png/green-whirl.png)]',
+        'lg:pg-bg-[right_bottom]',
+        'lg:pg-bg-[length:45%_75%]'
+      ]"
     >
-      <p class="text-center text-md-left mt-md-n8">
-        <span class="subtitle-text info-color-signup">
-          Create an account to start learning
-          <span v-if="!isCreditCardRequired">. NO CREDIT CARD REQUIRED!</span>
-        </span>
-      </p>
+      <div class="md:pg-mt-24">
+        <BackButton @click="handleGoBack" />
+      </div>
 
-      <register-form
-        :email-validated="emailValidated"
-        :in-invitation-process="inInvitationProcess"
-        :loading="loading"
-        :is-credit-card-required="isCreditCardRequired"
-        @click:submit="onSubmit"
-      />
-    </v-col>
+      <!-- HEADING -->
+      <div :class="['pg-mt-6', 'pg-inline']">
+        <UnderlinedTitle
+          text="CREATE AN ACCOUNT TO START LEARNING!"
+          font-size="40px"
+          font-size-mobile="20px"
+        />
+      </div>
 
-    <v-col cols="12" md="6" lg="6">
-      <template>
-        <v-row
-          :class="
-            $vuetify.breakpoint.smAndUp
-              ? 'mt-4 background-card'
-              : 'background-card-mobile pt-14 px-8'
-          "
+      <div class="pg-text-xl pg-text-black pg-opacity-50">
+        Are you excited for a fun-filled day of learning?
+        <span v-if="!isCreditCardRequired"> NO CREDIT CARD REQUIRED!</span>
+      </div>
+
+      <!-- CONTENT -->
+      <div
+        :class="[
+          'pg-grid',
+          'pg-grid-cols-1',
+          'pg-mt-8',
+          'lg:pg-grid-cols-12',
+          'lg:pg-gap-24'
+        ]"
+      >
+        <!-- LEFT -->
+        <div class="pg-col-span-full lg:pg-col-span-7">
+          <RegisterForm
+            :email-validated="emailValidated"
+            :in-invitation-process="inInvitationProcess"
+            :loading="loading"
+            :is-credit-card-required="isCreditCardRequired"
+            @click:submit="handleSubmit"
+          />
+        </div>
+
+        <!-- RIGHT -->
+        <div
+          :class="[
+            'pg-col-span-full',
+            'pg-flex',
+            'pg-justify-center',
+            'pg-mt-14',
+            'lg:pg-col-span-5',
+            'height-mobile',
+          ]"
         >
-          <v-col cols="12" class="my-sm-6 px-sm-10">
-            <v-layout row wrap align-center justify-center>
-              <v-card class="mx-0 mx-md-10 custom-shadow">
-                <v-container>
-                  <v-layout column align-center justify-center>
-                    <card-info />
-                  </v-layout>
-                </v-container>
-              </v-card>
-            </v-layout>
-          </v-col>
-        </v-row>
-      </template>
-    </v-col>
-  </v-row>
+          <CardInfo />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   defineComponent,
+  ref,
   useRoute,
-  useRouter,
-  useStore
+  useRouter
 } from '@nuxtjs/composition-api'
-import { mapActions, mapGetters } from 'vuex'
-import { useSignup } from '@/composables/use-signup.composable'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
-import { UserFlow, SignupType } from '@/models'
-import { useUTM } from '@/composables/utm/use-utm.composable'
-import { useNotification } from '@/composables'
+import BackButton from '@/components/shared/BackButton/BackButton.vue'
+import { useSnotifyHelper } from '@/composables'
+import { useUTM } from '@/composables/web/utm'
+import { useModal } from '@/composables/web/modal'
+import {
+  useParentSignup,
+  useSignupFlow,
+  useSignupInvitation,
+  useSignupStep
+} from '@/composables/web/signup'
+import { useAuth } from '@/composables/users'
+import { ParentSignupPayload } from '@/composables/web/signup/types'
+import { SignupType } from '@/composables/users/types'
 
 export default defineComponent({
   name: 'StepOne',
 
   components: {
     RegisterForm,
-    CardInfo
+    CardInfo,
+    BackButton
   },
 
   setup() {
-    const store = useStore()
     const router = useRouter()
     const route = useRoute()
-    const utmContent = useUTM({ route: route.value })
-    const {
-      setIsEmailConflictModalVisible,
-      setIsAccountInactiveModalVisible
-    } = useNotification({ store })
+    const snotify = useSnotifyHelper()
 
-    const { abFlow, isCreditCardRequired, setupABFlow } = useSignup({
+    const Auth = useAuth()
+    const Modal = useModal()
+    const Utm = useUTM({ route: route.value })
+    const SignupInvitation = useSignupInvitation({ route: route.value })
+
+    const SignupFlow = useSignupFlow({
       route: route.value
     })
 
-    setupABFlow()
+    const ParentSignup = useParentSignup({
+      auth: Auth,
+      signupFlow: SignupFlow
+    })
 
-    const goToNextStep = () => {
-      switch (abFlow.value) {
-        case UserFlow.CREDITCARD:
-          router.push({
-            name: 'app-normal-payment',
-            query: {
-              step: '2',
-              process: 'signup',
-              ...utmContent.value
-            }
-          })
-          break
-        case UserFlow.NOCREDITCARD:
-          router.push({
-            name: 'app-children',
-            query: {
-              step: '3',
-              process: 'signup',
-              ...utmContent.value
-            }
-          })
-          break
-      }
-    }
+    const loading = ref(false)
+    const emailValidated = ref('')
+    const token = route.value.query.token
+    const signupType = SignupType.PLAYGARDEN
 
-    return {
-      abFlow,
-      isCreditCardRequired,
-      goToNextStep,
-      setIsEmailConflictModalVisible,
-      setIsAccountInactiveModalVisible
-    }
-  },
+    function goToNextStep() {
+      const SignupStep = useSignupStep()
 
-  data: vm => ({
-    loading: false,
-    emailValidated: null,
-    token: vm.$route.query.token
-  }),
-
-  computed: {
-    ...mapGetters('auth', ['getUserInfo', 'isUserLoggedIn']),
-    inInvitationProcess() {
-      const { query } = this.$route
-      return Boolean(
-        (query.process === 'invitation-caregiver' ||
-          query.process === 'invitation-playdate') &&
-          (query.email || query.phone) &&
-          query.token
+      router.push(
+        SignupStep.getStepOneNextStepLocation({
+          signupType,
+          abFlow: SignupFlow.abFlow.value,
+          utmContent: Utm.utmContent.value
+        })
       )
-    },
-    signupProcess() {
-      if (
-        this.inInvitationProcess &&
-        this.$route.query.process === 'invitation-caregiver'
-      ) {
-        return 'CAREGIVER'
-      }
-      return 'PARENT'
-    },
-    signupProcessCaregiver() {
-      return this.signupProcess === 'CAREGIVER'
     }
-  },
 
-  beforeMount() {
-    if (this.userSocialData) {
-      this.emailValidated = this.userSocialData.email
-    }
-  },
-
-  methods: {
-    ...mapActions('auth/signup', {
-      newParent: 'signup',
-      validateEmail: 'signupEmail',
-      updateParentRegister: 'signupToken'
-    }),
-    ...mapActions('caregiver', { newCaregiver: 'signup' }),
-    ...mapActions('auth', ['setPlaydateInvitationToken']),
-
-    async onSubmit(data) {
+    async function handleSubmit(data: ParentSignupPayload): Promise<void> {
       try {
-        this.loading = true
-        data.signupType = SignupType.PLAYGARDEN
-        if (!this.isUserLoggedIn) {
-          await this.registerProcess(
-            this.signupProcessCaregiver ? { data, token: this.token } : data
-          )
-          this.$snotify.success('Welcome to Playgarden Prep!')
-        }
-        this.goToNextStep()
+        loading.value = true
+        await ParentSignup.signup(data, signupType)
+        snotify.success('Welcome to Playgarden Prep!')
+        goToNextStep()
       } catch (e) {
-        const data = e?.response?.data
+        const error = e as any
+        const data = error?.response?.data
 
         if (data?.statusCode === 409) {
           if (data?.message === 'Email already exists') {
-            this.setIsEmailConflictModalVisible(true)
+            Modal.isEmailConflictModalVisible.value = true
           }
 
           if (data?.message === 'Account Canceled') {
-            this.setIsAccountInactiveModalVisible(true)
+            Modal.isAccountInactiveModalVisible.value = true
           }
         }
       } finally {
-        this.loading = false
+        loading.value = false
       }
-    },
-    async registerProcess(data) {
-      return await this.newParent({ ...data, flow: this.abFlow })
+    }
+
+    function handleGoBack() {
+      window.open('https://playgardenonline.com/', '_self')
+    }
+
+    return {
+      loading,
+      emailValidated,
+      token,
+      isCreditCardRequired: SignupFlow.isCreditCardRequired,
+      inInvitationProcess: SignupInvitation.inInvitationProcess,
+      handleGoBack,
+      goToNextStep,
+      handleSubmit
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
-.image {
-  max-height: 500px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  img {
-    max-width: 90%;
-  }
-  &.mobile {
-    max-height: 250px;
-  }
-}
-.form {
-  max-width: 500px;
-}
-.text-orange-info {
-  background-color: var(--v-accent-base) !important;
-  color: var(--v-white-base) !important;
-  height: 19px;
-  font-size: 15px;
-}
-.text-orange-info::v-deep.v-chip .v-chip__content {
-  color: var(--v-white-base) !important;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 3.15px;
-  line-height: 1.48;
-  background-color: var(--v-accent-base) !important;
-}
-.text-orange-info::v-deep.v-chip--label {
-  border-radius: 0px !important;
-}
-.custom-shadow {
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15) !important;
+.height-mobile {
+  min-height: 475px;
 }
 </style>

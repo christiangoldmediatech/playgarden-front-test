@@ -15,17 +15,17 @@
         Worksheets
       </span>
     </v-col>
-    <v-col cols="12">
+    <v-col v-if="getDiyProject.length" cols="12">
       <span class="color-menu clickable" @click="sendSection('diy')">
         DIY Project
       </span>
     </v-col>
-    <v-col cols="12">
+    <v-col v-if="getArtProjects.length" cols="12">
       <span class="color-menu clickable" @click="sendSection('art-project')">
         Art Project
       </span>
     </v-col>
-    <v-col cols="12">
+    <v-col v-if="getSnacks.length" cols="12">
       <span class="color-menu clickable" @click="sendSection('snack')">
         Snack of the Week
       </span>
@@ -44,14 +44,30 @@
 </template>
 
 <script>
-export default {
+import { useLearnPlayV2, useNuxtHelper } from '@/composables'
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
+
+export default defineComponent({
   name: 'MenuLearnPlay',
-  methods: {
-    sendSection(section) {
-      this.$nuxt.$emit('menu-section', section)
+
+  setup(_, { emit }) {
+    const store = useStore()
+    const nuxt = useNuxtHelper()
+
+    const learnPlayV2 = useLearnPlayV2({ store })
+
+    const sendSection = (section) => {
+      nuxt.$emit('menu-section', section)
+    }
+
+    return {
+      getArtProjects: learnPlayV2.computedProps.getArtProjects,
+      getSnacks: learnPlayV2.computedProps.getSnacks,
+      getDiyProject: learnPlayV2.computedProps.getDiyProject,
+      sendSection
     }
   }
-}
+})
 </script>
 
 <style scoped>
