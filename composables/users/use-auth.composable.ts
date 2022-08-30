@@ -1,7 +1,10 @@
 import { computed } from '@nuxtjs/composition-api'
-import { PlanTier, UseAuthOptions } from './types'
+import { useAccessorHelper } from '../helpers.composable'
+import { PlanTier } from './types'
 
-export const useAuth = ({ store }: UseAuthOptions) => {
+export const useAuth = () => {
+  const store = useAccessorHelper().auth
+
   const isUserLoggedIn = computed(() => store.isUserLoggedIn)
   const isUserInTrial = computed(() => store.isUserInTrial)
 

@@ -140,11 +140,11 @@ export default defineComponent({
           name: 'app-student-cubby-puzzle',
           query: { id: currentChild.value?.id }
         },
-        message: 'Store your work and track progress in your cubby!',
+        message: 'Save your work and track progress in your cubby!',
         audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`
       },
       music: {
-        imageUrl: require('@/assets/png/virtual-preschool/Music.png'),
+        imageUrl: require('@/assets/jpg/virtual-preschool/Music.JPG'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Emma_Music.png'),
         title: 'Music',
         route: { name: 'app-music' },
@@ -152,7 +152,7 @@ export default defineComponent({
         audio: `${baseRoute}audio/virtual-preschool/Music.m4a`
       },
       library: {
-        imageUrl: require('@/assets/png/virtual-preschool/Library.png'),
+        imageUrl: require('@/assets/jpg/virtual-preschool/Library.JPG'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
         title: 'Library',
         route: { name: 'app-library' },

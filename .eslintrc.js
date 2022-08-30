@@ -44,7 +44,7 @@ module.exports = {
     ],
     */
     'vue/camelcase': 2,
-    'vue/component-name-in-template-casing': ['error', 'kebab-case'],
+    'vue/component-name-in-template-casing': ['warn', 'PascalCase'],
     'vue/component-tags-order': [
       'error',
       {

@@ -160,7 +160,7 @@ export const useAuth = ({ store }: { store: Store<TypedStore> }) => {
     }
   }
 
-  const isUserLoggedIn = computed(() => Boolean(userInfo.value.id))
+  const isUserLoggedIn = computed(() => Boolean(userInfo.value && userInfo.value.id))
 
   const fetchUserInfo = async () => {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone

@@ -76,13 +76,14 @@
 import {
   defineComponent,
   ref,
+  computed,
   useRoute,
   useRouter
 } from '@nuxtjs/composition-api'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
-import { useAccessorHelper, useSnotifyHelper } from '@/composables'
+import { useSnotifyHelper } from '@/composables'
 import { useUTM } from '@/composables/web/utm'
 import { useModal } from '@/composables/web/modal'
 import {
@@ -105,25 +106,26 @@ export default defineComponent({
   },
 
   setup() {
-    const store = useAccessorHelper()
     const router = useRouter()
     const route = useRoute()
     const snotify = useSnotifyHelper()
 
-    const Auth = useAuth({ store: store.auth })
-    const Modal = useModal({ store: store.notifications })
+    const Auth = useAuth()
+    const Modal = useModal()
     const Utm = useUTM({ route: route.value })
     const SignupInvitation = useSignupInvitation({ route: route.value })
 
     const SignupFlow = useSignupFlow({
-      route: route.value,
-      store: store.auth.signup
+      route: route.value
     })
 
     const ParentSignup = useParentSignup({
-      store: store.auth.signup,
       auth: Auth,
       signupFlow: SignupFlow
+    })
+
+    const shouldPickPlanOnSignup = computed(() => {
+      return route.value.query.action === 'pick-plan'
     })
 
     const loading = ref(false)
@@ -133,10 +135,11 @@ export default defineComponent({
 
     function goToNextStep() {
       const SignupStep = useSignupStep()
+      const currentPlanType = shouldPickPlanOnSignup.value ? undefined : signupType
 
       router.push(
         SignupStep.getStepOneNextStepLocation({
-          signupType,
+          signupType: currentPlanType,
           abFlow: SignupFlow.abFlow.value,
           utmContent: Utm.utmContent.value
         })

@@ -1,13 +1,11 @@
 import { DataSubscription } from '@/models'
-import { NuxtAxiosInstance } from '@nuxtjs/axios'
+import { useContext } from '@nuxtjs/composition-api'
 
-interface UsePayment {
-  axios: NuxtAxiosInstance
-}
+export const usePayment = () => {
+  const { $axios } = useContext()
 
-export const usePayment = ({ axios }: UsePayment) => {
   const payShorterSubscription = (data: DataSubscription): Promise<void> => {
-    return axios.$post('/billing/payment', data)
+    return $axios.$post('/billing/payment', data)
   }
 
   return {

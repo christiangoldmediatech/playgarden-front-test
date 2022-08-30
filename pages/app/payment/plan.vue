@@ -97,7 +97,6 @@
 </template>
 
 <script lang="ts">
-import dayjs from 'dayjs'
 import {
   computed,
   defineComponent,
@@ -109,11 +108,7 @@ import {
 
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 
-import {
-  useAccessorHelper,
-  useSnotifyHelper,
-  useVuetifyHelper
-} from '@/composables'
+import { useVuetifyHelper } from '@/composables'
 import { useAuth, useUser } from '@/composables/users'
 import { useNotification } from '@/composables/web/notification'
 import { useSignupFlow, useSignupStep } from '@/composables/web/signup'
@@ -131,17 +126,15 @@ export default defineComponent({
     const vuetify = useVuetifyHelper()
     const route = useRoute()
     const router = useRouter()
-    const store = useAccessorHelper()
 
-    const Auth = useAuth({ store: store.auth })
-    const User = useUser({ store: store.auth })
-    const Notification = useNotification({ store: store.notifications })
+    const Auth = useAuth()
+    const User = useUser()
+    const Notification = useNotification()
     const SignupStep = useSignupStep()
     const Utm = useUTM({ route: route.value })
 
     const SignupFlow = useSignupFlow({
-      route: route.value,
-      store: store.auth.signup
+      route: route.value
     })
 
     const initialized = ref(false)
@@ -157,33 +150,6 @@ export default defineComponent({
     const inSignUpProcess = computed<boolean>(() => {
       const { query } = route.value
       return query.process === 'signup' && query.step === '2'
-    })
-
-    const isTrialExpired = computed<boolean>(() => {
-      if (!User.userInfo.value?.trialEnd) {
-        return true
-      }
-
-      return dayjs().isAfter(dayjs(User.userInfo.value.trialEnd))
-    })
-
-    const lastDayOfTrial = computed<string>(() => {
-      if (!User.userInfo.value?.trialEnd) {
-        return ''
-      }
-
-      return dayjs(User.userInfo.value.trialEnd).format('MMMM DD, YYYY')
-    })
-
-    const trialEndedTooLongAgo = computed<boolean>(() => {
-      if (!User.userInfo.value?.trialEnd) {
-        return true
-      }
-
-      const expiredMoreThan30DaysAgo =
-        dayjs().diff(dayjs(User.userInfo.value.trialEnd)) > 30
-
-      return isTrialExpired.value && expiredMoreThan30DaysAgo
     })
 
     function handleSubmit(): void {
@@ -216,9 +182,9 @@ export default defineComponent({
       isMobile,
       initialized,
       inSignUpProcess,
-      isTrialExpired,
-      lastDayOfTrial,
-      trialEndedTooLongAgo,
+      isTrialExpired: User.isTrialExpired,
+      lastDayOfTrial: User.lastDayOfTrial,
+      trialEndedTooLongAgo: User.trialEndedTooLongAgo,
       userInfo: User.userInfo,
       isUserInTrial: Auth.isUserInTrial,
       handleSubmit

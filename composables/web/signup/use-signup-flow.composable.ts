@@ -1,14 +1,15 @@
+import { useAccessorHelper } from '@/composables/helpers.composable'
 import { Flow } from '@/composables/users/enums/flow.enum'
 import { computed, ref } from '@nuxtjs/composition-api'
 import { UserFlowRouteParam, UserFlowRoute } from './enums'
 import { UseSignupFlowOptions } from './types'
 
-export const useSignupFlow = ({ route, store }: UseSignupFlowOptions) => {
+export const useSignupFlow = ({ route }: UseSignupFlowOptions) => {
+  const store = useAccessorHelper().auth.signup
+
   const abFlow = computed<Flow>({
     get() {
-      return route.name?.includes(`-${UserFlowRouteParam.NOCREDITCARD}-`)
-        ? Flow.NOCREDITCARD
-        : store.abFlow
+      return store.abFlow
     },
 
     set(abFlow: Flow) {

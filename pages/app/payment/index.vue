@@ -1,9 +1,7 @@
 <template>
-  <v-row>
-    <v-col cols="12">
-      <step-two :mode="mode" />
-    </v-col>
-  </v-row>
+  <div>
+    <StepTwo :mode="mode" />
+  </div>
 </template>
 
 <script>

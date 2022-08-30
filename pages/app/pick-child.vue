@@ -1,6 +1,6 @@
 <template>
-  <v-main class="bkg">
-    <v-container fluid fill-height>
+  <v-main class="bkg fit-page d-flex">
+    <v-container fluid class="my-auto">
       <v-row align="center" justify="center">
         <v-col cols="12" md="8" lg="6" class="pick-child" :class="{mobile: $vuetify.breakpoint.smAndDown}">
           <v-card>
@@ -125,7 +125,12 @@ export default {
       return result
     }
   },
-
+  mounted() {
+    document.body.style.overflow = 'hidden'
+  },
+  destroyed() {
+    document.body.style.overflow = 'scroll'
+  },
   async created () {
     await this.getChildren()
 
@@ -206,6 +211,22 @@ export default {
       }
     }
   }
+}
+
+::v-deep .v-main__wrap {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.fit-page{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 101%;
+  z-index: 2000;
+  padding: 0 0 0 0 !important;
+  overflow-y: auto;
 }
 
 .child-option {
