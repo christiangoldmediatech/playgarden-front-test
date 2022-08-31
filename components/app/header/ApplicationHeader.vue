@@ -3,6 +3,7 @@
     app
     class="pb-4 pg-app-bar paper-bg d-flex justify-center"
     :class="{
+      'paper-bg-logged': isUserLoggedIn,
       'pg-app-bar-height': !isUserLoggedIn && $vuetify.breakpoint.mdAndUp,
       'pg-app-bar-mobile-height':
         !isUserLoggedIn && !$vuetify.breakpoint.mdAndUp,
@@ -13,7 +14,8 @@
     prominent
   >
     <v-row
-      class="flex-nowrap header-container"
+      class="flex-nowrap"
+      :class="[isUserLoggedIn ? 'pb-10' : 'header-container']"
       align="center"
       justify="space-between"
       no-gutters
@@ -32,9 +34,10 @@
 
       <!-- Logo -->
       <v-col class="d-flex align-center logo-container" cols="auto">
-        <v-toolbar-title>
+        <v-toolbar-title :class="[ isUserLoggedIn ? 'mx-3 mt-1' : '']">
           <v-img
             class="cursor-link"
+            :class="[isUserLoggedIn ? 'mx-4' : '']"
             alt="Playarden Prep Online Logo"
             :max-width="$vuetify.breakpoint.mdAndUp ? 100 : 70"
             :src="require('@/assets/png/rainbow-logo.png')"
@@ -43,7 +46,7 @@
         </v-toolbar-title>
       </v-col>
 
-      <v-col class="d-flex align-center" cols="auto">
+      <v-col class="d-flex align-center pg-mr-2 md:pg-mr-0" cols="auto">
         <!-- ITEMS -->
         <div v-if="getVerifyEmail" class="mt-5 hidden-sm-and-down">
           <v-toolbar-items>
@@ -429,6 +432,14 @@ export default {
     background-image: url('~@/assets/webp/paper-header-mobile.webp');
     background-size: cover;
     background-position: center bottom;
+  }
+}
+
+.paper-bg-logged {
+  background-image: url('~@/assets/png/paper-header.png');
+
+  @media screen and (max-width: 1201px) {
+    background-image: url('~@/assets/png/paper-header-mobile.png');
   }
 }
 </style>
