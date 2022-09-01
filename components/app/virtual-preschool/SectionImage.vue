@@ -13,10 +13,9 @@
       >
         <!-- Section Button -->
         <div
+          class="section-btn"
           :class="{
-            'section-top': !$vuetify.breakpoint.smAndDown,
             translucent: hover,
-            'section-btn': $vuetify.breakpoint.smAndDown
           }"
         >
           <div>{{ section.title }}</div>
@@ -38,7 +37,7 @@
           <div class="section-bubble" />
 
           <!-- Bubble Text -->
-          <div class="section-bubble-text">
+          <div v-if="section.message" class="section-bubble-text">
             {{ section.message }}
             <v-btn icon class="my-n4 mx-n2">
               <v-icon
