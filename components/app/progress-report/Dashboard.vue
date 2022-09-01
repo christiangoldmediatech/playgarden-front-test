@@ -112,7 +112,7 @@
                 </div>
                 <template v-else>
                   <v-row class="pt-3" no-gutters>
-                    <v-col cols="12" md="12" lg="7">
+                    <v-col cols="12">
                       <div class="pt-4 ml-4 mb-4">
                         <underlined-title
                           class="text-h6 text-md-h5 mt-4 mr-4"
@@ -122,8 +122,7 @@
                     </v-col>
                     <v-col
                       :class="!$vuetify.breakpoint.mobile ? 'pr-3' : 'px-3'"
-                      md="12"
-                      lg="5"
+                      cols="12"
                     >
                       <div class="progress-letter-selector">
                         <LetterSelect

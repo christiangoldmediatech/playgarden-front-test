@@ -8,18 +8,18 @@
           </div>
           <div class="contact-phone">
             <img loading="lazy" class="img-phone-call" src="https://playgardenonline.com/wp-content/uploads/2022/01/phone-call-1.svg" alt="Call to Playgarden Prep Online">
-            <a href="tel:+646-504-4716" class="number-phone">646-504-4716</a>
+            <a href="tel:+646-504-4716" class="number-phone">+1 (646)-504-4716</a>
           </div>
         </div>
 
         <ul class="menu-header logged-">
-          <li class="only-desktop">
+          <li class="only-desktop link-option">
             <a href="https://playgardenonline.com/">Home</a>
           </li>
-          <li class="only-desktop">
+          <li class="only-desktop link-option link-option-with-icon">
             <a href="#admisions" class="menu-view-more">
               <span>Admissions</span>
-              <v-icon>
+              <v-icon class="menu-view-icon" large>
                 mdi-chevron-down
               </v-icon>
             </a>
@@ -30,10 +30,10 @@
               </ul>
             </div>
           </li>
-          <li class="only-desktop">
+          <li class="only-desktop link-option link-option-with-icon">
             <a href="#the-virtual-preschool" class="menu-view-more">
               <span>Virtual Preschool</span>
-              <v-icon>
+              <v-icon class="menu-view-icon" large>
                 mdi-chevron-down
               </v-icon>
             </a>
@@ -52,10 +52,13 @@
               </ul>
             </div>
           </li>
-          <li class="only-desktop">
+          <li class="only-desktop link-option">
             <a href="https://playgardenonline.com/about-us">About us</a>
           </li>
-          <li class="login">
+          <li class="only-desktop link-option">
+            <a href="https://playgardenonline.com/school/help">FAQs</a>
+          </li>
+          <li class="login link-option">
             <a href="https://playgardenonline.com/school/auth/login">
               <span>Log In</span>
               <img loading="lazy" src="https://playgardenonline.com/wp-content/uploads/2022/01/log-in.svg" alt="Login - Playgarden Prep Online" class="login-icon">
@@ -221,6 +224,27 @@ nav.sticky {
     width: 100%;
     z-index: 9999;
 }
+.link-option a, .link-option a span {
+    color: #707070;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    outline: none;
+    transition: 0.3s all;
+    font-size: 18px;
+    font-size: 1.125rem;
+    line-height: 1.6875rem;
+    font-weight: 500;
+    letter-spacing: .96px;
+}
+.link-option-with-icon a span {
+  margin-right: -12px;
+}
+.menu-view-icon {
+  margin-right: -12px;
+}
+
 @media (max-width:1023px) {
     nav.sticky-remove-btns .navbar-right{
         display: none;
@@ -261,7 +285,7 @@ nav.sticky {
     }
     .navbar-right{
         display: grid;
-        gap: 14px;
+        gap: 20px;
         justify-content: end;
     }
 }
@@ -428,13 +452,18 @@ nav.sticky {
     color: #707070;
     margin-right: 27px;
 }
+
+.message strong {
+  color: #4F4F4F;
+  font-weight: bold !important;
+}
+
 .contact-menu-header .contact-phone{
     display: grid;
     align-items: center;
     grid-template-columns: auto auto;
     justify-content: center;
     column-gap: 4px;
-    width: 177px;
     text-align: center;
 }
 .contact-menu-header .img-phone-call{
@@ -457,11 +486,10 @@ nav.sticky {
 .menu-header{
     list-style: none;
     position: relative;
-    display: grid;
-    grid-template-columns: repeat(6,auto);
+    display: flex;
     align-items: center;
     justify-content: end;
-    column-gap: 24px;
+    gap: 24px;
     transition: 0.5s all;
 }
 .menu-header.logged{
@@ -478,11 +506,7 @@ nav.sticky {
 }
 .menu-header > li.login a{
     display: grid;
-    column-gap: 15px;
     grid-template-columns: repeat(2, auto);
-}
-.menu-header > li.login a img{
-    display: none;
 }
 .menu-header > li:hover > a,
 .menu-header > li > a:focus{
@@ -543,11 +567,10 @@ nav.sticky {
     position: relative;
     cursor: pointer;
 }
-.menu-header > li a{
+.menu-header > li{
     display: grid;
     grid-template-columns: repeat(2,auto);
     align-items: center;
-    column-gap: 6px;
 }
 .menu-header > li .container-submenu{
     width: 290px;
@@ -660,23 +683,14 @@ nav.sticky {
     }
 }
 
-@media (max-width:1023px) {
-    .contact-menu-header{
-        display: none;
-    }
-    .contact-menu-header,
+@media (max-width:1024px) {
     .menu-header .only-desktop{
         display: none;
     }
     .menu-header{
-        grid-template-columns: 1fr;
-        justify-content: center;
-    }
-    .menu-header{
         grid-template-columns: repeat(2,auto);
         align-items: center;
-        justify-content: center;
-        column-gap: 59px;
+        justify-content: flex-end;
     }
     .menu-header.logged{
         display: block;

@@ -9,9 +9,7 @@ export const useSignupFlow = ({ route }: UseSignupFlowOptions) => {
 
   const abFlow = computed<Flow>({
     get() {
-      return route.name?.includes(`-${UserFlowRouteParam.NOCREDITCARD}-`)
-        ? Flow.NOCREDITCARD
-        : store.abFlow
+      return store.abFlow
     },
 
     set(abFlow: Flow) {

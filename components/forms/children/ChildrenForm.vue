@@ -1,48 +1,53 @@
 <template>
   <v-row no-gutters>
-    <!-- Name -->
     <v-col
-      class="pr-2"
-      cols="6"
+      cols="12"
+      lg="7"
+      order="2"
+      order-lg="1"
+      :class="{ 'pr-2': isLargeScreen }"
     >
-      <validation-provider
-        v-slot="{ errors }"
-        :name="(removable ? `Child #${index + 1} - ` : '') + 'Name'"
-        rules="required"
-      >
-        <pg-text-field
-          v-model="itemCurrent.firstName"
-          clearable
-          :disabled="isLoading"
-          :error-messages="errors"
-          label="First name"
-          solo
-          class="custom-text-field"
-        />
-      </validation-provider>
-    </v-col>
-    <v-col
-      cols="6"
-    >
-      <!-- Lastname -->
-      <validation-provider
-        v-slot="{ errors }"
-        :name="(removable ? `Child #${index + 1} - ` : '') + 'Lastname'"
-        rules="required"
-      >
-        <pg-text-field
-          v-model="itemCurrent.lastName"
-          clearable
-          :disabled="isLoading"
-          :error-messages="errors"
-          label="Last name"
-          solo
-          class="custom-text-field"
-        />
-      </validation-provider>
-    </v-col>
-    <!-- Birth date -->
-    <v-col cols="12">
+      <v-row :no-gutters="!isLargeScreen">
+        <v-col cols="12" lg="6">
+          <!-- Name -->
+          <validation-provider
+            v-slot="{ errors }"
+            :name="(removable ? `Child #${index + 1} - ` : '') + 'Name'"
+            rules="required"
+          >
+            <pg-text-field
+              v-model="itemCurrent.firstName"
+              clearable
+              :disabled="isLoading"
+              :error-messages="errors"
+              label="First name"
+              solo
+              class="custom-text-field"
+            />
+          </validation-provider>
+        </v-col>
+
+        <v-col cols="12" lg="6">
+          <!-- Lastname -->
+          <validation-provider
+            v-slot="{ errors }"
+            :name="(removable ? `Child #${index + 1} - ` : '') + 'Lastname'"
+            rules="required"
+          >
+            <pg-text-field
+              v-model="itemCurrent.lastName"
+              clearable
+              :disabled="isLoading"
+              :error-messages="errors"
+              label="Last name"
+              solo
+              class="custom-text-field"
+            />
+          </validation-provider>
+        </v-col>
+      </v-row>
+
+      <!-- Birth date -->
       <v-menu
         ref="menu"
         v-model="menu"
@@ -73,15 +78,13 @@
           @change="save"
         />
       </v-menu>
-    </v-col>
 
-    <!-- Gender -->
-    <v-col cols="12">
+      <!-- Gender -->
       <validation-provider
         :name="(removable ? `Child #${index + 1} - ` : '') + 'Gender'"
         rules="required"
       >
-        <v-row class="mb-6">
+        <v-row>
           <v-col v-for="(gender, indexG) in genders" :key="indexG" cols="6">
             <v-btn
               block
@@ -101,37 +104,23 @@
       </validation-provider>
     </v-col>
 
-    <!-- Backpack -->
-    <center class="mb-4">
-      <small>
-        Choose an icon for you child:
-      </small>
-    </center>
-    <validation-provider
-      :name="(removable ? `Child #${index + 1} - ` : '') + 'Backpack'"
-      rules="required"
+    <v-col
+      cols="12"
+      lg="5"
+      order="1"
+      order-lg="2"
+      class="pg-mb-7 lg:pg-mb-0"
+      :class="{ 'pl-2': isLargeScreen }"
     >
-      <v-row no-gutters>
-        <v-col
-          v-for="(backpack, indexB) in backpacks"
-          :key="indexB"
-          class="image"
-          cols="4"
-          md="2"
-        >
-          <img
-            :alt="backpack.name"
-            class="clickable"
-            :class="{ active: itemCurrent.backpackId === backpack.id }"
-            :src="backpack.image"
-            height="100px"
-            @click="itemCurrent.backpackId = backpack.id"
-          >
-        </v-col>
-      </v-row>
-
-      <input v-model="itemCurrent.backpackId" type="hidden">
-    </validation-provider>
+      <!-- Backpack -->
+      <validation-provider
+        :name="(removable ? `Child #${index + 1} - ` : '') + 'Backpack'"
+        rules="required"
+      >
+        <child-icon-selector :value="itemCurrent.backpackId" :backpacks="backpacks" @update:value="updateBackpackId" />
+        <input v-model="itemCurrent.backpackId" type="hidden">
+      </validation-provider>
+    </v-col>
 
     <v-btn
       v-if="removable"
@@ -149,9 +138,11 @@
 
 <script>
 import dayjs from 'dayjs'
+import ChildIconSelector from '@/components/forms/children/ChildIconSelector.vue'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'ChildrenForm',
+  components: { ChildIconSelector },
   props: {
     item: {
       type: Object,
@@ -185,6 +176,10 @@ export default {
 
     isLoading () {
       return this.dataLoading || this.loading
+    },
+
+    isLargeScreen() {
+      return this.$vuetify.breakpoint.lgAndUp
     }
   },
   watch: {
@@ -212,6 +207,10 @@ export default {
       getChildren: 'get',
       deleteChild: 'delete'
     }),
+
+    updateBackpackId(val) {
+      this.itemCurrent.backpackId = val
+    },
 
     fetchBackpacks () {
       this.getBackpacks().then(data => (this.backpacks = data))
@@ -273,25 +272,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.image {
-  height: 100px;
-  width: 100px;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-
-  img {
-    max-height: 100px;
-    max-width: 100px;
-    width: 100%;
-
-    &.active {
-      background-color: var(--v-secondary-base);
-      border-radius: 50%;
-      padding: 5px;
-    }
-  }
-}
 .grey {
   color: var(--v-black-base);
 }

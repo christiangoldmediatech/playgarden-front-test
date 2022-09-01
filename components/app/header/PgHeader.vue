@@ -42,7 +42,7 @@
             width="60"
           >
         </v-btn>
-        <div v-if="!hasUserLearnAndPlayPlan" class="child-select mt-4 mt-md-0">
+        <div class="child-select mt-4 mt-md-0">
           <child-select
             v-if="childId"
             v-model="childId"

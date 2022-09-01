@@ -1,8 +1,9 @@
 <template>
   <v-app-bar
     app
-    class="pb-4 pg-app-bar paper-bg"
+    class="pb-4 pg-app-bar paper-bg d-flex justify-center"
     :class="{
+      'paper-bg-logged': isUserLoggedIn,
       'pg-app-bar-height': !isUserLoggedIn && $vuetify.breakpoint.mdAndUp,
       'pg-app-bar-mobile-height':
         !isUserLoggedIn && !$vuetify.breakpoint.mdAndUp,
@@ -13,16 +14,30 @@
     prominent
   >
     <v-row
-      class="flex-nowrap pb-10"
+      class="flex-nowrap"
+      :class="[isUserLoggedIn ? 'pb-10' : 'header-container']"
       align="center"
       justify="space-between"
       no-gutters
     >
+      <!-- HAMBURGER MENU -->
+      <v-app-bar-nav-icon
+        class="pg-app-bar-nav-icon hidden-lg-and-up ham-menu"
+        :class="{ 'is-md': $vuetify.breakpoint.md }"
+        color="primary"
+        tile
+        x-large
+        @click.stop="toggleDrawer"
+      >
+        <img width="27" height="27" loading="lazy" src="https://playgardenonline.com/wp-content/uploads/2022/02/bar-menu.svg">
+      </v-app-bar-nav-icon>
+
       <!-- Logo -->
-      <v-col class="d-flex align-center" cols="auto">
-        <v-toolbar-title class="mx-3 mt-1">
+      <v-col class="d-flex align-center logo-container" cols="auto">
+        <v-toolbar-title :class="[ isUserLoggedIn ? 'mx-3 mt-1' : '']">
           <v-img
-            class="mx-4 cursor-link"
+            class="cursor-link"
+            :class="[isUserLoggedIn ? 'mx-4' : '']"
             alt="Playarden Prep Online Logo"
             :max-width="$vuetify.breakpoint.mdAndUp ? 100 : 70"
             :src="require('@/assets/png/rainbow-logo.png')"
@@ -31,7 +46,7 @@
         </v-toolbar-title>
       </v-col>
 
-      <v-col class="pr-3 d-flex align-center" cols="auto">
+      <v-col class="d-flex align-center pg-mr-2 md:pg-mr-0" cols="auto">
         <!-- ITEMS -->
         <div v-if="getVerifyEmail" class="mt-5 hidden-sm-and-down">
           <v-toolbar-items>
@@ -66,7 +81,7 @@
           </v-toolbar-items>
         </div>
         <div v-if="!isUserLoggedIn" class="hidden-sm-and-down">
-          <menu-landing-page class="mt-7" />
+          <menu-landing-page />
         </div>
         <!--divider icon profile and help-->
         <v-divider
@@ -167,17 +182,6 @@
         </div>
         <!-- Profile/help/Tutorial Menu end-->
 
-        <!-- HAMBURGER MENU -->
-        <v-app-bar-nav-icon
-          class="pg-app-bar-nav-icon hidden-md-and-up"
-          :class="{ 'is-md': $vuetify.breakpoint.md }"
-          color="primary"
-          tile
-          x-large
-          data-test-id="hamburger-menu"
-          @click.stop="toggleDrawer"
-        />
-
         <!-- MOBILE ICONS -->
         <div
           v-if="getVerifyEmail"
@@ -191,7 +195,7 @@
             @click="goToAccount"
           >
 
-          <v-btn
+          <!-- <v-btn
             :color="isUserLoggedIn ? 'primary' : 'accent'"
             active-class="transparent--text"
             icon
@@ -205,7 +209,7 @@
             <v-icon v-else color="primary">
               mdi-login
             </v-icon>
-          </v-btn>
+          </v-btn> -->
         </div>
       </v-col>
     </v-row>
@@ -294,13 +298,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.ham-menu {
+  margin-right: 14px;
+  margin-left: 38px;
+  margin-bottom: 12px;
+}
+
+.logo-container {
+  @media (max-width: $breakpoint-md) {
+    margin-right: auto;
+  }
+}
+
+.header-container {
+  max-width: 1500px;
+  padding: 31px 56px;
+
+  @media (max-width: $breakpoint-md) {
+    padding: 28px 32px 28px 0;
+  }
+}
+
 .pg-app-bar.v-app-bar.v-app-bar--fixed {
   z-index: 1000 !important;
 }
 
 .pg-app-bar::v-deep .v-toolbar__content {
-  padding-left: 0;
-  padding-right: 0;
+  padding: 0;
+  width: 100%;
+  justify-content: center;
 }
 
 .pg-app-bar-nav-icon {
@@ -321,7 +347,7 @@ export default {
     display: none;
   }
 
-  @media screen and (max-width: 1100px) {
+  @media screen and (max-width: $breakpoint-sm) {
     &.auth-buttons {
       display: none;
     }
@@ -380,28 +406,40 @@ export default {
   height: 170px !important;
 }
 
-@media screen and (max-width: 959px) {
+@media screen and (max-width: 768px) {
   .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
-    height: 120px !important;
+    height: 150px !important;
   }
 }
 
 .pg-app-bar-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
-  height: 212px !important;
+  height: 200px !important;
+
+  @media screen and (max-width: 1024px) {
+    height: 186px !important;
+  }
 }
 .btn-register:before {
   background-color: transparent !important;
 }
 
 .paper-bg {
-  background-image: url('~@/assets/png/paper-header.png');
+  background-image: url('~@/assets/webp/paper-header.webp');
   background-size: cover;
   background-position: center bottom;
 
-  @media screen and (max-width: 768px) {
-    background-image: url('~@/assets/png/paper-header-mobile.png');
+  @media screen and (max-width: 1201px) {
+    background-image: url('~@/assets/webp/paper-header-mobile.webp');
     background-size: cover;
     background-position: center bottom;
+  }
+}
+
+.paper-bg-logged {
+  background-image: url('~@/assets/png/paper-header.png');
+
+  @media screen and (max-width: 1201px) {
+    background-image: url('~@/assets/png/paper-header-mobile.png');
   }
 }
 </style>
