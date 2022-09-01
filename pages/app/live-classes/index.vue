@@ -6,6 +6,15 @@
         class="lsess-container"
         fluid
       >
+        <unlock-prompt
+          v-if="hasUserLearnAndPlayPlan && !loading"
+          title="LIVE CLASSES"
+          desc="Unlock the live classes section"
+          img="live-classes.svg"
+          padding="110"
+          vertical
+          top="-70"
+        />
         <v-row class="fill-height">
           <v-col class="lsess-daily" cols="12" md="4" lg="3" xl="2">
             <today-cards-panel
@@ -107,7 +116,16 @@
         </v-row>
       </v-container>
 
-      <v-container v-else class="lclass-mobile">
+      <v-container v-else class="lclass-mobile" :class="{ 'lclass-mobile-lock': hasUserLearnAndPlayPlan }">
+        <unlock-prompt
+          v-if="hasUserLearnAndPlayPlan && !loading"
+          title="LIVE CLASSES"
+          desc="Unlock the live classes section"
+          img="live-classes.svg"
+          vertical
+          top="-100"
+          padding="120"
+        />
         <div class="header">
           <img class="camera-icon" src="@/assets/svg/sessions-camera.svg">
           Live Classes Schedule
@@ -285,6 +303,7 @@ import SessionsTable from '@/components/app/live-sessions/SessionsTable.vue'
 import RecordedClassPlayer from '@/components/app/live-sessions/RecordedClassPlayer.vue'
 import WeekSelector from '@/components/admin/live-sessions/WeekSelector.vue'
 import DaySelector from '@/components/admin/live-sessions/DaySelector.vue'
+import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
 import { jsonCopy } from '@/utils'
 import dayjs from 'dayjs'
 
@@ -299,7 +318,8 @@ export default {
     SessionsTable,
     RecordedClassPlayer,
     WeekSelector,
-    DaySelector
+    DaySelector,
+    UnlockPrompt
   },
 
   data: () => {
@@ -319,7 +339,7 @@ export default {
 
   computed: {
     ...mapState('live-sessions', ['sessions']),
-    ...mapGetters('auth', ['getUserInfo']),
+    ...mapGetters('auth', ['getUserInfo', 'hasUserLearnAndPlayPlan']),
     ...mapGetters('auth', {
       hasTrialOrPlatinumPlan: 'hasTrialOrPlatinumPlan'
     }),
@@ -512,6 +532,10 @@ export default {
 </script>
 
 <style lang="scss">
+.lclass-mobile-lock {
+  min-height: 500px;
+}
+
 .lclass-mobile {
   margin-top: 12px;
 
