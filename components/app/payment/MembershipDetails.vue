@@ -342,7 +342,7 @@
 
                 <validation-provider
                   v-slot="{ errors }"
-                  name="otherLeaveMotive"
+                  name="reason"
                   rules="required"
                 >
                   <v-text-field
@@ -584,11 +584,6 @@ export default {
         }
       } else {
         this.promotion_id = null
-      }
-    },
-    leaveMotive(val) {
-      if (val) {
-        console.log('leaveMotive--', val)
       }
     }
   },
