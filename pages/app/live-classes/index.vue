@@ -11,9 +11,9 @@
           title="LIVE CLASSES"
           desc="Unlock the live classes section"
           img="live-classes.svg"
-          padding="110"
+          :padding="110"
           vertical
-          top="-70"
+          :top="-70"
         />
         <v-row class="fill-height">
           <v-col class="lsess-daily" cols="12" md="4" lg="3" xl="2">
@@ -123,8 +123,8 @@
           desc="Unlock the live classes section"
           img="live-classes.svg"
           vertical
-          top="-100"
-          padding="120"
+          :top="-100"
+          :padding="120"
         />
         <div class="header">
           <img class="camera-icon" src="@/assets/svg/sessions-camera.svg">
