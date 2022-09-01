@@ -166,7 +166,7 @@ export default {
       return
     }
 
-    this.getChildren()
+    this.getChildren(this.$route)
   },
 
   methods: {

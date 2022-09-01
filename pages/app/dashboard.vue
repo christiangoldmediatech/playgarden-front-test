@@ -89,7 +89,7 @@ export default {
         this.changeChild(this.overrides.childId, false)
       }
     } else {
-      await this.getAllChildren()
+      await this.getAllChildren(this.$route)
     }
     // Load current lesson
     await this.handleLesson(true)
@@ -144,7 +144,12 @@ export default {
       return undefined
     },
     changeChild(newId, redirect = true) {
-      const child = this.allChildren.find(({ id }) => id === parseInt(newId))
+      let child
+      if (!Array.isArray(newId)) {
+        child = this.allChildren.find(({ id }) => id === parseInt(newId))
+      } else {
+        child = this.allChildren.find(item => item.everyone === true)
+      }
       this.setChild({ value: [child], save: true })
       if (redirect) {
         this.handleLesson(true).then(() => {
