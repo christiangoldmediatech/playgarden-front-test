@@ -139,7 +139,7 @@ export default defineComponent({
         route: { name: 'app-music' }
       },
       wellbeing: {
-        imageUrl: require('@/assets/jpg/virtual-preschool/well-being.JPG'),
+        imageUrl: require('@/assets/jpg/virtual-preschool/well-being.jpg'),
         title: 'Well-being',
         route: { name: 'app-learn-play' }
       },
