@@ -340,14 +340,21 @@
                   </v-radio>
                 </v-radio-group>
 
-                <v-text-field
-                  v-show="isLastLeaveMotive"
-                  v-model="otherLeaveMotive"
-                  class=""
-                  solo
-                  dense
-                  placeholder="Reason..."
-                />
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="otherLeaveMotive"
+                  rules="required"
+                >
+                  <v-text-field
+                    v-show="isLastLeaveMotive"
+                    v-model="otherLeaveMotive"
+                    class=""
+                    solo
+                    dense
+                    :error-messages="errors"
+                    placeholder="Reason..."
+                  />
+                </validation-provider>
 
                 <p class="font-weight-bold">
                   Thank you so much!
@@ -374,7 +381,7 @@
           <v-btn
             color="primary"
             :loading="loading"
-            :disabled="!leaveMotive"
+            :disabled="isValidateMotive"
             x-large
             @click="removeSubscription"
           >
@@ -509,6 +516,14 @@ export default {
       }
     },
 
+    isValidateMotive() {
+      if (this.leaveMotive === 'Other (please explain)' && this.otherLeaveMotive === '') {
+        return true
+      } else {
+        return !this.leaveMotive
+      }
+    },
+
     getTotalPay () {
       return (((this.billing.percentOff * this.billing.planAmount) / 100) - this.billing.planAmount).toFixed(2)
     },
@@ -569,6 +584,11 @@ export default {
         }
       } else {
         this.promotion_id = null
+      }
+    },
+    leaveMotive(val) {
+      if (val) {
+        console.log('leaveMotive--', val)
       }
     }
   },
