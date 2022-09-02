@@ -106,7 +106,7 @@ export default defineComponent({
 
     const section = {
       dashboard: {
-        imageUrl: require('@/assets/png/virtual-preschool/Daily lessons.png'),
+        imageUrl: require('@/assets/png/virtual-preschool/playdates.png'),
         title: 'Daily Lessons',
         route: { name: 'app-dashboard' }
       },
@@ -116,7 +116,7 @@ export default defineComponent({
         route: goToKidsCorner
       },
       playdates: {
-        imageUrl: require('@/assets/png/virtual-preschool/playdates.png'),
+        imageUrl: require('@/assets/png/virtual-preschool/Daily lessons.png'),
         title: 'Playdates',
         route: { name: 'app-playdates' }
       },
