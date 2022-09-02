@@ -1,14 +1,14 @@
 <template>
-  <v-row align="center" justify="center" no-gutters>
-    <v-col cols="11" md="6">
-      <div class="image">
+  <v-row align="center" justify="center" no-gutters class="py-0 py-md-16">
+    <v-col class="d-flex justify-center" cols="11" md="6">
+      <div class="image mt-4 mt-md-0" :class="{mobile: $vuetify.breakpoint.smAndDown}">
         <img alt="Smiling Girl Picture" src="@/assets/png/welcome-back.png">
       </div>
     </v-col>
 
     <v-col cols="12" md="6">
       <div class="form mx-auto px-4">
-        <div>
+        <div class="my-5 my-md-0 text-center text-md-left">
           <underlined-title text="Reset Password" />
         </div>
 
@@ -44,6 +44,11 @@ export default {
       isLoadingForm: false,
       errorMessage: ''
     }
+  },
+
+  created() {
+    this.clearStorage()
+    this.deleteAllCookies()
   },
 
   async beforeMount () {
@@ -95,6 +100,20 @@ export default {
         'Sorry! An error ocurred while reseting your password'
       // eslint-disable-next-line
       console.error(error);
+    },
+
+    clearStorage() {
+      localStorage.clear()
+    },
+
+    deleteAllCookies() {
+      const cookies = document.cookie.split(';')
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i]
+        const eqPos = cookie.indexOf('=')
+        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
+      }
     }
   }
 }
@@ -109,6 +128,10 @@ export default {
   align-content: center;
   img {
     max-width: 90%;
+  }
+  &.mobile {
+    max-height: 250px;
+    max-width: 250px;
   }
 }
 .form {

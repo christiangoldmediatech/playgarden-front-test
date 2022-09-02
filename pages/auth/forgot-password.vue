@@ -1,6 +1,6 @@
 <template>
   <v-row align="center" justify="center" no-gutters class="py-0 py-md-16">
-    <v-col cols="11" md="6">
+    <v-col class="d-flex justify-center" cols="11" md="6">
       <div class="image mt-4 mt-md-0" :class="{mobile: $vuetify.breakpoint.smAndDown}">
         <img alt="Smiling Girl Picture" src="@/assets/png/welcome-back.png">
       </div>
@@ -73,6 +73,7 @@ export default {
   }
   &.mobile {
     max-height: 250px;
+    max-width: 250px;
   }
 }
 .form {
