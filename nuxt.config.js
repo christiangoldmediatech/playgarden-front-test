@@ -47,6 +47,9 @@ export default {
         content: process.env.npm_package_description || ''
       }
     ],
+    bodyAttrs: {
+      style: 'overflow: visible !important;'
+    },
     link: [
       {
         rel: 'icon',
