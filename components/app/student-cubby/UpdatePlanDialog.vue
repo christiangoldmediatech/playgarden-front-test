@@ -1,4 +1,3 @@
-import defineComponent from '../virtual-preschool/VirtualLearnAndPlay.vue';
 <template>
   <v-dialog v-model="dialog" persistent max-width="700px">
     <v-card class="card-wrapper py-10">
