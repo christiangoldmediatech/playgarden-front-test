@@ -9,9 +9,7 @@
       >
     </v-col>
     <v-col class="text-center mt-n2" cols="12">
-      <span v-if="child" class="font-weight-bold child-name">
-        {{ child.firstName }}
-      </span>
+      <child-select v-model="childId" :show-only-selected-name="true" />
     </v-col>
     <v-col class="text-center mt-n6" cols="12">
       <recorded-letter
@@ -27,11 +25,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
+import ChildSelect from '@/components/app/ChildSelect.vue'
 
 export default {
   name: 'PlayAndLearnMenuTop',
   components: {
-    RecordedLetter
+    RecordedLetter,
+    ChildSelect
   },
   props: {
     previewMode: {
@@ -43,11 +43,13 @@ export default {
     return {
       loading: false,
       learnPlay: null,
-      smallLetter: false
+      smallLetter: false,
+      childId: null
     }
   },
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
+    ...mapGetters('children', { children: 'rows' }),
     childrenIds() {
       return this.currentChild && this.currentChild.length
         ? this.currentChild[0].id
@@ -73,10 +75,18 @@ export default {
       }
     }
   },
+  watch: {
+    childId(newId, oldId) {
+      if (!oldId) { return }
+      this.changeChild(newId)
+    }
+  },
   async created() {
     if (this.previewMode) {
       return
     }
+
+    this.childId = this.child.id
 
     await this.getAllChildren()
     await this.handleLesson()
@@ -92,9 +102,10 @@ export default {
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),
     ...mapActions('children/learn-play', ['getFirstLearnPlay']),
+    ...mapActions(['setChild']),
 
     changeChild(newId, redirect = true) {
-      const child = this.allChildren.find(({ id }) => id === parseInt(newId))
+      const child = this.children.find(({ id }) => id === parseInt(newId))
       this.setChild({ value: [child], save: true })
     },
 
@@ -113,11 +124,6 @@ export default {
 </script>
 
 <style scoped>
-.child-name {
-  color: #7852b5 !important;
-  font-size: 28px !important;
-}
-
 .rotated {
   transform: rotate(-13.26deg) !important;
 }

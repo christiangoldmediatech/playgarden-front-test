@@ -76,6 +76,7 @@
 import {
   defineComponent,
   ref,
+  computed,
   useRoute,
   useRouter
 } from '@nuxtjs/composition-api'
@@ -123,6 +124,10 @@ export default defineComponent({
       signupFlow: SignupFlow
     })
 
+    const shouldPickPlanOnSignup = computed(() => {
+      return route.value.query.action === 'pick-plan'
+    })
+
     const loading = ref(false)
     const emailValidated = ref('')
     const token = route.value.query.token
@@ -130,10 +135,11 @@ export default defineComponent({
 
     function goToNextStep() {
       const SignupStep = useSignupStep()
+      const currentPlanType = shouldPickPlanOnSignup.value ? undefined : signupType
 
       router.push(
         SignupStep.getStepOneNextStepLocation({
-          signupType,
+          signupType: currentPlanType,
           abFlow: SignupFlow.abFlow.value,
           utmContent: Utm.utmContent.value
         })

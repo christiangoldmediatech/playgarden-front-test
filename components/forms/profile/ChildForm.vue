@@ -58,50 +58,12 @@
                       DELETE CHILD
                     </v-btn>
                   </v-col>
-
-                  <!-- Child Profile Backpack -->
-                  <v-col
-                    cols="12"
-                    :class="[
-                      'd-flex justify-center',
-                      { 'mt-sm-n0': !!item.id }
-                    ]"
-                  >
-                    <img
-                      v-if="firstBackpack"
-                      :alt="childBackpack(item.backpackId).name"
-                      class="backpack-active"
-                      :src="childBackpack(item.backpackId).image"
-                    >
-                  </v-col>
                 </v-row>
 
                 <!-- Backpack Picker -->
-                <v-row justify="center" no-gutters>
-                  <v-col cols="12" md="10" lg="12">
-                    <v-row no-gutters>
-                      <v-col cols="12">
-                        <span class="text-h6 font-weight-bold text-uppercase">
-                          Change icon:
-                        </span>
-                      </v-col>
-
-                      <v-col
-                        v-for="(backpack, indexB) in backpacks"
-                        :key="indexB"
-                        class="image"
-                        cols="4"
-                        md="2"
-                      >
-                        <img
-                          :alt="backpack.name"
-                          class="clickable"
-                          :class="{ active: item.backpackId === backpack.id }"
-                          :src="backpack.image"
-                          @click="item.backpackId = backpack.id"
-                        >
-                      </v-col>
-                    </v-row>
+                <v-row class="mb-6" no-gutters>
+                  <v-col cols="12">
+                    <child-icon-selector :value="item.backpackId" :backpacks="backpacks" @update:value="updateBackpackId(item, $event)" />
                   </v-col>
                 </v-row>
 
@@ -332,12 +294,14 @@ import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
 
 import UserChildTimelineDialog from '@/components/forms/profile/UserChildTimelineDialog.vue'
+import ChildIconSelector from '@/components/forms/children/ChildIconSelector.vue'
 
 export default {
   name: 'ChildForm',
 
   components: {
-    UserChildTimelineDialog
+    UserChildTimelineDialog,
+    ChildIconSelector
   },
 
   data: () => ({
@@ -400,6 +364,10 @@ export default {
     }),
 
     ...mapActions('children/progress', ['getUserChildrenProgress']),
+
+    updateBackpackId(item, id) {
+      item.backpackId = id
+    },
 
     goToProgressReport (child) {
       if (child.id) {
@@ -617,22 +585,14 @@ export default {
 
 <style lang="scss" scoped>
 .image {
-  height: 100px;
-  width: 100px;
-  display: flex;
-  justify-content: center;
-  align-content: center;
+  max-height: 80px;
+  max-width: 80px;
+  width: 100%;
 
-  img {
-    max-height: 80px;
-    max-width: 80px;
-    width: 100%;
-
-    &.active {
-      background-color: var(--v-secondary-base);
-      border-radius: 50%;
-      padding: 5px;
-    }
+  &.active {
+    background-color: var(--v-secondary-base);
+    border-radius: 50%;
+    padding: 5px;
   }
 }
 
