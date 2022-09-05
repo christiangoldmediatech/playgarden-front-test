@@ -165,25 +165,6 @@ export default defineComponent({
       padding: 8px 12px;
     }
   }
-
-  &-top {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-
-    background: rgb(104, 196, 83);
-    box-sizing: border-box;
-    border-radius: 8px;
-    cursor: pointer;
-
-    & div {
-      color: white;
-      font-size: 18px;
-      font-weight: 500;
-      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-      padding: 8px 12px;
-    }
-  }
 }
 
 .translucent {
