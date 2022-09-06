@@ -7,9 +7,10 @@
         @click="handleClick"
       />
 
-      <SectionImageLAP
+      <section-image
         class="well-being"
         :section="section.wellbeing"
+        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
@@ -74,6 +75,7 @@ import { useChildren } from '@/composables/store/use-children.composable'
 import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
 import SectionImageLAP from '@/components/app/virtual-preschool/SectionImageLAP.vue'
 import { useLessonApi } from '@/composables/lesson'
+import SectionImage from '@/components/app/virtual-preschool/SectionImage.vue'
 import DailyLessonsDialog from './DailyLessonsDialog.vue'
 
 export default defineComponent({
@@ -82,7 +84,8 @@ export default defineComponent({
   components: {
     BirthdayVideoDialog,
     SectionImageLAP,
-    DailyLessonsDialog
+    DailyLessonsDialog,
+    SectionImage
   },
 
   setup() {
@@ -108,22 +111,26 @@ export default defineComponent({
       dashboard: {
         imageUrl: require('@/assets/png/virtual-preschool/playdates.png'),
         title: 'Daily Lessons',
-        route: { name: 'app-dashboard' }
+        route: { name: 'app-dashboard' },
+        audio: ''
       },
       kidscorner: {
         imageUrl: require('@/assets/png/virtual-preschool/kidscorner.png'),
         title: 'Kids Corner',
-        route: goToKidsCorner
+        route: goToKidsCorner,
+        audio: ''
       },
       playdates: {
         imageUrl: require('@/assets/png/virtual-preschool/Daily lessons.png'),
         title: 'Playdates',
-        route: { name: 'app-playdates' }
+        route: { name: 'app-playdates' },
+        audio: ''
       },
       classes: {
         imageUrl: require('@/assets/png/virtual-preschool/live classes.png'),
         title: 'Live Classes',
-        route: { name: 'app-live-classes' }
+        route: { name: 'app-live-classes' },
+        audio: ''
       },
       cubby: {
         imageUrl: require('@/assets/png/virtual-preschool/Cubby.png'),
@@ -131,22 +138,27 @@ export default defineComponent({
         route: {
           name: 'app-student-cubby-puzzle',
           query: { id: currentChild.value?.id }
-        }
+        },
+        audio: ''
       },
       music: {
         imageUrl: require('@/assets/jpg/virtual-preschool/Music.JPG'),
         title: 'Music',
-        route: { name: 'app-music' }
+        route: { name: 'app-music' },
+        audio: ''
       },
       wellbeing: {
         imageUrl: require('@/assets/jpg/virtual-preschool/well-being.jpg'),
         title: 'Well-being',
-        route: { name: 'app-learn-play' }
+        route: { name: 'app-learn-play' },
+        message: 'Have fun together with activities, games, books and so much more',
+        audio: ''
       },
       playandlearn: {
         imageUrl: require('@/assets/png/virtual-preschool/learnandplay.png'),
         title: 'Watch and Learn',
-        route: { name: 'app-library' }
+        route: { name: 'app-library' },
+        audio: ''
       }
     }
 
@@ -165,6 +177,15 @@ export default defineComponent({
       }
     })
 
+    const handleAudioPlay = (sectionItem: SectionItem) => {
+      if (!player.value) {
+        return
+      }
+
+      player.value.src = sectionItem.audio
+      player.value.play()
+    }
+
     const handleClick = (sectionItem: SectionItem) => {
       const route = sectionItem.route
       if (typeof route === 'function') {
@@ -180,7 +201,8 @@ export default defineComponent({
       isBirthdayModalvisible,
       showIntroDialog,
       goToKidsCorner,
-      handleClick
+      handleClick,
+      handleAudioPlay
     }
   }
 })
