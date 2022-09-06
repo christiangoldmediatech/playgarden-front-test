@@ -171,7 +171,7 @@ export default defineComponent({
         teacherUrl: '',
         title: 'Well-being',
         route: { name: 'app-learn-play' },
-        message: '',
+        message: 'Have fun together with activities, games, books and so much more',
         audio: ''
       }
     }
