@@ -91,7 +91,7 @@ export default {
               exact: true
             },
             { title: 'Well-being', to: { name: 'app-learn-play' }, exact: false, dataTestId: 'app-learn-play' },
-            { title: 'Video Library', to: { name: 'app-library' }, exact: false, dataTestId: 'app-library' },
+            { title: 'Watch and Learn', to: { name: 'app-library' }, exact: false, dataTestId: 'app-library' },
             {
               title: 'Live Classes',
               dataTestId: 'app-live-classes',
