@@ -1,8 +1,11 @@
 <template>
   <v-row align="center" justify="center" no-gutters class="py-0 py-md-16">
-    <v-col class="d-flex justify-center" cols="11" md="6">
-      <div class="image mt-4 mt-md-0" :class="{mobile: $vuetify.breakpoint.smAndDown}">
-        <img alt="Smiling Girl Picture" src="@/assets/png/welcome-back.png">
+    <v-col cols="12" md="6">
+      <!-- CHILD IMAGE -->
+      <div
+        class="image"
+      >
+        <v-img contain alt="Smiling Girl Picture" :src="require('@/assets/png/welcome-back.png')" />
       </div>
     </v-col>
 
@@ -30,6 +33,7 @@
 
 <script>
 import ResetPasswordForm from '@/components/forms/password/ResetPasswordForm.vue'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Reset',
@@ -46,12 +50,10 @@ export default {
     }
   },
 
-  created() {
-    this.clearStorage()
-    this.deleteAllCookies()
-  },
-
   async beforeMount () {
+    // Clear state
+    this.logout()
+
     try {
       if (!this.$route.query || !this.$route.query.token) {
         this.$router.push('/')
@@ -72,6 +74,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('auth', ['logout']),
+
     async resetPassword (password) {
       try {
         this.isLoadingForm = true
@@ -100,20 +104,6 @@ export default {
         'Sorry! An error ocurred while reseting your password'
       // eslint-disable-next-line
       console.error(error);
-    },
-
-    clearStorage() {
-      localStorage.clear()
-    },
-
-    deleteAllCookies() {
-      const cookies = document.cookie.split(';')
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i]
-        const eqPos = cookie.indexOf('=')
-        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie
-        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
-      }
     }
   }
 }
@@ -121,17 +111,20 @@ export default {
 
 <style lang="scss" scoped>
 .image {
+  margin-top: 48px;
   max-height: 500px;
-  width: 100%;
   display: flex;
   justify-content: center;
   align-content: center;
-  img {
-    max-width: 90%;
+}
+@media (max-width: $breakpoint-md) {
+  .image {
+    margin-top: 80px;
   }
-  &.mobile {
+}
+@media (max-width: $breakpoint-sm) {
+  .image {
     max-height: 250px;
-    max-width: 250px;
   }
 }
 .form {
