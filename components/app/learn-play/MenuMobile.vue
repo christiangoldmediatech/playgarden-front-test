@@ -29,19 +29,19 @@ export default {
       title: 'Sections',
       submenus: [
         {
-          title: 'Video Lessons',
+          title: 'Videos',
           name: 'videoLesson'
         },
         {
-          title: 'Worksheets',
+          title: 'Printables',
           name: 'worksheets'
         },
         {
-          title: 'DIY Project',
+          title: 'Do-It-Together',
           name: 'diy'
         },
         {
-          title: 'Art Project',
+          title: 'Sensory Play',
           name: 'art-project'
         },
         {
