@@ -16,15 +16,8 @@
 
     <template v-else>
       <v-container v-bind="fillHeight" fluid data-test-id="library-content">
-        <!-- Title -->
-        <v-row v-if="title" align="center" class="mt-10">
-          <v-col cols="12">
-            <underlined-title fonts-size="58px" :text="title" />
-          </v-col>
-        </v-row>
-
         <!-- Top Header -->
-        <v-row class="flex-lg-nowrap" align="center">
+        <v-row class="flex-lg-nowrap mt-10" align="center">
           <v-col cols="12" sm="5" md="3" order="1" order-sm="0">
             <child-select v-model="selectedChild" hide-details />
           </v-col>
