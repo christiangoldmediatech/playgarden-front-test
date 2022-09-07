@@ -163,6 +163,7 @@ export default defineComponent({
       },
       wellbeing: {
         imageUrl: require('@/assets/jpg/virtual-preschool/well-being.jpg'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/teacher_well_being.png'),
         title: 'Well-being',
         route: { name: 'app-learn-play' },
         message: 'Have fun together with activities, games, books and so much more',
@@ -170,6 +171,7 @@ export default defineComponent({
       },
       playandlearn: {
         imageUrl: require('@/assets/png/virtual-preschool/learnandplay.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
         title: 'Watch and Learn',
         route: { name: 'app-library' },
         message: 'Come read with us in the book nook!',
