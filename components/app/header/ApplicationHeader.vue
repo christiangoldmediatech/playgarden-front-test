@@ -36,10 +36,10 @@
       <v-col class="d-flex align-center logo-container" cols="auto">
         <v-toolbar-title :class="[ isUserLoggedIn ? 'mx-3 mt-1' : '']">
           <v-img
-            class="cursor-link"
-            :class="[isUserLoggedIn ? 'mx-4' : '']"
+            class="cursor-link ml-12"
+            :class="[isUserLoggedIn ? 'mx-3' : '']"
             alt="Playarden Prep Online Logo"
-            :max-width="$vuetify.breakpoint.mdAndUp ? 100 : 70"
+            :max-width="$vuetify.breakpoint.mdAndUp ? 85 : 70"
             :src="require('@/assets/png/rainbow-logo.png')"
             @click="handleLogoClick"
           />
