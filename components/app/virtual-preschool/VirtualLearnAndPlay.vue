@@ -4,6 +4,7 @@
       <section-image
         class="learn-and-play"
         :section="section.playandlearn"
+        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
@@ -31,6 +32,7 @@
       <section-image
         class="student-cubby"
         :section="section.cubby"
+        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
@@ -39,6 +41,7 @@
       <section-image
         class="daily-lessons"
         :section="section.dashboard"
+        @click:play="handleAudioPlay"
         @click="showIntroDialog = true"
       />
 
@@ -46,6 +49,7 @@
         class="music"
         :section="section.music"
         small
+        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
