@@ -2,7 +2,7 @@
   <div>
     <div class="mb-3">
       <span class="title-dashboard">
-        Video Lessons
+        Videos
       </span>
     </div>
 

@@ -2,7 +2,7 @@
   <div>
     <div class="mb-4 d-flex align-center">
       <span class="title-dashboard">
-        Worksheets
+        Printables
       </span>
     </div>
 
