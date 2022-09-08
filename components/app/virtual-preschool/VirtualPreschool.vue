@@ -9,6 +9,13 @@
       />
 
       <section-image
+        class="well-being"
+        :section="section.wellbeing"
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
+
+      <section-image
         class="live-classes"
         :section="section.classes"
         @click:play="handleAudioPlay"
@@ -154,10 +161,18 @@ export default defineComponent({
       library: {
         imageUrl: require('@/assets/jpg/virtual-preschool/Library.JPG'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
-        title: 'Library',
+        title: 'Video Library',
         route: { name: 'app-library' },
         message: 'Come read with us in the book nook!',
         audio: `${baseRoute}audio/virtual-preschool/Library.m4a`
+      },
+      wellbeing: {
+        imageUrl: require('@/assets/jpg/virtual-preschool/well-being.jpg'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/teacher_well_being.png'),
+        title: 'Well-being',
+        route: { name: 'app-learn-play' },
+        message: 'Have fun together with activities, games, books and so much more',
+        audio: ''
       }
     }
 
@@ -214,7 +229,7 @@ export default defineComponent({
 
 .desktop {
   display: grid;
-  grid-template-columns: repeat(4, 25%);
+  grid-template-columns: repeat(3, 18.5%) repeat(2, 20%);
   grid-template-rows: repeat(4, 200px);
   margin: auto;
   width: 90%;
@@ -222,15 +237,19 @@ export default defineComponent({
   margin: 1rem auto;
 
   .daily-lessons {
-    grid-column: 1 / span 2;
+    grid-column: 1 / span 3;
     grid-row: 1 / span 3;
   }
+  .well-being {
+    grid-column: 4 / 5;
+    grid-row: 3 / 5;
+  }
   .live-classes {
-    grid-column: 3 / 4;
+    grid-column: 4 / 5;
     grid-row: 1 / 3;
   }
   .playdates {
-    grid-column: 4 / 5;
+    grid-column: 5 / 6;
     grid-row: 1 / 3;
   }
   .music {
@@ -243,10 +262,10 @@ export default defineComponent({
   }
   .student-cubby {
     grid-column: 3 / 4;
-    grid-row: 3 / 5;
+    grid-row: 4 / 5;
   }
   .kids-corner {
-    grid-column: 4 / 5;
+    grid-column: 5 / 6;
     grid-row: 3 / 5;
   }
 }

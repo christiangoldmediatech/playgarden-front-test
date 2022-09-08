@@ -1,50 +1,55 @@
 <template>
   <v-main>
     <div :class="$vuetify.breakpoint.mdAndDown ? 'mobile' : 'desktop'">
-      <SectionImageLAP
+      <section-image
         class="learn-and-play"
         :section="section.playandlearn"
+        @click:play="handleAudioPlay"
+        @click="handleClick"
+      />
+
+      <section-image
+        class="well-being"
+        :section="section.wellbeing"
+        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
       <SectionImageLAP
         class="live-classes"
         :section="section.classes"
+        blocked
         @click="handleClick"
       />
 
-      <SectionImageLAP
-        class="library"
-        :section="section.library"
-        height="60%"
-        @click="handleClick"
-      />
-
-      <SectionImageLAP
+      <section-image
         class="kids-corner"
         :section="section.kidscorner"
+        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
-      <SectionImageLAP
+      <section-image
         class="student-cubby"
         :section="section.cubby"
+        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
       <DailyLessonsDialog v-model="showIntroDialog" />
 
-      <SectionImageLAP
+      <section-image
         class="daily-lessons"
         :section="section.dashboard"
+        @click:play="handleAudioPlay"
         @click="showIntroDialog = true"
       />
 
-      <SectionImageLAP
+      <section-image
         class="music"
         :section="section.music"
         small
-        blocked
+        @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
@@ -75,6 +80,7 @@ import { useChildren } from '@/composables/store/use-children.composable'
 import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
 import SectionImageLAP from '@/components/app/virtual-preschool/SectionImageLAP.vue'
 import { useLessonApi } from '@/composables/lesson'
+import SectionImage from '@/components/app/virtual-preschool/SectionImage.vue'
 import DailyLessonsDialog from './DailyLessonsDialog.vue'
 
 export default defineComponent({
@@ -83,7 +89,8 @@ export default defineComponent({
   components: {
     BirthdayVideoDialog,
     SectionImageLAP,
-    DailyLessonsDialog
+    DailyLessonsDialog,
+    SectionImage
   },
 
   setup() {
@@ -92,6 +99,10 @@ export default defineComponent({
     const router = useRouter()
     const { accessToken } = useAuth({ store })
     const children = useChildren({ store })
+    const baseRoute =
+      process.env.testEnv === 'production'
+        ? `${process.env.baseRouteProd}`
+        : '/'
 
     const currentChild = computed(
       (): Utils.Maybe<Child> => store.getters.getCurrentChild?.[0]
@@ -107,47 +118,68 @@ export default defineComponent({
 
     const section = {
       dashboard: {
-        imageUrl: require('@/assets/png/virtual-preschool/Daily lessons.png'),
+        imageUrl: require('@/assets/png/virtual-preschool/playdates.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Beth-daily lessons.png'),
         title: 'Daily Lessons',
-        route: { name: 'app-dashboard' }
+        route: { name: 'app-dashboard' },
+        message: 'We can’t wait to learn with you every day!',
+        audio: `${baseRoute}audio/virtual-preschool/Daily lessons.m4a`
       },
       kidscorner: {
         imageUrl: require('@/assets/png/virtual-preschool/kidscorner.png'),
         title: 'Kids Corner',
-        route: goToKidsCorner
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Katryna-kidscorner.png'),
+        route: goToKidsCorner,
+        message:
+          'It\'s a little bit silly in the Kids Corner, where kids choose how to learn',
+        audio: `${baseRoute}audio/virtual-preschool/Kidscorner.m4a`
       },
       playdates: {
-        imageUrl: require('@/assets/png/virtual-preschool/playdates.png'),
+        imageUrl: require('@/assets/png/virtual-preschool/Daily lessons.png'),
         title: 'Playdates',
-        route: { name: 'app-playdates' }
+        route: { name: 'app-playdates' },
+        audio: ''
       },
       classes: {
         imageUrl: require('@/assets/png/virtual-preschool/live classes.png'),
         title: 'Live Classes',
-        route: { name: 'app-live-classes' }
+        route: { name: 'app-live-classes' },
+        audio: ''
       },
       cubby: {
         imageUrl: require('@/assets/png/virtual-preschool/Cubby.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Ally_cubby.png'),
         title: 'Student Cubby',
         route: {
           name: 'app-student-cubby-puzzle',
           query: { id: currentChild.value?.id }
-        }
+        },
+        message: 'Save your work and track progress in your cubby!',
+        audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`
       },
       music: {
         imageUrl: require('@/assets/jpg/virtual-preschool/Music.JPG'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Lucy-Liveclasses.png'),
         title: 'Music',
-        route: { name: 'app-music' }
+        route: { name: 'app-music' },
+        message: 'Enjoy cooking, music, movement zooms and more!',
+        audio: `${baseRoute}audio/virtual-preschool/Live classes 2.m4a`
       },
-      library: {
-        imageUrl: require('@/assets/jpg/virtual-preschool/Library.JPG'),
-        title: 'Library',
-        route: { name: 'app-library' }
+      wellbeing: {
+        imageUrl: require('@/assets/jpg/virtual-preschool/well-being.jpg'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/teacher_well_being.png'),
+        title: 'Well-being',
+        route: { name: 'app-learn-play' },
+        message: 'Have fun together with activities, games, books and so much more',
+        audio: ''
       },
       playandlearn: {
         imageUrl: require('@/assets/png/virtual-preschool/learnandplay.png'),
-        title: 'Play and Learn',
-        route: { name: 'app-learn-play' }
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
+        title: 'Watch and Learn',
+        route: { name: 'app-library' },
+        message: 'Come read with us in the book nook!',
+        audio: `${baseRoute}audio/virtual-preschool/Library.m4a`
       }
     }
 
@@ -166,6 +198,15 @@ export default defineComponent({
       }
     })
 
+    const handleAudioPlay = (sectionItem: SectionItem) => {
+      if (!player.value) {
+        return
+      }
+
+      player.value.src = sectionItem.audio
+      player.value.play()
+    }
+
     const handleClick = (sectionItem: SectionItem) => {
       const route = sectionItem.route
       if (typeof route === 'function') {
@@ -181,7 +222,8 @@ export default defineComponent({
       isBirthdayModalvisible,
       showIntroDialog,
       goToKidsCorner,
-      handleClick
+      handleClick,
+      handleAudioPlay
     }
   }
 })
@@ -199,43 +241,43 @@ export default defineComponent({
 
 .desktop {
   display: grid;
-  grid-template-columns: repeat(4, 25%);
-  grid-template-rows: repeat(3, 100px) repeat(2, 200px);
+  grid-template-columns: repeat(8, 12%);
+  grid-template-rows: repeat(4, 100px) repeat(1, 300px);
   margin: auto;
   width: 90%;
   gap: 1rem;
   margin: 1rem auto;
 
   .learn-and-play {
-    grid-column: 1 / span 2;
+    grid-column: 1 / span 3;
+    grid-row: 1 / span 4;
+  }
+  .well-being {
+    grid-column: 4 / span 3;
     grid-row: 1 / span 4;
   }
   .daily-lessons {
-    grid-column: 2 / 3;
+    grid-column: 3 / 5;
     grid-row: 5 / 5;
   }
   .live-classes {
-    grid-column: 3 / 4;
-    grid-row: 1 / 5;
+    grid-column: 5 / 7;
+    grid-row: 5 / 5;
   }
   .playdates {
-    grid-column: 4 / 5;
+    grid-column: 7 / 9;
     grid-row: 5 / 5;
   }
   .music {
-    grid-column: 3 / 4;
-    grid-row: 5 / 5;
-  }
-  .library {
-    grid-column: 4 / 5;
+    grid-column: 7 / 9;
     grid-row: 1 / 3;
   }
   .student-cubby {
-    grid-column: 1 / 2;
+    grid-column: 1 / 3;
     grid-row: 5 / 5;
   }
   .kids-corner {
-    grid-column: 4 / 5;
+    grid-column: 7 / 9;
     grid-row: 3 / 5;
   }
 }

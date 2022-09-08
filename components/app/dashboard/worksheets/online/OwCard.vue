@@ -104,7 +104,7 @@ export default {
 
     type () {
       if (this.question) {
-        const type = this.question.worksheetTable.type
+        const type = this.question.worksheetTable?.type
         if (type === 'CONNECTING_PAIRS') {
           return 'ow-connecting-pairs'
         } else if (type === 'TAP_CORRECT') {

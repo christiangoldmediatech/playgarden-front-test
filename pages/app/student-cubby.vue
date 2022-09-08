@@ -1,5 +1,6 @@
 <template>
   <v-main>
+    <update-plan-dialog />
     <v-row justify="center" no-gutters>
       <!-- Page Title -->
       <v-col
@@ -67,6 +68,7 @@ import {
 } from '@nuxtjs/composition-api'
 import StudentCubbyItems from '@/components/app/student-cubby/StudentCubbyItems.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
+import UpdatePlanDialog from '@/components/app/student-cubby/UpdatePlanDialog.vue'
 import { TypedStore } from '@/models'
 import { useChildRoute, useVuetifyHelper } from '@/composables'
 
@@ -75,7 +77,8 @@ export default defineComponent({
 
   components: {
     ChildSelect,
-    StudentCubbyItems
+    StudentCubbyItems,
+    UpdatePlanDialog
   },
 
   setup(_, ctx) {

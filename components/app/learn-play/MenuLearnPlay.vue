@@ -7,22 +7,22 @@
     </v-col>
     <v-col cols="12">
       <span class="color-menu clickable" @click="sendSection('videoLesson')">
-        Video Lessons
+        Videos
       </span>
     </v-col>
     <v-col cols="12">
       <span class="color-menu clickable" @click="sendSection('worksheets')">
-        Worksheets
+        Printables
       </span>
     </v-col>
     <v-col v-if="getDiyProject.length" cols="12">
       <span class="color-menu clickable" @click="sendSection('diy')">
-        DIY Project
+        Do-It-Together
       </span>
     </v-col>
     <v-col v-if="getArtProjects.length" cols="12">
       <span class="color-menu clickable" @click="sendSection('art-project')">
-        Art Project
+        Sensory Play
       </span>
     </v-col>
     <v-col v-if="getSnacks.length" cols="12">

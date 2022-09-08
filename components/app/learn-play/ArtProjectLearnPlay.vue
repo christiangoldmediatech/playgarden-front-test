@@ -2,7 +2,7 @@
   <div v-if="getArtProjects.length > 0" class="mb-4">
     <div class="mb-4 d-flex align-center">
       <span class="title-dashboard">
-        Art Project
+        Sensory Play
       </span>
 
       <DownloadButtonLearnPlay class="ml-4" @click="downloadArtFiles" />

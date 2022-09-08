@@ -36,12 +36,18 @@ export default {
               exact: false
             },
             {
+              title: 'Well-being',
+              dataTestId: 'app-learn-play',
+              to: { name: 'app-learn-play' },
+              exact: false
+            },
+            {
               title: 'Live Classes',
               dataTestId: 'app-live-classes',
               to: { name: 'app-live-classes' },
               exact: false
             },
-            { title: 'Library', to: { name: 'app-library' }, exact: false, dataTestId: 'app-library' },
+            { title: 'Video Library', to: { name: 'app-library' }, exact: false, dataTestId: 'app-library' },
             { title: 'Music', to: { name: 'app-music' }, exact: false, dataTestId: 'app-music' },
             { title: 'Playdates', to: { name: 'app-playdates' }, exact: false, dataTestId: 'app-playdates' },
             {
@@ -84,8 +90,8 @@ export default {
               to: { name: 'app-virtual-preschool' },
               exact: true
             },
-            { title: 'Play and Learn', to: { name: 'app-learn-play' }, exact: false, dataTestId: 'app-learn-play' },
-            { title: 'Library', to: { name: 'app-library' }, exact: false, dataTestId: 'app-library' },
+            { title: 'Well-being', to: { name: 'app-learn-play' }, exact: false, dataTestId: 'app-learn-play' },
+            { title: 'Watch and Learn', to: { name: 'app-library' }, exact: false, dataTestId: 'app-library' },
             {
               title: 'Live Classes',
               dataTestId: 'app-live-classes',

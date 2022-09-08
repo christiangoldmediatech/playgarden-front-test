@@ -1,13 +1,13 @@
 <template>
-  <main class="overlay">
+  <main class="overlay" :style="{ 'top': `${top}px` }">
     <section class="promptMessage" :style="{ 'padding-top': `${padding}px` }">
-      <v-row>
-        <v-col cols="5">
+      <v-row class="">
+        <v-col :cols="vertical ? 12 : 5" :order="vertical ? 2 : 1">
           <PlanUpgradePrompt />
         </v-col>
-        <v-col cols="7">
-          <v-row justify="center">
-            <div class="d-flex align-center">
+        <v-col :cols="vertical ? 12 : 7" :order="vertical ? 1 : 2">
+          <v-row justify="center" :class="{ 'flex-column': vertical }">
+            <div class="d-flex align-center" :class="{ 'justify-center': vertical }">
               <img
                 v-if="img"
                 :src="getImg(img)"
@@ -52,6 +52,14 @@ export default defineComponent({
     padding: {
       type: Number,
       default: 50
+    },
+    vertical: {
+      type: Boolean,
+      default: false
+    },
+    top: {
+      type: Number,
+      default: 0
     }
   },
   components: {
@@ -72,7 +80,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .overlay {
   position: absolute;
-  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
