@@ -124,6 +124,8 @@ export default {
     ...mapGetters('auth', {
       userInfo: 'getUserInfo'
     }),
+    ...mapGetters('auth', ['isUserLoggedIn']),
+    ...mapGetters(['getCurrentChild']),
     inInvitationProcess () {
       const { query } = this.$route
 
@@ -146,6 +148,15 @@ export default {
   },
 
   created () {
+    if (this.isUserLoggedIn) {
+      if (this.getCurrentChild?.length > 0) {
+        this.$router.push({ name: 'app-virtual-preschool' })
+        return
+      } else {
+        this.$router.push({ name: 'app-pick-child' })
+        return
+      }
+    }
     this.getDataFirebase()
   },
 
