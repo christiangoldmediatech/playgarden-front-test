@@ -19,7 +19,6 @@ export default actionTree(
       }
 
       const utm = getters.getUtm
-
       const { accessToken } = await this.$axios.$post('/auth/signup', {
         ...user,
         ...utm
