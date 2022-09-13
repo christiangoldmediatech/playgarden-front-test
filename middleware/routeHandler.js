@@ -70,6 +70,19 @@ export default async function ({ redirect, route, store, app, req }) {
 
   user = store.getters['auth/getUserInfo']
 
+  // Check if user has not finished the required register steps
+  if (isLoggedIn && user.registerStep === 2) {
+    if (route.name !== 'app-normal-payment' && route.name !== 'auth-logout') {
+      return redirect({
+        name: 'app-normal-payment',
+        query: {
+          step: '3',
+          process: 'signup'
+        }
+      })
+    }
+  }
+
   const shouldRedirectUser =
     token &&
     isLoggedIn &&
