@@ -91,16 +91,7 @@
             'pg-mt-1'
           ]"
         >
-          <!-- Bill monthly/anually switch -->
-          <div class="pg-flex pg-justify-center">
-            <div class="pg-flex pg-items-center">
-              <span class="pg-mr-3 pg-font-semibold">Bill Monthly</span>
-              <!-- <v-switch color="#FFA0C8" inset />
-              <span class="pg-font-semibold">Bill Annually</span> -->
-            </div>
-          </div>
-
-          <div v-if="monthlyPricing" class="pg--mt-8">
+          <div v-if="monthlyPricing" class="pg-mt-2">
             <span class="pricing">${{ monthlyPricing }}/month</span>
           </div>
 

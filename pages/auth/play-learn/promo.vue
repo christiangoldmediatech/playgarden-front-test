@@ -3,7 +3,6 @@
     :class="[
       'pg-bg-[url(@/assets/png/play-learn/acuarela-yellow.png)]',
       'pg-bg-[center_right_-8rem]',
-      'lg:pg-pb-32'
     ]"
   >
     <div
