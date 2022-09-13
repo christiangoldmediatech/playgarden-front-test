@@ -235,6 +235,8 @@ export default {
           window.open(`${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
         } else if (this.$route.query.redirect) {
           await this.$router.push(decodeURIComponent(this.$route.query.redirect))
+        } else if (this.goToPage(user) === 'app-normal-payment') {
+          await this.$router.push({ name: this.goToPage(user), query: { process: 'signup', step: '3' } })
         } else {
           await this.$router.push({ name: this.goToPage(user) })
         }
@@ -245,15 +247,19 @@ export default {
     },
 
     goToPage (user) {
-      if (user.stripeStatus === 'active') {
+      if (user.stripeStatus === 'active' && user.registerStep > 3) {
         if (user.planSelected.id === 2 || user.planSelected.id === 3) {
           return 'app-virtual-preschool'
         }
         if (user.planSelected.id === 1) {
           return 'app-virtual-preschool'
         }
-      } else {
+      } else if (user.registerStep > 3) {
         return 'app-virtual-preschool'
+      }
+
+      if (user.registerStep === 2) {
+        return 'app-normal-payment'
       }
     },
 
