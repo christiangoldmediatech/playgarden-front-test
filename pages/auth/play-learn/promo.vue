@@ -125,11 +125,11 @@ export default defineComponent({
       conversionLabel: 'QAn5COr85PoBEMTdsckD'
     })
 
-    function handleGoBack() {
+    const handleGoBack = () => {
       window.open('https://playgardenprep.com/play-and-learn/', '_self')
     }
 
-    async function handleSubmit(data: ParentSignupPayload) {
+    const handleSubmit = async (data: ParentSignupPayload) => {
       try {
         isLoading.value = true
         await ParentSignup.signup(data, signupType)
@@ -157,7 +157,7 @@ export default defineComponent({
       store.SET_AB_FLOW(Flow.NOCREDITCARD)
     })
 
-    function goToNextStep() {
+    const goToNextStep = () => {
       const SignupStep = useSignupStep()
 
       router.push(

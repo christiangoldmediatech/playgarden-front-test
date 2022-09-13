@@ -95,13 +95,13 @@
           <div class="pg-flex pg-justify-center">
             <div class="pg-flex pg-items-center">
               <span class="pg-mr-3 pg-font-semibold">Bill Monthly</span>
-              <v-switch color="#FFA0C8" inset />
-              <span class="pg-font-semibold">Bill Annually</span>
+              <!-- <v-switch color="#FFA0C8" inset />
+              <span class="pg-font-semibold">Bill Annually</span> -->
             </div>
           </div>
 
-          <div class="pg--mt-8">
-            <span class="pricing">$14.99/month</span>
+          <div v-if="monthlyPricing" class="pg--mt-8">
+            <span class="pricing">${{ monthlyPricing }}/month</span>
           </div>
 
           <div class="pg--mt-2">
@@ -114,8 +114,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed, useStore, onMounted } from '@nuxtjs/composition-api'
 import UnderlinedTitle from '@/plugins/globalPartials/UnderlinedTitle.vue'
+import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'PlayLearnPromoInfo',
@@ -123,6 +124,10 @@ export default defineComponent({
     UnderlinedTitle
   },
   setup() {
+    const store = useStore<TypedStore>()
+
+    const monthlyPricing = ref(0)
+
     const cardOptions = ref([
       {
         icon: require('@/assets/svg/play-learn/orange.svg'),
@@ -161,9 +166,19 @@ export default defineComponent({
     const leftColumn = computed(() => cardOptions.value.slice(0, 4))
     const rightColumn = computed(() => cardOptions.value.slice(4, 8))
 
+    const getPlanPricing = async () => {
+      const planInfo = await store.dispatch('plans/getPlanInfo', 1)
+      monthlyPricing.value = planInfo.priceMonthly
+    }
+
+    onMounted(async () => {
+      await getPlanPricing()
+    })
+
     return {
       leftColumn,
-      rightColumn
+      rightColumn,
+      monthlyPricing
     }
   }
 })
