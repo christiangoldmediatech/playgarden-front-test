@@ -11,7 +11,7 @@
       ]"
     >
       <div class="pg-my-6">
-        <BackButton @click="handleGoBack" />
+        <BackButton v-if="!hideBackButton" @click="handleGoBack" />
       </div>
 
       <!-- CONTENT -->
@@ -44,11 +44,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useRouter, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useRouter, useStore, computed } from '@nuxtjs/composition-api'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import ShortRegisterForm from '@/components/forms/children/ShortRegisterForm.vue'
 import { useAuth, useChild, useSnotifyHelper } from '@/composables'
 import { Child, TypedStore } from '@/models'
+import { Flow } from '@/composables/users/enums'
 
 export default defineComponent({
   name: 'AppPlayLearnChildren',
@@ -69,6 +70,8 @@ export default defineComponent({
 
     const isLoading = ref(false)
     const toggleInfo = ref(true)
+
+    const hideBackButton = computed(() => store.getters['auth/getUserInfo'].flow === Flow.NOCREDITCARD)
 
     async function handleSubmit(children: Child[]) {
       try {
@@ -112,7 +115,8 @@ export default defineComponent({
       isLoading,
       toggleInfo,
       handleSubmit,
-      handleGoBack
+      handleGoBack,
+      hideBackButton
     }
   }
 })
