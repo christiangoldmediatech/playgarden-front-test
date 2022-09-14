@@ -21,6 +21,8 @@ export const useSignupFlow = ({ route }: UseSignupFlowOptions) => {
     () => abFlow.value === Flow.CREDITCARD
   )
 
+  console.log('isCreditCardRequiered', route.query.abf)
+
   async function getABFlow(): Promise<UserFlowRoute> {
     const abRouteName = ref<UserFlowRoute>(UserFlowRoute.NORMAL)
     const routeABFlow = route.query.abf as UserFlowRouteParam
