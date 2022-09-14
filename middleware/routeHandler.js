@@ -104,7 +104,7 @@ export default async function ({ redirect, route, store, app, req }) {
   }
 
   const goToPage = (user) => {
-    if (user.stripeStatus === 'active') {
+    if (user.stripeStatus === 'active' && user.registerStep > 3) {
       if (user.planSelected.id === 2 || user.planSelected.id === 3) {
         return 'app-virtual-preschool'
       }
@@ -113,7 +113,7 @@ export default async function ({ redirect, route, store, app, req }) {
         // return 'app-learn-play'
         return 'app-virtual-preschool'
       }
-    } else {
+    } else if (user.registerStep > 3) {
       return 'app-virtual-preschool'
     }
   }

@@ -150,6 +150,7 @@
                   block
                   min-height="60"
                   class="mb-6 main-btn"
+                  :class="{ 'white--text': whiteBtn}"
                   color="green2"
                   :disabled="invalid || !isValidCoupon"
                   :loading="loading"
@@ -241,6 +242,11 @@ export default {
     loading: Boolean,
 
     isCreditCardRequired: {
+      type: Boolean,
+      default: false
+    },
+
+    whiteBtn: {
       type: Boolean,
       default: false
     }
