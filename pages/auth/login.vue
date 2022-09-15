@@ -332,6 +332,8 @@ export default {
   display: flex;
   justify-content: center;
   align-content: center;
+  width: 100%;
+  height: 100%;
 }
 .hr-line {
   display: flex;
