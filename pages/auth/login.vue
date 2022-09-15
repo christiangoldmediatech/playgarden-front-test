@@ -246,7 +246,6 @@ export default {
     },
 
     goToPage (user) {
-      console.log(user)
       if (user.stripeStatus === 'active' && user.registerStep > 3) {
         if (user.planSelected.id === 2 || user.planSelected.id === 3) {
           return { name: 'app-virtual-preschool', query: {} }
