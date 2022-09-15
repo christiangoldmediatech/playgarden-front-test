@@ -95,7 +95,7 @@
             <span class="pricing">${{ monthlyPricing }}/month</span>
           </div>
 
-          <div class="pg--mt-2">
+          <div :class="monthlyPricing ? 'pg--mt-2' : 'pg-mt-2'">
             <span class="pricing-subtitle">NO CREDIT CARD REQUIRED!</span>
           </div>
         </div>
@@ -158,8 +158,12 @@ export default defineComponent({
     const rightColumn = computed(() => cardOptions.value.slice(4, 8))
 
     const getPlanPricing = async () => {
-      const planInfo = await store.dispatch('plans/getPlanInfo', 1)
-      monthlyPricing.value = planInfo.priceMonthly
+      try {
+        const planInfo = await store.dispatch('plans/getPlanInfo', 1)
+        monthlyPricing.value = planInfo.priceMonthly
+      } catch {
+        monthlyPricing.value = 0
+      }
     }
 
     onMounted(async () => {
