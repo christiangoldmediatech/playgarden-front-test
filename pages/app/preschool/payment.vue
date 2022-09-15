@@ -315,4 +315,7 @@ export default defineComponent({
   font-size: 16px !important;
   color: rgba(96, 96, 96, 0.8) !important;
 }
+.option-standar {
+  color: var(--v-accent-base) !important;
+}
 </style>
