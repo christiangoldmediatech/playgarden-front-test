@@ -107,7 +107,7 @@ export default defineComponent({
 
     function goToNextStep() {
       router.push({
-        name: 'app-learn-play'
+        name: 'app-pick-child'
       })
     }
 
