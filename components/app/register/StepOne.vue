@@ -179,7 +179,7 @@ export default defineComponent({
     }
 
     function handleGoBack() {
-      router.go(-1)
+      window.open('https://playgardenonline.com/', '_self')
     }
 
     return {
