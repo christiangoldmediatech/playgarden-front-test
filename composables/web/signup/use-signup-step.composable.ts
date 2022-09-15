@@ -19,7 +19,7 @@ export const useSignupStep = () => {
 
     switch (abFlow) {
       case Flow.NOCREDITCARD:
-        return childrenPage(signupType, utmContent)
+        return childrenPage(signupType, utmContent, abFlow)
       default:
         return paymentPage(signupType, utmContent)
     }
@@ -80,18 +80,25 @@ function paymentPage(
 
 function childrenPage(
   signupType: SignupType,
-  utmContent: UTMQueryObject
+  utmContent: UTMQueryObject,
+  abFlow?: Flow
 ): RawLocation {
   const name =
     signupType === SignupType.LEARN_AND_PLAY
       ? 'app-play-learn-children'
       : 'app-children'
 
+  let mode = null
+  if (abFlow && abFlow === Flow.NOCREDITCARD) {
+    mode = 'no-back'
+  }
+
   return {
     name,
     query: {
       step: '4',
       process: 'signup',
+      mode,
       ...utmContent
     }
   }

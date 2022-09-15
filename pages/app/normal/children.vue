@@ -1,6 +1,6 @@
 <template>
-  <v-row>
-    <v-row no-gutters class="mt-12">
+  <v-row :class="{'mt-10': !noBackMode}">
+    <v-row v-if="noBackMode" no-gutters class="mt-12">
       <v-btn
         color="accent"
         nuxt
@@ -36,6 +36,12 @@ export default {
   data: () => ({
     showBackWarning: false
   }),
+
+  computed: {
+    noBackMode() {
+      return !(this.$route.query.mode === 'no-back')
+    }
+  },
 
   created () {
     this.$gtm.push({

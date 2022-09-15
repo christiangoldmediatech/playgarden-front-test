@@ -50,6 +50,7 @@
             :in-invitation-process="inInvitationProcess"
             :loading="loading"
             :is-credit-card-required="isCreditCardRequired"
+            :is-coupon-needed="isCouponNeeded"
             @click:submit="handleSubmit"
           />
         </div>
@@ -103,6 +104,13 @@ export default defineComponent({
     RegisterForm,
     CardInfo,
     BackButton
+  },
+
+  props: {
+    isCouponNeeded: {
+      type: Boolean,
+      default: true
+    }
   },
 
   setup() {
