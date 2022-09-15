@@ -130,7 +130,7 @@ export default defineComponent({
     })
 
     const handleGoBack = () => {
-      router.go(-1)
+      window.open('https://playgardenprep.com/play-and-learn/', '_self')
     }
 
     const handleSubmit = async (data: ParentSignupPayload) => {
@@ -159,7 +159,6 @@ export default defineComponent({
 
     const goToNextStep = () => {
       const SignupStep = useSignupStep()
-
       router.push(
         SignupStep.getStepOneNextStepLocation({
           signupType,
