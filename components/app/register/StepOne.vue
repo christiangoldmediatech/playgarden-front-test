@@ -149,7 +149,8 @@ export default defineComponent({
         SignupStep.getStepOneNextStepLocation({
           signupType: currentPlanType,
           abFlow: SignupFlow.abFlow.value,
-          utmContent: Utm.utmContent.value
+          utmContent: Utm.utmContent.value,
+          authFlow: SignupFlow.authFlow.value
         })
       )
     }

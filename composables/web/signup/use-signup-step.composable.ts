@@ -1,4 +1,4 @@
-import { Flow } from '@/composables/users/enums/flow.enum'
+import { AuthFlow, Flow } from '@/composables/users/enums/flow.enum'
 import { SignupType } from '@/composables/users/types'
 import { RawLocation } from 'vue-router'
 import { UTMQueryObject } from '../utm/types'
@@ -7,11 +7,13 @@ export const useSignupStep = () => {
   function getStepOneNextStepLocation({
     utmContent,
     signupType,
-    abFlow
+    abFlow,
+    authFlow
   }: {
     utmContent: UTMQueryObject
     signupType?: SignupType
-    abFlow?: Flow
+    abFlow?: Flow,
+    authFlow?: AuthFlow
   }): RawLocation {
     if (!signupType) {
       return planSelectPage(utmContent)
@@ -21,7 +23,7 @@ export const useSignupStep = () => {
       case Flow.NOCREDITCARD:
         return childrenPage(signupType, utmContent, abFlow)
       default:
-        return paymentPage(signupType, utmContent)
+        return paymentPage(signupType, utmContent, authFlow)
     }
   }
 
@@ -61,12 +63,13 @@ function planSelectPage(utmContent: UTMQueryObject): RawLocation {
 
 function paymentPage(
   signupType: SignupType,
-  utmContent: UTMQueryObject
+  utmContent: UTMQueryObject,
+  authFlow = AuthFlow.NORMAL
 ): RawLocation {
   const name =
     signupType === SignupType.LEARN_AND_PLAY
       ? 'app-play-learn-payment'
-      : 'app-normal-payment'
+      : authFlow === AuthFlow.NORMAL ? 'app-normal-payment' : 'app-preschool-payment'
 
   return {
     name,
