@@ -15,7 +15,7 @@
       ]"
     >
       <div class="pg-my-6">
-        <BackButton @click="$emit('click:back')" />
+        <BackButton v-if="isSignupProcess" @click="$emit('click:back')" />
       </div>
 
       <!-- CONTENT -->
@@ -185,7 +185,8 @@ import {
   onMounted,
   ref,
   useRoute,
-  useRouter
+  useRouter,
+  useStore
 } from '@nuxtjs/composition-api'
 import { useGtm } from '@/composables/web/gtm'
 import { useUTM } from '@/composables/web/utm'
@@ -208,6 +209,7 @@ export default defineComponent({
   },
 
   setup() {
+    const store = useStore()
     const route = useRoute()
     const router = useRouter()
     const snotify = useSnotifyHelper()
@@ -222,6 +224,7 @@ export default defineComponent({
 
     const mode = computed(() => route.value.params.mode ?? '')
     const isUserInactive = computed(() => mode.value === 'activate-user')
+    const isSignupProcess = computed(() => route.value.query.process === 'signup')
 
     const stripeButtonText = computed(() => {
       return isUserInactive.value
@@ -274,6 +277,11 @@ export default defineComponent({
         }
 
         await Payment.payShorterSubscription(dataSubscription)
+
+        if (isSignupProcess.value) {
+          await store.dispatch('auth/fetchUserInfo', undefined, { root: true })
+        }
+
         goToNextStep()
       } catch {
         snotify.error('Something went wrong. Please try again.')
@@ -297,7 +305,8 @@ export default defineComponent({
       isUserInactive,
       stripeButtonText,
       handleGoBack,
-      handleSubmit
+      handleSubmit,
+      isSignupProcess
     }
   }
 })
