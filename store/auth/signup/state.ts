@@ -1,4 +1,4 @@
-import { Flow } from '@/composables/users/enums/flow.enum'
+import { Flow, AuthFlow } from '@/composables/users/enums/flow.enum'
 
 export default () => ({
   abFlow: Flow.CREDITCARD,
@@ -7,5 +7,6 @@ export default () => ({
   utmCampaign: '',
   utmTerm: '',
   utmName: '',
-  gc1Id: ''
+  gc1Id: '',
+  authFlow: AuthFlow.NORMAL
 })

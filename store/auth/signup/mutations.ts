@@ -1,4 +1,4 @@
-import { Flow } from '@/composables/users/enums/flow.enum'
+import { AuthFlow, Flow } from '@/composables/users/enums/flow.enum'
 import { mutationTree } from 'typed-vuex'
 import { state } from './'
 
@@ -14,5 +14,9 @@ export default mutationTree(state, {
 
   SET_AB_FLOW(state, abFlow: Flow) {
     state.abFlow = abFlow
+  },
+
+  SET_AUTH_FLOW(state, authFlow: AuthFlow) {
+    state.authFlow = authFlow
   }
 })

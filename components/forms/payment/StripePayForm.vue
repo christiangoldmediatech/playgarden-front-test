@@ -63,8 +63,9 @@
       </v-row>
 
       <v-btn
-        block
-        class="mt-0 mb-4 main-btn ml-md-0"
+        :block="!isPreschoolFlow"
+        class="mt-0 mb-4 main-btn "
+        :class="{'!pg-block pg-mx-auto pg-w-10/12': isPreschoolFlow, 'ml-md-0': !isPreschoolFlow }"
         min-height="60"
         color="primary"
         :disabled="invalid || lockButton"
@@ -90,13 +91,15 @@
       </v-btn>
     </v-form>
     <div class="pb-4 pb-md-0">
-      <p v-if="isFreeForDaysTextVisible">
-        <center>
-          <span class="font-weight-bold text-completely">
-            Playgarden Prep Online is COMPLETELY FREE for the next 15 days.
-          </span>
-        </center>
-      </p>
+      <slot name="sub-footer">
+        <p v-if="isFreeForDaysTextVisible">
+          <center>
+            <span class="font-weight-bold text-completely">
+              Playgarden Prep Online is COMPLETELY FREE for the next 15 days.
+            </span>
+          </center>
+        </p>
+      </slot>
       <br>
       <v-divider v-if="isTrialTextVisible" />
       <br>
@@ -160,7 +163,12 @@ export default {
 
     loading: Boolean,
 
-    noTerms: Boolean
+    noTerms: Boolean,
+
+    isPreschoolFlow: {
+      type: Boolean,
+      default: false
+    }
   },
 
   data: vm => ({

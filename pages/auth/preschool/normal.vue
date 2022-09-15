@@ -5,9 +5,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import StepOne from '@/components/app/register/StepOne.vue'
 import { useGtm } from '@/composables/web/gtm'
+import { useAccessorHelper } from '@/composables'
+import { AuthFlow } from '@/composables/users/enums'
 
 export default defineComponent({
   name: 'Parent',
@@ -19,11 +21,16 @@ export default defineComponent({
   },
 
   setup() {
+    const store = useAccessorHelper().auth.signup
     const Gtm = useGtm()
 
     Gtm.parentPage({
       conversionID: '959213252',
       conversionLabel: 'QAn5COr85PoBEMTdsckD'
+    })
+
+    onMounted(() => {
+      store.SET_AUTH_FLOW(AuthFlow.PRESCHOOL)
     })
 
     function goToBack() {
