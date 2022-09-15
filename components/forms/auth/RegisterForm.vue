@@ -116,7 +116,7 @@
 
                   <!-- Coupon -->
                   <validation-provider
-                    v-if="!isCreditCardRequired"
+                    v-if="!isCreditCardRequired && isCouponNeeded"
                     v-slot="{ errors }"
                     name="Coupon"
                     vid="coupon_field"
@@ -249,6 +249,11 @@ export default {
     whiteBtn: {
       type: Boolean,
       default: false
+    },
+
+    isCouponNeeded: {
+      type: Boolean,
+      default: true
     }
   },
 
