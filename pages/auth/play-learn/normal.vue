@@ -159,7 +159,6 @@ export default defineComponent({
 
     const goToNextStep = () => {
       const SignupStep = useSignupStep()
-
       router.push(
         SignupStep.getStepOneNextStepLocation({
           signupType,
