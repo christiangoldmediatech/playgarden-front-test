@@ -8,6 +8,7 @@
   "auth-parent": 1,
   "auth-promo-parent": 1,
   "auth-play-learn-promo": 1,
+  "auth-play-learn-normal": 1,
   "auth-normal-parent": 1,
   "auth-verify-caregiver": 1,
   "auth-verify-email": 1,
@@ -21,5 +22,7 @@
   "shared-slug": 1,
   "terms-conditions": 1,
   "happy-birthday-name": 1,
-  "promo-gift-of-learning": 1
+  "promo-gift-of-learning": 1,
+  "auth-preschool-normal": 1,
+  "auth-preschool-promo": 1
 }

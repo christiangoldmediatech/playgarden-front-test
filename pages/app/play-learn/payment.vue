@@ -17,7 +17,7 @@
       ]"
     >
       <div class="pg-my-6">
-        <BackButton @click="handleGoBack" />
+        <BackButton v-if="!isSignupProcess" @click="handleGoBack" />
       </div>
 
       <!-- CONTENT -->
@@ -77,7 +77,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useStore, useRouter, useRoute, computed } from '@nuxtjs/composition-api'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import StepTwoCardSummary from '@/components/app/learn-play/StepTwoCardSummary/StepTwoCardSummary.vue'
 import StepTwoCardDetail from '@/components/app/learn-play/StepTwoCardDetail/StepTwoCardDetail.vue'
@@ -98,12 +98,15 @@ export default defineComponent({
   },
 
   setup() {
+    const store = useStore()
     const snotify = useSnotifyHelper()
+    const route = useRoute()
     const router = useRouter()
     const Payment = usePayment()
 
     const isLoading = ref(false)
     const toggleInfo = ref(true)
+    const isSignupProcess = computed(() => route.value.query.process === 'signup')
 
     function handleGoBack() {
       router.push({ name: 'app-payment-plan', query: { process: 'signup', step: '2' } })
@@ -122,6 +125,11 @@ export default defineComponent({
         }
 
         await Payment.payShorterSubscription(dataSubscription)
+
+        if (isSignupProcess.value) {
+          await store.dispatch('auth/fetchUserInfo', undefined, { root: true })
+        }
+
         goToNextStep()
       } catch {
         snotify.error('Something went wrong. Please try again.')
@@ -144,7 +152,8 @@ export default defineComponent({
       isLoading,
       toggleInfo,
       handleSubmit,
-      handleGoBack
+      handleGoBack,
+      isSignupProcess
     }
   }
 })

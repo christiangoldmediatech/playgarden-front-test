@@ -69,6 +69,16 @@
           </div>
         </div>
       </div>
+      <div v-if="isUserLoggedIn" cols="12">
+        <v-btn
+          block
+          class="mb-3"
+          color="accent"
+          :to="{ name: 'auth-logout' }"
+        >
+          LOG OUT
+        </v-btn>
+      </div>
     </div>
   </v-app-bar>
 </template>

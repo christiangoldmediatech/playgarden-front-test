@@ -50,6 +50,7 @@
             :in-invitation-process="inInvitationProcess"
             :loading="loading"
             :is-credit-card-required="isCreditCardRequired"
+            :is-coupon-needed="isCouponNeeded"
             @click:submit="handleSubmit"
           />
         </div>
@@ -105,6 +106,13 @@ export default defineComponent({
     BackButton
   },
 
+  props: {
+    isCouponNeeded: {
+      type: Boolean,
+      default: true
+    }
+  },
+
   setup() {
     const router = useRouter()
     const route = useRoute()
@@ -141,7 +149,8 @@ export default defineComponent({
         SignupStep.getStepOneNextStepLocation({
           signupType: currentPlanType,
           abFlow: SignupFlow.abFlow.value,
-          utmContent: Utm.utmContent.value
+          utmContent: Utm.utmContent.value,
+          authFlow: SignupFlow.authFlow.value
         })
       )
     }
@@ -171,7 +180,7 @@ export default defineComponent({
     }
 
     function handleGoBack() {
-      router.go(-1)
+      window.open('https://playgardenonline.com/', '_self')
     }
 
     return {

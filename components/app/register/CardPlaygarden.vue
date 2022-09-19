@@ -12,7 +12,6 @@
         'pg-rounded-lg',
         'pg-bg-white',
         'pg-max-w-[500px]',
-        'lg:pg-px-10',
         'lg:pg-w-[500px]',
         {
           'pg-shadow-[0px_8px_24px_rgba(0,0,0,0.15)]': isOpen,
@@ -29,13 +28,17 @@
       </div>
 
       <!-- TITLE -->
-      <div class="pg-text-center">
-        <UnderlinedTitle
-          font-size="26px"
-          font-size-mobile="20px"
-          text="Our family loves Playgarden Prep Online!"
-        />
-      </div>
+      <slot name="title">
+        <div class="pg-text-center">
+          <UnderlinedTitle
+            font-size="26px"
+            font-size-mobile="20px"
+            text="Our family loves Playgarden Prep Online!"
+          />
+        </div>
+      </slot>
+
+      <slot name="testimonials" />
 
       <div
         :class="[
