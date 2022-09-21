@@ -29,12 +29,12 @@ export default function ({ redirect, route, store }) {
   const isValidRegisterStep = step === 1 || step === 2 || step === 3 || (step === 5 && user.flow === UserFlow.NOCREDITCARD)
 
   if (isLoggedIn && isValidRegisterStep && isValidRole && !isInSignupProcess && !isIgnoredRoute) {
-    const paymentPage = isPlayAndLearnPlan
+    const paymentPageRouteName = isPlayAndLearnPlan
       ? 'app-play-learn-payment'
       : authFlow === 'NORMAL' ? 'app-normal-payment' : 'app-preschool-payment'
 
-    const planPage = {
-      name: paymentPage,
+    const paymentPage = {
+      name: paymentPageRouteName,
       query: {
         step: '3',
         process: 'signup'
@@ -46,7 +46,7 @@ export default function ({ redirect, route, store }) {
     let redirectTo
 
     if (finishedFirstStep) {
-      redirectTo = planPage
+      redirectTo = paymentPage
     }
 
     if (redirectTo) {
