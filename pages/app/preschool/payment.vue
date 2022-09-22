@@ -259,7 +259,6 @@ import {
 import { useGtm } from '@/composables/web/gtm'
 import { useUTM } from '@/composables/web/utm'
 import {
-  useAppEventBusHelper,
   usePayment,
   useSnotifyHelper
 } from '@/composables'

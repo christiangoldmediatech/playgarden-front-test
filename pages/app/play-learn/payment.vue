@@ -103,6 +103,7 @@ import StripePayForm from '@/components/forms/payment/StripePayForm.vue'
 import { usePayment, useSnotifyHelper } from '@/composables'
 import { CardData, DataSubscription } from '@/models'
 import { usePromoCodeDialog } from '@/composables/web/signup'
+import PromoCodeDialog from '@/components/app/register/PromoCodeDialog.vue'
 
 export default defineComponent({
   name: 'AppPlayLearnPayment',
@@ -113,7 +114,8 @@ export default defineComponent({
     BackButton,
     StepTwoCardSummary,
     StepTwoCardDetail,
-    StripePayForm
+    StripePayForm,
+    PromoCodeDialog
   },
 
   setup() {

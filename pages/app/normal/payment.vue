@@ -90,6 +90,7 @@ import { CardData, DataSubscription } from '@/models'
 import CardPlaygarden from '@/components/app/register/CardPlaygarden.vue'
 import CardKnowMore from '@/components/app/register/CardKnowMore.vue'
 import { usePromoCodeDialog } from '@/composables/web/signup'
+import PromoCodeDialog from '@/components/app/register/PromoCodeDialog.vue'
 
 export default defineComponent({
   name: 'Payment',
@@ -98,7 +99,8 @@ export default defineComponent({
     StripePayForm,
     CardPlaygarden,
     CardKnowMore,
-    BackButton
+    BackButton,
+    PromoCodeDialog
   },
 
   setup() {
