@@ -4,7 +4,7 @@
       'pg-bg-[url(@/assets/png/play-learn/acuarela-yellow.png)]',
       'pg-bg-[center_right_-8rem]',
       'pg-px-4',
-      'lg:pg-pb-32',
+      'lg:pg-pb-32'
     ]"
   >
     <div
@@ -13,11 +13,16 @@
         'pg-flex-col',
         'pg-mx-auto',
         'pg-max-w-[768px]',
-        'lg:pg-max-w-[1300px]',
+        'lg:pg-max-w-[1300px]'
       ]"
     >
+      <PromoCodeDialog
+        v-model="showPromoCodeDialog"
+        @reject="handlePromoCodeRejection"
+      />
+
       <div class="pg-my-6">
-        <BackButton v-if="!isSignupProcess" @click="handleGoBack" />
+        <BackButton v-if="isSignupProcess" @click="handleBackButtonClick" />
       </div>
 
       <!-- CONTENT -->
@@ -27,7 +32,7 @@
           'pg-grid-cols-1',
           'sm:pg-mt-12',
           'lg:pg-grid-cols-12',
-          'lg:pg-gap-24',
+          'lg:pg-gap-24'
         ]"
       >
         <!-- LEFT -->
@@ -64,12 +69,18 @@
             'pg-mt-14',
             'pg-mx-auto',
             'lg:pg-col-span-5',
-            'lg:pg-mt-0',
+            'lg:pg-mt-0'
           ]"
         >
-          <StepTwoCardSummary :value="toggleInfo" @input="toggleInfo = $event" />
+          <StepTwoCardSummary
+            :value="toggleInfo"
+            @input="toggleInfo = $event"
+          />
           <div class="pg-py-2" />
-          <StepTwoCardDetail :value="!toggleInfo" @input="toggleInfo = !$event" />
+          <StepTwoCardDetail
+            :value="!toggleInfo"
+            @input="toggleInfo = !$event"
+          />
         </div>
       </div>
     </div>
@@ -77,13 +88,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useStore, useRouter, useRoute, computed } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  ref,
+  useStore,
+  useRouter,
+  useRoute,
+  computed
+} from '@nuxtjs/composition-api'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import StepTwoCardSummary from '@/components/app/learn-play/StepTwoCardSummary/StepTwoCardSummary.vue'
 import StepTwoCardDetail from '@/components/app/learn-play/StepTwoCardDetail/StepTwoCardDetail.vue'
 import StripePayForm from '@/components/forms/payment/StripePayForm.vue'
 import { usePayment, useSnotifyHelper } from '@/composables'
 import { CardData, DataSubscription } from '@/models'
+import { usePromoCodeDialog } from '@/composables/web/signup'
 
 export default defineComponent({
   name: 'AppPlayLearnPayment',
@@ -103,14 +122,13 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const Payment = usePayment()
+    const PromoCodeDialog = usePromoCodeDialog({ router })
 
     const isLoading = ref(false)
     const toggleInfo = ref(true)
-    const isSignupProcess = computed(() => route.value.query.process === 'signup')
-
-    function handleGoBack() {
-      router.push({ name: 'app-payment-plan', query: { process: 'signup', step: '2' } })
-    }
+    const isSignupProcess = computed(
+      () => route.value.query.process === 'signup'
+    )
 
     async function handleSubmit(data: CardData) {
       try {
@@ -151,9 +169,11 @@ export default defineComponent({
     return {
       isLoading,
       toggleInfo,
-      handleSubmit,
-      handleGoBack,
-      isSignupProcess
+      isSignupProcess,
+      showPromoCodeDialog: PromoCodeDialog.showPromoCodeDialog,
+      handleBackButtonClick: PromoCodeDialog.handleBackButtonClick,
+      handlePromoCodeRejection: PromoCodeDialog.handlePromoCodeRejection,
+      handleSubmit
     }
   }
 })

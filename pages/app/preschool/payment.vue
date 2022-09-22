@@ -270,6 +270,7 @@ import { CardData, DataSubscription } from '@/models'
 import CardPlaygarden from '@/components/app/register/CardPlaygarden.vue'
 import CardKnowMore from '@/components/app/register/CardKnowMore.vue'
 import PromoCodeDialog from '@/components/app/register/PromoCodeDialog.vue'
+import { usePromoCodeDialog } from '@/composables/web/signup'
 
 export default defineComponent({
   name: 'Payment',
@@ -293,11 +294,13 @@ export default defineComponent({
     const User = useUser()
     const Payment = usePayment()
 
+    const isUserInactive = computed(() => mode.value === 'activate-user')
+    const PromoCodeDialog = usePromoCodeDialog({ isUserInactive, router })
+
     const loading = ref(false)
     const showCardPlaygarden = ref(true)
 
     const mode = computed(() => route.value.params.mode ?? '')
-    const isUserInactive = computed(() => mode.value === 'activate-user')
     const isSignupProcess = computed(
       () => route.value.query.process === 'signup'
     )
@@ -308,55 +311,10 @@ export default defineComponent({
         : 'START YOUR FREE TRIAL'
     })
 
-    const showPromoCodeDialog = ref(false)
-    const loggingOut = ref(false)
-
-    function logout() {
-      router.push({ name: 'auth-logout' })
-    }
-
-    function goBack() {
-      if (isUserInactive.value) {
-        router.push({ name: 'app-inactive-subscription' })
-        return
-      }
-
-      window.open('https://playgardenonline.com/', '_self')
-    }
-
-    function handleBackButtonClick() {
-      if (isUserInactive.value) {
-        goBack()
-        return
-      }
-
-      loggingOut.value = false
-      showPromoCodeDialog.value = true
-    }
-
-    function handleLogoutClick() {
-      if (isUserInactive.value) {
-        logout()
-        return
-      }
-
-      loggingOut.value = true
-      showPromoCodeDialog.value = true
-    }
-
-    function handlePromoCodeRejection() {
-      if (loggingOut.value) {
-        logout()
-        return
-      }
-
-      goBack()
-    }
-
     async function goToNextStep() {
       if (isUserInactive.value) {
         await User.getUserInfo()
-        goBack()
+        PromoCodeDialog.goBack()
         return
       }
 
@@ -396,7 +354,6 @@ export default defineComponent({
       }
     }
 
-    const bus = useAppEventBusHelper()
     onMounted(() => {
       if (isUserInactive.value) {
         Gtm.paymentPage({
@@ -404,12 +361,6 @@ export default defineComponent({
           conversionLabel: 'SvccCMTX0voBEMTdsckD'
         })
       }
-
-      bus.$on('click:logout', handleLogoutClick)
-    })
-
-    onUnmounted(() => {
-      bus.$off('click:logout', handleLogoutClick)
     })
 
     return {
@@ -417,10 +368,10 @@ export default defineComponent({
       showCardPlaygarden,
       isUserInactive,
       stripeButtonText,
-      showPromoCodeDialog,
       isSignupProcess,
-      handlePromoCodeRejection,
-      handleBackButtonClick,
+      showPromoCodeDialog: PromoCodeDialog.showPromoCodeDialog,
+      handlePromoCodeRejection: PromoCodeDialog.handlePromoCodeRejection,
+      handleBackButtonClick: PromoCodeDialog.handleBackButtonClick,
       handleSubmit
     }
   }
