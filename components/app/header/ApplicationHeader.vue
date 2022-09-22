@@ -29,12 +29,17 @@
         x-large
         @click.stop="toggleDrawer"
       >
-        <img width="27" height="27" loading="lazy" src="https://playgardenonline.com/wp-content/uploads/2022/02/bar-menu.svg">
+        <img
+          width="27"
+          height="27"
+          loading="lazy"
+          src="https://playgardenonline.com/wp-content/uploads/2022/02/bar-menu.svg"
+        />
       </v-app-bar-nav-icon>
 
       <!-- Logo -->
       <v-col class="d-flex align-center logo-container" cols="auto">
-        <v-toolbar-title :class="[ isUserLoggedIn ? 'mx-3 mt-1' : '']">
+        <v-toolbar-title :class="[isUserLoggedIn ? 'mx-3 mt-1' : '']">
           <v-img
             class="cursor-link ml-12"
             :class="[isUserLoggedIn ? 'mx-3' : '']"
@@ -115,7 +120,7 @@
             class="ml-3 px-13"
             color="accent"
             nuxt
-            :to="{ name: 'auth-logout' }"
+            @click="handleLogoutClick"
           >
             LOG OUT
           </v-btn>
@@ -193,7 +198,7 @@
             src="@/assets/svg/account.svg"
             data-test-id="account-button"
             @click="goToAccount"
-          >
+          />
 
           <!-- <v-btn
             :color="isUserLoggedIn ? 'primary' : 'accent'"
@@ -261,6 +266,16 @@ export default {
 
     goToAccount() {
       this.$router.push({ name: 'app-account-index' })
+    },
+
+    handleLogoutClick() {
+      const { process, step } = this.$route.query
+      if (process === 'signup' && step === '3') {
+        this.$appEventBus.$emit('click:logout')
+        return
+      }
+
+      this.$router.push({ name: 'auth-logout' })
     },
 
     handleLogoClick() {
