@@ -34,7 +34,7 @@
                   <v-img
                     aspect-ratio="1.7"
                     :src="
-                      puzzle.piecesUnclocked === puzzle.pieces ? puzzle.src : ''
+                      puzzle.piecesUnclocked >= puzzle.pieces ? puzzle.src : ''
                     "
                     :[puzzle.srcType]="
                       puzzle.lazy
@@ -101,7 +101,7 @@
                     </v-row>
                   </v-img>
                   <v-fade-transition
-                    v-if="puzzle.piecesUnclocked === puzzle.pieces"
+                    v-if="puzzle.piecesUnclocked >= puzzle.pieces"
                   >
                     <v-overlay v-if="hover" absolute>
                       <v-btn
