@@ -101,7 +101,7 @@ export default defineComponent({
         }
 
         await store.dispatch('payment/selectSubscriptionPlan', plan)
-        await store.dispatch('payment/applyCoupon', { promotion_id: 'AoNWHasc' }) // Create cupon on production before use
+        await store.dispatch('payment/applyCoupon', { promotion_id: 'AoNWHasc' }) // Create coupon on production before use it
 
         await Auth.fetchUserInfo()
         emit('plan-membership-changed')
