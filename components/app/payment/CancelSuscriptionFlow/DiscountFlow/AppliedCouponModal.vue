@@ -28,14 +28,14 @@
     </v-col>
 
     <v-col cols="12" class="text-center">
-      <v-btn class="px-16" color="primary" @click="goHome">
+      <v-btn class="px-14" color="primary" @click="goHome">
         CONTINUE LEARNING
       </v-btn>
     </v-col>
 
     <v-col cols="12" class="text-center pa-0 pb-5">
       <v-btn
-        class="px-16"
+        class="px-14"
         plain
         color="accent"
         @click="
