@@ -4,10 +4,10 @@
       v-model="viewCouponDiscountModal"
       max-width="600"
       content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl"
-      @click:outside="$emit('closeViewAppliedCouponModal')"
+      @click:outside="$emit('closeCouponDiscountModal')"
     >
       <v-col class="text-right pg-pr-3" cols="12">
-        <v-btn icon color="white" class="pg-bg-[#F6B7D2]">
+        <v-btn icon color="white" class="pg-bg-[#F6B7D2]" @click="$emit('closeCouponDiscountModal')">
           <v-icon>
             mdi-close
           </v-icon>
@@ -42,7 +42,7 @@
           outlined
           color="accent"
           :loading="loadingBtn"
-          @click="$emit('closeViewAppliedCouponModal')"
+          @click="$emit('tryPlayAndLearnModal'); $emit('closeCouponDiscountModal')"
         >
           NO
         </v-btn>

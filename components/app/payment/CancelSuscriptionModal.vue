@@ -15,13 +15,13 @@
     </v-col>
 
     <v-col class="text-center" cols="12">
-      <h2 class="pg-text-accent font-weight-bold pg-text-4xl">
+      <h2 class="pg-text-accent font-weight-bold pg-text-4xl v2-font">
         ARE YOU LEAVING US?
       </h2>
     </v-col>
 
     <v-card-text class="text-justify">
-      <p class="text-center font-weight-medium pg-text-[20px] pg-leading-[20px]">
+      <p class="text-center font-weight-medium pg-text-[20px] pg-leading-[27px] v2-font">
         Before you cancel, please let us know the reason you are leaving. Every bit of feedback helps us create a better educational experience for little ones!
       </p>
 
@@ -48,6 +48,7 @@
     <v-col class="text-center" cols="12">
       <v-btn
         color="primary"
+        class="px-14"
         :loading="loading"
         :disabled="isValidateMotive"
         @click="$emit('removeSubscription')"
