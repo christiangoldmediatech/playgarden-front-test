@@ -28,7 +28,7 @@
     </v-col>
 
     <v-col cols="12" class="text-center">
-      <v-btn class="px-14" color="primary" @click="goHome">
+      <v-btn class="px-14" color="primary" width="300" @click="goHome">
         CONTINUE LEARNING
       </v-btn>
     </v-col>
@@ -37,6 +37,7 @@
       <v-btn
         class="px-14"
         plain
+        width="300"
         color="accent"
         @click="
           $emit('closeViewAppliedCouponModal')
