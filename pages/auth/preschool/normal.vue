@@ -21,8 +21,8 @@ export default defineComponent({
   },
 
   setup() {
-    const Gtm = useGtm()
     const store = useAccessorHelper().auth.signup
+    const Gtm = useGtm()
 
     Gtm.parentPage({
       conversionID: '959213252',
@@ -30,7 +30,7 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      store.SET_AUTH_FLOW(AuthFlow.NORMAL)
+      store.SET_AUTH_FLOW(AuthFlow.PRESCHOOL)
     })
 
     function goToBack() {

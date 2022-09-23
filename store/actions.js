@@ -128,7 +128,7 @@ export default {
     }
   },
 
-  async pickChild({ dispatch, getters }, { $router, $route, $cookies, req }) {
+  async pickChild ({ dispatch, getters }, { $router, $route, $cookies, req }) {
     const isAppRoute = /^app-.*$/.test($route.name)
     let child = getters.getCurrentChild
     let childExpires = getters.getCurrentChildExpires
@@ -211,7 +211,7 @@ export default {
     }
 
     // if no child is selected in server or client
-    if (!child || !childExpires || now >= childExpires) {
+    if ((!child || !childExpires || now >= childExpires) && state.auth.userInfo.registerStep > 3) {
       $router.push({
         name: 'app-pick-child',
         query: {
@@ -219,7 +219,6 @@ export default {
           redirect: encodeURIComponent($route.fullPath)
         }
       })
-
       return true
     }
   }

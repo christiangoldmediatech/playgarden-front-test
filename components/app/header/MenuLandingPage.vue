@@ -286,7 +286,7 @@ nav.sticky {
     .navbar-right{
         display: grid;
         gap: 20px;
-        justify-content: end;
+        justify-content: flex-end;
     }
 }
 @media (min-width:1236px) {
@@ -488,7 +488,7 @@ nav.sticky {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: flex-end;
     gap: 24px;
     transition: 0.5s all;
 }
@@ -678,7 +678,7 @@ nav.sticky {
 @media (max-width:1200px) {
     .menu-header{
         align-items: center;
-        justify-content: end;
+        justify-content: flex-end;
         gap: 10px 25px;
     }
 }

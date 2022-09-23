@@ -19,7 +19,9 @@ export default function ({ redirect, route, store }) {
   // COMPLETED = 6 -> Completed <- no action
 
   const user = store.getters['auth/getUserInfo']
+  const isPlayAndLearnPlan = store.getters['auth/hasUserLearnAndPlayPlan']
   const step = Number(user.registerStep)
+  const authFlow = user.flow
   const isLoggedIn = store.getters['auth/isUserLoggedIn']
   const isIgnoredRoute = Boolean(ignoreRoute[route.name])
   const isInSignupProcess = route.query.process === 'signup'
@@ -27,13 +29,24 @@ export default function ({ redirect, route, store }) {
   const isValidRegisterStep = step === 1 || step === 2 || step === 3 || (step === 5 && user.flow === UserFlow.NOCREDITCARD)
 
   if (isLoggedIn && isValidRegisterStep && isValidRole && !isInSignupProcess && !isIgnoredRoute) {
-    const planPage = { name: 'app-payment-plan', query: { process: 'signup', step: '2' } }
+    const paymentPageRouteName = isPlayAndLearnPlan
+      ? 'app-play-learn-payment'
+      : authFlow === 'NORMAL' ? 'app-normal-payment' : 'app-preschool-payment'
+
+    const paymentPage = {
+      name: paymentPageRouteName,
+      query: {
+        step: '3',
+        process: 'signup'
+      }
+    }
+
     const finishedFirstStep = [1, 2].includes(step)
 
     let redirectTo
 
     if (finishedFirstStep) {
-      redirectTo = planPage
+      redirectTo = paymentPage
     }
 
     if (redirectTo) {

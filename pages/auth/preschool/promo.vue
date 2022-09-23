@@ -1,6 +1,6 @@
 <template>
   <div>
-    <StepOne />
+    <StepOne :is-coupon-needed="false" />
   </div>
 </template>
 
@@ -9,7 +9,7 @@ import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import StepOne from '@/components/app/register/StepOne.vue'
 import { useGtm } from '@/composables/web/gtm'
 import { useAccessorHelper } from '@/composables'
-import { AuthFlow } from '@/composables/users/enums'
+import { Flow } from '@/composables/users/enums'
 
 export default defineComponent({
   name: 'Parent',
@@ -24,13 +24,13 @@ export default defineComponent({
     const Gtm = useGtm()
     const store = useAccessorHelper().auth.signup
 
+    onMounted(() => {
+      store.SET_AB_FLOW(Flow.NOCREDITCARD)
+    })
+
     Gtm.parentPage({
       conversionID: '959213252',
       conversionLabel: 'QAn5COr85PoBEMTdsckD'
-    })
-
-    onMounted(() => {
-      store.SET_AUTH_FLOW(AuthFlow.NORMAL)
     })
 
     function goToBack() {

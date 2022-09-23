@@ -1,21 +1,21 @@
 <template>
-  <div
-    :class="[
-      'pg-px-4',
-      'lg:pg-pb-32',
-    ]"
-  >
+  <div :class="['pg-px-4', 'lg:pg-pb-32']">
     <div
       :class="[
         'pg-flex',
         'pg-flex-col',
         'pg-mx-auto',
         'pg-max-w-[768px]',
-        'lg:pg-max-w-[1300px]',
+        'lg:pg-max-w-[1300px]'
       ]"
     >
+      <PromoCodeDialog
+        v-model="showPromoCodeDialog"
+        @reject="handlePromoCodeRejection"
+      />
+
       <div class="pg-my-6">
-        <BackButton @click="$emit('click:back')" />
+        <BackButton v-if="isSignupProcess" @click="handleBackButtonClick" />
       </div>
 
       <!-- CONTENT -->
@@ -25,7 +25,7 @@
           'pg-grid-cols-1',
           'sm:pg-mt-12',
           'lg:pg-grid-cols-12',
-          'lg:pg-gap-24',
+          'lg:pg-gap-24'
         ]"
       >
         <!-- LEFT -->
@@ -50,7 +50,7 @@
             'pg-mt-14',
             'pg-mx-auto',
             'lg:pg-col-span-5',
-            'lg:pg-mt-0',
+            'lg:pg-mt-0'
           ]"
         >
           <CardPlaygarden
@@ -76,6 +76,7 @@ import {
   defineComponent,
   onMounted,
   ref,
+  useStore,
   useRoute,
   useRouter
 } from '@nuxtjs/composition-api'
@@ -88,6 +89,8 @@ import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import { CardData, DataSubscription } from '@/models'
 import CardPlaygarden from '@/components/app/register/CardPlaygarden.vue'
 import CardKnowMore from '@/components/app/register/CardKnowMore.vue'
+import { usePromoCodeDialog } from '@/composables/web/signup'
+import PromoCodeDialog from '@/components/app/register/PromoCodeDialog.vue'
 
 export default defineComponent({
   name: 'Payment',
@@ -96,10 +99,12 @@ export default defineComponent({
     StripePayForm,
     CardPlaygarden,
     CardKnowMore,
-    BackButton
+    BackButton,
+    PromoCodeDialog
   },
 
   setup() {
+    const store = useStore()
     const route = useRoute()
     const router = useRouter()
     const snotify = useSnotifyHelper()
@@ -109,11 +114,16 @@ export default defineComponent({
     const User = useUser()
     const Payment = usePayment()
 
+    const isUserInactive = computed(() => mode.value === 'activate-user')
+    const PromoCodeDialog = usePromoCodeDialog({ isUserInactive, router })
+
     const loading = ref(false)
     const showCardPlaygarden = ref(true)
 
     const mode = computed(() => route.value.params.mode ?? '')
-    const isUserInactive = computed(() => mode.value === 'activate-user')
+    const isSignupProcess = computed(
+      () => route.value.query.process === 'signup'
+    )
 
     const stripeButtonText = computed(() => {
       return isUserInactive.value
@@ -121,25 +131,10 @@ export default defineComponent({
         : 'START YOUR FREE TRIAL'
     })
 
-    function handleGoBack() {
-      if (isUserInactive.value) {
-        router.push({ name: 'app-inactive-subscription' })
-        return
-      }
-
-      router.push({
-        name: 'app-payment-plan',
-        query: {
-          process: 'signup',
-          step: '2'
-        }
-      })
-    }
-
     async function goToNextStep() {
       if (isUserInactive.value) {
         await User.getUserInfo()
-        handleGoBack()
+        PromoCodeDialog.goBack()
         return
       }
 
@@ -166,6 +161,11 @@ export default defineComponent({
         }
 
         await Payment.payShorterSubscription(dataSubscription)
+
+        if (isSignupProcess.value) {
+          await store.dispatch('auth/fetchUserInfo', undefined, { root: true })
+        }
+
         goToNextStep()
       } catch {
         snotify.error('Something went wrong. Please try again.')
@@ -188,7 +188,10 @@ export default defineComponent({
       showCardPlaygarden,
       isUserInactive,
       stripeButtonText,
-      handleGoBack,
+      isSignupProcess,
+      showPromoCodeDialog: PromoCodeDialog.showPromoCodeDialog,
+      handlePromoCodeRejection: PromoCodeDialog.handlePromoCodeRejection,
+      handleBackButtonClick: PromoCodeDialog.handleBackButtonClick,
       handleSubmit
     }
   }

@@ -275,7 +275,6 @@ export default {
     }
     &-col {
       width: 20%;
-      max-height: calc(var(--entriesLength) * 160px);
       display: flex;
       flex-direction: column;
       &-header {
@@ -301,7 +300,6 @@ export default {
     }
     &-hour-row {
       width: calc(100% - 32px);
-      max-height: calc(var(--rowHeightFactor) * 160px);
       border-bottom: solid 2px #f2f2f2;
       display: flex;
       flex-direction: row;
@@ -321,7 +319,7 @@ export default {
   .ps {
     position: relative;
     width: 100%;
-    max-height: calc(100% - 50px);
+    max-height: 90%;
     overflow: hidden !important;
     overflow-anchor: none;
     -ms-overflow-style: none;

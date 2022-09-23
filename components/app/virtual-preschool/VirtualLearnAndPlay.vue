@@ -159,11 +159,11 @@ export default defineComponent({
       },
       music: {
         imageUrl: require('@/assets/jpg/virtual-preschool/Music.JPG'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Lucy-Liveclasses.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Emma_Music.png'),
         title: 'Music',
         route: { name: 'app-music' },
-        message: 'Enjoy cooking, music, movement zooms and more!',
-        audio: `${baseRoute}audio/virtual-preschool/Live classes 2.m4a`
+        message: 'Listen anytime to sing and learn!',
+        audio: `${baseRoute}audio/virtual-preschool/Music.m4a`
       },
       wellbeing: {
         imageUrl: require('@/assets/jpg/virtual-preschool/well-being.jpg'),
