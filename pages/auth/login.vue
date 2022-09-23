@@ -176,6 +176,7 @@ export default {
 
   methods: {
     ...mapActions('auth', ['fetchUserInfo']),
+    ...mapActions('children', { getChildren: 'get' }),
     getProviderSignIn (provider) {
       let nameProvider = ''
       switch (provider) {
@@ -309,6 +310,7 @@ export default {
 
         await this.login(data)
         await this.fetchUserInfo()
+        await this.getChildren()
 
         if (this.isKidsCornerRedirect) {
           // Go to kids corner
