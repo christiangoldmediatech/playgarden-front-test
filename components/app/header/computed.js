@@ -13,9 +13,7 @@ export default {
     }),
 
     getVerifyEmail() {
-      return this.getUserInfo.flow === UserFlow.NOCREDITCARD
-        ? this.getUserInfo.registerStep !== 5
-        : true
+      return true
     },
 
     items() {
