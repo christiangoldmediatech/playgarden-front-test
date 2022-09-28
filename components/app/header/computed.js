@@ -13,7 +13,11 @@ export default {
     }),
 
     getVerifyEmail() {
-      return true
+      if (this.getUserInfo.flow === UserFlow.NOCREDITCARD) {
+        return this.getUserInfo.registerStep === 6
+      } else if (this.getUserInfo.flow === UserFlow.CREDITCARD) {
+        return true
+      }
     },
 
     items() {
