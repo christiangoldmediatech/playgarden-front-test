@@ -9,6 +9,14 @@
       </div>
     </div>
 
+    <payment-information-dialog
+      v-model="paymentInfoDialog"
+      :plan="selectedPlan"
+      :bill-annually="billAnnually"
+      :from-playdates="fromPlaydates"
+      :draft="draft"
+    />
+
     <!-- Plan columns -->
     <v-row class="pg-w-[95%] pg-max-w-[1300px] pg-m-auto">
       <v-col
@@ -109,7 +117,7 @@
               block
               :loading="loading"
               :color="colors[i]"
-              @click="onSubmit(plan)"
+              @click="doAction(plan)"
             >
               Choose this plan
             </v-btn>
@@ -148,6 +156,7 @@ import {
 
 import { UserFlow } from '@/models'
 import CreditCardModal from '@/components/app/payment/CreditCardModal.vue'
+import PaymentInformationDialog from '../PaymentInformationDialog.vue'
 import PlanDescription from './PlanDescription.vue'
 
 const colors = ['#C399ED', '#96D5DE', '#FAA938', '#B2E68D']
@@ -157,7 +166,8 @@ export default defineComponent({
 
   components: {
     CreditCardModal,
-    PlanDescription
+    PlanDescription,
+    PaymentInformationDialog
   },
 
   mixins: [submittable],
@@ -223,7 +233,8 @@ export default defineComponent({
     initialized: false,
     bkgColor: '#BDDA9F',
     isCreditCardModalVisible: false,
-    billAnnually: false
+    billAnnually: false,
+    paymentInfoDialog: false
   }),
 
   computed: {
@@ -250,6 +261,19 @@ export default defineComponent({
       'fetchSubscriptionPlan',
       'selectSubscriptionPlan'
     ]),
+
+    doAction(plan) {
+      if (this.inSignUpProcess) {
+        this.onSubmit(plan)
+      } else {
+        this.openDialog(plan)
+      }
+    },
+
+    openDialog (plan) {
+      this.paymentInfoDialog = true
+      this.selectedPlan = plan
+    },
 
     getPlan() {
       try {
@@ -292,7 +316,6 @@ export default defineComponent({
       plan.id = this.selectedPlan.id
       plan.type = this.billAnnually ? 'annual' : 'monthly'
       plan.fromPlaydates = this.fromPlaydates
-
       try {
         if (this.inSignUpProcess) {
           await this.selectSubscriptionPlan(plan)
