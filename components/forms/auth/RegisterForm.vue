@@ -78,7 +78,7 @@
                       <validation-provider
                         v-slot="{ errors }"
                         name="Password"
-                        rules="required|min:6|max:20|w_number|w_special|w_upper"
+                        rules="required|min:6|max:20|w_number|w_special|w_upper|w_strong_password"
                         vid="password_field"
                       >
                         <pg-password-field
