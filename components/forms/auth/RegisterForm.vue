@@ -63,6 +63,44 @@
                   />
                 </validation-provider>
 
+                <v-row no-gutters>
+                  <v-col v-if="isAddressRequired" class="pr-2" cols="12" md="6">
+                    <!-- Address -->
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Address"
+                      rules="required"
+                    >
+                      <pg-text-field
+                        v-model="draft.address"
+                        clearable
+                        :disabled="loading"
+                        :error-messages="errors"
+                        label="Address"
+                        :loading="loading"
+                        solo
+                      />
+                    </validation-provider>
+                  </v-col>
+                  <v-col cols="12" :md="isAddressRequired ? '6' : '12'">
+                    <!-- Phone number -->
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Phone Number (optional)"
+                    >
+                      <pg-text-field
+                        v-model="draft.phoneNumber"
+                        clearable
+                        :disabled="loading"
+                        :error-messages="errors"
+                        label="Phone Number (optional)"
+                        :loading="loading"
+                        solo
+                      />
+                    </validation-provider>
+                  </v-col>
+                </v-row>
+
                 <template
                   v-if="
                     (inInvitationProcess || !isUserLoggedIn) && !userSocialData
@@ -246,6 +284,11 @@ export default {
       default: false
     },
 
+    isAddressRequired: {
+      type: Boolean,
+      default: false
+    },
+
     whiteBtn: {
       type: Boolean,
       default: false
@@ -368,6 +411,9 @@ export default {
         lastName: this.hasUserSocialData
           ? this.userSocialData.lastName
           : this.getUserInfo.lastName || null,
+        address: this.hasUserSocialData
+          ? this.userSocialData.address
+          : this.getUserInfo.address || null,
         phoneNumber:
           this.$route.query.phone || this.getUserInfo.phoneNumber || null,
         email: this.hasUserSocialData
