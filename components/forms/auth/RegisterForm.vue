@@ -42,6 +42,25 @@
           </v-col>
           <v-col cols="12">
             <v-row no-gutters>
+              <v-col v-if="!isAddressRequired" cols="12">
+                <!-- Phone number -->
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Phone Number (optional)"
+                  rules="phone"
+                >
+                  <pg-text-field
+                    v-model="draft.phoneNumber"
+                    clearable
+                    :disabled="loading"
+                    :error-messages="errors"
+                    label="Phone Number (optional)"
+                    :loading="loading"
+                    solo
+                  />
+                </validation-provider>
+              </v-col>
+
               <v-col cols="12">
                 <!-- Email -->
                 <validation-provider
@@ -76,11 +95,12 @@
                       />
                     </validation-provider>
                   </v-col>
-                  <v-col cols="12" :md="isAddressRequired ? '6' : '12'">
+                  <v-col v-if="isAddressRequired" cols="12" md="6">
                     <!-- Phone number -->
                     <validation-provider
                       v-slot="{ errors }"
                       name="Phone Number (optional)"
+                      rules="phone"
                     >
                       <pg-text-field
                         v-model="draft.phoneNumber"
