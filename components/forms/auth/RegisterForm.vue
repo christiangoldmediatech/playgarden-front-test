@@ -401,7 +401,6 @@ export default {
           } else {
             this.addressDraft.zipCode = 'Not available'
           }
-          console.log(this.addressDraft)
         }
       } catch {}
     },
@@ -475,9 +474,9 @@ export default {
       }
     },
     onSubmit() {
-      const data = jsonCopy({ ...this.draft })
+      const data = jsonCopy(this.draft)
       if (this.addressDraft.address1) {
-        data.address = jsonCopy({ ...this.addressDraft })
+        data.address = jsonCopy(this.addressDraft)
       }
       this.$emit(
         'click:submit',
