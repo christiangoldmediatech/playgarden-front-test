@@ -67,18 +67,12 @@
                   <v-col v-if="isAddressRequired" class="pr-2" cols="12" md="6">
                     <!-- Address -->
                     <validation-provider
-                      v-slot="{ errors }"
                       name="Address"
                       rules="required"
                     >
-                      <pg-text-field
-                        v-model="draft.address"
-                        clearable
-                        :disabled="loading"
-                        :error-messages="errors"
-                        label="Address"
-                        :loading="loading"
-                        solo
+                      <search-address-autocomplete
+                        v-model="addressDraft.address1"
+                        @address-components="configureAddress"
                       />
                     </validation-provider>
                   </v-col>
@@ -263,11 +257,15 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
-
 import { jsonCopy } from '@/utils/objectTools'
+import SearchAddressAutocomplete from '@/components/SearchAddressAutocomplete.vue'
 
 export default {
   name: 'RegisterForm',
+
+  components: {
+    SearchAddressAutocomplete
+  },
 
   props: {
     emailValidated: {
@@ -302,6 +300,9 @@ export default {
 
   data: vm => ({
     draft: {},
+    addressDraft: {
+      address1: null
+    },
     loadingDataSocial: false,
     userSocialData: (() => {
       const { query } = vm.$route
@@ -362,6 +363,49 @@ export default {
   methods: {
     ...mapActions('coupons', ['getCoupons']),
 
+    configureAddress (data) {
+      try {
+        // eslint-disable-next-line camelcase
+        if (data && data.address_components) {
+          this.addressDraft = { address1: this.addressDraft.address1 }
+
+          // eslint-disable-next-line camelcase
+          const addressComponents = data.address_components
+
+          const city = addressComponents.find(({ types }) =>
+            types.includes('locality')
+          )
+          if (city) {
+            this.addressDraft.city = city.long_name
+          }
+
+          const state = addressComponents.find(({ types }) =>
+            types.includes('administrative_area_level_1')
+          )
+          if (state) {
+            this.addressDraft.state = state.long_name
+          }
+
+          const country = addressComponents.find(({ types }) =>
+            types.includes('country')
+          )
+          if (country) {
+            this.addressDraft.country = country.short_name.toUpperCase()
+          }
+
+          const postalCode = addressComponents.find(({ types }) =>
+            types.includes('postal_code')
+          )
+          if (postalCode) {
+            this.addressDraft.zipCode = postalCode.short_name.toUpperCase()
+          } else {
+            this.addressDraft.zipCode = 'Not available'
+          }
+          console.log(this.addressDraft)
+        }
+      } catch {}
+    },
+
     getProviderSignIn(provider) {
       let nameProvider = ''
       switch (provider) {
@@ -411,9 +455,6 @@ export default {
         lastName: this.hasUserSocialData
           ? this.userSocialData.lastName
           : this.getUserInfo.lastName || null,
-        address: this.hasUserSocialData
-          ? this.userSocialData.address
-          : this.getUserInfo.address || null,
         phoneNumber:
           this.$route.query.phone || this.getUserInfo.phoneNumber || null,
         email: this.hasUserSocialData
@@ -434,11 +475,13 @@ export default {
       }
     },
     onSubmit() {
+      const data = jsonCopy({ ...this.draft })
+      if (this.addressDraft.address1) {
+        data.address = jsonCopy({ ...this.addressDraft })
+      }
       this.$emit(
         'click:submit',
-        jsonCopy({
-          ...this.draft
-        })
+        data
       )
     },
 
