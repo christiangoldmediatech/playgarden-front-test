@@ -51,7 +51,7 @@
             :loading="loading"
             :is-address-required="true"
             :is-credit-card-required="isCreditCardRequired"
-            :is-coupon-needed="isCouponNeeded"
+            :is-coupon-needed="false"
             @click:submit="handleSubmit"
           />
         </div>
