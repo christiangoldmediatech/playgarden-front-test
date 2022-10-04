@@ -56,6 +56,8 @@ export const useLearnPlayV2 = (params: {
     )
   }
 
+  const newVideo = ref(null)
+
   // Computed values
   const computedProps = {
     songs: computed(() => {
@@ -94,18 +96,20 @@ export const useLearnPlayV2 = (params: {
         : []
     }),
     getBook: computed(() => {
-      return learnPlayData.value && learnPlayData.value.books.length > 0
+      return learnPlayData.value && learnPlayData.value.books.length > 0 && newVideo.value === null
         ? learnPlayData.value.books[0]
-        : null
+        : newVideo.value
     }),
     currentBookVideo: computed(() => {
-      return learnPlayData.value && learnPlayData.value.books.length > 0
+      return learnPlayData.value && learnPlayData.value.books.length > 0 && newVideo.value === null
         ? learnPlayData.value.books[0].video
-        : {
-            videoUrl: {
-              HLS: null
+        : newVideo.value !== null
+          ? newVideo.value
+          : {
+              videoUrl: {
+                HLS: null
+              }
             }
-          }
     })
   }
 
@@ -115,6 +119,7 @@ export const useLearnPlayV2 = (params: {
     getFirstLearnPlay,
     buildPlayVideoList,
     getPlayAndLearnByCurriuclumTypeId,
-    updateProgress
+    updateProgress,
+    newVideo
   }
 }

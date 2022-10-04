@@ -61,7 +61,7 @@
               </div>
               <span class="title-dashboard">{{ currentBookVideo.name }}</span>
             </v-col>
-            <v-col v-if="link" cols="3">
+            <v-col cols="3">
               <div class="mb-2">
                 Buy now on:
               </div>
@@ -88,47 +88,17 @@
         </v-row>
       </v-card>
     </template>
-    <template v-if="getRelatedBooks.length > 0">
+    <div v-if="getRelatedBooks.length > 0" class="mt-8">
       <span class="title-dashboard">
         Books of the week
       </span>
-      <v-card class="mt-2">
-        <v-row
-          class="book-images-container ma-0"
-          :class="{
-            'book-images-container-overflowed': getRelatedBooks.length > 3
-          }"
-        >
-          <v-col
-            v-for="(book, index) in getRelatedBooks"
-            :key="`book-item-${index}`"
-            cols="12"
-            md="4"
-            class="pg-relative"
-          >
-            <img
-              :src="book.image"
-              class="book-contain pg-cursor-pointer"
-              width="100%"
-              height="100%"
-              @click="changeVideoTrack(book.video)"
-            >
-            <div class="pg-absolute pg-top-0 pg-left-0 text-center pg-w-full pg-h-full pg-flex pg-flex-col pg-items-center pg-justify-center">
-              <img
-                width="100"
-                height="100"
-                src="@/assets/svg/library/library-play-icon-green.svg"
-              />
-              <div>
-                <div class="pg-text-white pg-text-2xl pg-font-bold">
-                  {{ book.name }}
-                </div>
-              </div>
-            </div>
-          </v-col>
-        </v-row>
-      </v-card>
-    </template>
+      <div class="mt-6">
+        <BooksScroll
+          :learn-play="getRelatedBooks"
+          @change-video-track="changeVideoTrack"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -143,12 +113,14 @@ import {
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { TypedStore } from '@/models'
+import BooksScroll from './BooksScroll.vue'
 
 export default defineComponent({
   name: 'BookVideoPlayerLearnPlay',
 
   components: {
-    PgVideoPlayer
+    PgVideoPlayer,
+    BooksScroll
   },
 
   props: {
@@ -195,6 +167,8 @@ export default defineComponent({
       if (!player.value) {
         return
       }
+
+      learnPlayV2.newVideo.value = video
 
       title.value = video.name as string
       author.value = video.description as string
