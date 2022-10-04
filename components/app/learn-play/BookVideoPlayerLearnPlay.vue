@@ -51,7 +51,7 @@
           </template>
         </pg-video-player>
         <v-card class="px-5">
-          <v-row align="center" justify="space-between">
+          <v-row align="center" justify="start">
             <v-col cols="2">
               <v-img :src="currentBookVideo.thumbnail" contain width="100" />
             </v-col>
@@ -61,7 +61,7 @@
               </div>
               <span class="title-dashboard">{{ currentBookVideo.name }}</span>
             </v-col>
-            <v-col cols="3">
+            <v-col v-if="link" cols="3">
               <div class="mb-2">
                 Buy now on:
               </div>
