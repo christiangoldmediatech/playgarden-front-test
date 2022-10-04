@@ -18,7 +18,7 @@
         {{ titles.columnB }}
       </div>
 
-      <div class="additional-info-content">
+      <div id="additional-info-content" class="additional-info-content">
         <slot name="columnB" />
       </div>
 
@@ -28,8 +28,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
-import { useWindowDimensions } from '@/composables'
+import { defineComponent, PropType, computed, onMounted, onUnmounted } from '@nuxtjs/composition-api'
+import { useVuetifyHelper, useWindowDimensions } from '@/composables'
+import { debounce } from 'lodash'
 
 export type ColumnTitles = {
   columnA: string
@@ -51,15 +52,43 @@ export default defineComponent({
       default: ''
     }
   },
-
-  setup(props) {
+  emits: ['scroll:last-reached'],
+  setup(props, { emit }) {
     const { APP_BAR_HEIGHT } = useWindowDimensions()
+    const vuetify = useVuetifyHelper()
+    const columnIsHorizontal = computed(() => vuetify.breakpoint.mdAndDown)
 
     const maxHeight = computed(() => {
       if (props.heightOverride) {
         return props.heightOverride
       }
       return `${APP_BAR_HEIGHT}px`
+    })
+
+    const handleLastReached = debounce(() => {
+      emit('scroll:last-reached')
+    })
+
+    const handleScroll = () => {
+      const element = document.getElementById('additional-info-content')
+      if (!columnIsHorizontal.value) {
+        if (element!.scrollTop + element!.clientHeight >= element!.scrollHeight) {
+          handleLastReached()
+        }
+        return
+      }
+
+      if (element!.scrollLeft + element!.clientWidth >= element!.scrollWidth) {
+        handleLastReached()
+      }
+    }
+
+    onMounted(() => {
+      document.getElementById('additional-info-content')?.addEventListener('scroll', handleScroll)
+    })
+
+    onUnmounted(() => {
+      document.getElementById('additional-info-content')?.removeEventListener('scroll', handleScroll)
     })
 
     return {
