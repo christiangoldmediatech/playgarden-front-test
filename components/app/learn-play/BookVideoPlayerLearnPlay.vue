@@ -61,7 +61,6 @@
               </div>
               <span class="title-dashboard">{{ currentBookVideo.name }}</span>
             </v-col>
-            {{ getBook.link }}
             <v-col v-if="amzLink " cols="3">
               <div class="mb-2">
                 Buy now on:
@@ -140,7 +139,7 @@ export default defineComponent({
     const player = ref<PlayerInstance | null>(null)
     const title = ref('')
     const author = ref('')
-    const amzLink = ref('')
+    const amzLink = ref<any>('')
 
     // Player functions
     function onPlayerReady(payload: { player: PlayerInstance; video: any }) {
@@ -148,6 +147,7 @@ export default defineComponent({
       player.value = payload.player
       title.value = video.name as string
       author.value = video.description as string
+      amzLink.value = learnPlayV2.computedProps.getBook.value?.link
       player.value.loadPlaylist([
         {
           title: video.name,
