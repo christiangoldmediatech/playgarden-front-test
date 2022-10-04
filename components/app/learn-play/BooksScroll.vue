@@ -11,7 +11,7 @@
     >
       <BookScrollItem
         :play-and-learn-video="item"
-        @click.native="currentVideo(item.video)"
+        @click.native="currentVideo(item)"
       />
     </v-slide-item>
     <template #next>
@@ -61,8 +61,8 @@ export default defineComponent({
         : []
     })
 
-    const currentVideo = (video: Video) => {
-      emit('change-video-track', video)
+    const currentVideo = (book: Book) => {
+      emit('change-video-track', book)
     }
 
     return {

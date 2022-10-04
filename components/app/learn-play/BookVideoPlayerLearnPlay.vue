@@ -61,11 +61,12 @@
               </div>
               <span class="title-dashboard">{{ currentBookVideo.name }}</span>
             </v-col>
-            <v-col cols="3">
+            {{ getBook.link }}
+            <v-col v-if="amzLink " cols="3">
               <div class="mb-2">
                 Buy now on:
               </div>
-              <v-btn color="#B2E68D" block>
+              <v-btn color="#B2E68D" block @click="goToLink">
                 <img src="@/assets/svg/amazon.svg" />
               </v-btn>
             </v-col>
@@ -112,7 +113,7 @@ import {
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
-import { TypedStore } from '@/models'
+import { Book, TypedStore } from '@/models'
 import BooksScroll from './BooksScroll.vue'
 
 export default defineComponent({
@@ -139,6 +140,7 @@ export default defineComponent({
     const player = ref<PlayerInstance | null>(null)
     const title = ref('')
     const author = ref('')
+    const amzLink = ref('')
 
     // Player functions
     function onPlayerReady(payload: { player: PlayerInstance; video: any }) {
@@ -163,7 +165,9 @@ export default defineComponent({
       ])
     }
 
-    function changeVideoTrack(video: any) {
+    function changeVideoTrack(book: Book) {
+      const { video }: {video: any} = book
+
       if (!player.value) {
         return
       }
@@ -172,6 +176,7 @@ export default defineComponent({
 
       title.value = video.name as string
       author.value = video.description as string
+      amzLink.value = book.link
       player.value.loadPlaylist([
         {
           title: video.name,
@@ -220,17 +225,25 @@ export default defineComponent({
       }
     }
 
+    const goToLink = () => {
+      if (amzLink.value) {
+        window.open(amzLink.value, '_blank')
+      }
+    }
+
     return {
       onPlayerReady,
       changeVideoTrack,
       saveStartProgress,
       saveEndProgress,
+      goToLink,
       ...commonPlayerFunctions,
       currentBookVideo: learnPlayV2.computedProps.currentBookVideo,
       getBook: learnPlayV2.computedProps.getBook,
       getRelatedBooks: learnPlayV2.computedProps.getRelatedBooks,
       title,
-      author
+      author,
+      amzLink
     }
   }
 })
