@@ -50,6 +50,27 @@
             </div>
           </template>
         </pg-video-player>
+        <v-card class="px-5">
+          <v-row align="center" justify="space-between">
+            <v-col cols="2">
+              <v-img :src="currentBookVideo.thumbnail" contain width="100" />
+            </v-col>
+            <v-col cols="7">
+              <div class="mb-2">
+                Book:
+              </div>
+              <span class="title-dashboard">{{ currentBookVideo.name }}</span>
+            </v-col>
+            <v-col cols="3">
+              <div class="mb-2">
+                Buy now on:
+              </div>
+              <v-btn color="#B2E68D" block>
+                <img src="@/assets/svg/amazon.svg" />
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
       </div>
     </template>
     <template v-else>
@@ -83,15 +104,27 @@
             :key="`book-item-${index}`"
             cols="12"
             md="4"
+            class="pg-relative"
           >
-            <a :href="book.url" target="_blank">
+            <img
+              :src="book.image"
+              class="book-contain pg-cursor-pointer"
+              width="100%"
+              height="100%"
+              @click="changeVideoTrack(book.video)"
+            >
+            <div class="pg-absolute pg-top-0 pg-left-0 text-center pg-w-full pg-h-full pg-flex pg-flex-col pg-items-center pg-justify-center">
               <img
-                :src="book.image"
-                class="book-cover"
-                width="100%"
-                height="100%"
-              >
-            </a>
+                width="100"
+                height="100"
+                src="@/assets/svg/library/library-play-icon-green.svg"
+              />
+              <div>
+                <div class="pg-text-white pg-text-2xl pg-font-bold">
+                  {{ book.name }}
+                </div>
+              </div>
+            </div>
           </v-col>
         </v-row>
       </v-card>
@@ -162,6 +195,7 @@ export default defineComponent({
       if (!player.value) {
         return
       }
+
       title.value = video.name as string
       author.value = video.description as string
       player.value.loadPlaylist([

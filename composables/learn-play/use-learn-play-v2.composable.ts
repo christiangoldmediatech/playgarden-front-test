@@ -90,9 +90,7 @@ export const useLearnPlayV2 = (params: {
     }),
     getRelatedBooks: computed(() => {
       return learnPlayData.value && learnPlayData.value.books.length > 0
-        ? learnPlayData.value.books[0].relatedBooks.filter(
-          related => !!related.image
-        )
+        ? learnPlayData.value.books
         : []
     }),
     getBook: computed(() => {
