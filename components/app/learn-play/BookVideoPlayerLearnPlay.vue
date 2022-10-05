@@ -139,7 +139,7 @@ export default defineComponent({
     const player = ref<PlayerInstance | null>(null)
     const title = ref('')
     const author = ref('')
-    const amzLink = ref<any>('')
+    const amzLink = ref<string | undefined>('')
 
     // Player functions
     function onPlayerReady(payload: { player: PlayerInstance; video: any }) {
@@ -213,7 +213,7 @@ export default defineComponent({
       if (child.currentChildren.value) {
         const childId = child.currentChildren.value[0].id
         const bookProgress = {
-          id: media.currentTrack.meta.videoId,
+          id: learnPlayV2.computedProps.getBook.value?.id,
           started: true,
           completed: finish
         }
