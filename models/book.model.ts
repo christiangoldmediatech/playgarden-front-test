@@ -16,4 +16,5 @@ export interface Book {
   createdAt: string
   updatedAt: string
   deletedAt?: string
+  link: string
 }
