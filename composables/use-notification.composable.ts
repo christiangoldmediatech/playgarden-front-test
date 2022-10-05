@@ -221,7 +221,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     const { flow, planSelected, trialEnd } = userInfo.value
     const isNoCreditCardFlow = flow === UserFlow.NOCREDITCARD
     const isOnlinePreschool = planSelected.id === PlanTier.PRESCHOOL
-    const trialHasEnded = dayjs(dayjs()).diff(trialEnd, 'day') > 1
+    const trialHasEnded = dayjs(dayjs()).diff(trialEnd, 'minute') > 1
     if (isNoCreditCardFlow && isOnlinePreschool && trialHasEnded) {
       isPreschoolTrialEndedWithNoCreditCardFlowModalVisible.value = true
     }
