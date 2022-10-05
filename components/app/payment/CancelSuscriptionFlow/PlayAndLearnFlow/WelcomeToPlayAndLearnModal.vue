@@ -24,7 +24,7 @@
 
     <v-col cols="12" class="text-center">
       <v-btn class="px-16" color="primary" @click="goHome">
-        START
+        START LEARNING
       </v-btn>
     </v-col>
 

@@ -307,7 +307,7 @@
         :remove-subscription-modal="removeSubscriptionModal"
         :is-mobile="isMobile"
         :leave-motive="leaveMotive"
-        :leave-motives="leaveMotives"
+        :leave-motives="leaveMotivesText"
         :is-last-leave-motive="isLastLeaveMotive"
         :other-leave-motive="otherLeaveMotive"
         :loading="loading"
@@ -451,16 +451,46 @@ export default {
     leaveMotive: '',
     otherLeaveMotive: '',
     leaveMotives: [
-      'Repeated technical issues',
-      'Too expensive',
-      'Using another learning platform',
-      'Going to in person school',
-      'Too much time commitment',
-      'My little one wasn\'t engaged',
-      'Didn\'t use it enough',
-      'Missing features I need',
-      'Didn\'t meet my expectations',
-      'Other (please explain)'
+      {
+        motive: 'Repeated technical issues',
+        couponDiscountFlow: true
+      },
+      {
+        motive: 'Too expensive',
+        couponDiscountFlow: true
+      },
+      {
+        motive: 'Using another learning platform',
+        couponDiscountFlow: false
+      },
+      {
+        motive: 'Going to in person school',
+        couponDiscountFlow: false
+      },
+      {
+        motive: 'Too much time commitment',
+        couponDiscountFlow: false
+      },
+      {
+        motive: 'My little one wasn\'t engaged',
+        couponDiscountFlow: false
+      },
+      {
+        motive: 'Didn\'t use it enough',
+        couponDiscountFlow: true
+      },
+      {
+        motive: 'Missing features I need',
+        couponDiscountFlow: true
+      },
+      {
+        motive: 'Didn\'t meet my expectations',
+        couponDiscountFlow: true
+      },
+      {
+        motive: 'Other (please explain)',
+        couponDiscountFlow: false
+      }
     ],
     // Discount Flow
     viewCouponDiscountModal: false,
@@ -475,8 +505,12 @@ export default {
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
 
+    leaveMotivesText() {
+      return this.leaveMotives.map(motives => motives.motive)
+    },
+
     isLastLeaveMotive () {
-      return this.leaveMotives[this.leaveMotives.length - 1] === this.leaveMotive
+      return this.leaveMotives[this.leaveMotives.length - 1].motive === this.leaveMotive
     },
 
     isCaregiver () {
@@ -723,9 +757,9 @@ export default {
       }
     },
     getCancelationFlow () {
-      const index = this.leaveMotives.findIndex(motive => motive === this.leaveMotive)
+      const leaveMotive = this.leaveMotives.find(motive => motive.motive === this.leaveMotive)
 
-      if (index <= 4) {
+      if (leaveMotive.couponDiscountFlow) {
         this.viewCouponDiscountModal = true
       } else {
         this.viewPlayAndLearnProgramModal = true
