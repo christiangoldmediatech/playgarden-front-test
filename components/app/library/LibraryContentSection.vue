@@ -18,7 +18,7 @@
         {{ titles.columnB }}
       </div>
 
-      <div id="additional-info-content" class="additional-info-content">
+      <div ref="scrollableContent" class="additional-info-content">
         <slot name="columnB" />
       </div>
 
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, onMounted, onUnmounted } from '@nuxtjs/composition-api'
+import { defineComponent, PropType, computed, onMounted, onUnmounted, ref } from '@nuxtjs/composition-api'
 import { useVuetifyHelper, useWindowDimensions } from '@/composables'
 import { debounce } from 'lodash'
 
@@ -57,6 +57,7 @@ export default defineComponent({
     const { APP_BAR_HEIGHT } = useWindowDimensions()
     const vuetify = useVuetifyHelper()
     const columnIsHorizontal = computed(() => vuetify.breakpoint.mdAndDown)
+    const scrollableContent = ref<HTMLDivElement | null>(null)
 
     const maxHeight = computed(() => {
       if (props.heightOverride) {
@@ -67,10 +68,10 @@ export default defineComponent({
 
     const handleLastReached = debounce(() => {
       emit('scroll:last-reached')
-    })
+    }, 100)
 
     const handleScroll = () => {
-      const element = document.getElementById('additional-info-content')
+      const element = scrollableContent.value
       if (!columnIsHorizontal.value) {
         if (element!.scrollTop + element!.clientHeight >= element!.scrollHeight) {
           handleLastReached()
@@ -84,15 +85,16 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      document.getElementById('additional-info-content')?.addEventListener('scroll', handleScroll)
+      scrollableContent.value?.addEventListener('scroll', handleScroll)
     })
 
     onUnmounted(() => {
-      document.getElementById('additional-info-content')?.removeEventListener('scroll', handleScroll)
+      scrollableContent.value?.removeEventListener('scroll', handleScroll)
     })
 
     return {
-      maxHeight
+      maxHeight,
+      scrollableContent
     }
   }
 })

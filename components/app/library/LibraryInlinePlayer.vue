@@ -214,6 +214,7 @@ export default defineComponent({
 
     const handleLastReached = debounce(async () => {
       if (!allowInfiniteScrolling.value) { return }
+      if (isLoadingMore.value) { return }
 
       const videosIds = kidsCornerVideos.value.map(video => video.id)
 
@@ -232,7 +233,7 @@ export default defineComponent({
       }
 
       kidsCornerVideos.value = [...kidsCornerVideos.value, ...videos]
-    })
+    }, 100)
 
     async function handleVideoCardPlay(mediaObject: MediaObject): Promise<any> {
       try {
