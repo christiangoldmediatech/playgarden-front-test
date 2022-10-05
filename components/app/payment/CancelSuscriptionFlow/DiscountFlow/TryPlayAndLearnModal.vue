@@ -7,7 +7,7 @@
       @click:outside="$emit('closeTryPlayAndLearnModal')"
     >
       <v-col class="text-right pg-pr-3" cols="12">
-        <v-btn icon color="white" class="pg-bg-[#F6B7D2]">
+        <v-btn icon color="white" class="pg-bg-[#F6B7D2]" @click="closeDialog">
           <v-icon>
             mdi-close
           </v-icon>
@@ -115,10 +115,15 @@ export default defineComponent({
       }
     }
 
+    const closeDialog = () => {
+      emit('closeTryPlayAndLearnModal')
+    }
+
     return {
       isCreditCardModalVisible,
       loadingBtn,
-      changePlayAndLearnPlan
+      changePlayAndLearnPlan,
+      closeDialog
     }
   }
 })
