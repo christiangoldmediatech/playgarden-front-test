@@ -23,7 +23,7 @@
 
     <v-col cols="12" class="text-center">
       <div class="px-10 py-5 pg-rounded-3xl pg-border-1 pg-border-dashed pg-border-pg-[#707070] pg-bg-[#F2F2F2] pg-text-[#A9A9A9] pg-w-8/12 pg-block pg-mx-auto pg-font-bold mb-3">
-        COUPONTHREEMONTHS
+        {{ couponCode }}
       </div>
     </v-col>
 
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { defineComponent, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, useStore } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'AppliedCouponModal',
@@ -64,13 +64,22 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
+    const store = useStore()
+    const hasUserLearnAndPlayPlan = computed(() => store.getters['auth/hasUserLearnAndPlayPlan'])
+
+    const couponCode = computed(() => {
+      return hasUserLearnAndPlayPlan
+        ? 'PLAYANDLEARNPROMO'
+        : 'COUPONTHREEMONTHS'
+    })
 
     const goHome = () => {
       router.replace({ name: 'app-virtual-preschool' })
     }
 
     return {
-      goHome
+      goHome,
+      couponCode
     }
   }
 })

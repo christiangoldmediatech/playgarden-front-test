@@ -499,11 +499,15 @@ export default {
     // PAL Program Flow
     viewPlayAndLearnProgramModal: false,
     viewWelcomeToPlayAndLearnModal: false,
+    // PAL Cancellation Flow
+    viewPlayAndLearnDiscountModal: false,
     // Cancel Anyway Modal
     viewCancelAnywayModal: false
   }),
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
+
+    ...mapGetters('auth', ['hasUserLearnAndPlayPlan']),
 
     leaveMotivesText() {
       return this.leaveMotives.map(motives => motives.motive)
@@ -759,7 +763,7 @@ export default {
     getCancelationFlow () {
       const leaveMotive = this.leaveMotives.find(motive => motive.motive === this.leaveMotive)
 
-      if (leaveMotive.couponDiscountFlow) {
+      if (leaveMotive.couponDiscountFlow || this.hasUserLearnAndPlayPlan) {
         this.viewCouponDiscountModal = true
       } else {
         this.viewPlayAndLearnProgramModal = true
