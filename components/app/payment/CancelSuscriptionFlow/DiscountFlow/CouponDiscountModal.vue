@@ -25,13 +25,12 @@
         <p
           class="text-center font-weight-medium pg-text-[20px] pg-leading-[25px] pg-text-[#71B2FF]"
         >
-          Do you want to continue to be enrolled for $49.99 a month, for the
-          next 3 months?
+          {{ discountMessage }}
         </p>
       </v-col>
 
       <v-col cols="12" class="text-center">
-        <v-btn class="px-16" color="primary" :loading="loadingBtn" @click="changePlayAndLearnPlan">
+        <v-btn class="px-16" color="primary" :loading="loadingBtn" @click="applyLogicForFlow">
           YES
         </v-btn>
       </v-col>
@@ -61,7 +60,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useStore, computed } from '@nuxtjs/composition-api'
 import { useAuth, useBilling, useSnotifyHelper } from '@/composables'
 import { UserFlow } from '@/models'
 import CreditCardModal from '@/components/app/payment/CreditCardModal.vue'
@@ -79,9 +78,27 @@ export default defineComponent({
     const Auth = useAuth({ store })
     const Billing = useBilling()
     const snotify = useSnotifyHelper()
+    const hasUserLearnAndPlayPlan = computed(() => store.getters['auth/hasUserLearnAndPlayPlan'])
+    const discountMessage = computed(() => {
+      return hasUserLearnAndPlayPlan
+        ? 'Do you want to continue to be enrolled for $9.99 a month, forever?'
+        : 'Do you want to continue to be enrolled for $49.99 a month, for the next 3 months?'
+    })
 
     const isCreditCardModalVisible = ref(false)
     const loadingBtn = ref(false)
+
+    const applyLogicForFlow = async () => {
+      if (hasUserLearnAndPlayPlan) {
+        applyDiscountCodeForPlayAndLearn()
+      } else {
+        await changePlayAndLearnPlan()
+      }
+    }
+
+    const applyDiscountCodeForPlayAndLearn = () => {
+      console.log('Discount code applied')
+    }
 
     const changePlayAndLearnPlan = async () => {
       loadingBtn.value = true
@@ -117,6 +134,8 @@ export default defineComponent({
     return {
       isCreditCardModalVisible,
       loadingBtn,
+      applyLogicForFlow,
+      discountMessage,
       changePlayAndLearnPlan
     }
   }
