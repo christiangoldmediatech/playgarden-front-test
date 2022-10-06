@@ -14,6 +14,7 @@ export default () => ({
   isEmailConflictModalVisible: false,
   isAccountInactiveModalVisible: false,
   isCanceledTrialModalVisible: false,
+  isPreschoolTrialEndedWithNoCreditCardFlowModalVisible: false,
   notificationCard: {
     isVisible: false,
     title: '',

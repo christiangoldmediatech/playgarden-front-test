@@ -4,7 +4,7 @@ export default {
   /*
    * CARDS
    */
-  async addBillingCard ({ commit }, data) {
+  async addBillingCard({ commit }, data) {
     try {
       return await this.$axios.$post('/billing/card', data)
     } catch (error) {
@@ -16,7 +16,7 @@ export default {
     }
   },
 
-  async fetchBillingCards ({ commit }) {
+  async fetchBillingCards({ commit }) {
     try {
       return await this.$axios.$get('/billing/cards')
     } catch (error) {
@@ -28,7 +28,7 @@ export default {
     }
   },
 
-  async removeBillingCard ({ commit }, id) {
+  async removeBillingCard({ commit }, id) {
     try {
       return await this.$axios.$delete(`/billing/card/${id}`)
     } catch (error) {
@@ -40,11 +40,11 @@ export default {
     }
   },
 
-  async updateBillingCard ({ commit }, { id, data }) {
+  async updateBillingCard({ commit }, { id, data }) {
     return await this.$axios.$patch(`/billing/card/${id}`, data)
   },
 
-  async validateCard ({ commit }, data) {
+  async validateCard({ commit }, data) {
     try {
       return await this.$axios.$post('/billing/validate/card', data)
     } catch (error) {
@@ -59,9 +59,11 @@ export default {
   /*
    * SUBSCRIPTIONS COST
    */
-  async cancelSubscription ({ commit }, reason = '') {
+  async cancelSubscription({ commit }, reason = '') {
     try {
-      return await this.$axios.$delete(`/billing/subscription/cancel?reason=${reason}`)
+      return await this.$axios.$delete(
+        `/billing/subscription/cancel?reason=${reason}`
+      )
     } catch (error) {
       snotifyError(commit, {
         body: 'Sorry! There was an error while canceling your Subscription!'
@@ -71,7 +73,7 @@ export default {
     }
   },
 
-  async cancelSubscriptionById ({ commit }, id) {
+  async cancelSubscriptionById({ commit }, id) {
     try {
       return await this.$axios.$delete(`/billing/subscription/${id}/cancel`)
     } catch (error) {
@@ -83,7 +85,7 @@ export default {
     }
   },
 
-  async fetchBillingDetails ({ commit }) {
+  async fetchBillingDetails({ commit }) {
     try {
       return await this.$axios.$get('/billing')
     } catch (error) {
@@ -95,7 +97,7 @@ export default {
     }
   },
 
-  async fetchSubscriptionCost ({ commit }) {
+  async fetchSubscriptionCost({ commit }) {
     try {
       return await this.$axios.$get('/billing/cost')
     } catch (error) {
@@ -107,7 +109,7 @@ export default {
     }
   },
 
-  async paySubscription ({ commit }, data) {
+  async paySubscription({ commit }, data) {
     try {
       return await this.$axios.$post('/billing', data)
     } catch (error) {
@@ -119,7 +121,7 @@ export default {
     }
   },
 
-  async payShorterSubscription ({ commit }, data) {
+  async payShorterSubscription({ commit }, data) {
     try {
       return await this.$axios.$post('/billing/payment', data)
     } catch (error) {
@@ -134,7 +136,7 @@ export default {
   /*
    * SUBSCRIPTIONS PLAN
    */
-  fetchSubscriptionPlan ({ commit }) {
+  fetchSubscriptionPlan({ commit }) {
     try {
       return this.$axios.$get('/plans')
     } catch (error) {
@@ -146,17 +148,17 @@ export default {
     }
   },
 
-  getSelectedSubscriptionPlan () {
+  getSelectedSubscriptionPlan() {
     return this.$axios.$get('/auth/user/plan')
   },
 
-  getSelectedSubscriptionPlanByUser (_, id) {
+  getSelectedSubscriptionPlanByUser(_, id) {
     return this.$axios.$get(`/users/${id}/plan`)
   },
 
-  async selectSubscriptionPlan ({ commit }, { id, type, fromPlaydates } = {}) {
+  async selectSubscriptionPlan({ commit }, { id, type, ...data }) {
     try {
-      return await this.$axios.$patch(`/auth/user/plan/${id}/${type}`, { fromPlaydates })
+      return await this.$axios.$patch(`/auth/user/plan/${id}/${type}`, data)
     } catch (error) {
       snotifyError(commit, {
         body: 'Sorry! There was an error while setting your Subscription plan!'
