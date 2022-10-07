@@ -321,9 +321,13 @@
       <!-- Discount Flow -->
       <coupon-discount-modal
         :view-coupon-discount-modal="viewCouponDiscountModal"
+        :billing-type="billing.billingType"
+        :discount-code="couponCode"
         @tryPlayAndLearnModal="viewTryPlayAndLearnModal = true"
         @closeCouponDiscountModal="viewCouponDiscountModal = false"
         @appliedCouponModal="viewAppliedCouponModal = true"
+        @cancelPlayAndLearnModal="cancelPlayAndLearnModal = true"
+        @cancelLearnAndPlayAccount="removeLearnAndPlaySubscription"
       />
       <try-play-and-learn-modal
         :view-try-play-and-learn-modal="viewTryPlayAndLearnModal"
@@ -333,6 +337,8 @@
       />
       <applied-coupon-modal
         :view-applied-coupon-modal="viewAppliedCouponModal"
+        :billing="billing"
+        :discount-code="couponCode"
         @closeViewAppliedCouponModal="viewAppliedCouponModal = false"
       />
 
@@ -346,6 +352,10 @@
       />
       <welcome-to-play-and-learn-modal
         :view-welcome-to-play-and-learn-modal="viewWelcomeToPlayAndLearnModal"
+      />
+      <cancel-play-and-learn-modal
+        :cancel-play-and-learn-modal="cancelPlayAndLearnModal"
+        @closeCancelPlayAndLearnModal="cancelPlayAndLearnModal = false"
       />
 
       <!-- Cancel Anyway Modal -->
@@ -403,6 +413,7 @@ import PlayAndLearnProgramModal from './CancelSuscriptionFlow/PlayAndLearnFlow/P
 import WelcomeToPlayAndLearnModal from './CancelSuscriptionFlow/PlayAndLearnFlow/WelcomeToPlayAndLearnModal.vue'
 import TryPlayAndLearnModal from './CancelSuscriptionFlow/DiscountFlow/TryPlayAndLearnModal.vue'
 import AppliedCouponModal from './CancelSuscriptionFlow/DiscountFlow/AppliedCouponModal.vue'
+import CancelPlayAndLearnModal from './CancelSuscriptionFlow/DiscountFlow/CancelPlayAndLearnModal.vue'
 
 export default {
   name: 'MembershipDetails',
@@ -418,7 +429,8 @@ export default {
     PlayAndLearnProgramModal,
     WelcomeToPlayAndLearnModal,
     TryPlayAndLearnModal,
-    AppliedCouponModal
+    AppliedCouponModal,
+    CancelPlayAndLearnModal
   },
 
   data: vm => ({
@@ -430,6 +442,7 @@ export default {
     promotion_id: null,
     checkValid: debounce(vm._checkValid, 1050),
     billing: {
+      billingType: '',
       membershipInterval: 0,
       nextBillingDate: null,
       planAmount: 0,
@@ -492,6 +505,7 @@ export default {
         couponDiscountFlow: false
       }
     ],
+    learnAndPlayWasCanceled: false,
     // Discount Flow
     viewCouponDiscountModal: false,
     viewTryPlayAndLearnModal: false,
@@ -499,6 +513,7 @@ export default {
     // PAL Program Flow
     viewPlayAndLearnProgramModal: false,
     viewWelcomeToPlayAndLearnModal: false,
+    cancelPlayAndLearnModal: false,
     // PAL Cancellation Flow
     viewPlayAndLearnDiscountModal: false,
     // Cancel Anyway Modal
@@ -584,6 +599,17 @@ export default {
       }
 
       return false
+    },
+    couponCode() {
+      if (this.hasUserLearnAndPlayPlan) {
+        if (this.billing.billingType === 'MONTHLY') {
+          return 'PLPROMOMONTHLY'
+        }
+
+        return 'PLANNUALLY'
+      }
+
+      return 'PSPROMO'
     }
   },
   watch: {
@@ -690,6 +716,7 @@ export default {
       try {
         this.loading = true
         const data = await this.fetchBillingDetails()
+        this.billing.billingType = data.billingType
         this.billing.subscriptionId = data.subscriptionId
         this.billing.planAmount = data.planAmount || null
         this.billing.planName = data.planName || null
@@ -738,6 +765,10 @@ export default {
       this.stripeCardModal = true
       this.cardToUpate = card
     },
+    async removeLearnAndPlaySubscription() {
+      this.learnAndPlayWasCanceled = true
+      await this.removeSubscription(false)
+    },
     async removeSubscription (ignoreFlow = true) {
       if (ignoreFlow) {
         this.getCancelationFlow()
@@ -757,7 +788,11 @@ export default {
         // In the future we can handle the error
       } finally {
         this.loading = false
-        this.viewCancelAnywayModal = true
+        if (this.learnAndPlayWasCanceled) {
+          this.cancelPlayAndLearnModal = true
+        } else {
+          this.viewCancelAnywayModal = true
+        }
       }
     },
     getCancelationFlow () {
