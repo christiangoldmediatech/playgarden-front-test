@@ -2,7 +2,10 @@
   <v-app>
     <template v-if="showContent">
       <!-- TRIAL EXPIRING RIBBON -->
-      <trial-is-expiring v-if="isTrialExpiringRibbonVisible" @expired="handleExpiredTrialCoundown" />
+      <trial-is-expiring
+        v-if="isTrialExpiringRibbonVisible"
+        @expired="handleExpiredTrialCoundown"
+      />
 
       <!-- APP HEADER -->
       <pg-header />
@@ -21,6 +24,11 @@
 
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
+
+      <!-- NO CREDIT CARD FLOW TRIAL EXPIRED -->
+      <no-credit-card-free-trial-ended-dialog
+        v-model="isPreschoolTrialEndedWithNoCreditCardFlowModalVisible"
+      />
 
       <!-- CONTENT -->
       <v-main v-if="!isFullWidth">
@@ -50,10 +58,20 @@
 </template>
 
 <script lang="ts">
-import { useAuth, useLayout, useNotification, useVuetifyHelper } from '@/composables'
+import {
+  useAuth,
+  useLayout,
+  useNotification,
+  useVuetifyHelper
+} from '@/composables'
 import { TypedStore } from '@/models'
 import { useRoute, useRouter, useStore } from '@nuxtjs/composition-api'
-import { computed, defineComponent, onMounted, watch } from '@vue/composition-api'
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  watch
+} from '@vue/composition-api'
 
 import AppNavigation from '@/components/app/header/AppNavigation.vue'
 import PgHeader from '@/components/app/header/PgHeader.vue'
@@ -66,14 +84,21 @@ export default defineComponent({
     AppNavigation,
     PgHeader,
     DefaultFooter,
-    TrialIsExpiring: () => import('@/components/app/header/TrialIsExpiring.vue'),
-    NotificationCard: () => import('@/components/app/notifications/NotificationCard.vue'),
-    ShippingAddressModal: () => import('@/components/app/payment/ShippingAddressModal.vue'),
-    TrialExpiredModal: () => import('@/components/app/payment/TrialExpiredModal.vue'),
-    ContactUsFormModal: () => import('@/components/forms/contact/ContactUsFormModal.vue')
+    TrialIsExpiring: () =>
+      import('@/components/app/header/TrialIsExpiring.vue'),
+    NotificationCard: () =>
+      import('@/components/app/notifications/NotificationCard.vue'),
+    ShippingAddressModal: () =>
+      import('@/components/app/payment/ShippingAddressModal.vue'),
+    TrialExpiredModal: () =>
+      import('@/components/app/payment/TrialExpiredModal.vue'),
+    ContactUsFormModal: () =>
+      import('@/components/forms/contact/ContactUsFormModal.vue'),
+    NoCreditCardFreeTrialEndedDialog: () =>
+      import('@/components/app/NoCreditCardFreeTrialEndedDialog.vue')
   },
 
-  setup () {
+  setup() {
     const store = useStore<TypedStore>()
     const route = useRoute()
     const router = useRouter()
@@ -90,7 +115,9 @@ export default defineComponent({
     const {
       isTrialExpiringRibbonVisible,
       checkIfShouldShowTrialExpiringRibbon,
-      checkIfShouldShowTrialExpiredModal
+      checkIfShouldShowTrialExpiredModal,
+      isPreschoolTrialEndedWithNoCreditCardFlowModalVisible,
+      checkIfPreschoolTrialEndedWithNoCreditCardFlow
     } = useNotification({ store })
 
     const routeName = computed(() => route.value.name)
@@ -99,10 +126,10 @@ export default defineComponent({
       () => store.getters['auth/hasUserLearnAndPlayPlan']
     )
 
-    watch(isUserLoggedIn, async () => {
+    watch(isUserLoggedIn, () => {
       if (isUserLoggedIn.value === true && routeName.value !== 'shared-slug') {
-        await checkIfShouldShowTrialExpiredModal()
-        await checkIfShouldShowTrialExpiringRibbon()
+        checkIfShouldShowTrialExpiredModal()
+        checkIfShouldShowTrialExpiringRibbon()
       }
     })
 
@@ -124,7 +151,9 @@ export default defineComponent({
       toolbarStyle,
       setShowContent,
       handleExpiredTrialCountdown,
-      hasUserLearnAndPlayPlan
+      hasUserLearnAndPlayPlan,
+      isPreschoolTrialEndedWithNoCreditCardFlowModalVisible,
+      checkIfPreschoolTrialEndedWithNoCreditCardFlow
     }
   }
 })

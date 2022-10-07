@@ -1,21 +1,21 @@
 <template>
-  <div
-    :class="[
-      'pg-px-4',
-      'lg:pg-pb-32',
-    ]"
-  >
+  <div :class="['pg-px-4', 'lg:pg-pb-32']">
     <div
       :class="[
         'pg-flex',
         'pg-flex-col',
         'pg-mx-auto',
         'pg-max-w-[768px]',
-        'lg:pg-max-w-[1300px]',
+        'lg:pg-max-w-[1300px]'
       ]"
     >
+      <PromoCodeDialog
+        v-model="showPromoCodeDialog"
+        @reject="handlePromoCodeRejection"
+      />
+
       <div class="pg-my-6">
-        <BackButton @click="handleGoBack" />
+        <BackButton @click="handleBackButtonClick" />
       </div>
 
       <!-- CONTENT -->
@@ -25,7 +25,7 @@
           'pg-grid-cols-1',
           'sm:pg-mt-12',
           'lg:pg-grid-cols-12',
-          'lg:pg-gap-24',
+          'lg:pg-gap-24'
         ]"
       >
         <!-- LEFT -->
@@ -50,7 +50,7 @@
             'pg-mt-14',
             'pg-mx-auto',
             'lg:pg-col-span-5',
-            'lg:pg-mt-0',
+            'lg:pg-mt-0'
           ]"
         >
           <CardPlaygarden
@@ -71,12 +71,18 @@
 </template>
 
 <script>
+import {
+  computed,
+  defineComponent,
+  useRoute,
+  useRouter
+} from '@nuxtjs/composition-api'
 import { mapActions } from 'vuex'
-import { defineComponent, useRoute } from '@nuxtjs/composition-api'
 
 import { useUTM } from '@/composables/web/utm'
+import { usePromoCodeDialog } from '@/composables/web/signup'
 
-import StripePayForm from '@/components/forms/payment/StripePayForm'
+import StripePayForm from '@/components/forms/payment/StripePayForm.vue'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import CardPlaygarden from './CardPlaygarden.vue'
 import CardKnowMore from './CardKnowMore.vue'
@@ -99,19 +105,26 @@ export default defineComponent({
     }
   },
 
-  data: vm => ({
+  data: () => ({
     loading: false,
     showCardPlaygarden: true,
     hiddenCardFamily: false,
     coupon: null
   }),
 
-  setup() {
+  setup(props) {
     const route = useRoute()
     const utmContent = useUTM({ route: route.value })
+    const PromoCodeDialog = usePromoCodeDialog({
+      isUserInactive: computed(() => props.mode === ''),
+      router: useRouter()
+    })
 
     return {
-      utmContent
+      utmContent,
+      showPromoCodeDialog: PromoCodeDialog.showPromoCodeDialog,
+      handlePromoCodeRejection: PromoCodeDialog.handlePromoCodeRejection,
+      handleBackButtonClick: PromoCodeDialog.handleBackButtonClick
     }
   },
 
@@ -136,16 +149,6 @@ export default defineComponent({
     ...mapActions('auth', ['fetchUserInfo']),
 
     ...mapActions('payment', ['payShorterSubscription', 'validateCard']),
-
-    handleGoBack () {
-      this.$router.push({
-        name: 'app-payment-plan',
-        query: {
-          process: 'signup',
-          step: '2'
-        }
-      })
-    },
 
     async goToNextStep() {
       let page = {}

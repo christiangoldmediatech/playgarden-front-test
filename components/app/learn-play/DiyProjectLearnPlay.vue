@@ -2,7 +2,7 @@
   <div>
     <div class="mb-4 d-flex align-center">
       <span class="title-dashboard">
-        DIY Project
+        Do-It-Together
       </span>
 
       <DownloadButtonLearnPlay class="ml-4" @click="downloadDiyFiles" />

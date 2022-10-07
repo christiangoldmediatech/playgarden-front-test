@@ -3,7 +3,6 @@
     :class="[
       'pg-bg-[url(@/assets/png/play-learn/acuarela-yellow.png)]',
       'pg-bg-[center_right_-8rem]',
-      'lg:pg-pb-32'
     ]"
   >
     <div
@@ -20,29 +19,6 @@
         <BackButton @click="handleGoBack" />
       </div>
 
-      <!-- HEADING -->
-      <div
-        :class="[
-          'pg-mt-6',
-          'pg-inline',
-          'pg-text-3xl',
-          'pg-font-bold',
-          'pg-leading-9',
-          'lg:pg-tracking-[4.8px]',
-          'lg:pg-leading-[48px]'
-        ]"
-      >
-        <img
-          src="@/assets/svg/play-learn/play-learn-logo.svg"
-          class="pg-mr-2 pg-h-14 pg-mb-[-16px] pg-text-black"
-        />
-        IS COMPLETELY FREE FOR THE FIRST 15 DAYS!
-      </div>
-
-      <div class="pg-text-xl pg-text-black pg-opacity-50">
-        Create an account to start learning
-      </div>
-
       <!-- CONTENT -->
       <div
         :class="[
@@ -55,9 +31,25 @@
       >
         <!-- LEFT -->
         <div class="pg-col-span-full lg:pg-col-span-7">
+          <div>
+            <h1 class="main-title lg:pg-text-left pg-text-center">
+              <span class="play-style">PLAY</span>
+              <span class="ampersand-style">&</span>
+              <span class="l-style">L</span><span class="e-style">E</span><span class="a-style">A</span><span class="r-style">R</span><span class="n-style">N</span>
+              IS COMPLETELY FREE FOR THE FIRST 15 DAYS!
+            </h1>
+          </div>
+
+          <div class="pg-my-6">
+            <h2 class="subtitle lg:pg-text-left pg-text-center">
+              Create an account to start learning, <strong>NO CREDIT CARD REQUIRED!</strong>
+            </h2>
+          </div>
+
           <RegisterForm
             :loading="isLoading"
             :is-credit-card-required="true"
+            :is-coupon-needed="false"
             @click:submit="handleSubmit"
           />
         </div>
@@ -73,7 +65,7 @@
             'lg:pg-mt-0'
           ]"
         >
-          <StepOneCard />
+          <play-learn-promo-info></play-learn-promo-info>
         </div>
       </div>
     </div>
@@ -85,29 +77,31 @@ import {
   defineComponent,
   ref,
   useRoute,
-  useRouter
+  useRouter,
+  onMounted
 } from '@nuxtjs/composition-api'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
-import StepOneCard from '@/components/app/learn-play/StepOneCard/StepOneCard.vue'
-import { useSnotifyHelper } from '@/composables'
+import PlayLearnPromoInfo from '@/components/app/register/PlayLearnPromoInfo.vue'
+import { useAccessorHelper, useSnotifyHelper } from '@/composables'
 import { useAuth } from '@/composables/users'
 import { ParentSignupPayload } from '@/composables/web/signup/types'
-import { useParentSignup, useSignupStep } from '@/composables/web/signup'
+import { useParentSignup, useSignupFlow, useSignupStep } from '@/composables/web/signup'
 import { useModal } from '@/composables/web/modal'
 import { useUTM } from '@/composables/web/utm'
 import { SignupType } from '@/composables/users/types'
 import { useGtm } from '@/composables/web/gtm'
+import { Flow } from '@/composables/users/enums'
 
 export default defineComponent({
-  name: 'AuthPlayLearnIndex',
+  name: 'Promo',
 
   layout: 'play-learn',
 
   components: {
     BackButton,
     RegisterForm,
-    StepOneCard
+    PlayLearnPromoInfo
   },
 
   setup() {
@@ -115,11 +109,13 @@ export default defineComponent({
     const snotify = useSnotifyHelper()
     const router = useRouter()
     const route = useRoute()
+    const store = useAccessorHelper().auth.signup
 
     const Utm = useUTM({ route: route.value })
     const Auth = useAuth()
     const Modal = useModal()
-    const ParentSignup = useParentSignup({ auth: Auth })
+    const signUpFlow = useSignupFlow({ route: route.value })
+    const ParentSignup = useParentSignup({ auth: Auth, signupFlow: signUpFlow })
 
     const isLoading = ref(false)
     const signupType = SignupType.LEARN_AND_PLAY
@@ -129,11 +125,11 @@ export default defineComponent({
       conversionLabel: 'QAn5COr85PoBEMTdsckD'
     })
 
-    function handleGoBack() {
+    const handleGoBack = () => {
       window.open('https://playgardenprep.com/play-and-learn/', '_self')
     }
 
-    async function handleSubmit(data: ParentSignupPayload) {
+    const handleSubmit = async (data: ParentSignupPayload) => {
       try {
         isLoading.value = true
         await ParentSignup.signup(data, signupType)
@@ -157,13 +153,18 @@ export default defineComponent({
       }
     }
 
-    function goToNextStep() {
+    onMounted(() => {
+      store.SET_AB_FLOW(Flow.NOCREDITCARD)
+    })
+
+    const goToNextStep = () => {
       const SignupStep = useSignupStep()
 
       router.push(
         SignupStep.getStepOneNextStepLocation({
           signupType,
-          utmContent: Utm.utmContent.value
+          utmContent: Utm.utmContent.value,
+          abFlow: signUpFlow.abFlow.value
         })
       )
     }
@@ -176,3 +177,53 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.main-title {
+  font-weight: 700;
+  letter-spacing: 4.8px;
+  font-size: 38px;
+
+  @media (max-width: $breakpoint-sm) {
+    font-size: 30px;
+  }
+
+}
+
+.play-style {
+  color: #6EC55A;
+}
+
+.ampersand-style {
+  color: #F89838;
+}
+
+.l-style {
+  color: #FFB9D6;
+}
+
+.e-style {
+  color: #F6E72A;
+}
+
+.a-style {
+  color: #B2E68D;
+}
+
+.r-style {
+  color: #9ACED4;
+}
+
+.n-style {
+  color: #C399ED;
+}
+
+.subtitle {
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 36px;
+  color: #606060;
+  mix-blend-mode: normal;
+  opacity: 0.49;
+}
+</style>

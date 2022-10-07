@@ -1,5 +1,5 @@
 import { useAccessorHelper } from '@/composables/helpers.composable'
-import { Flow } from '@/composables/users/enums/flow.enum'
+import { AuthFlow, Flow } from '@/composables/users/enums/flow.enum'
 import { computed, ref } from '@nuxtjs/composition-api'
 import { UserFlowRouteParam, UserFlowRoute } from './enums'
 import { UseSignupFlowOptions } from './types'
@@ -14,6 +14,16 @@ export const useSignupFlow = ({ route }: UseSignupFlowOptions) => {
 
     set(abFlow: Flow) {
       store.SET_AB_FLOW(abFlow)
+    }
+  })
+
+  const authFlow = computed<AuthFlow>({
+    get() {
+      return store.authFlow
+    },
+
+    set(auhtFlow: AuthFlow) {
+      store.SET_AUTH_FLOW(auhtFlow)
     }
   })
 
@@ -65,6 +75,7 @@ export const useSignupFlow = ({ route }: UseSignupFlowOptions) => {
 
   return {
     abFlow,
+    authFlow,
     isCreditCardRequired,
     getABFlow
   }

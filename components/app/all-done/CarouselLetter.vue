@@ -207,6 +207,8 @@ export default defineComponent({
   computed: {
     ...mapGetters('admin/curriculum', { letters: 'types' }),
 
+    ...mapGetters('auth', ['hasUserLearnAndPlayPlan']),
+
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
     listLetters() {
@@ -233,7 +235,14 @@ export default defineComponent({
           }
         }
       })
-      return (this.isPlayAndLearn) ? letters.filter(item => item.name !== 'Intro') : letters
+
+      if (this.hasUserLearnAndPlayPlan) {
+        return letters.filter(item => item.name !== 'Intro' && item.name !== 'Nature')
+      } else if (this.isPlayAndLearn) {
+        return letters.filter(item => item.name !== 'Intro')
+      } else {
+        return letters
+      }
     },
 
     studentId() {

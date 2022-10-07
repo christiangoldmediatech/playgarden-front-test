@@ -20,6 +20,12 @@
       justify="space-between"
       no-gutters
     >
+      <div v-if="showColorBarImg" class="dashes-img">
+        <img
+          src="@/assets/svg/gift-of-learning/bottom-color-dashes.svg"
+        >
+      </div>
+
       <!-- HAMBURGER MENU -->
       <v-app-bar-nav-icon
         class="pg-app-bar-nav-icon hidden-lg-and-up ham-menu"
@@ -29,17 +35,22 @@
         x-large
         @click.stop="toggleDrawer"
       >
-        <img width="27" height="27" loading="lazy" src="https://playgardenonline.com/wp-content/uploads/2022/02/bar-menu.svg">
+        <img
+          width="27"
+          height="27"
+          loading="lazy"
+          src="https://playgardenonline.com/wp-content/uploads/2022/02/bar-menu.svg"
+        />
       </v-app-bar-nav-icon>
 
       <!-- Logo -->
       <v-col class="d-flex align-center logo-container" cols="auto">
-        <v-toolbar-title :class="[ isUserLoggedIn ? 'mx-3 mt-1' : '']">
+        <v-toolbar-title :class="[isUserLoggedIn ? 'mx-3 mt-1' : '']">
           <v-img
-            class="cursor-link"
-            :class="[isUserLoggedIn ? 'mx-4' : '']"
+            class="cursor-link ml-12"
+            :class="[isUserLoggedIn ? 'mx-3' : '']"
             alt="Playarden Prep Online Logo"
-            :max-width="$vuetify.breakpoint.mdAndUp ? 100 : 70"
+            :max-width="$vuetify.breakpoint.mdAndUp ? 85 : 70"
             :src="require('@/assets/png/rainbow-logo.png')"
             @click="handleLogoClick"
           />
@@ -115,7 +126,7 @@
             class="ml-3 px-13"
             color="accent"
             nuxt
-            :to="{ name: 'auth-logout' }"
+            @click="handleLogoutClick"
           >
             LOG OUT
           </v-btn>
@@ -193,7 +204,7 @@
             src="@/assets/svg/account.svg"
             data-test-id="account-button"
             @click="goToAccount"
-          >
+          />
 
           <!-- <v-btn
             :color="isUserLoggedIn ? 'primary' : 'accent'"
@@ -245,6 +256,12 @@ export default {
     }
   },
 
+  computed: {
+    showColorBarImg() {
+      return (this.$route.name === 'auth-preschool-normal' || this.$route.name === 'auth-login') && this.$vuetify.breakpoint.mdAndUp
+    }
+  },
+
   created() {
     // eslint-disable-next-line nuxt/no-globals-in-created
     window.addEventListener('scroll', this.toggleHeader)
@@ -261,6 +278,16 @@ export default {
 
     goToAccount() {
       this.$router.push({ name: 'app-account-index' })
+    },
+
+    handleLogoutClick() {
+      const { process, step } = this.$route.query
+      if (process === 'signup' && step === '3') {
+        this.$appEventBus.$emit('click:logout')
+        return
+      }
+
+      this.$router.push({ name: 'auth-logout' })
     },
 
     handleLogoClick() {
@@ -298,6 +325,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.dashes-img {
+  position: absolute;
+  top: -59px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .ham-menu {
   margin-right: 14px;
   margin-left: 38px;
@@ -313,6 +349,7 @@ export default {
 .header-container {
   max-width: 1500px;
   padding: 31px 56px;
+  position: relative;
 
   @media (max-width: $breakpoint-md) {
     padding: 28px 32px 28px 0;

@@ -12,7 +12,7 @@
           </div>
         </div>
 
-        <ul class="menu-header logged-">
+        <ul v-if="!hideNavbarOptions" class="menu-header logged-">
           <li class="only-desktop link-option">
             <a href="https://playgardenonline.com/">Home</a>
           </li>
@@ -64,11 +64,20 @@
               <img loading="lazy" src="https://playgardenonline.com/wp-content/uploads/2022/01/log-in.svg" alt="Login - Playgarden Prep Online" class="login-icon">
             </a>
           </li>
-          <li class="try-for-free">
+          <li class="header-action-btn">
             <a href="https://playgardenonline.com/school/auth/parent">TRY FOR FREE</a>
           </li>
           <li class="logged-active">
             <a href="https://playgardenonline.com/school/auth/parent">Go to Preschool</a>
+          </li>
+        </ul>
+
+        <ul v-else class="menu-header">
+          <li v-if="showLogInNavbar" class="header-action-btn">
+            <a href="https://playgardenonline.com/school/auth/login">LOG IN</a>
+          </li>
+          <li v-if="showSignUpNavbar" class="header-action-btn">
+            <a href="https://playgardenonline.com/school/auth/preschool/normal">SIGN UP NOW</a>
           </li>
         </ul>
       </div>
@@ -137,8 +146,8 @@
   </v-container>
 </template>
 
-<script>
-import { defineComponent } from '@vue/composition-api'
+<script lang="ts">
+import { defineComponent, computed, useRoute } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'MenuLandingPage',
@@ -150,7 +159,17 @@ export default defineComponent({
     ]
   },
   setup() {
+    const route = useRoute()
 
+    const hideNavbarOptions = computed(() => route.value.name === 'auth-preschool-normal' || route.value.name === 'auth-login')
+    const showLogInNavbar = computed(() => route.value.name === 'auth-preschool-normal')
+    const showSignUpNavbar = computed(() => route.value.name === 'auth-login')
+
+    return {
+      hideNavbarOptions,
+      showLogInNavbar,
+      showSignUpNavbar
+    }
   }
 })
 </script>
@@ -286,7 +305,7 @@ nav.sticky {
     .navbar-right{
         display: grid;
         gap: 20px;
-        justify-content: end;
+        justify-content: flex-end;
     }
 }
 @media (min-width:1236px) {
@@ -488,7 +507,7 @@ nav.sticky {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: flex-end;
     gap: 24px;
     transition: 0.5s all;
 }
@@ -516,7 +535,12 @@ nav.sticky {
     font-weight: normal;
     color: #707070;
 }
-.menu-header li.try-for-free a,
+.menu-header li.header-action-btn a {
+    min-width: 165px;
+    display: flex;
+    justify-content: center;
+}
+.menu-header li.header-action-btn a,
 .menu-header li.logged-active a{
     font-size: 18px;
     line-height: 27px;
@@ -531,9 +555,9 @@ nav.sticky {
     padding: 8px 16px;
 }
 .menu-header li.logged-active:hover a,
-.menu-header li.try-for-free:hover a,
+.menu-header li.header-action-btn:hover a,
 .menu-header li.logged-active a:focus,
-.menu-header li.try-for-free a:focus{
+.menu-header li.header-action-btn a:focus{
     background-color: #F58E00;
     color: #ffffff;
 }
@@ -559,7 +583,7 @@ nav.sticky {
 .menu-header .logged .logged-active{
     display: block;
 }
-.menu-header .logged .try-for-free,
+.menu-header .logged .header-action-btn,
 .menu-header .logged .login{
     display: none;
 }
@@ -678,7 +702,7 @@ nav.sticky {
 @media (max-width:1200px) {
     .menu-header{
         align-items: center;
-        justify-content: end;
+        justify-content: flex-end;
         gap: 10px 25px;
     }
 }
@@ -707,7 +731,7 @@ nav.sticky {
     .menu-header > li.login a img{
         display: block;
     }
-    .menu-header li.try-for-free a,
+    .menu-header li.header-action-btn a,
     .menu-header li.logged-active a{
         text-align: center;
         font-size: 18px;
@@ -729,7 +753,7 @@ nav.sticky {
         line-height: 24px;
         letter-spacing: 0.78px;
     }
-    .menu-header li.try-for-free a,
+    .menu-header li.header-action-btn a,
     .menu-header li.logged-active a{
         font-weight: 800;
         font-size: 11.76px;

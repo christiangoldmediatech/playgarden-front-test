@@ -18,7 +18,7 @@
         {{ titles.columnB }}
       </div>
 
-      <div class="additional-info-content">
+      <div ref="scrollableContent" class="additional-info-content">
         <slot name="columnB" />
       </div>
 
@@ -28,8 +28,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
-import { useWindowDimensions } from '@/composables'
+import { defineComponent, PropType, computed, onMounted, onUnmounted, ref } from '@nuxtjs/composition-api'
+import { useVuetifyHelper, useWindowDimensions } from '@/composables'
+import { debounce } from 'lodash'
 
 export type ColumnTitles = {
   columnA: string
@@ -51,9 +52,12 @@ export default defineComponent({
       default: ''
     }
   },
-
-  setup(props) {
+  emits: ['scroll:last-reached'],
+  setup(props, { emit }) {
     const { APP_BAR_HEIGHT } = useWindowDimensions()
+    const vuetify = useVuetifyHelper()
+    const columnIsHorizontal = computed(() => vuetify.breakpoint.mdAndDown)
+    const scrollableContent = ref<HTMLDivElement | null>(null)
 
     const maxHeight = computed(() => {
       if (props.heightOverride) {
@@ -62,8 +66,35 @@ export default defineComponent({
       return `${APP_BAR_HEIGHT}px`
     })
 
+    const handleLastReached = debounce(() => {
+      emit('scroll:last-reached')
+    }, 100)
+
+    const handleScroll = () => {
+      const element = scrollableContent.value
+      if (!columnIsHorizontal.value) {
+        if (element!.scrollTop + element!.clientHeight >= element!.scrollHeight) {
+          handleLastReached()
+        }
+        return
+      }
+
+      if (element!.scrollLeft + element!.clientWidth >= element!.scrollWidth) {
+        handleLastReached()
+      }
+    }
+
+    onMounted(() => {
+      scrollableContent.value?.addEventListener('scroll', handleScroll)
+    })
+
+    onUnmounted(() => {
+      scrollableContent.value?.removeEventListener('scroll', handleScroll)
+    })
+
     return {
-      maxHeight
+      maxHeight,
+      scrollableContent
     }
   }
 })

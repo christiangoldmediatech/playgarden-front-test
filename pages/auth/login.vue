@@ -124,6 +124,9 @@ export default {
     ...mapGetters('auth', {
       userInfo: 'getUserInfo'
     }),
+    ...mapGetters('auth', ['isUserLoggedIn', 'hasUserLearnAndPlayPlan']),
+    ...mapGetters(['getCurrentChild']),
+    ...mapGetters('children', { children: 'rows' }),
     inInvitationProcess () {
       const { query } = this.$route
 
@@ -146,6 +149,15 @@ export default {
   },
 
   created () {
+    if (this.isUserLoggedIn) {
+      if (this.getCurrentChild?.length > 0) {
+        this.$router.push({ name: 'app-virtual-preschool' })
+        return
+      } else {
+        this.$router.push({ name: 'app-pick-child' })
+        return
+      }
+    }
     this.getDataFirebase()
   },
 
@@ -164,6 +176,7 @@ export default {
 
   methods: {
     ...mapActions('auth', ['fetchUserInfo']),
+    ...mapActions('children', { getChildren: 'get' }),
     getProviderSignIn (provider) {
       let nameProvider = ''
       switch (provider) {
@@ -225,7 +238,7 @@ export default {
         } else if (this.$route.query.redirect) {
           await this.$router.push(decodeURIComponent(this.$route.query.redirect))
         } else {
-          await this.$router.push({ name: this.goToPage(user) })
+          await this.$router.push(this.goToPage(user))
         }
       } catch (e) {
         this.loadingDataSocial = false
@@ -234,15 +247,35 @@ export default {
     },
 
     goToPage (user) {
-      if (user.stripeStatus === 'active') {
+      if (user.stripeStatus === 'active' && user.registerStep > 3) {
         if (user.planSelected.id === 2 || user.planSelected.id === 3) {
-          return 'app-virtual-preschool'
+          return { name: 'app-virtual-preschool', query: {} }
         }
         if (user.planSelected.id === 1) {
-          return 'app-virtual-preschool'
+          return { name: 'app-virtual-preschool', query: {} }
         }
-      } else {
-        return 'app-virtual-preschool'
+      } else if (user.registerStep >= 3) {
+        if (this.children.length === 0) {
+          return {
+            name: this.hasUserLearnAndPlayPlan ? 'app-play-learn-children' : 'app-normal-children',
+            query: {
+              step: '4',
+              process: 'signup'
+            }
+          }
+        }
+
+        return { name: 'app-virtual-preschool', query: {} }
+      }
+
+      if (user.registerStep === 2) {
+        return {
+          name: 'app-normal-payment',
+          query: {
+            step: '3',
+            process: 'signup'
+          }
+        }
       }
     },
 
@@ -277,6 +310,7 @@ export default {
 
         await this.login(data)
         await this.fetchUserInfo()
+        await this.getChildren()
 
         if (this.isKidsCornerRedirect) {
           // Go to kids corner
@@ -292,7 +326,7 @@ export default {
           const atoken = this.$store.getters['auth/getAccessToken']
           window.open(`${process.env.playgardenAdminUrl}?atoken=${atoken}`, '_self')
         } else {
-          await this.$router.push({ name: this.goToPage(this.userInfo) })
+          await this.$router.push(this.goToPage(this.userInfo))
         }
       } catch (error) {
         this.errorMessage = 'Oops! The password you entered is incorrect. Please try again, or try resetting your password.'
@@ -316,6 +350,8 @@ export default {
   display: flex;
   justify-content: center;
   align-content: center;
+  width: 100%;
+  height: 100%;
 }
 .hr-line {
   display: flex;

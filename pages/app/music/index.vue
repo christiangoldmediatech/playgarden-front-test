@@ -1,6 +1,7 @@
 <template>
   <v-main class="pt-5 pt-md-16 mt-0 mt-md-5" data-test-id="music-content">
     <unlock-prompt
+      v-show="false"
       v-if="hasUserLearnAndPlayPlan && !loading"
       title="MUSIC"
       desc="Unlock the full music library"
