@@ -99,7 +99,7 @@ import NotificationSignupModal from '@/components/app/notifications/Notification
 import ChangePasswordModal from '@/components/app/notifications/ChangePasswordModal.vue'
 import TrialEndingModalForLastDay from '@/components/app/payment/TrialEnding/TrialEndingModalForLastDay.vue'
 import PlanUpgradeModal from '@/components/app/payment/TrialEnding/PlanUpgradeModal/index.vue'
-import NoCreditCardFreeTrialEndedDialog from '@/components/app/NoCreditCardFreeTrialEndedDialog.vue'
+// import NoCreditCardFreeTrialEndedDialog from '@/components/app/NoCreditCardFreeTrialEndedDialog.vue'
 
 import {
   useAuth,
@@ -129,7 +129,7 @@ export default defineComponent({
     TrialEndingWeekThreeModal,
     TrialEndingWeekFourModal,
     PlanUpgradeModal,
-    NoCreditCardFreeTrialEndedDialog,
+    // NoCreditCardFreeTrialEndedDialog,
     TrialEndingPlanSelected: () =>
       import('@/components/app/payment/TrialEnding/PlanSelected.vue'),
     CreditCardForm: () =>
