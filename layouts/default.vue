@@ -54,7 +54,7 @@
       <default-footer />
 
       <!-- TRIAL EXPIRING RIBBON -->
-      <trial-is-expiring v-if="isTrialExpiringRibbonVisible" />
+      <!-- <trial-is-expiring v-if="isTrialExpiringRibbonVisible" /> -->
 
       <notify-event />
 
