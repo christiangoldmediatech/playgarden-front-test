@@ -67,7 +67,7 @@
           elevation="0"
           color="#AAD579"
           :loading="loading"
-          :disabled="lockButton"
+          :disabled="lockButton || disableBtn"
           @click="onSubmit"
         >
           {{ btnConfirmationText }}
@@ -148,6 +148,7 @@ export default defineComponent({
     const isValidCoupon = ref(false)
     const isValidatingCoupon = ref(false)
     const lockButton = ref(false)
+    const disableBtn = computed(() => userCards.value?.length === 0)
     const btnConfirmationText = computed(() => `Upgrade to ${planToSwitchTo.value}`)
     const getTextValidateCoupon = computed(() => {
       if (promotionCode.value) {
@@ -245,7 +246,8 @@ export default defineComponent({
       isValidCoupon,
       getTextValidateCoupon,
       isValidatingCoupon,
-      lockButton
+      lockButton,
+      disableBtn
     }
   }
 })
