@@ -24,9 +24,9 @@
       <PlanUpgradeModal v-if="isUserLoggedIn" />
       <TrialEndingModalForLastDay />
       <CanceledTrialModal />
-      <NoCreditCardFreeTrialEndedDialog
+      <!-- <NoCreditCardFreeTrialEndedDialog
         v-model="isPreschoolTrialEndedWithNoCreditCardFlowModalVisible"
-      />
+      /> -->
 
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
@@ -54,7 +54,7 @@
       <default-footer />
 
       <!-- TRIAL EXPIRING RIBBON -->
-      <!-- <trial-is-expiring v-if="isTrialExpiringRibbonVisible" /> -->
+      <trial-is-expiring v-if="isTrialExpiringRibbonVisible" />
 
       <notify-event />
 
