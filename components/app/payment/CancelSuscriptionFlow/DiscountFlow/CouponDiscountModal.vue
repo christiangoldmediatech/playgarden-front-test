@@ -30,7 +30,7 @@
       </v-col>
 
       <v-col cols="12" class="text-center">
-        <v-btn class="px-16" color="primary" :loading="loadingBtn" @click="applyLogicForFlow">
+        <v-btn class="px-16" color="primary" :loading="loadingBtn" @click="applyDiscountCode">
           YES
         </v-btn>
       </v-col>
@@ -41,7 +41,7 @@
           outlined
           color="accent"
           :loading="loadingBtn"
-          @click="$emit('tryPlayAndLearnModal'); $emit('closeCouponDiscountModal')"
+          @click="applyClosingLogicForFlow"
         >
           NO
         </v-btn>
@@ -54,7 +54,7 @@
     </pg-dialog>
     <credit-card-modal
       v-model="isCreditCardModalVisible"
-      @card-added="changePlayAndLearnPlan"
+      @card-added="applyLogicForCreditCardModal"
     />
   </div>
 </template>
@@ -68,36 +68,100 @@ import CreditCardModal from '@/components/app/payment/CreditCardModal.vue'
 export default defineComponent({
   name: 'CouponDiscountModal',
   props: {
-    viewCouponDiscountModal: Boolean
+    viewCouponDiscountModal: Boolean,
+    billingType: String,
+    discountCode: String
   },
   components: {
     CreditCardModal
   },
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const store = useStore()
     const Auth = useAuth({ store })
     const Billing = useBilling()
     const snotify = useSnotifyHelper()
+    const changingSubscriptionTimeInterval = ref(false)
     const hasUserLearnAndPlayPlan = computed(() => store.getters['auth/hasUserLearnAndPlayPlan'])
+    const isBillingMonthly = computed(() => props.billingType === 'MONTHLY')
+
     const discountMessage = computed(() => {
-      return hasUserLearnAndPlayPlan
-        ? 'Do you want to continue to be enrolled for $9.99 a month, forever?'
-        : 'Do you want to continue to be enrolled for $49.99 a month, for the next 3 months?'
+      if (hasUserLearnAndPlayPlan.value) {
+        if (isBillingMonthly.value) {
+          return 'Do you want to continue to be enrolled for $9.99 a month, forever?'
+        }
+
+        return 'Do you want to continue to be enrolled for $99.99 a year, forever?'
+      }
+
+      return 'Do you want to continue to be enrolled for $49.99 a month, for the next 3 months?'
     })
 
     const isCreditCardModalVisible = ref(false)
     const loadingBtn = ref(false)
 
-    const applyLogicForFlow = async () => {
-      if (hasUserLearnAndPlayPlan) {
-        applyDiscountCodeForPlayAndLearn()
+    const applyClosingLogicForFlow = () => {
+      if (hasUserLearnAndPlayPlan.value) {
+        emit('cancelLearnAndPlayAccount')
+      } else {
+        emit('tryPlayAndLearnModal')
+      }
+      emit('closeCouponDiscountModal')
+    }
+
+    const getCouponId = async () => {
+      const coupons = await store.dispatch('coupons/getCoupons', { active: true, code: props.discountCode })
+      if (coupons.length > 0) {
+        return coupons[0].promotion_id
+      }
+    }
+
+    const applyDiscountCode = async () => {
+      loadingBtn.value = true
+      try {
+        const promotionId = await getCouponId()
+
+        if (!hasUserLearnAndPlayPlan.value && !isBillingMonthly.value) {
+          await changePreschoolSubscriptionToMonthly()
+        }
+
+        await store.dispatch('coupons/updateSubcriptionCoupon', { promotion_id: promotionId })
+        emit('appliedCouponModal')
+      } catch {
+        snotify.error('Could not apply discount. Please, try again later.')
+      } finally {
+        loadingBtn.value = false
+        emit('appliedCouponModal')
+        emit('closeCouponDiscountModal')
+      }
+    }
+
+    const applyLogicForCreditCardModal = async () => {
+      if (changingSubscriptionTimeInterval.value) {
+        await changePreschoolSubscriptionToMonthly()
       } else {
         await changePlayAndLearnPlan()
       }
     }
 
-    const applyDiscountCodeForPlayAndLearn = () => {
-      console.log('Discount code applied')
+    const changePreschoolSubscriptionToMonthly = async () => {
+      if (Auth.userInfo.value.flow === UserFlow.NOCREDITCARD) {
+        const userCards = await Billing.fetchBillingCards()
+
+        if (userCards?.length === 0) {
+          changingSubscriptionTimeInterval.value = true
+          isCreditCardModalVisible.value = true
+          return
+        }
+      }
+
+      const plan = {
+        id: 2,
+        type: 'monthly',
+        fromPlaydates: false
+      }
+
+      await store.dispatch('payment/selectSubscriptionPlan', plan)
+      await Auth.fetchUserInfo()
     }
 
     const changePlayAndLearnPlan = async () => {
@@ -107,7 +171,9 @@ export default defineComponent({
           const userCards = await Billing.fetchBillingCards()
 
           if (userCards?.length === 0) {
+            changingSubscriptionTimeInterval.value = false
             isCreditCardModalVisible.value = true
+            return
           }
         }
 
@@ -118,7 +184,7 @@ export default defineComponent({
         }
 
         await store.dispatch('payment/selectSubscriptionPlan', plan)
-        await store.dispatch('payment/applyCoupon', { promotion_id: 'AoNWHasc' }) // Create coupon on production before use it
+        await store.dispatch('coupons/updateSubcriptionCoupon', { promotion_id: 'AoNWHasc' }) // Create coupon on production before use it
 
         await Auth.fetchUserInfo()
         emit('plan-membership-changed')
@@ -134,9 +200,10 @@ export default defineComponent({
     return {
       isCreditCardModalVisible,
       loadingBtn,
-      applyLogicForFlow,
       discountMessage,
-      changePlayAndLearnPlan
+      applyClosingLogicForFlow,
+      applyDiscountCode,
+      applyLogicForCreditCardModal
     }
   }
 })

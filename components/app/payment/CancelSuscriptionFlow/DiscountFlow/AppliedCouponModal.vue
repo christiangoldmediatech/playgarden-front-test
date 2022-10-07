@@ -6,7 +6,7 @@
     @click:outside="$emit('closeViewAppliedCouponModal')"
   >
     <v-col class="text-right pg-pr-3" cols="12">
-      <v-btn icon color="white" class="pg-bg-[#F6B7D2]">
+      <v-btn icon color="white" class="pg-bg-[#F6B7D2]" @click="$emit('closeViewAppliedCouponModal')">
         <v-icon>
           mdi-close
         </v-icon>
@@ -23,7 +23,7 @@
 
     <v-col cols="12" class="text-center">
       <div class="px-10 py-5 pg-rounded-3xl pg-border-1 pg-border-dashed pg-border-pg-[#707070] pg-bg-[#F2F2F2] pg-text-[#A9A9A9] pg-w-8/12 pg-block pg-mx-auto pg-font-bold mb-3">
-        {{ couponCode }}
+        {{ discountCode }}
       </div>
     </v-col>
 
@@ -55,31 +55,24 @@
 </template>
 
 <script>
-import { defineComponent, useRouter, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, useStore, computed } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'AppliedCouponModal',
   props: {
-    viewAppliedCouponModal: Boolean
+    viewAppliedCouponModal: Boolean,
+    billingType: String,
+    discountCode: String
   },
   setup() {
     const router = useRouter()
-    const store = useStore()
-    const hasUserLearnAndPlayPlan = computed(() => store.getters['auth/hasUserLearnAndPlayPlan'])
-
-    const couponCode = computed(() => {
-      return hasUserLearnAndPlayPlan
-        ? 'PLAYANDLEARNPROMO'
-        : 'COUPONTHREEMONTHS'
-    })
 
     const goHome = () => {
       router.replace({ name: 'app-virtual-preschool' })
     }
 
     return {
-      goHome,
-      couponCode
+      goHome
     }
   }
 })
