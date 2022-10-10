@@ -16,9 +16,9 @@
 
       <!-- TRIAL EXPIRED MODAL -->
       <trial-expired-modal v-if="isUserLoggedIn" />
-      <trial-ending-week-two-modal />
+      <!-- <trial-ending-week-two-modal />
       <trial-ending-week-three-modal />
-      <trial-ending-week-four-modal />
+      <trial-ending-week-four-modal /> -->
       <trial-ending-plan-selected />
       <credit-card-form />
       <PlanUpgradeModal v-if="isUserLoggedIn" />
@@ -32,7 +32,7 @@
       <contact-us-form-modal />
 
       <!-- NOTIFICATION SIGNUP -->
-      <notification-signup-modal />
+      <!-- <notification-signup-modal /> -->
 
       <!-- CHANGE PASSWORD ON FIRST LOGIN -->
       <change-password-modal />
@@ -90,12 +90,12 @@ import DefaultFooter from '@/components/app/footer/DefaultFooter.vue'
 import NotificationCard from '@/components/app/notifications/NotificationCard.vue'
 import ShippingAddressModal from '@/components/app/payment/ShippingAddressModal.vue'
 import TrialExpiredModal from '@/components/app/payment/TrialExpiredModal.vue'
-import TrialEndingWeekTwoModal from '@/components/app/payment/TrialEnding/WeekTwoModal.vue'
-import TrialEndingWeekThreeModal from '@/components/app/payment/TrialEnding/WeekThreeModal.vue'
-import TrialEndingWeekFourModal from '@/components/app/payment/TrialEnding/WeekFourModal.vue'
+// import TrialEndingWeekTwoModal from '@/components/app/payment/TrialEnding/WeekTwoModal.vue'
+// import TrialEndingWeekThreeModal from '@/components/app/payment/TrialEnding/WeekThreeModal.vue'
+// import TrialEndingWeekFourModal from '@/components/app/payment/TrialEnding/WeekFourModal.vue'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import ContactUsFormModal from '@/components/forms/contact/ContactUsFormModal.vue'
-import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal.vue'
+// import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal.vue'
 import ChangePasswordModal from '@/components/app/notifications/ChangePasswordModal.vue'
 import TrialEndingModalForLastDay from '@/components/app/payment/TrialEnding/TrialEndingModalForLastDay.vue'
 import PlanUpgradeModal from '@/components/app/payment/TrialEnding/PlanUpgradeModal/index.vue'
@@ -122,12 +122,12 @@ export default defineComponent({
     TrialExpiredModal,
     TrialIsExpiring,
     ContactUsFormModal,
-    NotificationSignupModal,
+    // NotificationSignupModal,
     ChangePasswordModal,
     TrialEndingModalForLastDay,
-    TrialEndingWeekTwoModal,
-    TrialEndingWeekThreeModal,
-    TrialEndingWeekFourModal,
+    // TrialEndingWeekTwoModal,
+    // TrialEndingWeekThreeModal,
+    // TrialEndingWeekFourModal,
     PlanUpgradeModal,
     // NoCreditCardFreeTrialEndedDialog,
     TrialEndingPlanSelected: () =>
