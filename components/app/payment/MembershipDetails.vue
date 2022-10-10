@@ -338,7 +338,7 @@
       <applied-coupon-modal
         :view-applied-coupon-modal="viewAppliedCouponModal"
         :billing="billing"
-        :discount-code="couponCode"
+        :discount-code="couponCodeToDisplay"
         @closeViewAppliedCouponModal="viewAppliedCouponModal = false"
       />
 
@@ -610,6 +610,13 @@ export default {
       }
 
       return 'PSPROMO'
+    },
+    couponCodeToDisplay() {
+      if (this.hasUserLearnAndPlayPlan) {
+        return 'PLAYANDLEARNPROMO'
+      }
+
+      return 'COUPONTHREEMONTHS'
     }
   },
   watch: {
