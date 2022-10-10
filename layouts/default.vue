@@ -32,7 +32,7 @@
       <contact-us-form-modal />
 
       <!-- NOTIFICATION SIGNUP -->
-      <notification-signup-modal />
+      <!-- <notification-signup-modal /> -->
 
       <!-- CHANGE PASSWORD ON FIRST LOGIN -->
       <change-password-modal />
@@ -95,7 +95,7 @@ import TrialEndingWeekThreeModal from '@/components/app/payment/TrialEnding/Week
 import TrialEndingWeekFourModal from '@/components/app/payment/TrialEnding/WeekFourModal.vue'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import ContactUsFormModal from '@/components/forms/contact/ContactUsFormModal.vue'
-import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal.vue'
+// import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal.vue'
 import ChangePasswordModal from '@/components/app/notifications/ChangePasswordModal.vue'
 import TrialEndingModalForLastDay from '@/components/app/payment/TrialEnding/TrialEndingModalForLastDay.vue'
 import PlanUpgradeModal from '@/components/app/payment/TrialEnding/PlanUpgradeModal/index.vue'
@@ -122,7 +122,7 @@ export default defineComponent({
     TrialExpiredModal,
     TrialIsExpiring,
     ContactUsFormModal,
-    NotificationSignupModal,
+    // NotificationSignupModal,
     ChangePasswordModal,
     TrialEndingModalForLastDay,
     TrialEndingWeekTwoModal,
