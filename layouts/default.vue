@@ -16,9 +16,9 @@
 
       <!-- TRIAL EXPIRED MODAL -->
       <trial-expired-modal v-if="isUserLoggedIn" />
-      <trial-ending-week-two-modal />
+      <!-- <trial-ending-week-two-modal />
       <trial-ending-week-three-modal />
-      <trial-ending-week-four-modal />
+      <trial-ending-week-four-modal /> -->
       <trial-ending-plan-selected />
       <credit-card-form />
       <PlanUpgradeModal v-if="isUserLoggedIn" />
@@ -90,9 +90,9 @@ import DefaultFooter from '@/components/app/footer/DefaultFooter.vue'
 import NotificationCard from '@/components/app/notifications/NotificationCard.vue'
 import ShippingAddressModal from '@/components/app/payment/ShippingAddressModal.vue'
 import TrialExpiredModal from '@/components/app/payment/TrialExpiredModal.vue'
-import TrialEndingWeekTwoModal from '@/components/app/payment/TrialEnding/WeekTwoModal.vue'
-import TrialEndingWeekThreeModal from '@/components/app/payment/TrialEnding/WeekThreeModal.vue'
-import TrialEndingWeekFourModal from '@/components/app/payment/TrialEnding/WeekFourModal.vue'
+// import TrialEndingWeekTwoModal from '@/components/app/payment/TrialEnding/WeekTwoModal.vue'
+// import TrialEndingWeekThreeModal from '@/components/app/payment/TrialEnding/WeekThreeModal.vue'
+// import TrialEndingWeekFourModal from '@/components/app/payment/TrialEnding/WeekFourModal.vue'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import ContactUsFormModal from '@/components/forms/contact/ContactUsFormModal.vue'
 // import NotificationSignupModal from '@/components/app/notifications/NotificationSignupModal.vue'
@@ -125,9 +125,9 @@ export default defineComponent({
     // NotificationSignupModal,
     ChangePasswordModal,
     TrialEndingModalForLastDay,
-    TrialEndingWeekTwoModal,
-    TrialEndingWeekThreeModal,
-    TrialEndingWeekFourModal,
+    // TrialEndingWeekTwoModal,
+    // TrialEndingWeekThreeModal,
+    // TrialEndingWeekFourModal,
     PlanUpgradeModal,
     // NoCreditCardFreeTrialEndedDialog,
     TrialEndingPlanSelected: () =>
