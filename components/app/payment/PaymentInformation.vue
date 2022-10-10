@@ -108,7 +108,12 @@ export default defineComponent({
         const data = {
           token: token.value
         }
-        await store.dispatch('payment/updateBillingCard', { id: cardId, data })
+
+        if (cardId) {
+          await store.dispatch('payment/updateBillingCard', { id: cardId, data })
+        } else {
+          await store.dispatch('payment/addBillingCard', { ...data, sendEmail: true })
+        }
         snotify.success('Card has been updated successfully!')
         emit('update:cards')
       } catch (e: any) {
