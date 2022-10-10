@@ -10,6 +10,7 @@
 
       <section-image
         class="well-being"
+        medium
         :section="section.wellbeing"
         @click:play="handleAudioPlay"
         @click="handleClick"
@@ -17,6 +18,7 @@
 
       <section-image
         class="live-classes"
+        medium
         :section="section.classes"
         @click:play="handleAudioPlay"
         @click="handleClick"
@@ -24,6 +26,7 @@
 
       <section-image
         class="playdates"
+        medium
         :section="section.playdates"
         @click:play="handleAudioPlay"
         @click="handleClick"
@@ -32,12 +35,14 @@
       <section-image
         class="student-cubby"
         :section="section.cubby"
+        small
         @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
       <section-image
         class="kids-corner"
+        medium
         :section="section.kidscorner"
         @click:play="handleAudioPlay"
         @click="handleClick"
