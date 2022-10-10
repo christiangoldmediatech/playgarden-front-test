@@ -126,7 +126,8 @@ export default defineComponent({
   }
 
   &-bubble-text-small {
-    font-size: 1rem !important;
+    top: 6% !important;
+    font-size: 0.95rem !important;
   }
 
   &-bubble {
@@ -149,7 +150,7 @@ export default defineComponent({
   }
 
   &-lady-small {
-    height: 50% !important;
+    height: 45% !important;
   }
 
   &-start-playing {
