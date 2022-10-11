@@ -1,6 +1,6 @@
 <template>
   <div>
-    <StepOne :is-coupon-needed="false" />
+    <StepOne :is-coupon-needed="false" :no-terms="false" />
   </div>
 </template>
 

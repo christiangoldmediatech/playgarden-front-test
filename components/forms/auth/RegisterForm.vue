@@ -198,6 +198,31 @@
                   </div>
                 </template>
 
+                <v-row v-if="!noTerms" no-gutters>
+                  <validation-provider v-slot="{ errors }" name="Terms" rules="required">
+                    <v-checkbox
+                      v-model="draft.acceptTerms"
+                      class="pt-0 mt-0 accept-terms"
+                      :error-messages="errors"
+                      :true-value="true"
+                      :false-value="null"
+                    >
+                      <template #label>
+                        I agree to the
+
+                        <nuxt-link
+                          class="ml-1 terms-conditions link-text"
+                          :to="{ name: 'terms-conditions' }"
+                          target="_blank"
+                          @click.native.stop=""
+                        >
+                          Terms & Conditions
+                        </nuxt-link>
+                      </template>
+                    </v-checkbox>
+                  </validation-provider>
+                </v-row>
+
                 <v-btn
                   block
                   min-height="60"
@@ -313,6 +338,11 @@ export default {
     },
 
     isCouponNeeded: {
+      type: Boolean,
+      default: true
+    },
+
+    noTerms: {
       type: Boolean,
       default: true
     }
@@ -490,7 +520,8 @@ export default {
         socialNetworkId: this.hasUserSocialData
           ? this.userSocialData.socialNetworkId
           : null,
-        promotion_id: null
+        promotion_id: null,
+        acceptTerms: null
       }
     },
     onSubmit() {
@@ -592,5 +623,17 @@ export default {
   &:hover {
     color: rgba(#000000, 0.8);
   }
+}
+
+.accept-terms ::v-deep .v-label {
+  color: var(--v-black-base) !important;
+  opacity: 2.49 !important;
+}
+
+.terms-conditions {
+  text-decoration: underline !important;
+  color: var(--v-black-base);
+  font-weight: 400;
+  cursor: pointer;
 }
 </style>
