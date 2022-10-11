@@ -2,7 +2,7 @@
   <pg-dialog
     v-model="viewCancelAnywayModal"
     max-width="600"
-    content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl"
+    content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl v2-font"
     @click:outside="$emit('closeCancelAnywayModal')"
   >
     <v-col class="text-right pg-pr-3" cols="12">
@@ -17,18 +17,18 @@
       <img
         src="@/assets/png/triste.png"
         class="pg-w-4/12 pg-block pg-mx-auto"
-        alt="Triste"
+        alt="Sad computer"
       />
     </v-col>
 
     <v-col cols="12" class="px-16">
       <p
-        class="text-center font-weight-medium pg-text-[20px] pg-leading-[25px] pg-text-[#71B2FF]"
+        class="text-center font-weight-bold pg-text-[20px] pg-leading-[25px] pg-text-[#71B2FF]"
       >
         We are sad to see you go.
       </p>
       <p
-        class="text-center font-weight-medium pg-text-[20px] pg-leading-[25px] pg-text-primary"
+        class="text-center font-weight-bold pg-text-[20px] pg-leading-[25px] pg-text-primary"
       >
         Thank you for your feedback!
       </p>

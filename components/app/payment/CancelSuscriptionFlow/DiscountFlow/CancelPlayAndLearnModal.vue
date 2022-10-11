@@ -3,7 +3,7 @@
     <pg-dialog
       v-model="cancelPlayAndLearnModal"
       max-width="600"
-      content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl pg-relative"
+      content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl pg-relative v2-font font-weight-bold"
       @click:outside="$emit('closeCancelPlayAndLearnModal')"
     >
       <v-col class="text-right pg-pr-3 pg-absolute pg-top-0 pg-right-0" cols="12">
@@ -16,23 +16,23 @@
 
       <v-col cols="12" class="px-16">
         <p
-          class="text-center font-weight-medium pg-text-[20px] pg-leading-[25px] pg-text-[#71B2FF] mb-0"
+          class="text-center pg-text-[20px] pg-leading-[25px] pg-text-[#71B2FF] mb-0"
         >
           We are sad to see you go.
         </p>
         <p
-          class="text-center font-weight-medium pg-text-[20px] pg-leading-[25px] pg-text-[#78C383] mb-0"
+          class="text-center pg-text-[20px] pg-leading-[25px] pg-text-[#78C383] mb-0"
         >
           Thank you for your feedback!
         </p>
         <br />
         <p
-          class="text-center font-weight-medium pg-text-[20px] pg-leading-[25px] pg-text-[#ADADAD] mb-0"
+          class="text-center pg-text-[20px] pg-leading-[25px] pg-text-[#ADADAD] mb-0"
         >
           But wait
         </p>
         <p
-          class="text-center font-weight-medium pg-text-[20px] pg-leading-[25px] pg-text-[#F89838]"
+          class="text-center pg-text-[20px] pg-leading-[25px] pg-text-[#F89838]"
         >
           Take a look to our
         </p>

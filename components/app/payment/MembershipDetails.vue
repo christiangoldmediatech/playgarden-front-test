@@ -545,8 +545,8 @@ export default {
     },
 
     isValidateMotive() {
-      if (this.leaveMotive === 'Other (please explain)') {
-        return this.otherLeaveMotive === '' || this.otherLeaveMotive.length < 5
+      if (this.leaveMotive === 'Other (please explain)' && (this.otherLeaveMotive === '' || this.otherLeaveMotive.length < 5)) {
+        return true
       } else {
         return !this.leaveMotive
       }

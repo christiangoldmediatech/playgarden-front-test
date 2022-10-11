@@ -3,10 +3,10 @@
     v-model="viewWelcomeToPlayAndLearnModal"
     max-width="600"
     content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl"
-    @click:outside="goHome"
+    @click:outside="cancel"
   >
     <v-col class="text-right pg-pr-3" cols="12">
-      <v-btn icon color="white" class="pg-bg-[#F6B7D2]" @click="goHome">
+      <v-btn icon color="white" class="pg-bg-[#F6B7D2]" @click="cancel">
         <v-icon>
           mdi-close
         </v-icon>
@@ -15,7 +15,7 @@
 
     <v-col cols="12" class="px-16 text-center">
       <p
-        class="font-weight-medium pg-text-[25px] pg-leading-[40px] pg-text-accent"
+        class="font-weight-bold v2-font pg-text-[25px] pg-leading-[40px] pg-text-accent"
       >
         WELCOME TO
       </p>
@@ -29,7 +29,7 @@
     </v-col>
 
     <v-col cols="12" class="text-center pa-0 pb-5">
-      <v-btn class="px-16" plain color="accent" @click="goHome">
+      <v-btn class="px-16" plain color="accent" @click="cancel">
         CLOSE
       </v-btn>
     </v-col>
@@ -52,15 +52,21 @@ export default defineComponent({
   setup() {
     const router = useRouter()
 
-    const goHome = () => {
+    const goHome = async () => {
+      await router.replace({ name: 'app-virtual-preschool' })
+      location.reload()
+    }
+
+    const cancel = () => {
       router.replace({ name: 'app-virtual-preschool' })
     }
 
     return {
-      goHome
+      goHome,
+      cancel
     }
   }
 })
 </script>
 
-  <style></style>
+<style></style>

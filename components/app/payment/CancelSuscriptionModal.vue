@@ -7,7 +7,12 @@
     @click:outside="$emit('removeSubscriptionModal')"
   >
     <v-col class="text-right pg-mb-[-20px] pg-pr-3" cols="12">
-      <v-btn icon color="white" class="pg-bg-[#F6B7D2]" @click="$emit('removeSubscriptionModal')">
+      <v-btn
+        icon
+        color="white"
+        class="pg-bg-[#F6B7D2]"
+        @click="$emit('removeSubscriptionModal')"
+      >
         <v-icon>
           mdi-close
         </v-icon>
@@ -21,14 +26,25 @@
     </v-col>
 
     <v-card-text class="text-justify">
-      <p class="text-center font-weight-medium pg-text-[20px] pg-leading-[27px] v2-font">
-        Before you cancel, please let us know the reason you are leaving. Every bit of feedback helps us create a better educational experience for little ones!
+      <p
+        class="text-center font-weight-medium pg-text-[20px] pg-leading-[27px] v2-font"
+      >
+        Before you cancel, please let us know the reason you are leaving. Every
+        bit of feedback helps us create a better educational experience for
+        little ones!
       </p>
 
       <v-radio-group class="px-10" @change="$emit('changeLeaveMotive', $event)">
-        <v-radio v-for="lm in leaveMotives" :key="lm" color="#97D2F8" :value="lm">
+        <v-radio
+          v-for="lm in leaveMotives"
+          :key="lm"
+          color="#97D2F8"
+          :value="lm"
+        >
           <template #label>
-            <span class="body-2 pg-font-medium"><strong>{{ lm }}</strong></span>
+            <span class="body-2 pg-font-medium">
+              <strong>{{ lm }}</strong>
+            </span>
           </template>
         </v-radio>
       </v-radio-group>
@@ -62,7 +78,7 @@
         color="accent"
         :loading="loading"
         text
-        class="text-none text-decoration-underline"
+        class="text-decoration-underline"
         @click.stop="$emit('removeSubscriptionModal')"
       >
         Nevermind, I want to keep learning with playgarden prep!
@@ -94,6 +110,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style>
-</style>
