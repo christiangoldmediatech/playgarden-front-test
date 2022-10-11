@@ -20,6 +20,12 @@
       justify="space-between"
       no-gutters
     >
+      <div v-if="showColorBarImg" class="dashes-img">
+        <img
+          src="@/assets/svg/gift-of-learning/bottom-color-dashes.svg"
+        >
+      </div>
+
       <!-- HAMBURGER MENU -->
       <v-app-bar-nav-icon
         class="pg-app-bar-nav-icon hidden-lg-and-up ham-menu"
@@ -250,6 +256,12 @@ export default {
     }
   },
 
+  computed: {
+    showColorBarImg() {
+      return (this.$route.name === 'auth-preschool-normal' || this.$route.name === 'auth-login') && this.$vuetify.breakpoint.mdAndUp
+    }
+  },
+
   created() {
     // eslint-disable-next-line nuxt/no-globals-in-created
     window.addEventListener('scroll', this.toggleHeader)
@@ -313,6 +325,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.dashes-img {
+  position: absolute;
+  top: -59px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .ham-menu {
   margin-right: 14px;
   margin-left: 38px;
@@ -328,6 +349,7 @@ export default {
 .header-container {
   max-width: 1500px;
   padding: 31px 56px;
+  position: relative;
 
   @media (max-width: $breakpoint-md) {
     padding: 28px 32px 28px 0;

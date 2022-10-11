@@ -31,13 +31,13 @@
           >
 
           <!-- Lady -->
-          <img class="section-lady" :src="section.teacherUrl">
+          <img class="section-lady" :class="{ 'section-lady-small': medium }" :src="section.teacherUrl">
 
           <!-- Bubble -->
           <div class="section-bubble" />
 
           <!-- Bubble Text -->
-          <div v-if="section.message" class="section-bubble-text">
+          <div v-if="section.message" class="section-bubble-text" :class="{ 'section-bubble-text-small': small || medium }">
             {{ section.message }}
             <v-btn icon class="my-n4 mx-n2">
               <v-icon
@@ -75,6 +75,10 @@ export default defineComponent({
       default: () => ({})
     },
     small: {
+      type: Boolean,
+      default: false
+    },
+    medium: {
       type: Boolean,
       default: false
     }
@@ -121,6 +125,11 @@ export default defineComponent({
     left: 10%;
   }
 
+  &-bubble-text-small {
+    top: 6% !important;
+    font-size: 0.95rem !important;
+  }
+
   &-bubble {
     width: 75%;
     background: red;
@@ -138,6 +147,10 @@ export default defineComponent({
     right: 0;
     bottom: 0;
     z-index: 1;
+  }
+
+  &-lady-small {
+    height: 45% !important;
   }
 
   &-start-playing {

@@ -58,6 +58,7 @@
           <RegisterForm
             :loading="isLoading"
             :is-credit-card-required="true"
+            :is-coupon-needed="false"
             @click:submit="handleSubmit"
           />
         </div>

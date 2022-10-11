@@ -4,6 +4,7 @@
       columnA: 'Recommended for you',
       columnB: 'More Lessons for You'
     }"
+    @scroll:last-reached="handleLastReached"
   >
     <template #columnA>
       <pg-video-player
@@ -74,7 +75,7 @@
         v-bind="{ mediaObject }"
         @play="handleVideoCardPlay"
       />
-      <div class="loading-more">
+      <div class="loading-more mt-4" :class="{ 'ml-4': columnIsHorizontal }">
         <v-progress-circular
           v-if="isLoadingMore"
           color="accent"
@@ -89,10 +90,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, nextTick, useStore, watch } from '@nuxtjs/composition-api'
-import { useLibraryV2, useFavorites, useFavoritesApi, useGtmHelper, useChild, useInlineLibraryPlayerCallbacks, usePatch } from '@/composables'
+import { useLibraryV2, useFavorites, useFavoritesApi, useGtmHelper, useChild, useInlineLibraryPlayerCallbacks, usePatch, useVuetifyHelper } from '@/composables'
 import { getHexNonTransparentColor } from '@/utils/colorTools'
 import { isLastIndex } from '@/utils/array.util'
-import { TypedStore } from '@/models'
+import { KidsCorner, TypedStore } from '@/models'
 
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
@@ -101,6 +102,8 @@ import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObj
 import LibraryContentSection from '@/components/app/library/LibraryContentSection.vue'
 import LibraryVideoCard from '@/components/app/library/LibraryVideoCard.vue'
 import PatchEarnedDialogCompositionApi from '@/components/app/PatchEarnedDialogCompositionApi.vue'
+import { useKidsCorner } from '@/composables/kids-corner'
+import { debounce } from 'lodash'
 
 export default defineComponent({
   name: 'LibraryInlinePlayer',
@@ -116,6 +119,10 @@ export default defineComponent({
     // Video preview concerns
     const scaleIcon = ref(false)
     const showPreview = ref(true)
+    const allowInfiniteScrolling = ref(true)
+    const kidsCornerVideos = ref<KidsCorner[]>([])
+    const vuetify = useVuetifyHelper()
+    const columnIsHorizontal = computed(() => vuetify.breakpoint.mdAndDown)
     function scaleUp() {
       scaleIcon.value = true
     }
@@ -123,6 +130,8 @@ export default defineComponent({
     function scaleDown() {
       scaleIcon.value = false
     }
+
+    const { getFilteredKidsCornerVideos, getKidsCornerVideos, getMediaObjectFromVideoData } = useKidsCorner()
 
     // Video data
     const { recommended, getRecommendedVideosData } = useLibraryV2()
@@ -162,7 +171,11 @@ export default defineComponent({
       }
     })
 
-    const additionalVideos = computed(() => curatedPlaylist.value.length ? curatedPlaylist.value.slice(1) : [])
+    const additionalVideos = computed(() => {
+      const curatedVideos = curatedPlaylist.value.length ? curatedPlaylist.value.slice(1) : []
+      const formattedKidsCorner = kidsCornerVideos.value.map(video => getMediaObjectFromVideoData(video))
+      return [...curatedVideos, ...formattedKidsCorner]
+    })
 
     // Handle when player is ready
     function onPlayerReady(playerInstance: PlayerInstance) {
@@ -198,6 +211,29 @@ export default defineComponent({
         isLoadingMore.value = false
       }
     }
+
+    const handleLastReached = debounce(async () => {
+      if (!allowInfiniteScrolling.value) { return }
+      if (isLoadingMore.value) { return }
+
+      const videosIds = kidsCornerVideos.value.map(video => video.id)
+
+      isLoadingMore.value = true
+      let videos: KidsCorner[] = []
+      if (kidsCornerVideos.value.length === 0) {
+        const response = (await getKidsCornerVideos(15))
+        videos = [response.current, ...response.nextUp]
+      } else {
+        videos = await getFilteredKidsCornerVideos(videosIds as number[], 15)
+      }
+      isLoadingMore.value = false
+
+      if (videos.length === 0) {
+        allowInfiniteScrolling.value = false
+      }
+
+      kidsCornerVideos.value = [...kidsCornerVideos.value, ...videos]
+    }, 100)
 
     async function handleVideoCardPlay(mediaObject: MediaObject): Promise<any> {
       try {
@@ -326,7 +362,9 @@ export default defineComponent({
       patchEarned,
       getVideosAfterClosingPatchEarned,
       handleFullscreenChange,
-      closeAll
+      closeAll,
+      handleLastReached,
+      columnIsHorizontal
     }
   }
 })
