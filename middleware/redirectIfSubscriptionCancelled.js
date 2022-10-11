@@ -27,7 +27,7 @@ export default function ({ redirect, route, store }) {
       // user doesn't has a subscription
       if ((!userInfo || !userInfo.subscription) && days < 0) {
         redirect('/app/inactive-subscription')
-      } else if ((userInfo.subscription.status === 'canceled' || userInfo.subscription.status === 'incomplete_expired') && days <= 0) {
+      } else if ((userInfo.subscription.status === 'canceled' || userInfo.subscription.status === 'incomplete_expired') && days < 0) {
         // check if subscription is cancelled, if so redirect
         redirect('/app/inactive-subscription')
       }
