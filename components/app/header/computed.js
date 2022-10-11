@@ -14,9 +14,13 @@ export default {
     }),
 
     getVerifyEmail() {
-      const suscription = this.getUserInfo.subscription
-      const datetime = dayjs.unix(suscription.current_period_end)
-      const days = dayjs(datetime).diff(new Date(), 'days')
+      let days = 0
+      if (this.getUserInfo.subscription) {
+        const suscription = this.getUserInfo.subscription
+        const datetime = dayjs.unix(suscription.current_period_end)
+        days = dayjs(datetime).diff(new Date(), 'days')
+      }
+
       if (this.getUserInfo.flow === UserFlow.NOCREDITCARD) {
         return (this.getUserInfo.registerStep === 9) ? days > 0 : this.getUserInfo.registerStep === 6
       } else if (this.getUserInfo.flow === UserFlow.CREDITCARD) {
