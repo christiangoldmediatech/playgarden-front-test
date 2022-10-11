@@ -25,7 +25,7 @@ export default function ({ redirect, route, store }) {
 
     if (!whiteList[route.name] && get(userInfo, 'role.id') === 3) {
       // user doesn't has a subscription
-      if ((!userInfo || !userInfo.subscription) && days <= 0) {
+      if ((!userInfo || !userInfo.subscription) && days < 0) {
         redirect('/app/inactive-subscription')
       } else if ((userInfo.subscription.status === 'canceled' || userInfo.subscription.status === 'incomplete_expired') && days <= 0) {
         // check if subscription is cancelled, if so redirect

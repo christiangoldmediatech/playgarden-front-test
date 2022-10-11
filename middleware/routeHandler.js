@@ -139,7 +139,7 @@ export default async function ({ redirect, route, store, app, req }) {
   const datetime = dayjs.unix(suscription.current_period_end)
   const days = dayjs(datetime).diff(new Date(), 'days')
 
-  if (shouldRedirectToAccount && days <= 0) {
+  if (shouldRedirectToAccount && days < 0) {
     return redirect({ name: 'app-inactive-subscription' })
   }
 
