@@ -1,4 +1,5 @@
 import { get } from 'lodash'
+import dayjs from 'dayjs'
 import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscriptionWhitelistedRoutes.json'
 import routeHandlerIgnoredRoutes from '~/utils/consts/routeHandlerIgnoredRoutes.json'
@@ -134,7 +135,11 @@ export default async function ({ redirect, route, store, app, req }) {
     get(user, 'role.id') === 3 /* PARENT */ &&
     (user?.subscription?.status === 'canceled' || user?.subscription?.status === 'incomplete_expired')
 
-  if (shouldRedirectToAccount) {
+  const suscription = user.subscription
+  const datetime = dayjs.unix(suscription.current_period_end)
+  const days = dayjs(datetime).diff(new Date(), 'days')
+
+  if (shouldRedirectToAccount && days < 0) {
     return redirect({ name: 'app-inactive-subscription' })
   }
 
