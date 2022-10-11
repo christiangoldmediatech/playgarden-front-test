@@ -3,7 +3,7 @@
     <pg-dialog
       v-model="viewPlayAndLearnProgramModal"
       max-width="600"
-      content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl"
+      content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl v2-font font-weight-bold"
       @click:outside="$emit('closePlayAndLearnProgramModal')"
     >
       <v-col class="text-right pg-pr-3" cols="12">
@@ -20,9 +20,7 @@
       </v-col>
 
       <v-col cols="12" class="px-16 text-center">
-        <p
-          class="font-weight-medium pg-text-[25px] pg-leading-[40px] pg-text-[#71B2FF]"
-        >
+        <p class="pg-text-[25px] pg-text-[#71B2FF]">
           Have you seen our <br />
           <span class="pg-text-primary">Play</span>
           <span class="pg-text-accent">and</span>
@@ -34,9 +32,7 @@
         <p class="pg-font-medium">
           More fun and learning videos, more well-being, at the best price!
         </p>
-        <p
-          class="font-weight-medium pg-text-[20px] pg-leading-[25px] pg-text-[#C399ED]"
-        >
+        <p class="pg-text-[20px] pg-leading-[25px] pg-text-[#C399ED]">
           Do you want to try it for FREE for 15 days?
         </p>
       </v-col>

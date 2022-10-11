@@ -2,11 +2,16 @@
   <pg-dialog
     v-model="viewAppliedCouponModal"
     max-width="600"
-    content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl"
+    content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl v2-font"
     @click:outside="$emit('closeViewAppliedCouponModal')"
   >
     <v-col class="text-right pg-pr-3" cols="12">
-      <v-btn icon color="white" class="pg-bg-[#F6B7D2]" @click="$emit('closeViewAppliedCouponModal')">
+      <v-btn
+        icon
+        color="white"
+        class="pg-bg-[#F6B7D2]"
+        @click="$emit('closeViewAppliedCouponModal')"
+      >
         <v-icon>
           mdi-close
         </v-icon>
@@ -15,14 +20,16 @@
 
     <v-col cols="12" class="px-16">
       <p
-        class="text-center font-weight-medium pg-text-[20px] pg-leading-[25px] pg-text-[#71B2FF]"
+        class="text-center font-weight-bold pg-text-[20px] pg-leading-[25px] pg-text-[#71B2FF]"
       >
         We have applied the following discount coupon!
       </p>
     </v-col>
 
     <v-col cols="12" class="text-center">
-      <div class="px-10 py-5 pg-rounded-3xl pg-border-1 pg-border-dashed pg-border-pg-[#707070] pg-bg-[#F2F2F2] pg-text-[#A9A9A9] pg-w-8/12 pg-block pg-mx-auto pg-font-bold mb-3">
+      <div
+        class="px-10 py-5 pg-text-xl pg-rounded-3xl pg-border-1 pg-border-dashed pg-border-pg-[#707070] pg-bg-[#F2F2F2] pg-text-[#A9A9A9] pg-w-8/12 pg-block pg-mx-auto pg-font-bold mb-3"
+      >
         {{ discountCode }}
       </div>
     </v-col>
@@ -39,9 +46,7 @@
         plain
         width="300"
         color="accent"
-        @click="
-          $emit('closeViewAppliedCouponModal')
-        "
+        @click="$emit('closeViewAppliedCouponModal')"
       >
         CLOSE
       </v-btn>
@@ -55,7 +60,7 @@
 </template>
 
 <script>
-import { defineComponent, useRouter, useStore, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'AppliedCouponModal',
@@ -67,8 +72,9 @@ export default defineComponent({
   setup() {
     const router = useRouter()
 
-    const goHome = () => {
-      router.replace({ name: 'app-virtual-preschool' })
+    const goHome = async () => {
+      await router.replace({ name: 'app-virtual-preschool' })
+      location.reload()
     }
 
     return {
@@ -77,5 +83,3 @@ export default defineComponent({
   }
 })
 </script>
-
-  <style></style>

@@ -3,11 +3,16 @@
     <pg-dialog
       v-model="viewCouponDiscountModal"
       max-width="600"
-      content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl"
+      content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl v2-font"
       @click:outside="$emit('closeCouponDiscountModal')"
     >
       <v-col class="text-right pg-pr-3" cols="12">
-        <v-btn icon color="white" class="pg-bg-[#F6B7D2]" @click="$emit('closeCouponDiscountModal')">
+        <v-btn
+          icon
+          color="white"
+          class="pg-bg-[#F6B7D2]"
+          @click="$emit('closeCouponDiscountModal')"
+        >
           <v-icon>
             mdi-close
           </v-icon>
@@ -16,21 +21,26 @@
 
       <v-col cols="12" class="px-16">
         <p
-          class="text-center font-weight-medium pg-text-[20px] pg-leading-[25px]"
+          class="text-center font-weight-bold pg-text-[20px] pg-leading-[25px]"
         >
           We would love to give you more time to see the value of Playgarden
           Prep.
         </p>
         <br />
         <p
-          class="text-center font-weight-medium pg-text-[20px] pg-leading-[25px] pg-text-[#71B2FF]"
+          class="text-center font-weight-bold pg-text-[20px] pg-leading-[25px] pg-text-[#71B2FF]"
         >
           {{ discountMessage }}
         </p>
       </v-col>
 
       <v-col cols="12" class="text-center">
-        <v-btn class="px-16" color="primary" :loading="loadingBtn" @click="applyDiscountCode">
+        <v-btn
+          class="px-16"
+          color="primary"
+          :loading="loadingBtn"
+          @click="applyDiscountCode"
+        >
           YES
         </v-btn>
       </v-col>
@@ -60,7 +70,12 @@
 </template>
 
 <script>
-import { defineComponent, ref, useStore, computed } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  ref,
+  useStore,
+  computed
+} from '@nuxtjs/composition-api'
 import { useAuth, useBilling, useSnotifyHelper } from '@/composables'
 import { UserFlow } from '@/models'
 import CreditCardModal from '@/components/app/payment/CreditCardModal.vue'
@@ -81,7 +96,9 @@ export default defineComponent({
     const Billing = useBilling()
     const snotify = useSnotifyHelper()
     const changingSubscriptionTimeInterval = ref(false)
-    const hasUserLearnAndPlayPlan = computed(() => store.getters['auth/hasUserLearnAndPlayPlan'])
+    const hasUserLearnAndPlayPlan = computed(
+      () => store.getters['auth/hasUserLearnAndPlayPlan']
+    )
     const isBillingMonthly = computed(() => props.billingType === 'MONTHLY')
 
     const discountMessage = computed(() => {
@@ -109,7 +126,10 @@ export default defineComponent({
     }
 
     const getCouponId = async () => {
-      const coupons = await store.dispatch('coupons/getCoupons', { active: true, code: props.discountCode })
+      const coupons = await store.dispatch('coupons/getCoupons', {
+        active: true,
+        code: props.discountCode
+      })
       if (coupons.length > 0) {
         return coupons[0].promotion_id
       }
@@ -124,7 +144,9 @@ export default defineComponent({
           await changePreschoolSubscriptionToMonthly()
         }
 
-        await store.dispatch('coupons/updateSubcriptionCoupon', { promotion_id: promotionId })
+        await store.dispatch('coupons/updateSubcriptionCoupon', {
+          promotion_id: promotionId
+        })
         emit('appliedCouponModal')
       } catch {
         snotify.error('Could not apply discount. Please, try again later.')
@@ -184,7 +206,9 @@ export default defineComponent({
         }
 
         await store.dispatch('payment/selectSubscriptionPlan', plan)
-        await store.dispatch('coupons/updateSubcriptionCoupon', { promotion_id: 'AoNWHasc' }) // Create coupon on production before use it
+        await store.dispatch('coupons/updateSubcriptionCoupon', {
+          promotion_id: 'AoNWHasc'
+        }) // Create coupon on production before use it
 
         await Auth.fetchUserInfo()
         emit('plan-membership-changed')
