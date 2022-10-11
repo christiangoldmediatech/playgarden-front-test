@@ -1,4 +1,5 @@
 import { get } from 'lodash'
+import dayjs from 'dayjs'
 import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscriptionWhitelistedRoutes.json'
 import routeHandlerIgnoredRoutes from '~/utils/consts/routeHandlerIgnoredRoutes.json'
@@ -115,9 +116,12 @@ export default async function ({ redirect, route, store, app, req }) {
   const isUserRole = get(user, 'role.section') === 'USERS'
 
   if ((isUnauthenticatedRoute || isAppRoute) && isAdminRole) {
-    return get(user, 'role.name') === 'SPECIALISTS'
-      ? redirect({ name: 'admin-agenda' })
-      : redirect({ name: 'admin-dashboard' })
+    const atoken = store.getters['auth/getAccessToken']
+    window.open(
+      `${process.env.playgardenAdminUrl}?atoken=${atoken}`,
+      '_self'
+    )
+    return
   } else if ((isUnauthenticatedRoute || isAdminRoute) && isUserRole) {
     return redirect({ name: goToPage(user) })
   }
@@ -131,7 +135,11 @@ export default async function ({ redirect, route, store, app, req }) {
     get(user, 'role.id') === 3 /* PARENT */ &&
     (user?.subscription?.status === 'canceled' || user?.subscription?.status === 'incomplete_expired')
 
-  if (shouldRedirectToAccount) {
+  const suscription = user.subscription
+  const datetime = dayjs.unix(suscription.current_period_end)
+  const days = dayjs(datetime).diff(new Date(), 'days')
+
+  if (shouldRedirectToAccount && days < 0) {
     return redirect({ name: 'app-inactive-subscription' })
   }
 

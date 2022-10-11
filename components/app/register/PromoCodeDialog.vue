@@ -1,6 +1,7 @@
 <template>
   <PgDialog
     v-model="dialog"
+    content-class="!pg-shadow-none"
     :fullscreen="$vuetify.breakpoint.smAndDown"
     width="1025"
     persistent

@@ -1,6 +1,7 @@
 import { ref, watch } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
-import { KidsCornerVideo, KidsCornerVideoResponse } from '@/models'
+import { KidsCorner, KidsCornerVideo, KidsCornerVideoResponse } from '@/models'
+import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
 export const useKidsCorner = () => {
   const page = ref(1)
@@ -37,6 +38,41 @@ export const useKidsCorner = () => {
   const deleteKidsCorner = async (id: number) => {
     return await axios.$delete(`/kids-corner/${id}`)
   }
+  const getKidsCornerVideos = async (take: number) => {
+    return await axios.$get('/kids-corner/current/videos', { params: { take } })
+  }
+  const getFilteredKidsCornerVideos = async (videosIds: number[], take: number) => {
+    return await axios.$post('/kids-corner/video/next-up/filtered',
+      {
+        videosIds
+      },
+      {
+        params: {
+          take
+        }
+      })
+  }
+  const getMediaObjectFromVideoData = (videoData: KidsCorner) : MediaObject => {
+    const DEFAULT_THUMBNAIL_PATH = '/defaults/videoThumbnail.png'
+    const { video, activityType } = videoData
+    return {
+      title: video.description,
+      poster: video.thumbnail || DEFAULT_THUMBNAIL_PATH,
+      src: {
+        url: video.videoUrl!.HLS,
+        type: 'application/x-mpegURL'
+      },
+      meta: {
+        videoId: video.id,
+        kidsCornerId: videoData.id,
+        activityId: videoData.id,
+        activityTypeId: activityType?.id,
+        author: `with ${video.name}`,
+        type: 'KidsCorner',
+        videoIcon: activityType?.icon
+      }
+    }
+  }
   return {
     total,
     page,
@@ -48,6 +84,9 @@ export const useKidsCorner = () => {
     getKidsCorner,
     saveKidsCorner,
     updateKidsCorner,
-    deleteKidsCorner
+    deleteKidsCorner,
+    getKidsCornerVideos,
+    getFilteredKidsCornerVideos,
+    getMediaObjectFromVideoData
   }
 }

@@ -1,14 +1,7 @@
 <template>
-  <v-dialog v-model="dialog" class="payment-info-dialog" persistent max-width="700px" :fullscreen="isMobile">
+  <v-dialog v-model="dialog" class="payment-info-dialog" persistent max-width="700px">
     <v-card class="card-wrapper py-10">
-      <v-btn
-        v-if="!isMobile"
-        class="btn-close"
-        icon
-        color="white"
-        large
-        @click="dialog = false"
-      >
+      <v-btn class="btn-close" icon color="white" large @click="dialog = false">
         <v-icon>mdi-close</v-icon>
       </v-btn>
 
@@ -18,15 +11,15 @@
         </h1>
       </v-card-title>
 
-      <v-card-text class="d-flex flex-column align-center card-text-container" :class="{ 'px-12': !isMobile }">
-        <div :class="{ 'w-100': isMobile, 'd-flex': isMobile, 'justify-start': isMobile }">
+      <v-card-text class="d-flex flex-column align-center px-12">
+        <div>
           <p>
             <span class="option-text">Current Plan: </span>
             <span class="option-value">{{ currentPlanName }}</span>
           </p>
         </div>
 
-        <div class="w-100 d-flex justify-center" :class="{ 'pg-relative': !isMobile }">
+        <div class="pg-relative w-100 d-flex justify-center">
           <p>
             <span class="option-text">Switch to: </span>
             <span class="option-value">{{ planToSwitchTo }}</span>
@@ -35,7 +28,7 @@
           <v-btn
             text
             color="#F89838"
-            :class="{ 'right-positioned-btn': !isMobile }"
+            class="right-positioned-btn"
             @click="dialog = false"
           >
             <span class="text-decoration-underline">Edit</span>
@@ -69,13 +62,12 @@
 
       <v-card-actions class="d-flex flex-column align-center">
         <v-btn
-          class="white--text mb-2 custom-btn-shadow"
-          :class="{ 'px-16': !isMobile }"
-          :x-large="true"
+          class="white--text px-16 mb-2 custom-btn-shadow"
+          x-large
           elevation="0"
           color="#AAD579"
           :loading="loading"
-          :disabled="lockButton"
+          :disabled="lockButton || disableBtn"
           @click="onSubmit"
         >
           {{ btnConfirmationText }}
@@ -96,7 +88,7 @@
 </template>
 
 <script lang="ts">
-import { useAuth, useBilling, useSnotifyHelper, useNotification, useNuxtHelper, useVuetifyHelper } from '@/composables'
+import { useAuth, useBilling, useSnotifyHelper, useNotification, useNuxtHelper } from '@/composables'
 import { TypedStore } from '@/models'
 import { defineComponent, computed, useStore, ref, onMounted, watch } from '@nuxtjs/composition-api'
 import { debounce } from 'lodash'
@@ -146,7 +138,6 @@ export default defineComponent({
     })
     const Billing = useBilling()
     const snotify = useSnotifyHelper()
-    const vuetify = useVuetifyHelper()
     const nuxt = useNuxtHelper()
     const loading = ref(false)
     const currentPlanName = computed(() => store.getters['auth/getUserInfo'].planSelected.planName)
@@ -157,7 +148,7 @@ export default defineComponent({
     const isValidCoupon = ref(false)
     const isValidatingCoupon = ref(false)
     const lockButton = ref(false)
-    const isMobile = computed(() => vuetify.breakpoint.xs)
+    const disableBtn = computed(() => userCards.value?.length === 0)
     const btnConfirmationText = computed(() => `Upgrade to ${planToSwitchTo.value}`)
     const getTextValidateCoupon = computed(() => {
       if (promotionCode.value) {
@@ -256,7 +247,7 @@ export default defineComponent({
       getTextValidateCoupon,
       isValidatingCoupon,
       lockButton,
-      isMobile
+      disableBtn
     }
   }
 })
@@ -270,10 +261,7 @@ export default defineComponent({
 
 .card-wrapper {
   position: relative;
-
-  @media screen and (min-width: $breakpoint-xs) {
-    border-radius: 45px;
-  }
+  border-radius: 45px;
 }
 
 .btn-close {
@@ -326,13 +314,6 @@ export default defineComponent({
 
   img {
     width: 100%;
-  }
-}
-
-.card-text-container {
-  @media screen and (min-width: $breakpoint-xs) {
-    max-height: 500px;
-    overflow-y: auto;
   }
 }
 </style>
