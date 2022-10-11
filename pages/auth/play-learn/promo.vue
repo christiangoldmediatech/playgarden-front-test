@@ -50,6 +50,7 @@
             :loading="isLoading"
             :is-credit-card-required="true"
             :is-coupon-needed="false"
+            :no-terms="false"
             @click:submit="handleSubmit"
           />
         </div>
