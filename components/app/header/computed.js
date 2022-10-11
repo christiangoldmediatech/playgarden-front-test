@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex'
 import { UserFlow } from '@/models'
+import dayjs from 'dayjs'
 export default {
   computed: {
     ...mapGetters('auth', [
@@ -13,8 +14,11 @@ export default {
     }),
 
     getVerifyEmail() {
+      const suscription = this.getUserInfo.subscription
+      const datetime = dayjs.unix(suscription.current_period_end)
+      const days = dayjs(datetime).diff(new Date(), 'days')
       if (this.getUserInfo.flow === UserFlow.NOCREDITCARD) {
-        return this.getUserInfo.registerStep === 6
+        return (this.getUserInfo.registerStep === 9 && days > 0) ? true : this.getUserInfo.registerStep === 6
       } else if (this.getUserInfo.flow === UserFlow.CREDITCARD) {
         return true
       }
