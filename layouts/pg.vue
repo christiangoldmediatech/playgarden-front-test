@@ -26,9 +26,9 @@
       <contact-us-form-modal />
 
       <!-- NO CREDIT CARD FLOW TRIAL EXPIRED -->
-      <no-credit-card-free-trial-ended-dialog
+      <!-- <no-credit-card-free-trial-ended-dialog
         v-model="isPreschoolTrialEndedWithNoCreditCardFlowModalVisible"
-      />
+      /> -->
 
       <!-- CONTENT -->
       <v-main v-if="!isFullWidth">

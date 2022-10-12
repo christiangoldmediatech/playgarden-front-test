@@ -59,7 +59,7 @@
 import dayjs from 'dayjs'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
-import { defineComponent, useStore, onMounted, ref } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, onMounted } from '@nuxtjs/composition-api'
 import { useGlobalModal, useAuth } from '@/composables'
 import { TypedStore } from '@/models'
 

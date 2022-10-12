@@ -185,6 +185,10 @@ export const useAuth = ({ store }: { store: Store<TypedStore> }) => {
     const { data } = await axios.get('/auth/user/plan')
     plan.value = data.plan
   }
+  const getLastInvoice = async () => {
+    const { data } = await axios.get('/billing/invoices/last')
+    return data
+  }
 
   const signup = (signupData: SignupData): Promise<User> => {
     return store.dispatch('auth/signup/signup', signupData)
@@ -206,6 +210,7 @@ export const useAuth = ({ store }: { store: Store<TypedStore> }) => {
     updateUserInfo,
     updateAuthOnboarding,
     signup,
-    getPlan
+    getPlan,
+    getLastInvoice
   }
 }
