@@ -64,7 +64,7 @@
     </pg-dialog>
     <credit-card-modal
       v-model="isCreditCardModalVisible"
-      @card-added="applyLogicForCreditCardModal"
+      @card-added="changePreschoolSubscriptionToMonthly"
     />
   </div>
 </template>
@@ -157,14 +157,6 @@ export default defineComponent({
       }
     }
 
-    const applyLogicForCreditCardModal = async () => {
-      if (changingSubscriptionTimeInterval.value) {
-        await changePreschoolSubscriptionToMonthly()
-      } else {
-        await changePlayAndLearnPlan()
-      }
-    }
-
     const changePreschoolSubscriptionToMonthly = async () => {
       if (Auth.userInfo.value.flow === UserFlow.NOCREDITCARD) {
         const userCards = await Billing.fetchBillingCards()
@@ -186,48 +178,13 @@ export default defineComponent({
       await Auth.fetchUserInfo()
     }
 
-    const changePlayAndLearnPlan = async () => {
-      loadingBtn.value = true
-      try {
-        if (Auth.userInfo.value.flow === UserFlow.NOCREDITCARD) {
-          const userCards = await Billing.fetchBillingCards()
-
-          if (userCards?.length === 0) {
-            changingSubscriptionTimeInterval.value = false
-            isCreditCardModalVisible.value = true
-            return
-          }
-        }
-
-        const plan = {
-          id: 2,
-          type: 'monthly',
-          fromPlaydates: false
-        }
-
-        await store.dispatch('payment/selectSubscriptionPlan', plan)
-        await store.dispatch('coupons/updateSubcriptionCoupon', {
-          promotion_id: 'AoNWHasc'
-        }) // Create coupon on production before use it
-
-        await Auth.fetchUserInfo()
-        emit('plan-membership-changed')
-      } catch (error) {
-        snotify.error('Could not select plan. Please, try again later.')
-      } finally {
-        loadingBtn.value = false
-        emit('appliedCouponModal')
-        emit('closeCouponDiscountModal')
-      }
-    }
-
     return {
       isCreditCardModalVisible,
       loadingBtn,
       discountMessage,
       applyClosingLogicForFlow,
       applyDiscountCode,
-      applyLogicForCreditCardModal
+      changePreschoolSubscriptionToMonthly
     }
   }
 })
