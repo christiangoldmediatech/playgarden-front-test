@@ -10,7 +10,7 @@ const isBetween = require('dayjs/plugin/isBetween')
 dayjs.extend(isBetween)
 
 export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
-  const { userInfo, isUserLoggedIn } = useAuth({ store })
+  const { userInfo, isUserLoggedIn, getLastInvoice } = useAuth({ store })
   const { getShippingAdress } = useShippingAddress()
 
   const userFlow = computed(() => userInfo.value.flow)
@@ -284,7 +284,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
    * - they are not a subscribed user and,
    * - they did not select a plan before
    */
-  const checkIfShouldShowTrialExpiredModal = () => {
+  const checkIfShouldShowTrialExpiredModal = async () => {
     if (!isUserLoggedIn.value) {
       setIsTrialExpiredModalVisible(false)
       return
@@ -301,10 +301,20 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     const didLoginBefore =
       dayjs(now).diff(userInfo.value.createdAt, 'minutes') >= oneDay
 
-    const didChoosePlan = userInfo.value.planChoosen
+    let didChoosePlan = userInfo.value.planChoosen
 
     const subscription = userInfo.value.subscription
-    const isSubscribedUser = subscription && subscription.status === 'active'
+    const isSubscribedUser = (subscription && (subscription.status === 'active' || subscription.status === 'canceled' || subscription.status === 'past_due'))
+
+    if (didTrialEnd && didChoosePlan && isSubscribedUser && subscription) {
+      const lastInvoice = await getLastInvoice()
+      if (lastInvoice && lastInvoice.payment_intent && lastInvoice.next_payment_attempt) {
+        // payment incomplete
+        const datetime = dayjs.unix(lastInvoice.period_end)
+        const days = dayjs(datetime).diff(new Date(), 'days')
+        didChoosePlan = !(days < 0)
+      }
+    }
 
     const shouldShowExpiredModal =
       didTrialEnd && didLoginBefore && isSubscribedUser && !didChoosePlan
