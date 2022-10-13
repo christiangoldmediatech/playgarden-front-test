@@ -277,7 +277,7 @@ export default defineComponent({
     const routeName = computed(() => route.value.name)
 
     watch(routeName, () => {
-      if (routeName.value !== 'app-payment-plan') {
+      if (routeName.value !== 'app-payment-plan' && routeName.value !== 'app-account-index') {
         checkIfShouldShowTrialExpiredModal()
       }
     })
