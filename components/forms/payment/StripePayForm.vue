@@ -48,14 +48,12 @@
               <span>
                 I have read and accept the
 
-                <nuxt-link
+                <span
                   class="ml-1 terms-conditions link-text"
-                  :to="{ name: 'terms-conditions' }"
-                  target="_blank"
-                  @click.native.stop=""
+                  @click="goToTermsAndConditions"
                 >
                   Terms & Conditions
-                </nuxt-link>
+                </span>
               </span>
             </template>
           </v-checkbox>
@@ -205,11 +203,16 @@ export default {
 
   methods: {
     ...mapActions('coupons', ['getCoupons']),
+
     getSubmittableData() {
       return {
         token: this.draft.token,
         promotion_id: this.draft.promotion_id
       }
+    },
+
+    goToTermsAndConditions() {
+      window.open('https://playgardenonline.com/terms-of-use/', '_blank')
     },
 
     async _checkValid () {
