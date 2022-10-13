@@ -69,7 +69,7 @@ export default {
         rel: 'stylesheet',
         type: 'text/css',
         href:
-          'https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&display=swap'
+          'https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap'
       },
       {
         rel: 'stylesheet',
@@ -271,7 +271,7 @@ export default {
       '@gold-media-tech/pg-video-player'
     ],
     build: {
-      extend (config, ctx) {
+      extend(config, ctx) {
         if (ctx.isDev) {
           config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
         }
