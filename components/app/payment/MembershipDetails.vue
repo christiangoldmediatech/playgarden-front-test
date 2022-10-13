@@ -304,18 +304,17 @@
 
       <!-- Cancel suscription modal -->
       <cancel-suscription-modal
+        v-model="otherLeaveMotive"
         :remove-subscription-modal="removeSubscriptionModal"
         :is-mobile="isMobile"
         :leave-motive="leaveMotive"
         :leave-motives="leaveMotivesText"
         :is-last-leave-motive="isLastLeaveMotive"
-        :other-leave-motive="otherLeaveMotive"
         :loading="loading"
         :is-validate-motive="isValidateMotive"
         @removeSubscription="removeSubscription"
         @removeSubscriptionModal="removeSubscriptionModal = false"
         @changeLeaveMotive="e => (leaveMotive = e)"
-        @changeOtherLeaveMotive="e => (otherLeaveMotive = e)"
       />
 
       <!-- Discount Flow -->

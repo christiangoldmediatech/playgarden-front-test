@@ -52,11 +52,11 @@
       <validation-provider v-slot="{ errors }" name="reason" rules="required">
         <v-text-field
           v-show="isLastLeaveMotive"
+          v-model="otherLeaveMotive"
           class="px-12"
           solo
           dense
           :error-messages="errors"
-          @change="$emit('changeOtherLeaveMotive', $event)"
         />
       </validation-provider>
     </v-card-text>
@@ -93,20 +93,35 @@
 </template>
 
 <script>
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, computed } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'CancelSuscriptionModal',
 
   props: {
+    value: String,
     removeSubscriptionModal: Boolean,
     isMobile: Boolean,
     leaveMotive: String,
     leaveMotives: Array,
     isLastLeaveMotive: Boolean,
-    otherLeaveMotive: String,
     loading: Boolean,
     isValidateMotive: Boolean
+  },
+  emits: ['input'],
+  setup(props, { emit }) {
+    const otherLeaveMotive = computed({
+      get() {
+        return props.value
+      },
+      set(value) {
+        emit('input', value)
+      }
+    })
+
+    return {
+      otherLeaveMotive
+    }
   }
 })
 </script>
