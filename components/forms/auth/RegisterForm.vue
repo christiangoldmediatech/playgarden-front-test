@@ -210,14 +210,12 @@
                       <template #label>
                         I agree to the
 
-                        <nuxt-link
+                        <span
                           class="ml-1 terms-conditions link-text"
-                          :to="{ name: 'terms-conditions' }"
-                          target="_blank"
-                          @click.native.stop=""
+                          @click="goToTermsAndConditions"
                         >
                           Terms & Conditions
-                        </nuxt-link>
+                        </span>
                       </template>
                     </v-checkbox>
                   </validation-provider>
@@ -533,6 +531,10 @@ export default {
         'click:submit',
         data
       )
+    },
+
+    goToTermsAndConditions() {
+      window.open('https://playgardenonline.com/terms-of-use/', '_blank')
     },
 
     async _checkCoupon() {
