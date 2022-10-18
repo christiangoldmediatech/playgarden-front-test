@@ -225,22 +225,38 @@ export default {
   font-family: Poppins !important;
 }
 
+@page {
+  size: a4;
+  margin: 0;
+}
+
 @media print {
+  html, body {
+    width: 210mm;
+    height: 297mm;
+  }
+
   body {
     overflow: hidden !important;
-    height: 100vh !important;
   }
 
   body * {
     visibility: hidden;
   }
+
   #puzzle, #puzzle * {
     visibility: visible;
   }
   #puzzle {
     overflow: hidden !important;
-    width: 100vw;
-    height: 100vh;
+    width: 210mm;
+    height: 297mm;
+    transform: rotate(-90deg) scale(1.42);
+    -webkit-transform: rotate(-90deg) scale(1.42);
+    -moz-transform: rotate(-90deg) scale(1.42);
+    position: fixed;
+    bottom: 0;
+    left: 120mm;
     -webkit-print-color-adjust:exact !important;
     print-color-adjust:exact !important;
   }
