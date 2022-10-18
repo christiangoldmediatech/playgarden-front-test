@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <coming-soon-dialog v-model="dialog" />
     <div class="container-menu header-images">
       <div class="navbar-right">
         <div class="contact-menu-header">
@@ -25,38 +26,48 @@
             </a>
             <div class="container-submenu">
               <ul class="submenu">
+                <li><a href="https://playgardenonline.com/virtual-preschool/">Virtual Preschool</a></li>
                 <li><a href="https://playgardenonline.com/plans/">Enrollment Plans</a></li>
                 <li><a href="https://playgardenonline.com/testimonials/">Parent Testimonials</a></li>
+                <li><a href="https://playgardenprep.com/group-solutions/">Group Solutions</a></li>
+                <li><a href="https://playgardenonline.com/esl/">English as a Second Language</a></li>
               </ul>
             </div>
           </li>
           <li class="only-desktop link-option link-option-with-icon">
             <a href="#the-virtual-preschool" class="menu-view-more">
-              <span>Virtual Preschool</span>
+              <span>Resources</span>
               <v-icon class="menu-view-icon" large>
                 mdi-chevron-down
               </v-icon>
             </a>
             <div class="container-submenu">
               <ul class="submenu">
-                <li>
-                  <a href="https://playgardenonline.com/virtual-preschool/">Preschool and
-                    Pre-K</a>
-                </li>
                 <li><a href="https://playgardenonline.com/how-it-works/">How it Works</a></li>
                 <!-- <li><a href="https://playgardenonline.com/do-it-yourself/">DIY</a></li> -->
                 <li><a href="https://playgardenonline.com/blog">Blog</a></li>
-                <li><a href="https://playgardenonline.com/your-teachers/">Your Teachers</a></li>
                 <li><a href="https://playgardenonline.com/specialized-learning/">Specialized Learning</a></li>
                 <li><a href="https://playgardenonline.com/do-it-yourself/">Do it Yourself</a></li>
               </ul>
             </div>
           </li>
-          <li class="only-desktop link-option">
-            <a href="https://playgardenonline.com/about-us">About us</a>
+          <li class="only-desktop link-option link-option-with-icon">
+            <a href="#the-virtual-preschool" class="menu-view-more">
+              <span>About us</span>
+              <v-icon class="menu-view-icon" large>
+                mdi-chevron-down
+              </v-icon>
+            </a>
+            <div class="container-submenu">
+              <ul class="submenu">
+                <li><a href="https://playgardenonline.com/school/help/">FAQs</a></li>
+                <li><a href="https://playgardenonline.com/about-us/">About Us</a></li>
+                <li><a href="https://playgardenonline.com/your-teachers/">Your Teachers</a></li>
+              </ul>
+            </div>
           </li>
           <li class="only-desktop link-option">
-            <a href="https://playgardenonline.com/school/help">FAQs</a>
+            <a @click="openDialog">Community</a>
           </li>
           <li class="login link-option">
             <a href="https://playgardenonline.com/school/auth/login">
@@ -147,7 +158,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, computed, useRoute, ref } from '@nuxtjs/composition-api'
+import ComingSoonDialog from './ComingSoonDialog.vue'
 
 export default defineComponent({
   name: 'MenuLandingPage',
@@ -158,17 +170,25 @@ export default defineComponent({
       }
     ]
   },
+  components: {
+    ComingSoonDialog
+  },
   setup() {
     const route = useRoute()
-
+    const dialog = ref(false)
     const hideNavbarOptions = computed(() => route.value.name === 'auth-preschool-normal' || route.value.name === 'auth-login')
     const showLogInNavbar = computed(() => route.value.name === 'auth-preschool-normal')
     const showSignUpNavbar = computed(() => route.value.name === 'auth-login')
+    const openDialog = () => {
+      dialog.value = true
+    }
 
     return {
       hideNavbarOptions,
       showLogInNavbar,
-      showSignUpNavbar
+      showSignUpNavbar,
+      openDialog,
+      dialog
     }
   }
 })
