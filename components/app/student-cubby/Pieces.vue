@@ -41,7 +41,7 @@
             </v-row>
           </div>
         </v-col>
-        <v-col v-if="puzzle.piecesUnclocked === puzzle.pieces && !$vuetify.breakpoint.xs" class="d-flex align-center">
+        <v-col v-if="puzzle.piecesUnclocked >= puzzle.pieces && !$vuetify.breakpoint.xs" class="d-flex align-center">
           <v-btn class="elevation-0 ml-auto" fab :large="!$vuetify.breakpoint.smAndDown" color="#68C453" @click="printPuzzle">
             <img src="@/assets/svg/printer.svg" alt="printer icon" />
           </v-btn>
