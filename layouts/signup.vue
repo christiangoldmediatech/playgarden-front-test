@@ -19,13 +19,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, useStore } from '@nuxtjs/composition-api'
 import ApplicationHeader from '@/components/app/header/ApplicationHeader.vue'
 import AppNavigation from '@/components/app/header/AppNavigation.vue'
 import DefaultFooter from '@/components/app/footer/DefaultFooter.vue'
 import EmailConflictModal from '@/components/app/register/EmailConflictModal.vue'
 import AccountInactiveModal from '@/components/app/register/AccountInactiveModal.vue'
 import { useAuth } from '@/composables/users'
+import { TypedStore } from '@/models'
+import { useUtmHandler } from '@/composables'
 
 export default defineComponent({
   name: 'LayoutsSignup',
@@ -42,6 +44,12 @@ export default defineComponent({
 
   setup() {
     const Auth = useAuth()
+    const store = useStore<TypedStore>()
+    const UtmHandler = useUtmHandler({ store })
+
+    onMounted(() => {
+      UtmHandler.setUtmSource()
+    })
 
     return {
       isUserLoggedIn: Auth.isUserLoggedIn

@@ -84,14 +84,16 @@
 <script lang="ts">
 import {
   defineComponent,
+  onMounted,
   ref,
   useRoute,
-  useRouter
+  useRouter,
+  useStore
 } from '@nuxtjs/composition-api'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import StepOneCard from '@/components/app/learn-play/StepOneCard/StepOneCard.vue'
-import { useSnotifyHelper } from '@/composables'
+import { useSnotifyHelper, useUtmHandler } from '@/composables'
 import { useAuth } from '@/composables/users'
 import { ParentSignupPayload } from '@/composables/web/signup/types'
 import { useParentSignup, useSignupStep } from '@/composables/web/signup'
@@ -99,6 +101,7 @@ import { useModal } from '@/composables/web/modal'
 import { useUTM } from '@/composables/web/utm'
 import { SignupType } from '@/composables/users/types'
 import { useGtm } from '@/composables/web/gtm'
+import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'Normal',
@@ -121,6 +124,8 @@ export default defineComponent({
     const Auth = useAuth()
     const Modal = useModal()
     const ParentSignup = useParentSignup({ auth: Auth })
+    const store = useStore<TypedStore>()
+    const UtmHandler = useUtmHandler({ store })
 
     const isLoading = ref(false)
     const signupType = SignupType.LEARN_AND_PLAY
@@ -167,6 +172,10 @@ export default defineComponent({
         })
       )
     }
+
+    onMounted(() => {
+      UtmHandler.setUtmSource()
+    })
 
     return {
       isLoading,
