@@ -32,6 +32,13 @@
       >
         Thank you for your feedback!
       </p>
+
+      <p
+        class="text-center font-weight-medium pg-text-[16px] pg-leading-[22px]"
+      >
+        You will continue to have access to the Playgarden <br>
+        service through the end of the billing period that is paid
+      </p>
     </v-col>
 
     <v-col cols="12" class="text-center pa-0 pb-5">
