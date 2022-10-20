@@ -223,7 +223,7 @@ export default defineComponent({
         // isTopRibbonMinimized.value = true
       }
 
-      if (playList.length > 1) {
+      if (playList.length > 1 && userInfo.value) {
         eventBus.$emit(APP_EVENTS.MUSIC_ITEM_CLICKED, {
           event: TAG_MANAGER_EVENTS.MUSIC_ITEM_CLICKED,
           userId: userInfo.value.id,
