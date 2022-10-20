@@ -140,7 +140,7 @@ export default {
     }
   },
 
-  created () {
+  created() {
     if (this.previewMode) {
       return
     }

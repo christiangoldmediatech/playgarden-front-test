@@ -9,7 +9,7 @@
       >
     </v-col>
     <v-col class="text-center mt-n2" cols="12">
-      <child-select v-model="childId" :show-only-selected-name="true" />
+      <child-select v-model="childId" :show-only-selected-name="true" :preview-mode="getPreviewMode" />
     </v-col>
     <v-col class="text-center mt-n6" cols="12">
       <recorded-letter
@@ -17,6 +17,7 @@
         class="mt-6 rotated"
         v-bind="{ letter: getLetterCurriculumType, small: smallLetter }"
         list-mode
+        :preview-mode="getPreviewMode"
       />
     </v-col>
   </v-row>
@@ -55,6 +56,9 @@ export default {
         ? this.currentChild[0].id
         : 0
     },
+    getPreviewMode() {
+      return this.previewMode
+    },
     child() {
       return this.currentChild && this.currentChild.length
         ? this.currentChild[0]
@@ -87,7 +91,6 @@ export default {
     }
 
     this.childId = this.child.id
-
     await this.getAllChildren()
     await this.handleLesson()
 
