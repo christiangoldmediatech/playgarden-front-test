@@ -46,6 +46,13 @@
         >
           The KidsCorner is a safe space where learning is paired with silly, hilarious educational videos for free!
         </p>
+
+        <p
+          class="text-center font-weight-medium pg-text-[16px] pg-leading-[25px] pg-text-[#848484]"
+        >
+          You will continue to have access to the Playgarden <br>
+          service through the end of the billing period that is paid
+        </p>
       </v-col>
 
       <v-col cols="12" class="text-center">
