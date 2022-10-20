@@ -42,9 +42,10 @@
           </div>
         </v-col>
         <v-col v-if="puzzle.piecesUnclocked >= puzzle.pieces && !$vuetify.breakpoint.xs" class="d-flex align-center">
-          <v-btn class="elevation-0 ml-auto" fab :large="!$vuetify.breakpoint.smAndDown" color="#68C453" @click="printPuzzle">
-            <img src="@/assets/svg/printer.svg" alt="printer icon" />
-          </v-btn>
+          <a v-if="puzzle.src" :download="puzzle.src" :href="puzzle.src" target="_blank">
+            <v-btn class="elevation-0 ml-auto" fab :large="!$vuetify.breakpoint.smAndDown" color="#68C453">
+              <img src="@/assets/svg/printer.svg" alt="printer icon" />
+            </v-btn></a>
         </v-col>
       </v-row>
 
@@ -124,6 +125,7 @@
 import { mapActions } from 'vuex'
 
 import PuzzleCover from '@/components/app/student-cubby/PuzzleCover'
+import { axios } from '@/utils'
 
 export default {
   name: 'Pieces',
@@ -184,11 +186,6 @@ export default {
         this.uncover = this.puzzle.piecesUnclocked
         this.letter = this.puzzle.letter
       }
-    },
-
-    printPuzzle() {
-      document.getElementsByTagName('body')[0].style = ''
-      window.print()
     }
   }
 }
