@@ -11,7 +11,7 @@ export const studentCubbyItems: StudentCubbyItem[] = [
     blockedPlanIds: [1],
     description: (childName: string | undefined) => {
       const name = childName || 'Child'
-      return `Find all of ${name}'s completed puzzles. Share them on social media!`
+      return `Find all of ${name}'s completed puzzles here. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram @PlaygardenPrep. We can't wait to see yours!`
     }
   },
   {
