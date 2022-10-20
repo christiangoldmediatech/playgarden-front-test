@@ -9,7 +9,7 @@
           />
           <p class="mt-2 mb-0">
             <span :class="$vuetify.breakpoint.smAndDown ? 'text-pieces' : ''">
-              Look at all the pieces you've got!
+              Look at all the pieces you've got! Keep going to earn a printable coloring page.
             </span>
           </p>
         </v-col>
