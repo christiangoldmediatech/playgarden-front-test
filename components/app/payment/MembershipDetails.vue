@@ -303,105 +303,66 @@
       </v-col>
 
       <!-- Cancel suscription modal -->
-      <pg-dialog
-        v-model="removeSubscriptionModal"
-        content-class="white"
-        :fullscreen="isMobile"
-        max-width="1000"
-      >
-        <div class="green-line green-line-1" />
-        <div class="green-line green-line-2" />
+      <cancel-suscription-modal
+        v-model="otherLeaveMotive"
+        :remove-subscription-modal="removeSubscriptionModal"
+        :is-mobile="isMobile"
+        :leave-motive="leaveMotive"
+        :leave-motives="leaveMotivesText"
+        :is-last-leave-motive="isLastLeaveMotive"
+        :loading="loading"
+        :is-validate-motive="isValidateMotive"
+        @removeSubscription="removeSubscription"
+        @removeSubscriptionModal="removeSubscriptionModal = false"
+        @changeLeaveMotive="e => (leaveMotive = e)"
+      />
 
-        <v-col cols="12">
-          <v-row class="flex-column-reverse flex-md-row">
-            <v-col class="px-6" cols="12" md="6">
-              <v-col class="text-center" cols="12">
-                <underlined-title
-                  class="text-h5 text-md-h4 pg-letter-spacing"
-                  text="WE ARE SORRY TO SEE YOU GO!"
-                />
-              </v-col>
+      <!-- Discount Flow -->
+      <coupon-discount-modal
+        :view-coupon-discount-modal="viewCouponDiscountModal"
+        :billing-type="billing.billingType"
+        :discount-code="couponCode"
+        @tryPlayAndLearnModal="viewTryPlayAndLearnModal = true"
+        @closeCouponDiscountModal="viewCouponDiscountModal = false"
+        @appliedCouponModal="viewAppliedCouponModal = true"
+        @cancelPlayAndLearnModal="cancelPlayAndLearnModal = true"
+        @cancelLearnAndPlayAccount="removeLearnAndPlaySubscription"
+      />
+      <try-play-and-learn-modal
+        :view-try-play-and-learn-modal="viewTryPlayAndLearnModal"
+        @cancelAccount="removeSubscription(false)"
+        @closeTryPlayAndLearnModal="viewTryPlayAndLearnModal = false"
+        @viewWelcomePlayAndLearn="viewWelcomeToPlayAndLearnModal = true"
+      />
+      <applied-coupon-modal
+        :view-applied-coupon-modal="viewAppliedCouponModal"
+        :billing="billing"
+        :discount-code="couponCodeToDisplay"
+        @closeViewAppliedCouponModal="viewAppliedCouponModal = false"
+      />
 
-              <v-card-text class="text-justify">
-                <p class="font-weight-medium">
-                  ARE YOU LEAVING US?
-                </p>
-                <p>Before you cancel, please let us know the reason you are leaving. Every bit of feedback helps us create a better educational experience for little ones!</p>
+      <!-- Play and Learn Flow -->
+      <play-and-learn-program-modal
+        :view-play-and-learn-program-modal="viewPlayAndLearnProgramModal"
+        @closePlayAndLearnProgramModal="viewPlayAndLearnProgramModal = false"
+        @cancelAccount="removeSubscription(false)"
+        @loadingMode="loading = $event"
+        @viewWelcomePlayAndLearn="viewWelcomeToPlayAndLearnModal = true"
+      />
+      <welcome-to-play-and-learn-modal
+        :view-welcome-to-play-and-learn-modal="viewWelcomeToPlayAndLearnModal"
+      />
+      <cancel-play-and-learn-modal
+        :cancel-play-and-learn-modal="cancelPlayAndLearnModal"
+        @closeCancelPlayAndLearnModal="cancelPlayAndLearnModal = false"
+      />
 
-                <v-radio-group v-model="leaveMotive">
-                  <v-radio
-                    v-for="lm in leaveMotives"
-                    :key="lm"
-                    :value="lm"
-                  >
-                    <template #label>
-                      <span class="body-2">{{ lm }}</span>
-                    </template>
-                  </v-radio>
-                </v-radio-group>
-
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="reason"
-                  rules="required"
-                >
-                  <v-text-field
-                    v-show="isLastLeaveMotive"
-                    v-model="otherLeaveMotive"
-                    class=""
-                    solo
-                    dense
-                    :error-messages="errors"
-                    placeholder="Reason..."
-                  />
-                </validation-provider>
-
-                <p class="font-weight-bold">
-                  Thank you so much!
-                </p>
-                <p class="font-weight-bold">
-                  Miss Sarah and the Playgarden Prep teachers
-                </p>
-              </v-card-text>
-            </v-col>
-
-            <v-col class="px-6" cols="12" md="6">
-              <div>
-                <v-img
-                  alt="Remove Subscription"
-                  max-width="100%"
-                  :src="require('assets/png/cancel-account-child.jpg')"
-                />
-              </div>
-            </v-col>
-          </v-row>
-        </v-col>
-
-        <v-col class="text-center" cols="12">
-          <v-btn
-            color="primary"
-            :loading="loading"
-            :disabled="isValidateMotive"
-            x-large
-            @click="removeSubscription"
-          >
-            CANCEL ACCOUNT
-          </v-btn>
-        </v-col>
-
-        <v-col class="text-center" cols="12">
-          <v-btn
-            color="accent"
-            :loading="loading"
-            x-large
-            text
-            class="text-none text-decoration-underline"
-            @click.stop="removeSubscriptionModal = false"
-          >
-            Nevermind, I want to keep learning with Playgarden Prep!
-          </v-btn>
-        </v-col>
-      </pg-dialog>
+      <!-- Cancel Anyway Modal -->
+      <cancel-anyway
+        :view-cancel-anyway-modal="viewCancelAnywayModal"
+        :is-mobile="isMobile"
+        @closeCancelAnywayModal="viewCancelAnywayModal = false"
+      />
 
       <pg-dialog
         v-model="stripeCardModal"
@@ -444,6 +405,14 @@ import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import BillingHistoryCard from '@/components/BillingHistoryCard.vue'
 import debounce from 'lodash/debounce'
+import CancelSuscriptionModal from './CancelSuscriptionModal.vue'
+import CancelAnyway from './CancelSuscriptionFlow/CancelAnyway.vue'
+import CouponDiscountModal from './CancelSuscriptionFlow/DiscountFlow/CouponDiscountModal.vue'
+import PlayAndLearnProgramModal from './CancelSuscriptionFlow/PlayAndLearnFlow/PlayAndLearnProgramModal.vue'
+import WelcomeToPlayAndLearnModal from './CancelSuscriptionFlow/PlayAndLearnFlow/WelcomeToPlayAndLearnModal.vue'
+import TryPlayAndLearnModal from './CancelSuscriptionFlow/DiscountFlow/TryPlayAndLearnModal.vue'
+import AppliedCouponModal from './CancelSuscriptionFlow/DiscountFlow/AppliedCouponModal.vue'
+import CancelPlayAndLearnModal from './CancelSuscriptionFlow/DiscountFlow/CancelPlayAndLearnModal.vue'
 
 export default {
   name: 'MembershipDetails',
@@ -451,8 +420,16 @@ export default {
     UpdateBillingMethod,
     PlanDescription,
     TrialIsExpiring,
-    BillingHistoryCard
+    BillingHistoryCard,
     // CancelTrial: () => import('@/components/app/payment/CancelTrial.vue')
+    CancelSuscriptionModal,
+    CancelAnyway,
+    CouponDiscountModal,
+    PlayAndLearnProgramModal,
+    WelcomeToPlayAndLearnModal,
+    TryPlayAndLearnModal,
+    AppliedCouponModal,
+    CancelPlayAndLearnModal
   },
 
   data: vm => ({
@@ -464,6 +441,7 @@ export default {
     promotion_id: null,
     checkValid: debounce(vm._checkValid, 1050),
     billing: {
+      billingType: '',
       membershipInterval: 0,
       nextBillingDate: null,
       planAmount: 0,
@@ -485,23 +463,72 @@ export default {
     leaveMotive: '',
     otherLeaveMotive: '',
     leaveMotives: [
-      'Repeated technical issues',
-      'Too expensive',
-      'Using another learning platform',
-      'Going to in person school',
-      'Too much time commitment',
-      'My little one wasn\'t engaged',
-      'Didn\'t use it enough',
-      'Missing features I need',
-      'Didn\'t meet my expectations',
-      'Other (please explain)'
-    ]
+      {
+        motive: 'Repeated technical issues',
+        couponDiscountFlow: true
+      },
+      {
+        motive: 'Too expensive',
+        couponDiscountFlow: true
+      },
+      {
+        motive: 'Using another learning platform',
+        couponDiscountFlow: false
+      },
+      {
+        motive: 'Going to in person school',
+        couponDiscountFlow: false
+      },
+      {
+        motive: 'Too much time commitment',
+        couponDiscountFlow: false
+      },
+      {
+        motive: 'My little one wasn\'t engaged',
+        couponDiscountFlow: false
+      },
+      {
+        motive: 'Didn\'t use it enough',
+        couponDiscountFlow: true
+      },
+      {
+        motive: 'Missing features I need',
+        couponDiscountFlow: true
+      },
+      {
+        motive: 'Didn\'t meet my expectations',
+        couponDiscountFlow: true
+      },
+      {
+        motive: 'Other (please explain)',
+        couponDiscountFlow: false
+      }
+    ],
+    learnAndPlayWasCanceled: false,
+    // Discount Flow
+    viewCouponDiscountModal: false,
+    viewTryPlayAndLearnModal: false,
+    viewAppliedCouponModal: false,
+    // PAL Program Flow
+    viewPlayAndLearnProgramModal: false,
+    viewWelcomeToPlayAndLearnModal: false,
+    cancelPlayAndLearnModal: false,
+    // PAL Cancellation Flow
+    viewPlayAndLearnDiscountModal: false,
+    // Cancel Anyway Modal
+    viewCancelAnywayModal: false
   }),
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
 
+    ...mapGetters('auth', ['hasUserLearnAndPlayPlan']),
+
+    leaveMotivesText() {
+      return this.leaveMotives.map(motives => motives.motive)
+    },
+
     isLastLeaveMotive () {
-      return this.leaveMotives[this.leaveMotives.length - 1] === this.leaveMotive
+      return this.leaveMotives[this.leaveMotives.length - 1].motive === this.leaveMotive
     },
 
     isCaregiver () {
@@ -517,7 +544,7 @@ export default {
     },
 
     isValidateMotive() {
-      if ((this.leaveMotive === 'Other (please explain)' && this.otherLeaveMotive === '') || this.otherLeaveMotive.length < 5) {
+      if (this.leaveMotive === 'Other (please explain)' && (this.otherLeaveMotive === '' || this.otherLeaveMotive.length < 5)) {
         return true
       } else {
         return !this.leaveMotive
@@ -571,6 +598,24 @@ export default {
       }
 
       return false
+    },
+    couponCode() {
+      if (this.hasUserLearnAndPlayPlan) {
+        if (this.billing.billingType === 'MONTHLY') {
+          return 'PLPROMOMONTHLY'
+        }
+
+        return 'PLANNUALLY'
+      }
+
+      return 'PSPROMO'
+    },
+    couponCodeToDisplay() {
+      if (this.hasUserLearnAndPlayPlan) {
+        return 'PLAYANDLEARNPROMO'
+      }
+
+      return 'COUPONTHREEMONTHS'
     }
   },
   watch: {
@@ -677,6 +722,7 @@ export default {
       try {
         this.loading = true
         const data = await this.fetchBillingDetails()
+        this.billing.billingType = data.billingType
         this.billing.subscriptionId = data.subscriptionId
         this.billing.planAmount = data.planAmount || null
         this.billing.planName = data.planName || null
@@ -725,7 +771,16 @@ export default {
       this.stripeCardModal = true
       this.cardToUpate = card
     },
-    async removeSubscription () {
+    async removeLearnAndPlaySubscription() {
+      this.learnAndPlayWasCanceled = true
+      await this.removeSubscription(false)
+    },
+    async removeSubscription (ignoreFlow = true) {
+      if (ignoreFlow) {
+        this.getCancelationFlow()
+        return
+      }
+
       try {
         this.loading = true
         const reason = this.isLastLeaveMotive ? (this.otherLeaveMotive || this.leaveMotive) : this.leaveMotive
@@ -736,9 +791,26 @@ export default {
         await this.fetchUserInfoIntoStore()
         this.removeSubscriptionModal = false
       } catch (e) {
+        // In the future we can handle the error
       } finally {
         this.loading = false
+        if (this.learnAndPlayWasCanceled) {
+          this.cancelPlayAndLearnModal = true
+        } else {
+          this.viewCancelAnywayModal = true
+        }
       }
+    },
+    getCancelationFlow () {
+      const leaveMotive = this.leaveMotives.find(motive => motive.motive === this.leaveMotive)
+
+      if (leaveMotive.couponDiscountFlow || this.hasUserLearnAndPlayPlan) {
+        this.viewCouponDiscountModal = true
+      } else {
+        this.viewPlayAndLearnProgramModal = true
+      }
+
+      this.removeSubscriptionModal = false
     },
     onSuccessUpdateBilling () {
       this.stripeCardModal = false

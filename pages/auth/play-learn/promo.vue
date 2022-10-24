@@ -49,6 +49,8 @@
           <RegisterForm
             :loading="isLoading"
             :is-credit-card-required="true"
+            :is-coupon-needed="false"
+            :no-terms="false"
             @click:submit="handleSubmit"
           />
         </div>
@@ -77,12 +79,13 @@ import {
   ref,
   useRoute,
   useRouter,
-  onMounted
+  onMounted,
+  useStore
 } from '@nuxtjs/composition-api'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import PlayLearnPromoInfo from '@/components/app/register/PlayLearnPromoInfo.vue'
-import { useAccessorHelper, useSnotifyHelper } from '@/composables'
+import { useAccessorHelper, useSnotifyHelper, useUtmHandler } from '@/composables'
 import { useAuth } from '@/composables/users'
 import { ParentSignupPayload } from '@/composables/web/signup/types'
 import { useParentSignup, useSignupFlow, useSignupStep } from '@/composables/web/signup'
@@ -91,6 +94,7 @@ import { useUTM } from '@/composables/web/utm'
 import { SignupType } from '@/composables/users/types'
 import { useGtm } from '@/composables/web/gtm'
 import { Flow } from '@/composables/users/enums'
+import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'Promo',
@@ -108,13 +112,16 @@ export default defineComponent({
     const snotify = useSnotifyHelper()
     const router = useRouter()
     const route = useRoute()
-    const store = useAccessorHelper().auth.signup
+    const storeAccess = useAccessorHelper().auth.signup
 
     const Utm = useUTM({ route: route.value })
     const Auth = useAuth()
     const Modal = useModal()
     const signUpFlow = useSignupFlow({ route: route.value })
     const ParentSignup = useParentSignup({ auth: Auth, signupFlow: signUpFlow })
+
+    const store = useStore<TypedStore>()
+    const UtmHandler = useUtmHandler({ store })
 
     const isLoading = ref(false)
     const signupType = SignupType.LEARN_AND_PLAY
@@ -153,7 +160,8 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      store.SET_AB_FLOW(Flow.NOCREDITCARD)
+      storeAccess.SET_AB_FLOW(Flow.NOCREDITCARD)
+      UtmHandler.setUtmSource()
     })
 
     const goToNextStep = () => {

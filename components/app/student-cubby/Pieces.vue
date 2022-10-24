@@ -1,15 +1,15 @@
 <template>
   <v-card flat class="pieces">
     <v-card-text class="content pt-4 pt-md-3">
-      <underlined-title
-        class="text-h5 text-md-h3"
-        :text="`PUZZLE LETTER ${letter}`"
-      />
-      <v-row no-gutters>
-        <v-col :cols="$vuetify.breakpoint.smAndDown ? '12' : '8'">
-          <p class="mt-2">
+      <v-row no-gutters class="mx-4">
+        <v-col cols="8">
+          <underlined-title
+            class="text-h5 text-md-h3"
+            :text="`PUZZLE LETTER ${letter}`"
+          />
+          <p class="mt-2 mb-0">
             <span :class="$vuetify.breakpoint.smAndDown ? 'text-pieces' : ''">
-              Look at all the pieces you've got!
+              Look at all the pieces you've got! Keep going to earn a printable coloring page.
             </span>
           </p>
         </v-col>
@@ -18,8 +18,9 @@
             !$vuetify.breakpoint.smAndDown &&
               puzzle.piecesUnclocked !== puzzle.pieces
           "
+          class="d-flex"
         >
-          <div>
+          <div class="mt-auto w-100">
             <span class="font-weight-black text-progress">
               PROGRESS
             </span>
@@ -40,10 +41,16 @@
             </v-row>
           </div>
         </v-col>
+        <v-col v-if="puzzle.piecesUnclocked >= puzzle.pieces && !$vuetify.breakpoint.xs" class="d-flex align-center">
+          <a v-if="puzzle.src" :download="puzzle.src" :href="puzzle.src" target="_blank">
+            <v-btn class="elevation-0 ml-auto" fab :large="!$vuetify.breakpoint.smAndDown" color="#68C453">
+              <img src="@/assets/svg/printer.svg" alt="printer icon" />
+            </v-btn></a>
+        </v-col>
       </v-row>
 
       <v-row justify="center">
-        <v-col class="mx-4">
+        <v-col id="puzzle" class="mx-4">
           <puzzle-cover
             v-if="backgroundImage"
             :background-image="backgroundImage"
@@ -118,6 +125,7 @@
 import { mapActions } from 'vuex'
 
 import PuzzleCover from '@/components/app/student-cubby/PuzzleCover'
+import { axios } from '@/utils'
 
 export default {
   name: 'Pieces',
@@ -213,4 +221,42 @@ export default {
   font-weight: bold !important;
   font-family: Poppins !important;
 }
+
+@page {
+  size: a4;
+  margin: 0;
+}
+
+@media print {
+  html, body {
+    width: 210mm;
+    height: 297mm;
+  }
+
+  body {
+    overflow: hidden !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #puzzle, #puzzle * {
+    visibility: visible;
+  }
+  #puzzle {
+    overflow: hidden !important;
+    width: 210mm;
+    height: 297mm;
+    transform: rotate(-90deg) scale(1.42);
+    -webkit-transform: rotate(-90deg) scale(1.42);
+    -moz-transform: rotate(-90deg) scale(1.42);
+    position: fixed;
+    bottom: 0;
+    left: 120mm;
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+  }
+}
+
 </style>

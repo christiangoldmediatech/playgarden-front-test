@@ -10,8 +10,7 @@
         <span class="ml-4 text-h4 text-md-h3">PUZZLE</span>
       </div>
       <div v-if="child" class="my-6 text-md-h6 text-body-1">
-        Find all of {{ child.firstName || 'Child' }}’s completed puzzles. Share
-        them on social media!
+        Find all of {{ child.firstName || 'Child' }}’s completed puzzles here. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram <strong>@PlaygardenPrep</strong>. We can't wait to see yours!
       </div>
 
       <pg-loading :loading="loading">
@@ -127,7 +126,7 @@
     <unlock-prompt
       v-if="hasUserLearnAndPlayPlan"
       title="PUZZLE"
-      desc="Find all of your children completed puzzles. Share them on social media!"
+      desc="Find all of your children completed puzzles. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram @PlaygardenPrep. We can't wait to see yours!"
       img="student-cubby/puzzle-piece.png"
     />
     <puzzle-pieces-dialog v-model="dialog" v-bind="{ toShow }" />

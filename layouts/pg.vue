@@ -25,6 +25,11 @@
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
 
+      <!-- NO CREDIT CARD FLOW TRIAL EXPIRED -->
+      <!-- <no-credit-card-free-trial-ended-dialog
+        v-model="isPreschoolTrialEndedWithNoCreditCardFlowModalVisible"
+      /> -->
+
       <!-- CONTENT -->
       <v-main v-if="!isFullWidth">
         <v-container class="pa-md-3 pa-0" fill-height :style="contentStyle">
@@ -88,7 +93,9 @@ export default defineComponent({
     TrialExpiredModal: () =>
       import('@/components/app/payment/TrialExpiredModal.vue'),
     ContactUsFormModal: () =>
-      import('@/components/forms/contact/ContactUsFormModal.vue')
+      import('@/components/forms/contact/ContactUsFormModal.vue'),
+    NoCreditCardFreeTrialEndedDialog: () =>
+      import('@/components/app/NoCreditCardFreeTrialEndedDialog.vue')
   },
 
   setup() {
@@ -108,7 +115,9 @@ export default defineComponent({
     const {
       isTrialExpiringRibbonVisible,
       checkIfShouldShowTrialExpiringRibbon,
-      checkIfShouldShowTrialExpiredModal
+      checkIfShouldShowTrialExpiredModal,
+      isPreschoolTrialEndedWithNoCreditCardFlowModalVisible,
+      checkIfPreschoolTrialEndedWithNoCreditCardFlow
     } = useNotification({ store })
 
     const routeName = computed(() => route.value.name)
@@ -117,10 +126,10 @@ export default defineComponent({
       () => store.getters['auth/hasUserLearnAndPlayPlan']
     )
 
-    watch(isUserLoggedIn, async () => {
+    watch(isUserLoggedIn, () => {
       if (isUserLoggedIn.value === true && routeName.value !== 'shared-slug') {
-        await checkIfShouldShowTrialExpiredModal()
-        await checkIfShouldShowTrialExpiringRibbon()
+        checkIfShouldShowTrialExpiredModal()
+        checkIfShouldShowTrialExpiringRibbon()
       }
     })
 
@@ -142,7 +151,9 @@ export default defineComponent({
       toolbarStyle,
       setShowContent,
       handleExpiredTrialCountdown,
-      hasUserLearnAndPlayPlan
+      hasUserLearnAndPlayPlan,
+      isPreschoolTrialEndedWithNoCreditCardFlowModalVisible,
+      checkIfPreschoolTrialEndedWithNoCreditCardFlow
     }
   }
 })

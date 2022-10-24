@@ -36,7 +36,9 @@ export default function ({ $axios, redirect, store, app, route }) {
       body = error.response.data.message
     }
 
-    store.commit('SET_NOTIFICATION_MESSAGE', { body, type: 'error' })
+    if (route.name !== 'auth-login') {
+      store.commit('SET_NOTIFICATION_MESSAGE', { body, type: 'error' })
+    }
   })
 
   setAxios($axios)

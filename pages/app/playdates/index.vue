@@ -147,7 +147,7 @@ import {
   watch
 } from '@nuxtjs/composition-api'
 import { Playdate, TypedStore } from '@/models'
-import WeekSelector from '@/components/admin/live-sessions/WeekSelector.vue'
+import WeekSelector from '@/components/app/live-sessions/WeekSelector.vue'
 import CardPlaydate from '@/components/app/playdates/CardPlaydate.vue'
 import { useChild, usePlaydates, useVuetifyHelper } from '@/composables'
 import dayjs from 'dayjs'

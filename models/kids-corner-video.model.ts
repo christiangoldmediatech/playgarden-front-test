@@ -1,6 +1,6 @@
 import { Topic } from './topic.model'
 import { ReportCardType } from './report-card-type.model'
-import { Entity } from '.'
+import { ActivityType, CurriculumType, Entity, Video } from '.'
 
 export interface KidsCornerVideo extends Entity {
     curriculumTypeId: number | null
@@ -12,6 +12,16 @@ export interface KidsCornerVideo extends Entity {
     videoUrl: string
     thumbnail: string
     topics: Topic[]
+}
+
+export interface KidsCorner {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: null;
+  curriculumType: CurriculumType;
+  activityType: ActivityType;
+  video: Video;
 }
 
 export interface KidsCornerVideoResponse {

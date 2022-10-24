@@ -42,6 +42,25 @@
           </v-col>
           <v-col cols="12">
             <v-row no-gutters>
+              <v-col v-if="!isAddressRequired" cols="12">
+                <!-- Phone number -->
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Phone Number (optional)"
+                  rules="phone"
+                >
+                  <pg-text-field
+                    v-model="draft.phoneNumber"
+                    clearable
+                    :disabled="loading"
+                    :error-messages="errors"
+                    label="Phone Number (optional)"
+                    :loading="loading"
+                    solo
+                  />
+                </validation-provider>
+              </v-col>
+
               <v-col cols="12">
                 <!-- Email -->
                 <validation-provider
@@ -63,6 +82,39 @@
                   />
                 </validation-provider>
 
+                <v-row no-gutters>
+                  <v-col v-if="isAddressRequired" class="pr-2" cols="12" md="6">
+                    <!-- Address -->
+                    <validation-provider
+                      name="Address"
+                      rules="required"
+                    >
+                      <search-address-autocomplete
+                        v-model="addressDraft.address1"
+                        @address-components="configureAddress"
+                      />
+                    </validation-provider>
+                  </v-col>
+                  <v-col v-if="isAddressRequired" cols="12" md="6">
+                    <!-- Phone number -->
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Phone Number (optional)"
+                      rules="phone"
+                    >
+                      <pg-text-field
+                        v-model="draft.phoneNumber"
+                        clearable
+                        :disabled="loading"
+                        :error-messages="errors"
+                        label="Phone Number (optional)"
+                        :loading="loading"
+                        solo
+                      />
+                    </validation-provider>
+                  </v-col>
+                </v-row>
+
                 <template
                   v-if="
                     (inInvitationProcess || !isUserLoggedIn) && !userSocialData
@@ -78,7 +130,7 @@
                       <validation-provider
                         v-slot="{ errors }"
                         name="Password"
-                        rules="required|min:6|max:20|w_number|w_special|w_upper"
+                        rules="required|min:6|max:20|w_number|w_special|w_upper|w_strong_password"
                         vid="password_field"
                       >
                         <pg-password-field
@@ -145,6 +197,29 @@
                     <span v-else class="error--text">Invalid coupon!</span>
                   </div>
                 </template>
+
+                <v-row v-if="!noTerms" no-gutters>
+                  <validation-provider v-slot="{ errors }" name="Terms" rules="required">
+                    <v-checkbox
+                      v-model="draft.acceptTerms"
+                      class="pt-0 mt-0 accept-terms"
+                      :error-messages="errors"
+                      :true-value="true"
+                      :false-value="null"
+                    >
+                      <template #label>
+                        I agree to the
+
+                        <span
+                          class="ml-1 terms-conditions link-text"
+                          @click="goToTermsAndConditions"
+                        >
+                          Terms & Conditions
+                        </span>
+                      </template>
+                    </v-checkbox>
+                  </validation-provider>
+                </v-row>
 
                 <v-btn
                   block
@@ -225,11 +300,15 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
-
 import { jsonCopy } from '@/utils/objectTools'
+import SearchAddressAutocomplete from '@/components/SearchAddressAutocomplete.vue'
 
 export default {
   name: 'RegisterForm',
+
+  components: {
+    SearchAddressAutocomplete
+  },
 
   props: {
     emailValidated: {
@@ -246,6 +325,11 @@ export default {
       default: false
     },
 
+    isAddressRequired: {
+      type: Boolean,
+      default: false
+    },
+
     whiteBtn: {
       type: Boolean,
       default: false
@@ -254,11 +338,19 @@ export default {
     isCouponNeeded: {
       type: Boolean,
       default: true
+    },
+
+    noTerms: {
+      type: Boolean,
+      default: true
     }
   },
 
   data: vm => ({
     draft: {},
+    addressDraft: {
+      address1: null
+    },
     loadingDataSocial: false,
     userSocialData: (() => {
       const { query } = vm.$route
@@ -318,6 +410,48 @@ export default {
 
   methods: {
     ...mapActions('coupons', ['getCoupons']),
+
+    configureAddress (data) {
+      try {
+        // eslint-disable-next-line camelcase
+        if (data && data.address_components) {
+          this.addressDraft = { address1: this.addressDraft.address1 }
+
+          // eslint-disable-next-line camelcase
+          const addressComponents = data.address_components
+
+          const city = addressComponents.find(({ types }) =>
+            types.includes('locality')
+          )
+          if (city) {
+            this.addressDraft.city = city.long_name
+          }
+
+          const state = addressComponents.find(({ types }) =>
+            types.includes('administrative_area_level_1')
+          )
+          if (state) {
+            this.addressDraft.state = state.long_name
+          }
+
+          const country = addressComponents.find(({ types }) =>
+            types.includes('country')
+          )
+          if (country) {
+            this.addressDraft.country = country.short_name.toUpperCase()
+          }
+
+          const postalCode = addressComponents.find(({ types }) =>
+            types.includes('postal_code')
+          )
+          if (postalCode) {
+            this.addressDraft.zipCode = postalCode.short_name.toUpperCase()
+          } else {
+            this.addressDraft.zipCode = 'Not available'
+          }
+        }
+      } catch {}
+    },
 
     getProviderSignIn(provider) {
       let nameProvider = ''
@@ -384,16 +518,23 @@ export default {
         socialNetworkId: this.hasUserSocialData
           ? this.userSocialData.socialNetworkId
           : null,
-        promotion_id: null
+        promotion_id: null,
+        acceptTerms: null
       }
     },
     onSubmit() {
+      const data = jsonCopy(this.draft)
+      if (this.addressDraft.address1) {
+        data.address = jsonCopy(this.addressDraft)
+      }
       this.$emit(
         'click:submit',
-        jsonCopy({
-          ...this.draft
-        })
+        data
       )
+    },
+
+    goToTermsAndConditions() {
+      window.open('https://playgardenonline.com/terms-of-use/', '_blank')
     },
 
     async _checkCoupon() {
@@ -484,5 +625,17 @@ export default {
   &:hover {
     color: rgba(#000000, 0.8);
   }
+}
+
+.accept-terms ::v-deep .v-label {
+  color: var(--v-black-base) !important;
+  opacity: 2.49 !important;
+}
+
+.terms-conditions {
+  text-decoration: underline !important;
+  color: var(--v-black-base);
+  font-weight: 400;
+  cursor: pointer;
 }
 </style>

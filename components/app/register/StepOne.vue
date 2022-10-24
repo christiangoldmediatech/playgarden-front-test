@@ -49,8 +49,10 @@
             :email-validated="emailValidated"
             :in-invitation-process="inInvitationProcess"
             :loading="loading"
+            :is-address-required="true"
             :is-credit-card-required="isCreditCardRequired"
-            :is-coupon-needed="isCouponNeeded"
+            :is-coupon-needed="false"
+            :no-terms="noTerms"
             @click:submit="handleSubmit"
           />
         </div>
@@ -108,6 +110,10 @@ export default defineComponent({
 
   props: {
     isCouponNeeded: {
+      type: Boolean,
+      default: true
+    },
+    noTerms: {
       type: Boolean,
       default: true
     }

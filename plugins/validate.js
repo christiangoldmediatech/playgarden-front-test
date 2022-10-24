@@ -111,3 +111,9 @@ extend(
     (value && /[A-Z]/.test(value)) ||
     'The {_field_} field must include uppercase'
 )
+extend(
+  'w_strong_password',
+  value =>
+    (value && /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/.test(value)) ||
+    'Password does not meet all of the requirements'
+)

@@ -323,7 +323,8 @@ export default {
         } else if (this.$route.query.redirect) {
           await this.$router.push(decodeURIComponent(this.$route.query.redirect))
         } else if (this.userInfo.role.id === UserRole.SUPER_ADMIN) {
-          window.open(`${process.env.playgardenAdminUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
+          const atoken = this.$store.getters['auth/getAccessToken']
+          window.open(`${process.env.playgardenAdminUrl}?atoken=${atoken}`, '_self')
         } else {
           await this.$router.push(this.goToPage(this.userInfo))
         }
