@@ -106,8 +106,16 @@ export default defineComponent({
     )
 
     const goToKidsCorner = () => {
-      const kidsCornerUrl = process.env.kidsCornerUrl
-      window.open(`${kidsCornerUrl}?atoken=${accessToken.value}`, '_self')
+      const url = new URL(process.env.kidsCornerUrl as string)
+      if (accessToken.value) {
+        url.searchParams.append('atoken', accessToken.value)
+      }
+
+      if (currentChild.value) {
+        url.searchParams.append('child', currentChild.value.id.toString())
+      }
+
+      window.open(url.href, '_self')
     }
 
     const section = {
@@ -125,7 +133,7 @@ export default defineComponent({
         title: 'Kids Corner',
         route: goToKidsCorner,
         message:
-          'It\'s a little bit silly in the Kids Corner, where kids choose how to learn',
+          "It's a little bit silly in the Kids Corner, where kids choose how to learn",
         audio: `${baseRoute}audio/virtual-preschool/Kidscorner.m4a`
       },
       playdates: {
@@ -176,7 +184,8 @@ export default defineComponent({
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/teacher_well_being.png'),
         title: 'Well-being',
         route: { name: 'app-learn-play' },
-        message: 'Have fun together with activities, games, books and so much more',
+        message:
+          'Have fun together with activities, games, books and so much more',
         audio: ''
       }
     }
@@ -185,7 +194,7 @@ export default defineComponent({
     type SectionItem = Section[keyof Section]
 
     const player = ref<HTMLAudioElement>()
-    const isBirthdayModalvisible = ref(false)
+    const isBirthdayModalVisible = ref(false)
 
     onMounted(() => {
       player.value = new Audio()
@@ -202,7 +211,6 @@ export default defineComponent({
 
     const handleClick = (sectionItem: SectionItem) => {
       const route = sectionItem.route
-
       if (typeof route === 'function') {
         route()
       } else {
@@ -216,7 +224,7 @@ export default defineComponent({
       goToKidsCorner,
       handleAudioPlay,
       handleClick,
-      isBirthdayModalvisible
+      isBirthdayModalVisible
     }
   }
 })
