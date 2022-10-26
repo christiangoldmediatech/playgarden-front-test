@@ -51,6 +51,7 @@ import LibraryVideoCard from '@/components/app/library/LibraryVideoCard.vue'
 import LibraryStandardPlayer from '@/components/app/library/LibraryStandardPlayer.vue'
 import { useLibraryV2, useNuxtHelper, useFavorites, useLibraryHelpers } from '@/composables'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
+import { Activity, ActivityType, Video } from '@/models'
 
 export default defineComponent({
   name: 'LibrarySearchPage',
@@ -79,35 +80,73 @@ export default defineComponent({
         isLoading.value = true
         // End point currently not functioning correctly
         playlist.value = []
-        const videoIds: number[] = []
-        const freshPlaylist: MediaObject[] = []
         const { activities: activityTypes } = await getActivitesByName(criteria.value)
-        activityTypes.forEach((activityType) => {
-          const activities = getValidActivities(activityType.activities ?? [])
-          activities.forEach((activity) => {
-            const videoId = activity.videos?.id
-            if (videoId && !videoIds.includes(videoId)) {
-              freshPlaylist.push(activityToMediaObject(activity))
-              videoIds.push(videoId)
-            }
-          })
-
-          const videos = getValidVideos(activityType.videos ?? [])
-          videos.forEach((video) => {
-            const videoId = video.id
-            if (videoId && !videoIds.includes(videoId)) {
-              freshPlaylist.push(videoToMediaObject(video))
-              videoIds.push(videoId)
-            }
-          })
-
-          playlist.value = freshPlaylist
-        })
+        playlist.value = sortVideos(activityTypes)
       } catch (error) {
         Promise.reject(error)
       } finally {
         isLoading.value = false
       }
+    }
+
+    const sortVideos = (activityTypes: ActivityType[]): MediaObject[] => {
+      const videoIds: number[] = []
+      const stagedVideosIds: number[] = []
+      const allVideos: MediaObject[] = []
+      activityTypes.forEach((activityType) => {
+        const activities = getValidActivities(activityType.activities ?? [])
+        activities.forEach((activity) => {
+          const videoId = activity.videos?.id
+          if (videoId && !videoIds.includes(videoId)) {
+            videoIds.push(videoId)
+            allVideos.push(activityToMediaObject(activity))
+          }
+        })
+
+        const videos = getValidVideos(activityType.videos ?? [])
+        videos.forEach((video) => {
+          const videoId = video.id
+          if (videoId && !videoIds.includes(videoId)) {
+            videoIds.push(videoId)
+            allVideos.push(videoToMediaObject(video))
+          }
+        })
+      })
+
+      const firstStage : MediaObject[] = []
+      const secondStage : MediaObject[] = []
+      const thirdStage : MediaObject[] = []
+      for (const video of allVideos) {
+        const normalizedCriteria = criteria.value.toLowerCase()
+        const normalizedTitle = video.title?.toLowerCase()
+        const normalizedDescription = video.description?.toLowerCase()
+        const normalizedTopics = video.meta?.topics?.map((topic: string) => topic.toLowerCase())
+
+        // First stage: Matching titles
+        if (normalizedTitle?.includes(normalizedCriteria)) {
+          stagedVideosIds.push(video.meta?.videoId as number)
+          firstStage.push(video)
+          continue
+        }
+
+        // Second stage: Matching description
+        if (normalizedDescription?.includes(normalizedCriteria)) {
+          stagedVideosIds.push(video.meta?.videoId as number)
+          secondStage.push(video)
+          continue
+        }
+
+        // Third stage: Matching topics
+        if (normalizedTopics?.findIndex((topic: string) => topic.includes(normalizedCriteria)) > -1) {
+          stagedVideosIds.push(video.meta?.videoId as number)
+          thirdStage.push(video)
+          continue
+        }
+      }
+
+      const unStagedVideos = allVideos.filter(video => !stagedVideosIds.includes(video.meta?.videoId as number))
+
+      return [...firstStage, ...secondStage, ...thirdStage, ...unStagedVideos]
     }
 
     watch(criteria, doSearch)
