@@ -85,6 +85,7 @@ const videoToMediaObject = (
     type: (video.activityId && video.activityId !== null) ? 'Activities' : 'Videos',
     activityId: (video.activityId && video.activityId !== null) ? video.activityId : undefined,
     activityType,
+    topics: video.topics?.map(topic => topic.topic),
     watched: video.viewed
   }
 })

@@ -1,4 +1,4 @@
-import { ActivityType, Entity, Patch } from '@/models'
+import { ActivityType, Entity, Patch, Topic } from '@/models'
 
 export interface VideoUrl extends Entity {
   CMAF: string
@@ -18,6 +18,7 @@ export interface Video extends Entity {
   srcVideo: string
   status: string
   thumbnail: string
+  topics?: Topic[]
   uploadId: string
   videoUrl: VideoUrl
   viewed: boolean
