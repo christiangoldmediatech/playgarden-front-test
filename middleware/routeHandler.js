@@ -134,13 +134,15 @@ export default async function ({ redirect, route, store, app, req }) {
     !parentSubscriptionWhitelistedRoutes[route.name] &&
     get(user, 'role.id') === 3 /* PARENT */ &&
     (user?.subscription?.status === 'canceled' || user?.subscription?.status === 'incomplete_expired')
-
   const suscription = user.subscription
-  const datetime = dayjs.unix(suscription.current_period_end)
-  const days = dayjs(datetime).diff(new Date(), 'days')
 
-  if (shouldRedirectToAccount && days < 0) {
-    return redirect({ name: 'app-inactive-subscription' })
+  if (suscription) {
+    const datetime = dayjs.unix(suscription.current_period_end)
+    const days = dayjs(datetime).diff(new Date(), 'days')
+
+    if (shouldRedirectToAccount && days < 0) {
+      return redirect({ name: 'app-inactive-subscription' })
+    }
   }
 
   /**
