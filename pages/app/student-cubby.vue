@@ -1,6 +1,7 @@
 <template>
   <v-main>
-    <update-plan-dialog />
+    <UpdatePlanDialog />
+
     <v-row justify="center" no-gutters>
       <!-- Page Title -->
       <v-col
@@ -10,18 +11,22 @@
       >
         <underlined-title
           data-test-id="student-cubby-title"
-          :text="selectedCubbyItem.title"
+          :text="selectedCubbyItem && selectedCubbyItem.title"
           font-size="65px"
         />
       </v-col>
+
       <!-- Child Select And Cubby Item Select -->
       <v-col cols="12" class="mb-0 mb-md-8 px-3">
         <v-row no-gutters justify="center">
           <v-col cols="12" lg="3" xl="2" class="px-10">
-            <child-select v-model="ChildRoute.childId" />
+            <ChildSelect
+              v-model="ChildRoute.childId"
+              @input="ChildRoute.setCurrentChildToRoute"
+            />
           </v-col>
           <v-col cols="12" lg="auto" class="px-10 px-lg-0">
-            <student-cubby-items
+            <StudentCubbyItems
               :is-mobile="isMobile"
               :items="studentCubbyItems"
               :selected-child-id="ChildRoute.childId.value || 0"
@@ -43,7 +48,7 @@
             <v-row align="center" justify="center">
               <v-col class="text-center">
                 <div>
-                  <img class="logo-img" src="@/assets/svg/logo.svg">
+                  <img class="logo-img" src="@/assets/svg/logo.svg" />
                 </div>
 
                 <span class="primary--text text-h5 font-weight-bold">
@@ -81,7 +86,7 @@ export default defineComponent({
     UpdatePlanDialog
   },
 
-  setup(_, ctx) {
+  setup() {
     const route = useRoute()
     const router = useRouter()
     const store = useStore<TypedStore>()
@@ -127,10 +132,8 @@ export default defineComponent({
     ]
 
     const selectedCubbyItem = computed(() => {
-      return (
-        studentCubbyItems.find(item =>
-          route.value.name?.includes(item.routeName)
-        ) || {}
+      return studentCubbyItems.find(item =>
+        route.value.name?.includes(item.routeName)
       )
     })
 
