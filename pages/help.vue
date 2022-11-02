@@ -286,6 +286,7 @@ import { FAQ, FAQCategory, TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'Help',
+  layout: 'empty',
 
   setup () {
     useMeta({ title: 'Help' })
