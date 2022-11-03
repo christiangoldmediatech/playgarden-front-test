@@ -42,10 +42,9 @@
           </div>
         </v-col>
         <v-col v-if="puzzle.piecesUnclocked >= puzzle.pieces && !$vuetify.breakpoint.xs" class="d-flex align-center">
-          <a v-if="puzzle.src" :download="puzzle.src" :href="puzzle.src" target="_blank">
-            <v-btn class="elevation-0 ml-auto" fab :large="!$vuetify.breakpoint.smAndDown" color="#68C453">
-              <img src="@/assets/svg/printer.svg" alt="printer icon" />
-            </v-btn></a>
+          <v-btn class="elevation-0 ml-auto" fab :large="!$vuetify.breakpoint.smAndDown" color="#68C453" @click="printPuzzle">
+            <img src="@/assets/svg/printer.svg" alt="printer icon" />
+          </v-btn>
         </v-col>
       </v-row>
 
@@ -69,7 +68,7 @@
           class="mt-12"
           cols="2"
         >
-          <v-row justify="end" no-gutters>
+          <v-row v-show="false" justify="end" no-gutters>
             <pg-social-buttons
               class="mr-3"
               entity-auto-resolve
@@ -104,7 +103,7 @@
                     :value="puzzle.percentageCompleted"
                   />
                 </v-col>
-                <v-col v-else cols="12">
+                <v-col v-show="false" v-else cols="12">
                   <pg-social-buttons
                     class="mt-6"
                     :entity-id="puzzle.puzzleChildrenId"
@@ -186,6 +185,12 @@ export default {
         this.uncover = this.puzzle.piecesUnclocked
         this.letter = this.puzzle.letter
       }
+    },
+
+    printPuzzle() {
+      document.getElementsByTagName('body')[0].style.overflow = 'hidden'
+      window.scrollTo(0, 0)
+      setTimeout(() => window.print(), 500)
     }
   }
 }
