@@ -60,25 +60,6 @@
             :letter="letter"
           />
         </v-col>
-        <v-col
-          v-if="
-            !$vuetify.breakpoint.smAndDown &&
-              puzzle.piecesUnclocked === puzzle.pieces
-          "
-          class="mt-12"
-          cols="2"
-        >
-          <v-row v-show="false" justify="end" no-gutters>
-            <pg-social-buttons
-              class="mr-3"
-              entity-auto-resolve
-              :entity-id="puzzle.puzzleChildrenId"
-              entity-type="PUZZLE"
-              mini-variant
-              :url="puzzle.src"
-            />
-          </v-row>
-        </v-col>
         <v-col v-if="$vuetify.breakpoint.smAndDown" cols="12">
           <div class="mx-3">
             <center>
@@ -101,14 +82,6 @@
                     color="accent"
                     height="10"
                     :value="puzzle.percentageCompleted"
-                  />
-                </v-col>
-                <v-col v-show="false" v-else cols="12">
-                  <pg-social-buttons
-                    class="mt-6"
-                    :entity-id="puzzle.puzzleChildrenId"
-                    entity-type="PUZZLE"
-                    :url="puzzle.src"
                   />
                 </v-col>
               </v-row>
