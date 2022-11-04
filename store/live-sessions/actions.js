@@ -57,9 +57,24 @@ export default {
       if (!admin) {
         params.active = true
       }
+
       const { total, meetings, block } = data = await this.$axios.$get('/live-sessions', {
         params
       })
+
+      const playdates = await this.$axios.$get('/live-sessions/show-children', {
+        params: {
+          page: params.limit,
+          limit: params.page,
+          startDate: params.startDate,
+          endDate: params.endDate,
+          type: 'Playdate',
+          includeActivityType: true
+        }
+      })
+
+      meetings.push(...playdates)
+
       const userInfo = rootGetters['auth/getUserInfo']
       const timezone = (userInfo.timezone) ? userInfo.timezone : 'America/New_York'
       const currentTimezone = getTimezone(timezone)

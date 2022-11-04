@@ -212,36 +212,42 @@ export default {
       const waitToFinish = window.setTimeout(() => {
         const scrollArea = document.querySelector('#scrollArea')
         const day = this.getAdvancedSchedule.days[this.activeDay]
-        if (scrollArea && day) {
-          scrollArea.scrollTop = 0
-          const index = day.findIndex(hour => hour.length)
-
-          if (index >= 0) {
-            const entry = document.querySelector(
-              `#entry-${this.activeDay}-${index}-0`
-            )
-            if (entry) {
-              let offset = entry.offsetTop - 64
-              if (offset < 0) {
-                offset = 0
-              }
-              scrollArea.scroll({
-                top: offset,
-                behaviour: 'smooth'
-              })
-            }
-          }
-          window.clearInterval(waitToFinish)
-          this.scrolling = false
+        if (!scrollArea || !day) {
+          return
         }
+
+        scrollArea.scrollTop = 0
+        const index = day.findIndex(hour => hour.length)
+
+        if (index < 0) {
+          return
+        }
+
+        const entry = document.querySelector(
+          `#entry-${this.activeDay}-${index}-0`
+        )
+
+        if (!entry) {
+          return
+        }
+
+        let offset = entry.offsetTop - 64
+        if (offset < 0) {
+          offset = 0
+        }
+
+        scrollArea.scroll({
+          top: offset,
+          behaviour: 'smooth'
+        })
+
+        window.clearInterval(waitToFinish)
+        this.scrolling = false
       }, 50)
     },
 
     noEntries(day) {
-      if (day) {
-        return day.findIndex(hour => hour.length) === -1
-      }
-      return true
+      return day ? day.findIndex(hour => hour.length) === -1 : true
     },
 
     findMaxEntriesForHour(hourIndex) {
