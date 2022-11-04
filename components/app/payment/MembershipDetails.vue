@@ -160,6 +160,7 @@
                     :loading="isValidatingCoupon"
                     solo
                   />
+                  <small class="note-text mt-n4 mb-5">*Note that you may only use one promotion code at a time; adding a new promo code will remove any currently-active coupons that were previously applied.</small>
                   <v-btn
                     :disabled="!isValidCoupon"
                     color="primary"
@@ -868,6 +869,12 @@ export default {
 
 .strikethrough {
   position: relative;
+}
+
+.note-text {
+  font-size: 10px !important;
+  text-align: justify !important;
+  font-weight: bold !important;
 }
 .strikethrough:before {
   position: absolute;
