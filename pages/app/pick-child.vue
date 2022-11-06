@@ -123,9 +123,9 @@ export default {
       const result = jsonCopy(this.rows)
 
       if (result.length > 0) {
-        const everyone = result.indexOf(result.filter(x => x.everyone === true))
+        const everyone = result.indexOf(result.find(x => x.everyone === true))
 
-        if (everyone) {
+        if (everyone > 0) {
           result.splice(everyone)
         }
       }
@@ -165,14 +165,14 @@ export default {
 
         if (this.$route.query.redirect) {
           this.$router.push(decodeURIComponent(this.$route.query.redirect))
-        } else {
-          this.$router.push({
-            name: 'app-virtual-preschool',
-            query: {
-              _time: new Date().getTime() // <- just in order to avoid infinite loading bar
-            }
-          })
         }
+      } else {
+        this.$router.push({
+          name: 'app-virtual-preschool',
+          query: {
+            _time: new Date().getTime() // <- just in order to avoid infinite loading bar
+          }
+        })
       }
     }
   }
