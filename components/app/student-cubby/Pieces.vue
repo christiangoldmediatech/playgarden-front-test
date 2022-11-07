@@ -97,7 +97,8 @@
 import { mapActions } from 'vuex'
 
 import PuzzleCover from '@/components/app/student-cubby/PuzzleCover'
-import { axios } from '@/utils'
+import html2pdf from 'html2pdf.js'
+import html2canvas from 'html2canvas'
 
 export default {
   name: 'Pieces',
@@ -161,9 +162,21 @@ export default {
     },
 
     printPuzzle() {
-      document.getElementsByTagName('body')[0].style.overflow = 'hidden'
-      window.scrollTo(0, 0)
-      setTimeout(() => window.print(), 500)
+      const puzzle = document.getElementById('puzzle')
+      html2canvas(puzzle, {
+        allowTaint: true,
+        useCORS: true
+      }).then((data) => {
+        const img = data.toDataURL('image/png')
+        const element = document.createElement('img')
+        element.src = img
+        element.style.width = '100%'
+        html2pdf().set({
+          margin: 1,
+          filename: `puzzle-letter-${this.letter}.pdf`,
+          jsPDF: { orientation: 'landscape', format: 'a4' }
+        }).from(element).toImg().save()
+      })
     }
   }
 }
