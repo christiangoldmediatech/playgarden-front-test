@@ -24,7 +24,7 @@
       :style="{
         '--pc-stroke-color': _strokeColor,
         '--pc-stroke-width': _strokeWidth,
-        backgroundImage: `url(${backgroundImage})`
+        backgroundImage: `url(${dataUrl})`,
       }"
       :viewBox="`0 0 ${width} ${height}`"
       xmlns="http://www.w3.org/2000/svg"
@@ -149,7 +149,9 @@ export default {
         show: false
       },
 
-      handleTooltip: debounce(this._handleTooltip, 300)
+      handleTooltip: debounce(this._handleTooltip, 300),
+
+      dataUrl: ''
     }
   },
 
@@ -262,6 +264,7 @@ export default {
   },
 
   created () {
+    this.getDataUrl()
     this.calculateMaxPiezesCount()
     this.buildPaths()
   },
@@ -525,7 +528,14 @@ export default {
     },
 
     // TODO
-    handlePieceUnlock () {}
+    handlePieceUnlock () {},
+
+    async getDataUrl() {
+      const img = await fetch(this.backgroundImage).then(res => res.blob())
+      const fr = new FileReader()
+      fr.readAsDataURL(img)
+      fr.onload = e => (this.dataUrl = e.target.result)
+    }
   }
 }
 </script>

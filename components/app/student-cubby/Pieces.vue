@@ -9,7 +9,8 @@
           />
           <p class="mt-2 mb-0">
             <span :class="$vuetify.breakpoint.smAndDown ? 'text-pieces' : ''">
-              Look at all the pieces you've got! Keep going to earn a printable coloring page.
+              Look at all the pieces you've got! Keep going to earn a printable
+              coloring page.
             </span>
           </p>
         </v-col>
@@ -41,8 +42,19 @@
             </v-row>
           </div>
         </v-col>
-        <v-col v-if="puzzle.piecesUnclocked >= puzzle.pieces && !$vuetify.breakpoint.xs" class="d-flex align-center">
-          <v-btn class="elevation-0 ml-auto" fab :large="!$vuetify.breakpoint.smAndDown" color="#68C453" @click="printPuzzle">
+        <v-col
+          v-if="
+            puzzle.piecesUnclocked >= puzzle.pieces && !$vuetify.breakpoint.xs
+          "
+          class="d-flex align-center"
+        >
+          <v-btn
+            class="elevation-0 ml-auto"
+            fab
+            :large="!$vuetify.breakpoint.smAndDown"
+            color="#68C453"
+            @click="printPuzzle"
+          >
             <img src="@/assets/svg/printer.svg" alt="printer icon" />
           </v-btn>
         </v-col>
@@ -96,7 +108,7 @@
 <script>
 import { mapActions } from 'vuex'
 
-import PuzzleCover from '@/components/app/student-cubby/PuzzleCover'
+import PuzzleCover from '@/components/app/student-cubby/PuzzleCover.vue'
 import html2pdf from 'html2pdf.js'
 import html2canvas from 'html2canvas'
 
@@ -161,22 +173,22 @@ export default {
       }
     },
 
-    printPuzzle() {
+    async printPuzzle() {
       const puzzle = document.getElementById('puzzle')
-      html2canvas(puzzle, {
-        allowTaint: true,
-        useCORS: true
-      }).then((data) => {
-        const img = data.toDataURL('image/png')
-        const element = document.createElement('img')
-        element.src = img
-        element.style.width = '100%'
-        html2pdf().set({
+      const data = await html2canvas(puzzle)
+      const img = data.toDataURL('image/png')
+      const element = document.createElement('img')
+      element.src = img
+      element.style.width = '100%'
+      html2pdf()
+        .set({
           margin: 1,
           filename: `puzzle-letter-${this.letter}.pdf`,
           jsPDF: { orientation: 'landscape', format: 'a4' }
-        }).from(element).toImg().save()
-      })
+        })
+        .from(element)
+        .toImg()
+        .save()
     }
   }
 }
@@ -219,7 +231,8 @@ export default {
 }
 
 @media print {
-  html, body {
+  html,
+  body {
     width: 210mm;
     height: 297mm;
   }
@@ -232,7 +245,8 @@ export default {
     visibility: hidden;
   }
 
-  #puzzle, #puzzle * {
+  #puzzle,
+  #puzzle * {
     visibility: visible;
   }
   #puzzle {
@@ -245,9 +259,8 @@ export default {
     position: fixed;
     bottom: 0;
     left: 120mm;
-    -webkit-print-color-adjust:exact !important;
-    print-color-adjust:exact !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 }
-
 </style>
