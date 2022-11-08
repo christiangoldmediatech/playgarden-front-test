@@ -1,9 +1,9 @@
 <template>
   <div class="fill-height d-flex flex-column">
     <div class="lsess-daily-container">
-      <v-card class="lsess-daily-card pt-4">
+      <div class="lsess-daily-card pt-4">
         <v-row class="mx-0" align="center" justify="center">
-          <img class="mr-3" src="@/assets/svg/sessions-camera.svg">
+          <img class="mr-3" src="@/assets/svg/sessions-camera.svg" />
           <span class="lsess-title">Live Class Schedule</span>
         </v-row>
 
@@ -31,13 +31,13 @@
 
             <template v-else>
               <div class="my-10 lsess-title text-center">
-                There are no pending events for
-                {{ hasUserLearnAndPlayPlan ? 'you' : '' }} this week.
+                There are no pending events
+                {{ hasUserLearnAndPlayPlan ? 'for you' : '' }} this week.
               </div>
             </template>
           </v-col>
         </v-row>
-      </v-card>
+      </div>
     </div>
 
     <v-btn

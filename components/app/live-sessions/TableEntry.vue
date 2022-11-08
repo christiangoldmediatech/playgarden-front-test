@@ -1,9 +1,8 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <v-card
-      elevation="3"
+    <div
       :disabled="block"
-      class="lsess-table-entry clickable v2-font"
+      class="elevation-3 lsess-table-entry clickable v2-font"
       :class="{
         'lsess-table-entry-scaled': hover,
         'lsess-table-entry-playdate': entry.type === 'Playdate',
@@ -29,14 +28,16 @@
           class="lsess-table-entry-type ml-1 mt-1"
           :src="entry.activityType.icon"
         />
-        <span class="pg-font-bold">{{
-          entry.type === 'LiveClass' ? entry.activityType.name : entry.title
-        }}</span>
+        <span class="pg-font-bold">
+          {{
+            entry.type === 'LiveClass' ? entry.activityType.name : entry.title
+          }}
+        </span>
       </div>
 
-      <v-card-actions>
+      <div class="ma-1">
         {{ title }}
-      </v-card-actions>
+      </div>
 
       <!-- Play & Learn lock -->
       <div
@@ -53,7 +54,7 @@
           Upgrade your Plan
         </span>
       </div>
-    </v-card>
+    </div>
   </v-hover>
 </template>
 
@@ -115,6 +116,10 @@ export default {
     },
 
     title() {
+      if (this.entry.title.lenght < 38) {
+        return title
+      }
+
       let str = this.entry.title.substr(0, 37).replace(/\s+$/, '')
       if (this.entry.title.lenght > str.length) {
         str += '...'
@@ -144,21 +149,22 @@ export default {
     openLink() {
       if (this.editMode) {
         this.$nuxt.$emit('open-entry-editor-dialog', this.entry)
-      } else {
-        if (!this.userHasAccess) {
-          this.openPlanUpgradeModal()
-          return
-        }
-
-        this.$nuxt.$emit('open-entry-dialog', this.entry)
-        this.$gtm.push({
-          event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_CLICKED,
-          userId: this.getUserInfo.id,
-          topic: this.entry.activityType.name,
-          topicDescription: this.entry.title,
-          itemDateTime: this.entry.dateStart
-        })
+        return
       }
+
+      if (!this.userHasAccess) {
+        this.openPlanUpgradeModal()
+        return
+      }
+
+      this.$nuxt.$emit('open-entry-dialog', this.entry)
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_CLICKED,
+        userId: this.getUserInfo.id,
+        topic: this.entry.activityType.name,
+        topicDescription: this.entry.title,
+        itemDateTime: this.entry.dateStart
+      })
     }
   }
 }

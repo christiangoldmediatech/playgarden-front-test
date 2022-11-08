@@ -132,7 +132,8 @@ module.exports = {
     semi: ['error', 'never'],
     'array-callback-return': 'off',
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': 'off'
+    '@typescript-eslint/no-unused-vars': 'off',
+    'arrow-parens': 'off'
   },
   overrides: [
     {

@@ -9,10 +9,8 @@
     <div class="entry-container">
       <v-card class="entry-card">
         <template v-if="entry">
-          <div class="green-line-bigger green-line-1" />
-          <div class="green-line-bigger green-line-2" />
           <div v-if="$vuetify.breakpoint.smAndDown" class="entry-card-elipse">
-            <img class="entry-card-elipse-img" :src="entry.activityType.icon">
+            <img class="entry-card-elipse-img" :src="entry.activityType.icon" />
           </div>
 
           <v-container class="entry-card-content">
@@ -21,7 +19,7 @@
                 <img
                   class="entry-card-elipse-img"
                   :src="entry.activityType.icon"
-                >
+                />
               </div>
               <v-col>
                 <div class="entry-card-title">
@@ -78,7 +76,7 @@
                   <img
                     class="entry-card-collaborator ml-6"
                     :src="entry.inCollaborationWith"
-                  >
+                  />
                 </div>
               </v-col>
             </v-row>

@@ -17,7 +17,7 @@
         />
 
         <v-row class="fill-height">
-          <!-- <v-col class="lsess-daily" cols="12" md="4" lg="3" xl="2">
+          <v-col class="lsess-daily" cols="12" md="4" lg="3" xl="2">
             <today-cards-panel
               v-if="mode === 'TODAY'"
               @mode-change="mode = 'CALENDAR'"
@@ -27,9 +27,9 @@
               v-model="today"
               @mode-change="mode = 'TODAY'"
             />
-          </v-col> -->
+          </v-col>
 
-          <v-col class="pt-0 lsess-schedule" cols="12" md="8" lg="9" xl="12">
+          <v-col class="pt-0 lsess-schedule" cols="12" md="8" lg="9" xl="10">
             <v-row
               class="my-0 pos-relative pt-md-2"
               justify="center"
@@ -81,7 +81,7 @@
                 </template>
               </v-col>
 
-              <!-- <v-btn
+              <v-btn
                 class="mt-6 text-none mr-md-4 mt-md-0"
                 :class="{
                   'pos-absolute pos-right-0': $vuetify.breakpoint.mdAndUp
@@ -91,7 +91,7 @@
                 @click.stop="goToRecordings"
               >
                 Watch recorded classes
-              </v-btn> -->
+              </v-btn>
             </v-row>
 
             <v-row>
@@ -317,9 +317,9 @@ export default {
   name: 'Index',
 
   components: {
-    // TodayCardsPanel,
+    TodayCardsPanel,
     TodayCard,
-    // CalendarPanel,
+    CalendarPanel,
     EntryDialog,
     SessionsTable,
     RecordedClassPlayer,
@@ -431,7 +431,7 @@ export default {
         return
       }
 
-      const foundSession = this.sessions.find(s => s.id === sessionId)
+      const foundSession = this.sessions.find((s) => s.id === sessionId)
       if (!foundSession) {
         return
       }
