@@ -151,6 +151,7 @@ export default Vue.extend({
         this.googleAutocompleteService = new googleService.maps.places.AutocompleteService()
         this.googleGeocoder = new googleService.maps.Geocoder()
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(error)
       }
     }

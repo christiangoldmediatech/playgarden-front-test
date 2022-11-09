@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import CaregiverList from '@/components/app/caregiver/CaregiverList'
+import CaregiverList from '@/components/app/caregiver/CaregiverList.vue'
 
 export default {
   name: 'Caregiver',

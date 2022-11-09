@@ -7,11 +7,23 @@
       {{ time }}
     </div>
     <v-hover v-slot="{ hover }">
-      <v-card class="lsess-card clickable" :class="{ 'lsess-card-scaled': hover, 'lsess-card-active': isLive }" @click.stop="openLink">
-        <img v-if="isLive" class="active-camera" src="@/assets/svg/sessions-active-camera.svg">
+      <v-card
+        class="lsess-card clickable"
+        :class="{ 'lsess-card-scaled': hover, 'lsess-card-active': isLive }"
+        :disabled="block"
+        @click.stop="openLink"
+      >
+        <img
+          v-if="isLive"
+          class="active-camera"
+          src="@/assets/svg/sessions-active-camera.svg"
+        >
         <v-row class="ma-0">
           <v-col class="flex-grow-0 flex-shrink-1">
-            <img class="lsess-card-activity-type" :src="entry.activityType.icon">
+            <img
+              class="lsess-card-activity-type"
+              :src="entry.activityType.icon"
+            >
           </v-col>
           <v-col>
             <div class="d-flex flex-column justify-space-between fill-height">
@@ -45,7 +57,7 @@ export default {
   name: 'TodayCard',
 
   filters: {
-    descriptionFilter (val) {
+    descriptionFilter(val) {
       if (val.length > 100) {
         return val.substr(0, 97) + '...'
       }
@@ -59,6 +71,12 @@ export default {
       required: true
     },
 
+    block: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
     mobile: {
       type: Boolean,
       required: false,
@@ -68,17 +86,24 @@ export default {
 
   data: () => {
     return {
-      days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+      days: [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+      ]
     }
   },
 
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
-    time () {
+    time() {
       const today = new Date()
       const date = new Date(this.entry.dateStart)
-      let word = this.days[date.getDay() - 1]
-
+      let word = this.days[date.getDay()]
       if (date.getFullYear() === today.getFullYear()) {
         if (sameDay(today, date)) {
           word = 'Today'
@@ -86,25 +111,30 @@ export default {
           word = 'Tomorrow'
         }
       }
+
       const start = moment(this.entry.dateStart)
       const { timezone } = this.getUserInfo
-      return `${word} ${formatTimezone(start, { format: 'HH:mm', timezone, returnObject: false })}`
+      return `${word} ${formatTimezone(start, {
+        format: 'HH:mm',
+        timezone,
+        returnObject: false
+      })}`
     },
 
-    isLive () {
+    isLive() {
       const today = new Date()
       const start = new Date(this.entry.dateStart)
       const end = new Date(this.entry.dateEnd)
 
       return (
-        today.getTime() >= (start.getTime() - (5 * 60 * 1000)) &&
-        today.getTime() <= (end.getTime() + (5 * 60 * 1000))
+        today.getTime() >= start.getTime() - 5 * 60 * 1000 &&
+        today.getTime() <= end.getTime() + 5 * 60 * 1000
       )
     }
   },
 
   methods: {
-    openLink () {
+    openLink() {
       this.$nuxt.$emit('open-entry-dialog', this.entry)
       this.$gtm.push({
         event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_CLICKED,
@@ -154,7 +184,7 @@ export default {
       object-position: center center;
     }
     &-active.v-card {
-      border: solid 3px #F89838;
+      border: solid 3px #f89838;
       .active-camera {
         position: absolute;
         width: 44px;

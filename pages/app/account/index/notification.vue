@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import NotificationList from '@/components/app/notifications/NotificationUserList'
+import NotificationList from '@/components/app/notifications/NotificationUserList.vue'
 
 export default {
   name: 'Notification',

@@ -1,483 +1,232 @@
 <template>
-  <v-card class="pb-10 mb-14">
-    <v-row>
-      <v-col cols="10">
-        <v-row no-gutters>
-          <v-col cols="2" class="mt-2 ml-n4">
-            <span class="ml-8 title-dashboard font-weight-bold">Letter</span>
-          </v-col>
-          <v-col cols="10" class="mt-n2">
-            <carousel-letter ref="CarouselLetter" :value="curriculumTypeId" />
-          </v-col>
-        </v-row>
+  <v-card class="learn-play-dashboard pt-4 pt-md-7" elevation="10">
+    <!-- Letter and search section -->
+    <v-row class="mx-4 mx-md-7" align="center" no-gutters>
+      <v-col class="d-md-none" cols="12">
+        <menu-mobile />
       </v-col>
-      <v-col cols="2" class="pr-8">
-        <pg-text-field
-          label="Search"
-          solo-labeled
+
+      <v-col cols="12" md="auto">
+        <div class="my-3 my-md-0">
+          <span class="title-dashboard">Letter</span>
+        </div>
+      </v-col>
+
+      <v-col cols="12">
+        <carousel-letter
+          id="CarouselLetter"
+          :value="curriculumTypeId"
+          :is-play-and-learn="true"
+          :preview-mode="previewMode"
         />
       </v-col>
     </v-row>
-    <v-row no-gutters>
-      <v-col ref="videoLesson" cols="8">
-        <span class="title-dashboard font-weight-bold ml-4">Video Lesson</span>
-        <v-row class="mx-2 mt-3 ml-4">
-          <template v-if="currentVideo.videoUrl && currentVideo.videoUrl.HLS">
-            <div class="learn-play-video">
-              <pg-video-player
-                :control-config="{ favorite: false }"
-                inline
-                @ready="onPlayerReady({ player: $event, video: currentVideo })"
-              />
-            </div>
-          </template>
-        </v-row>
 
-        <v-row v-if="lesson" class="mt-8 mx-2 ml-4">
-          <span class="subtitle-dashboard font-weight-bold">More like this</span>
-        </v-row>
-        <v-row v-if="lesson">
-          <videos-scroll :lesson="lesson" class="mt-3" @changeVideoTrack="changeVideoTrack" />
-        </v-row>
+    <v-row class="mx-md-1">
+      <v-col cols="12" md="8">
+        <v-col id="videoLesson" cols="12">
+          <VideoLessonPlayerLearnPlay :preview-mode="previewMode" />
+        </v-col>
 
-        <v-row class="mx-4 my-14">
-          <v-col cols="12">
-            <v-row ref="diy" class="mt-5">
-              <v-list class="ml-n4">
-                <v-list-item>
-                  <v-list-item-content>
-                    <span class="title-dashboard font-weight-bold">
-                      DIY Project
-                    </span>
-                    <v-img
-                      class="pl-15 mt-n8 ml-7 clickable"
-                      height="40px"
-                      contain
-                      :src="
-                        require('@/assets/png/dashboard/download-worksheet.png')
-                      "
-                    />
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </v-row>
-            <v-row>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-              </p>
-            </v-row>
-          </v-col>
-          <v-row>
-            <v-card width="93%" class="mt-5 ml-3">
-              <v-row class="mx-2 my-2">
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/diy-1.png')"
-                    max-width="150"
-                    min-width="150"
-                    height="250"
-                  />
-                </v-col>
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/diy-2.png')"
-                    max-width="150"
-                    min-width="150"
-                    height="250"
-                  />
-                </v-col>
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/diy-3.png')"
-                    max-width="150"
-                    min-width="150"
-                    height="250"
-                  />
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-row>
-        </v-row>
-        <v-row class="mb-10 ml-4">
-          <v-col cols="12">
-            <v-row ref="snack">
-              <v-list class="ml-n4">
-                <v-list-item>
-                  <v-list-item-content>
-                    <span class="title-dashboard font-weight-bold">
-                      SNACK
-                    </span>
-                    <v-img
-                      class="pl-15 mt-n8 ml-7"
-                      height="40px"
-                      contain
-                      :src="
-                        require('@/assets/png/dashboard/download-worksheet.png')
-                      "
-                    />
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </v-row>
-            <p class="ml-n3">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            </p>
-          </v-col>
-          <v-row>
-            <v-card width="90%" class="mt-5 ml-3">
-              <v-row class="mx-2 my-2">
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/snack-1.png')"
-                    max-width="150"
-                    min-width="150"
-                    height="250"
-                  />
-                </v-col>
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/snack-2.png')"
-                    max-width="150"
-                    min-width="150"
-                    height="250"
-                  />
-                </v-col>
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/snack-3.png')"
-                    max-width="150"
-                    min-width="150"
-                    height="250"
-                  />
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-row>
-        </v-row>
-        <v-row class="mx-2 mt-12 ml-4">
-          <span class="title-dashboard font-weight-bold">
-            This week's recommended books
-          </span>
-          <p class="pr-8 mt-4">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim-
-          </p>
-          <template v-if="currentVideo.videoUrl && currentVideo.videoUrl.HLS">
-            <div class="learn-play-video">
-              <pg-video-player
-                :control-config="{ favorite: false }"
-                inline
-                @ready="onPlayerReadyTwo({ player: $event, video: currentVideo })"
-              />
-            </div>
-          </template>
+        <!-- MOBILE WORKSHEETS -->
+        <v-col v-if="$vuetify.breakpoint.mobile" id="worksheets" cols="12">
+          <OfflineWorksheetsLearnPlay :preview-mode="previewMode" />
+        </v-col>
 
-          <v-row ref="book">
-            <v-card width="92%" class="mt-5 ml-3">
-              <v-row class="mx-2 my-2">
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/image-35.png')"
-                    max-width="134"
-                    min-width="134"
-                    height="248"
-                  />
-                </v-col>
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/image-34.png')"
-                    max-width="134"
-                    min-width="134"
-                    height="248"
-                  />
-                </v-col>
-                <v-col cols="4">
-                  <v-img
-                    :src="require('@/assets/png/image-35.png')"
-                    max-width="134"
-                    min-width="134"
-                    height="248"
-                  />
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-row>
-        </v-row>
+        <!-- DIY PROJECT -->
+        <v-col id="diy" cols="12">
+          <DiyProjectLearnPlay :preview-mode="previewMode" />
+        </v-col>
+
+        <!-- MOBILE ART PROJECT SECTION -->
+        <v-col v-if="$vuetify.breakpoint.mobile" id="art-project" cols="12">
+          <ArtProjectLearnPlay :preview-mode="previewMode" />
+        </v-col>
+
+        <!-- SNACK SECTION -->
+        <v-col id="snack" cols="12">
+          <SnackSectionLearnPlay :preview-mode="previewMode" />
+        </v-col>
+
+        <!-- BOOK SECTION -->
+        <v-col id="book" cols="12">
+          <BookVideoPlayerLearnPlay :preview-mode="previewMode" />
+        </v-col>
+
+        <!-- MOBILE AUDIO PLAYER -->
+        <v-col v-if="$vuetify.breakpoint.mobile" id="playlist" cols="12">
+          <PlaylistLearnPlay :preview-mode="previewMode" />
+        </v-col>
       </v-col>
-      <v-col
-        cols="4"
-      >
-        <span class="title-dashboard font-weight-bold">Worksheets</span>
-        <div ref="worksheets" class="mr-4 card-offline">
-          <offline-worksheets class="pt-2" :offline-worksheet-list="offlineWorksheetsList" />
-        </div>
 
-        <v-row class="my-14">
-          <div ref="art-project" class="mt-3 ml-3">
-            <span class="title-dashboard font-weight-bold pr-10">
-              Art Project
-            </span>
-            <div class="ml-15">
-              <v-img
-                class="pl-15 mt-n8 ml-8 clickable"
-                height="40px"
-                contain
-                :src="
-                  require('@/assets/png/dashboard/download-worksheet.png')
-                "
-              />
-            </div>
-          </div>
-          <p class="px-3 mt-3">
-            Lorem ipsum dolor sit amet, consectetur adipiscing
-          </p>
-          <v-row class="mx-2 mt-4">
-            <v-card class="justify-center ml-2 mr-8">
-              <v-row justify="center" align="center" class="mt-2">
-                <v-col class="ml-6" cols="12">
-                  <center>
-                    <v-img
-                      :src="require('@/assets/png/art-1.png')"
-                      max-width="230"
-                      min-width="230"
-                      height="153"
-                    />
-                  </center>
-                </v-col>
-                <v-col class="ml-6" cols="12">
-                  <center>
-                    <v-img
-                      :src="require('@/assets/png/art-2.png')"
-                      max-width="230"
-                      min-width="230"
-                      height="153"
-                    />
-                  </center>
-                </v-col>
-                <v-col class="mb-4 ml-6" cols="12">
-                  <center>
-                    <v-img
-                      :src="require('@/assets/png/art-3.png')"
-                      max-width="230"
-                      min-width="230"
-                      height="153"
-                    />
-                  </center>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-row>
-        </v-row>
-        <v-row no-gutters class="pt-3">
-          <v-col cols="12">
-            <div ref="playlist">
-              <span class="title-dashboard font-weight-bold">
-                Playlist
-              </span>
-              <div class="mt-4 ml-3 song-card">
-                <songs-card />
-              </div>
-            </div>
-          </v-col>
-          <v-col cols="12">
-            <div ref="topFive" class="mt-5">
-              <span class="title-dashboard font-weight-bold">
-                Top five
-              </span>
-              <top-five class="mt-n1" />
-            </div>
-          </v-col>
-        </v-row>
+      <!-- DESKTOP SECOND COLUMN -->
+      <v-col v-if="!$vuetify.breakpoint.mobile" cols="4">
+        <!-- WORKSHEETS -->
+        <v-col id="worksheets" cols="12">
+          <OfflineWorksheetsLearnPlay :preview-mode="previewMode" />
+        </v-col>
+
+        <!-- ART PROJECT -->
+        <v-col id="art-project" cols="12">
+          <ArtProjectLearnPlay :preview-mode="previewMode" />
+        </v-col>
+
+        <!-- AUDIO PLAYER -->
+        <v-col id="playlist" cols="12">
+          <PlaylistLearnPlay :preview-mode="previewMode" />
+        </v-col>
       </v-col>
     </v-row>
   </v-card>
 </template>
 
-<script>
-import { mapGetters, mapActions } from 'vuex'
+<script lang="ts">
+import {
+  defineComponent,
+  onBeforeMount,
+  onBeforeUnmount,
+  ref,
+  useStore,
+  watch
+} from '@nuxtjs/composition-api'
 import CarouselLetter from '@/components/app/all-done/CarouselLetter.vue'
-import OfflineWorksheets from '@/components/app/learn-play/OfflineWorksheets.vue'
-import VideosScroll from '@/components/app/learn-play/VideosScroll.vue'
-import TopFive from '@/components/app/learn-play/TopFive.vue'
-import SongsCard from '@/components/app/learn-play/SongsCard.vue'
-import PgVideoPlayer from '@gold-media-tech/pg-video-player'
+import MenuMobile from '@/components/app/learn-play/MenuMobile.vue'
+import VideoLessonPlayerLearnPlay from '@/components/app/learn-play/VideoLessonPlayerLearnPlay.vue'
+import BookVideoPlayerLearnPlay from '@/components/app/learn-play/BookVideoPlayerLearnPlay.vue'
+import OfflineWorksheetsLearnPlay from '@/components/app/learn-play/OfflineWorksheetsLearnPlay.vue'
+import DiyProjectLearnPlay from '@/components/app/learn-play/DiyProjectLearnPlay.vue'
+import ArtProjectLearnPlay from '@/components/app/learn-play/ArtProjectLearnPlay.vue'
+import SnackSectionLearnPlay from '@/components/app/learn-play/SnackSectionLearnPlay.vue'
+import PlaylistLearnPlay from '@/components/app/learn-play/PlaylistLearnPlay.vue'
 
-export default {
+// Composables
+import { useChild, useNuxtHelper, useLearnPlayV2 } from '@/composables'
+
+// Models
+import { TypedStore } from '@/models'
+
+export default defineComponent({
   name: 'DashboardLearnPlay',
+
   components: {
-    PgVideoPlayer,
     CarouselLetter,
-    OfflineWorksheets,
-    VideosScroll,
-    TopFive,
-    SongsCard
+    MenuMobile,
+    OfflineWorksheetsLearnPlay,
+    VideoLessonPlayerLearnPlay,
+    BookVideoPlayerLearnPlay,
+    DiyProjectLearnPlay,
+    ArtProjectLearnPlay,
+    SnackSectionLearnPlay,
+    PlaylistLearnPlay
   },
-  data: () => {
-    return {
-      section: 'videoLesson',
-      loading: false,
-      player: null,
-      offlineWorksheetsList: [],
-      currentVideo: {
-        videoUrl: {
-          HLS: null
-        }
-      }
-    }
-  },
-  computed: {
-    ...mapGetters({ currentChild: 'getCurrentChild' }),
-    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
-    ...mapGetters('children/lesson', {
-      currentLessonId: 'getCurrentLessonId'
-    }),
-    childrenIds () {
-      return (this.currentChild && this.currentChild.length) ? this.currentChild[0].id : 0
-    },
-    curriculumTypeId () {
-      if (this.lesson && this.lesson.curriculumType) {
-        return this.lesson.curriculumType.id
-      } else {
-        return null
-      }
-    },
-    getOfflineWorksheet() {
-      if (this.lesson) {
-        return this.lesson.worksheets.filter(({ type }) => type === 'OFFLINE')
-      }
-      return []
-    }
-  },
-  watch: {
-    section (val) {
-      this.scrollMeTo(val)
-    }
-  },
-  async created () {
-    await this.getAllChildren()
-    await this.handleLesson()
-    this.loadCurrentVideo()
-    this.offlineWorksheetsList = await this.getRandomWorksheet()
 
-    this.$nuxt.$on('menu-section', (section) => {
-      this.scrollMeTo(section)
+  props: {
+    previewMode: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  setup(props) {
+    // Basic helpers
+    const store = useStore()
+    const $nuxt = useNuxtHelper()
+    const childStore = useStore<TypedStore>()
+    const nuxt = useNuxtHelper()
+    const curriculumTypeId = ref<null | number>(null)
+
+    // All composables
+    const child = useChild({ store: childStore })
+    const learnPlayV2 = useLearnPlayV2({ store })
+    const windowTop = ref(window.top?.screenY)
+
+    // Data variables
+    const section = ref('')
+
+    // Watcher
+    watch(section, () => {
+      scrollMeTo(section.value)
     })
-  },
 
-  beforeDestroy () {
-    this.$nuxt.$off('menu-section')
-  },
+    window.addEventListener('scroll', function() {
+      section.value = window.scrollY === 0 ? '' : section.value
+    })
 
-  methods: {
-    ...mapActions('offline-worksheet', ['getRandomWorksheet']),
-    ...mapActions('children', { getAllChildren: 'get' }),
-    ...mapActions('children/lesson', [
-      'getCurrentLesson',
-      'getCurrentLessonByChildrenId',
-      'resetChild'
-    ]),
-
-    scrollMeTo(refName) {
-      const element = this.$refs[refName]
-      const top = element.offsetTop
-      window.scrollTo(0, top)
-    },
-
-    loadCurrentVideo () {
-      this.currentVideo = (this.lesson && this.lesson.videos.length > 0) ? this.lesson.videos[0] : { videoUrl: null }
-    },
-
-    setCurrentVideo (video) {
-      this.currentVideo = video
-    },
-
-    onPlayerReady ({ player, video }) {
-      this.player = player
-      player.loadPlaylist([
-        {
-          title: video.name,
-          poster: video.thumbnail,
-          src: {
-            url: video.videoUrl.HLS,
-            type: 'application/x-mpegURL'
-          }
-        }
-      ])
-    },
-
-    onPlayerReadyTwo ({ player, video }) {
-      player.loadPlaylist([
-        {
-          title: video.name,
-          poster: video.thumbnail,
-          src: {
-            url: video.videoUrl.HLS,
-            type: 'application/x-mpegURL'
-          }
-        }
-      ])
-    },
-
-    changeVideoTrack (video) {
-      if (!this.player) {
-        return
+    // Functions
+    function scrollMeTo(elemId: string) {
+      const element = document.getElementById(elemId)
+      if (element && window) {
+        const top = element.offsetTop
+        window.scrollTo(0, top)
       }
-      this.player.loadPlaylist([
-        {
-          title: video.name,
-          poster: video.thumbnail,
-          src: {
-            url: video.videoUrl.HLS,
-            type: 'application/x-mpegURL'
-          }
-        }
-      ])
-    },
+    }
 
-    changeChild (newId, redirect = true) {
-      const child = this.allChildren.find(({ id }) => id === parseInt(newId))
-      this.setChild({ value: [child], save: true })
-      if (redirect) {
-        this.handleLesson(true).then(() => {
-          // this.$router.push({ name: 'app-dashboard' })
-          // this.redirectDashboard()
-        })
+    const loadPlayAndLearnByCurriculumTypeId = async (curriculumTypeId: number) => {
+      await learnPlayV2.getPlayAndLearnByCurriuclumTypeId(curriculumTypeId)
+      $nuxt.$emit('send-learn-play', learnPlayV2.learnPlayData.value)
+      refreshMenuSection()
+    }
+
+    const refreshMenuSection = () => {
+      curriculumTypeId.value = learnPlayV2.learnPlayData.value.curriculumType.id
+      nuxt.$on('menu-section', (id: string) => {
+        section.value = id
+      })
+    }
+
+    // Life cycle hooks
+    onBeforeMount(async () => {
+      if (!props.previewMode) {
+        await child.get()
+        await learnPlayV2.getFirstLearnPlay()
       }
-    },
-    async handleLesson () {
-      try {
-        this.loading = true
-        await this.getCurrentLesson({
-          childrenIds: this.childrenIds
-        })
-      } catch (error) {
-        return Promise.reject(error)
-      } finally {
-        this.loading = false
-      }
+      refreshMenuSection()
+
+      nuxt.$on('show-curriculum-progress', (curriculumTypeId: number) => {
+        loadPlayAndLearnByCurriculumTypeId(curriculumTypeId)
+      })
+    })
+
+    onBeforeUnmount(() => {
+      nuxt.$off('menu-section')
+      nuxt.$off('show-curriculum-progress')
+    })
+
+    return {
+      curriculumTypeId
     }
   }
-}
+})
 </script>
 
-<style scoped>
-.title-dashboard {
-  color: #606060 !important;
-  font-size: 21px !important;
-}
-.subtitle-dashboard {
-  color: #606060 !important;
-  font-size: 18px !important;
-}
+<style lang="scss" scoped>
+.learn-play-dashboard::v-deep {
+  .title-dashboard {
+    color: #606060 !important;
+    font-size: 24px !important;
+    font-weight: bold;
 
-.learn-play-video {
-  width: 95% !important;
-  height: 369px !important;
-}
+    @media screen and (min-width: 1264px) {
+      font-size: 28px;
+    }
+  }
 
-.song-card {
-  max-width: 85% !important;
-  min-width: 85% !important;
-  min-height: 554px !important;
-  max-height: 554px !important;
+  .subtitle-dashboard {
+    color: #606060 !important;
+    font-size: 16px !important;
+    font-weight: bold;
+
+    @media screen and (min-width: 1264px) {
+      font-size: 22px;
+    }
+  }
+
+  .mobile-play {
+    width: 100% !important;
+  }
+
+  .learn-play-video {
+    aspect-ratio: 1.555;
+  }
 }
 </style>

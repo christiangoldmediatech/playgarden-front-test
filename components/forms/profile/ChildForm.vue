@@ -1,341 +1,307 @@
 <template>
-  <v-row no-gutters>
-    <!-- Desktop Title -->
-    <v-col cols="6" class="d-none d-sm-block">
-      <div class="text-uppercase text-h4 font-weight-bold grey--text text--darken-2 pb-12">
-        Student Profile
-      </div>
-    </v-col>
-    <v-col cols="12" sm="6" class="d-sm-flex justify-sm-end pb-12 pb-sm-0">
-      <!-- Add New Child Profile Button -->
-      <v-btn
-        color="primary"
-        :loading="loading"
-        x-large
-        :block="isMobile"
-        @click="addRow"
-      >
-        Add Additional Child Profile
-      </v-btn>
-    </v-col>
+  <pg-loading :loading="loading">
+    <v-row no-gutters data-test-id="child-form-content">
+      <!-- Desktop Title -->
+      <v-col cols="6" class="d-none d-sm-block">
+        <div class="text-uppercase text-h4 font-weight-bold grey--text text--darken-2 pb-12">
+          Student Profile
+        </div>
+      </v-col>
+      <v-col cols="12" sm="6" class="d-sm-flex justify-sm-end pb-12 pb-sm-0">
+        <!-- Add New Child Profile Button -->
+        <v-btn
+          color="primary"
+          :loading="loading"
+          x-large
+          :block="isMobile"
+          @click="addRow"
+        >
+          Add Additional Child Profile
+        </v-btn>
+      </v-col>
 
-    <v-col
-      v-for="(item, indexD) in items"
-      :key="indexD"
-      cols="12"
-      sm="6"
-    >
-      <v-card
-        :class="[
-          'pa-4 pa-sm-8 custom-card-border mb-16',
-          { 'mr-sm-8': indexD % 2 === 0 },
-          { 'ml-sm-8': indexD % 2 === 1 }
-        ]"
+      <v-col
+        v-for="(item, indexD) in items"
+        :key="indexD"
+        cols="12"
+        sm="6"
       >
-        <validation-observer v-if="isEditing[indexD]" v-slot="{ passes }">
-          <v-form
-            :readonly="loading"
-            @submit.prevent="passes().then(onSubmit(item, indexD))"
-          >
-            <!-- Backpack -->
-            <validation-provider
-              :name="
-                (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Backpack'
-              "
-              rules="required"
+        <v-card
+          :class="[
+            'pa-4 pa-sm-8 custom-card-border mb-16',
+            { 'mr-sm-8': indexD % 2 === 0 },
+            { 'ml-sm-8': indexD % 2 === 1 }
+          ]"
+        >
+          <validation-observer v-if="isEditing[indexD]" v-slot="{ passes }">
+            <v-form
+              :readonly="loading"
+              @submit.prevent="passes().then(onSubmit(item, indexD))"
             >
-              <!-- Delete Child Profile Button -->
-              <v-row no-gutters class="mb-6">
-                <v-col v-if="item.id" cols="12" class="d-flex justify-end">
-                  <v-btn
-                    v-if="removable(item)"
-                    text
-                    color="error"
-                    class="text-decoration-underline"
-                    @click.stop="removeChild(item, indexD)"
-                  >
-                    DELETE CHILD
-                  </v-btn>
-                </v-col>
-
-                <!-- Child Profile Backpack -->
-                <v-col
-                  cols="12"
-                  :class="[
-                    'd-flex justify-center',
-                    { 'mt-sm-n0': !!item.id }
-                  ]"
-                >
-                  <img
-                    v-if="firstBackpack"
-                    :alt="childBackpack(item.backpackId).name"
-                    class="backpack-active"
-                    :src="childBackpack(item.backpackId).image"
-                  >
-                </v-col>
-              </v-row>
-
-              <!-- Backpack Picker -->
-              <v-row justify="center" no-gutters>
-                <v-col cols="12" md="10" lg="12">
-                  <v-row no-gutters>
-                    <v-col cols="12">
-                      <span class="text-h6 font-weight-bold text-uppercase">
-                        Change backpack:
-                      </span>
-                    </v-col>
-
-                    <v-col
-                      v-for="(backpack, indexB) in backpacks"
-                      :key="indexB"
-                      class="image"
-                      cols="4"
-                      md="2"
+              <!-- Backpack -->
+              <validation-provider
+                :name="
+                  (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Backpack'
+                "
+                rules="required"
+              >
+                <!-- Delete Child Profile Button -->
+                <v-row no-gutters class="mb-6">
+                  <v-col v-if="item.id" cols="12" class="d-flex justify-end">
+                    <v-btn
+                      v-if="removable(item)"
+                      text
+                      color="error"
+                      class="text-decoration-underline"
+                      @click.stop="removeChild(item, indexD)"
                     >
-                      <img
-                        :alt="backpack.name"
-                        class="clickable"
-                        :class="{ active: item.backpackId === backpack.id }"
-                        :src="backpack.image"
-                        @click="item.backpackId = backpack.id"
-                      >
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
+                      DELETE CHILD
+                    </v-btn>
+                  </v-col>
+                </v-row>
 
-              <input v-model="item.backpackId" type="hidden">
-            </validation-provider>
+                <!-- Backpack Picker -->
+                <v-row class="mb-6" no-gutters>
+                  <v-col cols="12">
+                    <child-icon-selector :value="item.backpackId" :backpacks="backpacks" @update:value="updateBackpackId(item, $event)" />
+                  </v-col>
+                </v-row>
 
-            <v-row>
-              <v-col
-                class="pr-2"
-                cols="6"
-              >
-                <!-- First name -->
-                <validation-provider
-                  v-slot="{ errors }"
-                  :name="
-                    (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Name'
-                  "
-                  rules="required"
-                >
-                  <pg-text-field
-                    v-model="item.firstName"
-                    clearable
-                    :disabled="loading"
-                    :error-messages="errors"
-                    label="First name"
-                    solo-labeled
-                  />
-                </validation-provider>
-              </v-col>
-              <v-col
-                class="pr-2"
-                cols="6"
-              >
-                <!-- Last name -->
-                <validation-provider
-                  v-slot="{ errors }"
-                  :name="
-                    (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Name'
-                  "
-                  rules="required"
-                >
-                  <pg-text-field
-                    v-model="item.lastName"
-                    clearable
-                    :disabled="loading"
-                    :error-messages="errors"
-                    label="Last name"
-                    solo-labeled
-                  />
-                </validation-provider>
-              </v-col>
-            </v-row>
+                <input v-model="item.backpackId" type="hidden">
+              </validation-provider>
 
-            <!-- Birthday date -->
-            <v-menu
-              v-model="item._menu"
-              :close-on-content-click="false"
-              min-width="290px"
-              solo
-              transition="scale-transition"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <validation-provider
-                  v-slot="{ errors }"
-                  :name="
-                    (removable(item) ? `Child #${indexD + 1} - ` : '') +
-                      'Birthday date'
-                  "
-                  rules="required"
-                >
-                  <pg-text-field
-                    v-bind="attrs"
-                    :disabled="loading"
-                    :error-messages="errors"
-                    label="Birthday date"
-                    readonly
-                    solo-labeled
-                    :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
-                    validate-on-blur
-                    :value="item._birthdayFormatted"
-                    v-on="on"
-                  />
-                </validation-provider>
-              </template>
-
-              <v-date-picker
-                v-model="item._birthdayPicker"
-                :max="new Date().toISOString().substr(0, 10)"
-                min="1990-01-01"
-                @input="onInputBirthday(item)"
-              />
-            </v-menu>
-
-            <!-- Gender -->
-            <validation-provider
-              :name="
-                (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Gender'
-              "
-              rules="required"
-            >
-              <v-row class="mb-6">
+              <v-row>
                 <v-col
-                  v-for="(gender, indexG) in genders"
-                  :key="indexG"
+                  class="pr-2"
                   cols="6"
                 >
-                  <v-btn
-                    block
-                    class="custom-btn"
-                    :color="
-                      item.gender === gender ? 'primary' : 'grey lighten-5'
+                  <!-- First name -->
+                  <validation-provider
+                    v-slot="{ errors }"
+                    :name="
+                      (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Name'
                     "
-                    :disabled="loading"
-                    x-large
-                    @click="item.gender = gender"
+                    rules="required"
                   >
-                    {{ gender === "FEMALE" ? "Girl" : "Boy" }}
-                  </v-btn>
+                    <pg-text-field
+                      v-model="item.firstName"
+                      clearable
+                      :disabled="loading"
+                      :error-messages="errors"
+                      label="First name"
+                      solo-labeled
+                    />
+                  </validation-provider>
+                </v-col>
+                <v-col
+                  class="pr-2"
+                  cols="6"
+                >
+                  <!-- Last name -->
+                  <validation-provider
+                    v-slot="{ errors }"
+                    :name="
+                      (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Name'
+                    "
+                    rules="required"
+                  >
+                    <pg-text-field
+                      v-model="item.lastName"
+                      clearable
+                      :disabled="loading"
+                      :error-messages="errors"
+                      label="Last name"
+                      solo-labeled
+                    />
+                  </validation-provider>
                 </v-col>
               </v-row>
 
-              <input v-model="item.gender" type="hidden">
-            </validation-provider>
+              <!-- Birthday date -->
+              <v-menu
+                v-model="item._menu"
+                :close-on-content-click="false"
+                min-width="290px"
+                solo
+                transition="scale-transition"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <validation-provider
+                    v-slot="{ errors }"
+                    :name="
+                      (removable(item) ? `Child #${indexD + 1} - ` : '') +
+                        'Birthday date'
+                    "
+                    rules="required"
+                  >
+                    <pg-text-field
+                      v-bind="attrs"
+                      :disabled="loading"
+                      :error-messages="errors"
+                      label="Birthday date"
+                      readonly
+                      solo-labeled
+                      :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
+                      validate-on-blur
+                      :value="item._birthdayFormatted"
+                      v-on="on"
+                    />
+                  </validation-provider>
+                </template>
 
-            <v-btn
-              v-if="isChildChanged(item)"
-              block
-              color="warning"
-              :loading="loading"
-              type="submit"
-              x-large
-            >
-              SAVE
-            </v-btn>
+                <v-date-picker
+                  v-model="item._birthdayPicker"
+                  :max="new Date().toISOString().substr(0, 10)"
+                  min="1990-01-01"
+                  @input="onInputBirthday(item)"
+                />
+              </v-menu>
 
-            <v-btn
-              block
-              text
-              color="grey"
-              :disabled="loading"
-              x-large
-              @click="editChild(indexD, false)"
-            >
-              Cancel
-            </v-btn>
-          </v-form>
-        </validation-observer>
+              <!-- Gender -->
+              <validation-provider
+                :name="
+                  (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Gender'
+                "
+                rules="required"
+              >
+                <v-row class="mb-6">
+                  <v-col
+                    v-for="(gender, indexG) in genders"
+                    :key="indexG"
+                    cols="6"
+                  >
+                    <v-btn
+                      block
+                      class="custom-btn"
+                      :color="
+                        item.gender === gender ? 'primary' : 'grey lighten-5'
+                      "
+                      :disabled="loading"
+                      x-large
+                      @click="item.gender = gender"
+                    >
+                      {{ gender === "FEMALE" ? "Girl" : "Boy" }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
 
-        <!-- Readonly child info -->
-        <v-row v-if="!isEditing[indexD]" no-gutters>
-          <v-col cols="12" class="d-flex justify-center">
-            <img
-              v-if="firstBackpack"
-              :alt="childBackpack(item.backpackId).name"
-              class="backpack-active"
-              :src="childBackpack(item.backpackId).image"
-            >
-          </v-col>
+                <input v-model="item.gender" type="hidden">
+              </validation-provider>
 
-          <v-col cols="12" class="d-flex justify-center mb-3">
-            <v-btn
-              color="primary"
-              @click="goToProgressReport(item)"
-            >
-              View progress report
-            </v-btn>
-          </v-col>
+              <v-btn
+                v-if="isChildChanged(item)"
+                block
+                color="warning"
+                :loading="loading"
+                type="submit"
+                x-large
+              >
+                SAVE
+              </v-btn>
 
-          <v-col v-if="item.id" cols="12" class="d-flex justify-center">
-            <v-btn class="warning" @click="openTimeline(item)">
-              View letter progress
-            </v-btn>
-          </v-col>
+              <v-btn
+                block
+                text
+                color="grey"
+                :disabled="loading"
+                x-large
+                @click="editChild(indexD, false)"
+              >
+                Cancel
+              </v-btn>
+            </v-form>
+          </validation-observer>
 
-          <v-col cols="12" class="d-flex justify-center">
-            <v-btn class="primary--text" x-large text @click="editChild(indexD)">
-              Edit Child
-            </v-btn>
-          </v-col>
-        </v-row>
+          <!-- Readonly child info -->
+          <v-row v-if="!isEditing[indexD]" no-gutters>
+            <v-col cols="12" class="d-flex justify-center">
+              <img
+                v-if="firstBackpack"
+                :alt="childBackpack(item.backpackId).name"
+                class="backpack-active"
+                :src="childBackpack(item.backpackId).image"
+              >
+            </v-col>
 
-        <v-row v-if="!isEditing[indexD]">
-          <v-col cols="6" class="grey--text">
-            Name
-          </v-col>
-          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
-            {{ item.firstName }} {{ (item.lastName) ? item.lastName : '' }}
-          </v-col>
+            <v-col cols="12" class="d-flex justify-center mb-3">
+              <v-btn
+                color="primary"
+                @click="goToProgressReport(item)"
+              >
+                View progress report
+              </v-btn>
+            </v-col>
 
-          <v-col cols="6" class="grey--text">
-            Date of birth
-          </v-col>
-          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
-            {{ getChildBirthday(item.birthday) }}
-          </v-col>
+            <v-col v-if="item.id" cols="12" class="d-flex justify-center">
+              <v-btn class="warning" @click="openTimeline(item)">
+                View letter progress
+              </v-btn>
+            </v-col>
 
-          <v-col cols="6" class="grey--text">
-            Gender
-          </v-col>
-          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
-            {{ item.gender === 'FEMALE' ? 'Girl' : item.gender === 'MALE' ? 'Boy' : '' }}
-          </v-col>
+            <v-col cols="12" class="d-flex justify-center">
+              <v-btn class="primary--text" x-large text @click="editChild(indexD)">
+                Edit Child
+              </v-btn>
+            </v-col>
+          </v-row>
 
-          <v-col cols="6" class="grey--text">
-            Current letter
-          </v-col>
-          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
-            {{ item.progress.curriculumType.letter ? `Letter ${item.progress.curriculumType.letter}` : undefined }}
-          </v-col>
+          <v-row v-if="!isEditing[indexD]">
+            <v-col cols="6" class="grey--text">
+              Name
+            </v-col>
+            <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
+              {{ item.firstName }} {{ (item.lastName) ? item.lastName : '' }}
+            </v-col>
 
-          <v-col cols="6" class="grey--text">
-            Current day
-          </v-col>
-          <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
-            {{ item.progress.day ? `Day ${item.progress.day}` : undefined }}
-          </v-col>
-        </v-row>
-      </v-card>
-    </v-col>
+            <v-col cols="6" class="grey--text">
+              Date of birth
+            </v-col>
+            <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
+              {{ getChildBirthday(item.birthday) }}
+            </v-col>
 
-    <user-child-timeline-dialog />
-  </v-row>
+            <v-col cols="6" class="grey--text">
+              Gender
+            </v-col>
+            <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
+              {{ item.gender === 'FEMALE' ? 'Girl' : item.gender === 'MALE' ? 'Boy' : '' }}
+            </v-col>
+
+            <v-col cols="6" class="grey--text">
+              Current letter
+            </v-col>
+            <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
+              {{ item.progress.curriculumType.letter ? `Letter ${item.progress.curriculumType.letter}` : undefined }}
+            </v-col>
+
+            <v-col cols="6" class="grey--text">
+              Current day
+            </v-col>
+            <v-col cols="6" class="font-weight-bold grey--text text--darken-2">
+              {{ item.progress.day ? `Day ${item.progress.day}` : undefined }}
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+
+      <user-child-timeline-dialog />
+    </v-row>
+  </pg-loading>
 </template>
 
 <script>
 import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
 
-import UserChildTimelineDialog from '@/components/admin/users/UserChildTimelineDialog.vue'
+import UserChildTimelineDialog from '@/components/forms/profile/UserChildTimelineDialog.vue'
+import ChildIconSelector from '@/components/forms/children/ChildIconSelector.vue'
 
 export default {
   name: 'ChildForm',
 
   components: {
-    UserChildTimelineDialog
+    UserChildTimelineDialog,
+    ChildIconSelector
   },
 
   data: () => ({
@@ -398,6 +364,10 @@ export default {
     }),
 
     ...mapActions('children/progress', ['getUserChildrenProgress']),
+
+    updateBackpackId(item, id) {
+      item.backpackId = id
+    },
 
     goToProgressReport (child) {
       if (child.id) {
@@ -615,22 +585,14 @@ export default {
 
 <style lang="scss" scoped>
 .image {
-  height: 100px;
-  width: 100px;
-  display: flex;
-  justify-content: center;
-  align-content: center;
+  max-height: 80px;
+  max-width: 80px;
+  width: 100%;
 
-  img {
-    max-height: 80px;
-    max-width: 80px;
-    width: 100%;
-
-    &.active {
-      background-color: var(--v-secondary-base);
-      border-radius: 50%;
-      padding: 5px;
-    }
+  &.active {
+    background-color: var(--v-secondary-base);
+    border-radius: 50%;
+    padding: 5px;
   }
 }
 

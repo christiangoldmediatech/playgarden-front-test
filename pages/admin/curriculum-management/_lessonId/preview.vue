@@ -1,26 +1,32 @@
 <template>
-  <dashboard-layout
-    v-model="selectedChild"
-    v-bind="{ lesson, loading }"
-    preview-mode
-  >
-    <nuxt-child />
-  </dashboard-layout>
+  <v-main>
+    <dashboard-layout
+      v-model="selectedChild"
+      v-bind="{ lesson, loading }"
+      preview-mode
+    >
+      <nuxt-child />
+    </dashboard-layout>
+    <lesson-activity-player />
+  </v-main>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import DashboardLink from '@/mixins/DashboardLinkMixin.js'
 import DashboardLayout from '@/components/app/dashboard/DashboardLayout.vue'
+import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
+import previewChild from '@/utils/consts/previewChild.json'
 
 export default {
   name: 'Preview',
 
   components: {
-    DashboardLayout
+    DashboardLayout,
+    LessonActivityPlayer
   },
 
-  layout: 'lesson-preview',
+  layout: 'lesson-preview-mode',
 
   mixins: [DashboardLink],
 
@@ -33,19 +39,32 @@ export default {
   },
 
   computed: {
-    lessonId () {
+    lessonId() {
       return this.$route.params.lessonId
     }
   },
 
-  created () {
-    this.getLessonPreview(this.lessonId).then((lesson) => {
-      this.lesson = lesson
-      this.loading = false
-      if (this.$route.name === 'admin-curriculum-management-lessonId-preview') {
-        this.$router.push(this.generateNuxtRoute('lesson-videos', { id: lesson.videos[0].id }))
-      }
+  async mounted() {
+    const { token } = this.$route.query
+    this.$axios.setToken(`Bearer ${token}`)
+
+    await this.$store.dispatch('setChild', {
+      value: [previewChild],
+      save: true
     })
+
+    this.lesson = await this.getLessonPreview(this.lessonId)
+    this.loading = false
+    if (this.$route.name === 'admin-curriculum-management-lessonId-preview') {
+      this.$router.push(
+        this.generateNuxtRoute('lesson-videos', {
+          id: this.lesson.videos[0].id
+        })
+      )
+    }
+
+    const curriculumTypes = await this.$axios.$get('/curriculum-types')
+    this.$store.commit('admin/curriculum/SET_TYPES', curriculumTypes)
   },
 
   methods: {

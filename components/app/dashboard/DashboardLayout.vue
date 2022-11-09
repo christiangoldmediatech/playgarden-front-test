@@ -1,5 +1,5 @@
 <template>
-  <v-main class="pt-10 pt-sm-6 pt-md-16 mt-5">
+  <div>
     <!-- <v-container v-if="showScreen" fill-height>
       <v-row justify="center" align-sm="center" fill-height>
         <v-col cols="10" sm="6" md="5">
@@ -42,7 +42,11 @@
       </v-row>
     </v-container> -->
     <v-container
-      :class="{ 'dashboard-container': !$vuetify.breakpoint.smAndDown }"
+      :class="{
+        'dashboard-container': !$vuetify.breakpoint.smAndDown && !previewMode,
+        'dashboard-container-preview': !$vuetify.breakpoint.smAndDown && previewMode,
+        'pg-mt-[80px]': !previewMode
+      }"
       fluid
     >
       <v-row class="fill-height" justify="center">
@@ -81,6 +85,7 @@
                 <child-select
                   class="mx-3"
                   :value="value"
+                  :preview-mode="previewMode"
                   hide-details
                   :management-button="!previewMode"
                   @input="$emit('input', $event)"
@@ -89,8 +94,15 @@
             </v-col>
             <!--carousel letter-->
             <v-col cols="12" md="9" sm="6">
-              <v-row class="mx-md-2 my-md-0 mx-sm-4 my-sm-2 mx-xs-4 my-xs-2" justify="center">
-                <carousel-letter ref="CarouselLetter" :value="curriculumTypeId" />
+              <v-row
+                class="mx-md-2 my-md-0 mx-sm-4 my-sm-2 mx-xs-4 my-xs-2"
+                justify="center"
+              >
+                <carousel-letter
+                  ref="CarouselLetter"
+                  :value="curriculumTypeId"
+                  :preview-mode="previewMode"
+                />
               </v-row>
             </v-col>
             <!--carousel letter-->
@@ -100,7 +112,7 @@
             :class="[
               'dashboard-content',
               {
-                'dashboard-mobile-content': $vuetify.breakpoint.sm,
+                'dashboard-mobile-content': $vuetify.breakpoint.sm
                 // 'dashboard-xs-content': $vuetify.breakpoint.xsOnly
               }
             ]"
@@ -108,32 +120,32 @@
           >
             <v-col class="dashboard-content-column" cols="12">
               <template v-if="$route.name === 'app-dashboard' || loading">
-                <div v-if="$route.name === 'app-dashboard-lesson-videos' || $route.name === 'app-dashboard-lesson-activities'" class="video-lesson">
+                <div
+                  v-if="
+                    $route.name === 'app-dashboard-lesson-videos' ||
+                      $route.name === 'app-dashboard-lesson-activities'
+                  "
+                  class="video-lesson"
+                >
                   <v-card class="video-skeleton" width="100%">
-                    <v-skeleton-loader
-                      type="image, image, table-heading"
-                    />
+                    <v-skeleton-loader type="image, image, table-heading" />
                   </v-card>
                 </div>
-                <div v-if="$route.name === 'app-dashboard-online-worksheet'" class="video-lesson">
+                <div
+                  v-if="$route.name === 'app-dashboard-online-worksheet'"
+                  class="video-lesson"
+                >
                   <v-card class="video-skeleton" width="100%">
-                    <v-skeleton-loader
-                      class="pt-6"
-                      type="article"
-                    />
+                    <v-skeleton-loader class="pt-6" type="article" />
                     <v-row class="mt-4">
                       <v-col v-for="n in 4" :key="n">
-                        <v-skeleton-loader
-                          type="card"
-                        />
+                        <v-skeleton-loader type="card" />
                       </v-col>
                     </v-row>
                   </v-card>
                 </div>
                 <div v-if="$route.name === 'app-dashboard-offline-worksheet'">
-                  <v-skeleton-loader
-                    type="image, image, article"
-                  />
+                  <v-skeleton-loader type="image, image, article" />
                 </div>
               </template>
               <template v-else>
@@ -144,11 +156,10 @@
         </v-col>
       </v-row>
     </v-container>
-    <lesson-activity-player />
     <lesson-teacher-video />
     <course-progress-overlay />
     <puzzle-pieces-dialog />
-  </v-main>
+  </div>
 </template>
 
 <script>
@@ -156,7 +167,6 @@ import { mapGetters } from 'vuex'
 import { APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
 
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
-import LessonActivityPlayer from '@/components/app/dashboard/LessonActivityPlayer.vue'
 import LessonTeacherVideo from '@/components/app/dashboard/LessonTeacherVideo.vue'
 import PuzzlePiecesDialog from '@/components/app/student-cubby/PuzzlePiecesDialog.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
@@ -169,7 +179,6 @@ export default {
 
   components: {
     DashboardPanel,
-    LessonActivityPlayer,
     LessonTeacherVideo,
     PuzzlePiecesDialog,
     ChildSelect,
@@ -217,7 +226,7 @@ export default {
 
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
-    overrideMode () {
+    overrideMode() {
       if (this.overrides.childId && this.overrides.lessonId) {
         return true
       }
@@ -228,10 +237,12 @@ export default {
     //   const monday = Date.parse('2020-12-21T08:00:00.000-05:00')
     //   return !this.overrideMode && (this.lesson && this.lesson.curriculumType.id > 1) && (today < monday)
     // }
-    canAdvance () {
+    canAdvance() {
       if (this.lesson && this.childId && !this.previewMode) {
         // completed all video lessons
-        const areLessonVideosCompleted = this.lesson?.videos?.every(video => Boolean(video?.viewed?.completed))
+        const areLessonVideosCompleted = this.lesson?.videos?.every(video =>
+          Boolean(video?.viewed?.completed)
+        )
 
         // completed all online worksheets
         const areOnlineWorksheetsCompleted = this.lesson?.worksheets
@@ -239,15 +250,21 @@ export default {
           ?.every(worksheet => Boolean(worksheet?.completed?.completed))
 
         // completed all lesson activities
-        const areLessonActivitiesCompleted = this.lesson?.lessonsActivities?.every(activity => Boolean(activity?.activity?.viewed?.completed))
+        const areLessonActivitiesCompleted = this.lesson?.lessonsActivities?.every(
+          activity => Boolean(activity?.activity?.viewed?.completed)
+        )
 
-        return areLessonVideosCompleted && areOnlineWorksheetsCompleted && areLessonActivitiesCompleted
+        return (
+          areLessonVideosCompleted &&
+          areOnlineWorksheetsCompleted &&
+          areLessonActivitiesCompleted
+        )
       }
 
       return false
     },
 
-    curriculumTypeId () {
+    curriculumTypeId() {
       if (this.lesson && this.lesson.curriculumType) {
         return this.lesson.curriculumType.id
       } else {
@@ -257,16 +274,16 @@ export default {
   },
 
   watch: {
-    value () {
+    value() {
       this.$refs.CarouselLetter.fetchChildProgress()
     },
 
-    lesson () {
+    lesson() {
       this.$refs.CarouselLetter.fetchChildProgress()
     }
   },
 
-  created () {
+  created() {
     this.$nuxt.$on(APP_EVENTS.DASHBOARD_VIDEO_LESSON_VIDEO_CLICKED, (videoId) => {
       const lessonData = this.lesson.videos.find(video => video.id === videoId)
       this.$gtm.push({
@@ -279,7 +296,9 @@ export default {
       })
     })
     this.$nuxt.$on(APP_EVENTS.DASHBOARD_ACTIVITY_VIDEO_CLICKED, (activityId) => {
-      const activityData = this.lesson.lessonsActivities.find(activity => activity.activity.id === activityId)
+      const activityData = this.lesson.lessonsActivities.find(
+        activity => activity.activity.id === activityId
+      )
       this.$gtm.push({
         event: TAG_MANAGER_EVENTS.DASHBOARD_ACTIVITY_VIDEO_CLICKED,
         userId: this.getUserInfo.id,
@@ -291,13 +310,13 @@ export default {
     })
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     this.$nuxt.$off(APP_EVENTS.DASHBOARD_VIDEO_LESSON_VIDEO_CLICKED)
     this.$nuxt.$off(APP_EVENTS.DASHBOARD_ACTIVITY_VIDEO_CLICKED)
   },
 
   methods: {
-    openCourseProgress () {
+    openCourseProgress() {
       this.$nuxt.$emit('show-curriculum-progress', 1)
     }
   }
@@ -310,6 +329,10 @@ export default {
     height: calc(100vh - 64px);
     max-height: calc(100vh - 64px);
   }
+  &-container-preview {
+    height: calc(100vh - 80px);
+    max-height: calc(100vh - 80px);
+  }
   &-column {
     height: 100%;
     max-height: 100%;
@@ -320,7 +343,7 @@ export default {
   &-content {
     height: 100%;
 
-    @media screen and (min-width: 960px){
+    @media screen and (min-width: 960px) {
       height: calc(100% - 70px);
     }
 
@@ -376,7 +399,7 @@ export default {
       height: 100%;
       padding: 7%;
       border-radius: 50%;
-      background: #68C453;
+      background: #68c453;
       box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.184314);
     }
     &-circle-2 {
@@ -384,7 +407,7 @@ export default {
       height: 100%;
       padding: 7%;
       border-radius: 50%;
-      background: #B2E68D;
+      background: #b2e68d;
       box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.184314);
     }
     &-img {

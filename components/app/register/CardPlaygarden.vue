@@ -1,28 +1,57 @@
 <template>
-  <div
-    :class="[
-      'pg-p-4',
-      {
-        'pg-min-h-[385px]': showContent
-      }
-    ]"
-  >
-    <!-- ARROW ICON -->
-    <v-icon class="pg-block pg-float-right pg-cursor-pointer" @click="$emit('toggle')">
-      {{ showContent ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
-    </v-icon>
+  <div>
+    <div
+      :class="[
+        'pg-relative',
+        'pg-transition-shadow',
+        'pg-flex',
+        'pg-flex-col',
+        'pg-py-6',
+        'pg-px-8',
+        'pg-text-center',
+        'pg-rounded-lg',
+        'pg-bg-white',
+        'pg-max-w-[500px]',
+        'lg:pg-w-[500px]',
+        {
+          'pg-shadow-[0px_8px_24px_rgba(0,0,0,0.15)]': isOpen,
+        }
+      ]"
+    >
+      <!-- ARROW -->
+      <div class="pg-absolute pg-right-4 pg-top-4">
+        <v-btn icon @click="$emit('input', !value)">
+          <v-icon size="42">
+            {{ isOpen ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
+          </v-icon>
+        </v-btn>
+      </div>
 
-    <!-- TITLE -->
-    <h4 class="pg-text-center pg-mt-5">
-      <underlined-title
-        font-size="26px"
-        font-size-mobile="20px"
-        text="Our family loves Playgarden Prep Online!"
-      />
-    </h4>
+      <!-- TITLE -->
+      <slot name="title">
+        <div class="pg-text-center">
+          <UnderlinedTitle
+            font-size="26px"
+            font-size-mobile="20px"
+            text="Our family loves Playgarden Prep Online!"
+          />
+        </div>
+      </slot>
 
-    <div v-if="showContent">
-      <div>
+      <slot name="testimonials" />
+
+      <div
+        :class="[
+          'pg-transition-[max-height]',
+          'pg-overflow-hidden',
+          'pg-duration-500',
+          {
+            'pg-max-h-screen': isOpen,
+            'pg-max-h-0': isClose,
+          }
+        ]"
+        class="pg-text-center"
+      >
         <p class="pg-text-center pg-mt-5">
           Still not sure? Call us, text us, email us, We'll be happy to explain
           our program in more detail
@@ -51,17 +80,32 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { computed, defineComponent } from '@nuxtjs/composition-api'
+
+export default defineComponent({
   name: 'CardPlaygarden',
 
   props: {
-    showContent: {
+    value: {
       type: Boolean,
-      required: true
+      default: true
+    },
+
+    isUserInactive: {
+      type: Boolean,
+      default: false
     }
   },
 
-  data: vm => ({})
-}
+  setup(props) {
+    const isOpen = computed(() => props.value)
+    const isClose = computed(() => !props.value)
+
+    return {
+      isOpen,
+      isClose
+    }
+  }
+})
 </script>

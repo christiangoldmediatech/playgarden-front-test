@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <coming-soon-dialog v-model="dialog" />
     <div class="container-menu header-images">
       <div class="navbar-right">
         <div class="contact-menu-header">
@@ -8,61 +9,86 @@
           </div>
           <div class="contact-phone">
             <img loading="lazy" class="img-phone-call" src="https://playgardenonline.com/wp-content/uploads/2022/01/phone-call-1.svg" alt="Call to Playgarden Prep Online">
-            <a href="tel:+646-504-4716" class="number-phone">646-504-4716</a>
+            <a href="tel:+646-504-4716" class="number-phone">+1 (646)-504-4716</a>
           </div>
         </div>
 
-        <ul class="menu-header logged-">
-          <li class="only-desktop">
+        <ul v-if="!hideNavbarOptions" class="menu-header logged-">
+          <li class="only-desktop link-option">
             <a href="https://playgardenonline.com/">Home</a>
           </li>
-          <li class="only-desktop">
+          <li class="only-desktop link-option link-option-with-icon">
             <a href="#admisions" class="menu-view-more">
               <span>Admissions</span>
-              <v-icon>
+              <v-icon class="menu-view-icon" large>
                 mdi-chevron-down
               </v-icon>
             </a>
             <div class="container-submenu">
               <ul class="submenu">
+                <li><a href="https://playgardenonline.com/virtual-preschool/">Virtual Preschool</a></li>
                 <li><a href="https://playgardenonline.com/plans/">Enrollment Plans</a></li>
                 <li><a href="https://playgardenonline.com/testimonials/">Parent Testimonials</a></li>
+                <li><a href="https://playgardenprep.com/group-solutions/">Group Solutions</a></li>
+                <li><a href="https://playgardenonline.com/esl/">English as a Second Language</a></li>
               </ul>
             </div>
           </li>
-          <li class="only-desktop">
+          <li class="only-desktop link-option link-option-with-icon">
             <a href="#the-virtual-preschool" class="menu-view-more">
-              <span>Virtual Preschool</span>
-              <v-icon>
+              <span>Resources</span>
+              <v-icon class="menu-view-icon" large>
                 mdi-chevron-down
               </v-icon>
             </a>
             <div class="container-submenu">
               <ul class="submenu">
-                <li>
-                  <a href="https://playgardenonline.com/virtual-preschool/">Preschool and
-                    Pre-K</a>
-                </li>
                 <li><a href="https://playgardenonline.com/how-it-works/">How it Works</a></li>
                 <!-- <li><a href="https://playgardenonline.com/do-it-yourself/">DIY</a></li> -->
                 <li><a href="https://playgardenonline.com/blog">Blog</a></li>
+                <li><a href="https://playgardenonline.com/specialized-learning/">Specialized Learning</a></li>
+                <li><a href="https://playgardenonline.com/do-it-yourself/">Do it Yourself</a></li>
               </ul>
             </div>
           </li>
-          <li class="only-desktop">
-            <a href="https://playgardenonline.com/about-us">About us</a>
+          <li class="only-desktop link-option link-option-with-icon">
+            <a href="#the-virtual-preschool" class="menu-view-more">
+              <span>About us</span>
+              <v-icon class="menu-view-icon" large>
+                mdi-chevron-down
+              </v-icon>
+            </a>
+            <div class="container-submenu">
+              <ul class="submenu">
+                <li><a href="https://playgardenonline.com/school/help/">FAQs</a></li>
+                <li><a href="https://playgardenonline.com/about-us/">About Us</a></li>
+                <li><a href="https://playgardenonline.com/your-teachers/">Your Teachers</a></li>
+              </ul>
+            </div>
           </li>
-          <li class="login">
+          <li class="only-desktop link-option">
+            <a @click="openDialog">Community</a>
+          </li>
+          <li class="login link-option">
             <a href="https://playgardenonline.com/school/auth/login">
               <span>Log In</span>
               <img loading="lazy" src="https://playgardenonline.com/wp-content/uploads/2022/01/log-in.svg" alt="Login - Playgarden Prep Online" class="login-icon">
             </a>
           </li>
-          <li class="try-for-free">
+          <li class="header-action-btn">
             <a href="https://playgardenonline.com/school/auth/parent">TRY FOR FREE</a>
           </li>
           <li class="logged-active">
             <a href="https://playgardenonline.com/school/auth/parent">Go to Preschool</a>
+          </li>
+        </ul>
+
+        <ul v-else class="menu-header">
+          <li v-if="showLogInNavbar" class="header-action-btn">
+            <a href="https://playgardenonline.com/school/auth/login">LOG IN</a>
+          </li>
+          <li v-if="showSignUpNavbar" class="header-action-btn">
+            <a href="https://playgardenonline.com/school/auth/preschool/normal">SIGN UP NOW</a>
           </li>
         </ul>
       </div>
@@ -101,6 +127,9 @@
                     <li><a href="https://playgardenonline.com/how-it-works/">How it Works</a></li>
                     <!-- <li><a href="https://playgardenonline.com/do-it-yourself/">DIY</a></li> -->
                     <li><a href="https://playgardenonline.com/blog">Blog</a></li>
+                    <li><a href="https://playgardenonline.com/your-teachers/">Your Teachers</a></li>
+                    <li><a href="https://playgardenonline.com/specialized-learning/">Specialized Learning</a></li>
+                    <li><a href="https://playgardenonline.com/do-it-yourself/">Do it Yourself</a></li>
                   </ul>
                 </li>
                 <!-- <li>
@@ -128,8 +157,9 @@
   </v-container>
 </template>
 
-<script>
-import { defineComponent } from '@vue/composition-api'
+<script lang="ts">
+import { defineComponent, computed, useRoute, ref } from '@nuxtjs/composition-api'
+import ComingSoonDialog from './ComingSoonDialog.vue'
 
 export default defineComponent({
   name: 'MenuLandingPage',
@@ -140,8 +170,26 @@ export default defineComponent({
       }
     ]
   },
+  components: {
+    ComingSoonDialog
+  },
   setup() {
+    const route = useRoute()
+    const dialog = ref(false)
+    const hideNavbarOptions = computed(() => route.value.name === 'auth-preschool-normal' || route.value.name === 'auth-login')
+    const showLogInNavbar = computed(() => route.value.name === 'auth-preschool-normal')
+    const showSignUpNavbar = computed(() => route.value.name === 'auth-login')
+    const openDialog = () => {
+      dialog.value = true
+    }
 
+    return {
+      hideNavbarOptions,
+      showLogInNavbar,
+      showSignUpNavbar,
+      openDialog,
+      dialog
+    }
   }
 })
 </script>
@@ -215,6 +263,27 @@ nav.sticky {
     width: 100%;
     z-index: 9999;
 }
+.link-option a, .link-option a span {
+    color: #707070;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    outline: none;
+    transition: 0.3s all;
+    font-size: 18px;
+    font-size: 1.125rem;
+    line-height: 1.6875rem;
+    font-weight: 500;
+    letter-spacing: .96px;
+}
+.link-option-with-icon a span {
+  margin-right: -12px;
+}
+.menu-view-icon {
+  margin-right: -12px;
+}
+
 @media (max-width:1023px) {
     nav.sticky-remove-btns .navbar-right{
         display: none;
@@ -255,8 +324,8 @@ nav.sticky {
     }
     .navbar-right{
         display: grid;
-        gap: 14px;
-        justify-content: end;
+        gap: 20px;
+        justify-content: flex-end;
     }
 }
 @media (min-width:1236px) {
@@ -422,13 +491,18 @@ nav.sticky {
     color: #707070;
     margin-right: 27px;
 }
+
+.message strong {
+  color: #4F4F4F;
+  font-weight: bold !important;
+}
+
 .contact-menu-header .contact-phone{
     display: grid;
     align-items: center;
     grid-template-columns: auto auto;
     justify-content: center;
     column-gap: 4px;
-    width: 177px;
     text-align: center;
 }
 .contact-menu-header .img-phone-call{
@@ -451,11 +525,10 @@ nav.sticky {
 .menu-header{
     list-style: none;
     position: relative;
-    display: grid;
-    grid-template-columns: repeat(6,auto);
+    display: flex;
     align-items: center;
-    justify-content: end;
-    column-gap: 24px;
+    justify-content: flex-end;
+    gap: 24px;
     transition: 0.5s all;
 }
 .menu-header.logged{
@@ -472,11 +545,7 @@ nav.sticky {
 }
 .menu-header > li.login a{
     display: grid;
-    column-gap: 15px;
     grid-template-columns: repeat(2, auto);
-}
-.menu-header > li.login a img{
-    display: none;
 }
 .menu-header > li:hover > a,
 .menu-header > li > a:focus{
@@ -486,7 +555,12 @@ nav.sticky {
     font-weight: normal;
     color: #707070;
 }
-.menu-header li.try-for-free a,
+.menu-header li.header-action-btn a {
+    min-width: 165px;
+    display: flex;
+    justify-content: center;
+}
+.menu-header li.header-action-btn a,
 .menu-header li.logged-active a{
     font-size: 18px;
     line-height: 27px;
@@ -501,9 +575,9 @@ nav.sticky {
     padding: 8px 16px;
 }
 .menu-header li.logged-active:hover a,
-.menu-header li.try-for-free:hover a,
+.menu-header li.header-action-btn:hover a,
 .menu-header li.logged-active a:focus,
-.menu-header li.try-for-free a:focus{
+.menu-header li.header-action-btn a:focus{
     background-color: #F58E00;
     color: #ffffff;
 }
@@ -529,7 +603,7 @@ nav.sticky {
 .menu-header .logged .logged-active{
     display: block;
 }
-.menu-header .logged .try-for-free,
+.menu-header .logged .header-action-btn,
 .menu-header .logged .login{
     display: none;
 }
@@ -537,11 +611,10 @@ nav.sticky {
     position: relative;
     cursor: pointer;
 }
-.menu-header > li a{
+.menu-header > li{
     display: grid;
     grid-template-columns: repeat(2,auto);
     align-items: center;
-    column-gap: 6px;
 }
 .menu-header > li .container-submenu{
     width: 290px;
@@ -649,28 +722,19 @@ nav.sticky {
 @media (max-width:1200px) {
     .menu-header{
         align-items: center;
-        justify-content: end;
+        justify-content: flex-end;
         gap: 10px 25px;
     }
 }
 
-@media (max-width:1023px) {
-    .contact-menu-header{
-        display: none;
-    }
-    .contact-menu-header,
+@media (max-width:1024px) {
     .menu-header .only-desktop{
         display: none;
     }
     .menu-header{
-        grid-template-columns: 1fr;
-        justify-content: center;
-    }
-    .menu-header{
         grid-template-columns: repeat(2,auto);
         align-items: center;
-        justify-content: center;
-        column-gap: 59px;
+        justify-content: flex-end;
     }
     .menu-header.logged{
         display: block;
@@ -687,7 +751,7 @@ nav.sticky {
     .menu-header > li.login a img{
         display: block;
     }
-    .menu-header li.try-for-free a,
+    .menu-header li.header-action-btn a,
     .menu-header li.logged-active a{
         text-align: center;
         font-size: 18px;
@@ -709,7 +773,7 @@ nav.sticky {
         line-height: 24px;
         letter-spacing: 0.78px;
     }
-    .menu-header li.try-for-free a,
+    .menu-header li.header-action-btn a,
     .menu-header li.logged-active a{
         font-weight: 800;
         font-size: 11.76px;

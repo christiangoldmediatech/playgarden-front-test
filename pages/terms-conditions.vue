@@ -4,7 +4,7 @@
       <v-col cols="12">
         <pg-loading v-if="loading" />
 
-        <div v-else v-html="data" />
+        <div v-else data-test-id="terms-conditions-content" v-html="data" />
       </v-col>
     </v-row>
   </v-container>

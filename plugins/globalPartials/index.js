@@ -1,10 +1,5 @@
 import Vue from 'vue'
 
-// Videoplayers
-import PgVideoJsPlayer from '@/components/pg-video-js-player/PgVideoJsPlayer.vue'
-import PgInlineVideoPlayer from '@/components/pg-video-js-player/PgInlineVideoPlayer.vue'
-import VideoPlayerDialog from '@/components/pg-video-js-player/VideoPlayerDialog.vue'
-
 // Audio Players
 import PgAudioPlayer from '@/components/pg-audio-player/PgAudioPlayer.vue'
 
@@ -38,20 +33,14 @@ import PgVideoDialog from '@/components/pg/components/dialogs/PgVideoDialog.vue'
 
 // Other global components
 import FileUploader from './file-uploader/FileUploader'
-import SelectDropboxFile from './file-uploader/SelectDropboxFile.vue'
 import NotifyEvent from './NotifyEvent'
 import PromptDialog from './PromptDialog'
 import UnderlinedTitle from './UnderlinedTitle'
 
 Vue.component(FileUploader.name, FileUploader)
-Vue.component(SelectDropboxFile.name, SelectDropboxFile)
 Vue.component(NotifyEvent.name, NotifyEvent)
 Vue.component(PromptDialog.name, PromptDialog)
 Vue.component(UnderlinedTitle.name, UnderlinedTitle)
-
-Vue.component(PgVideoJsPlayer.name, PgVideoJsPlayer)
-Vue.component(PgInlineVideoPlayer.name, PgInlineVideoPlayer)
-Vue.component(VideoPlayerDialog.name, VideoPlayerDialog)
 
 Vue.component(PgAudioPlayer.name, PgAudioPlayer)
 

@@ -44,7 +44,7 @@ module.exports = {
     ],
     */
     'vue/camelcase': 2,
-    'vue/component-name-in-template-casing': ['error', 'kebab-case'],
+    'vue/component-name-in-template-casing': ['warn', 'kebab-case'],
     'vue/component-tags-order': [
       'error',
       {
@@ -54,6 +54,7 @@ module.exports = {
     'vue/dot-location': ['error', 'property'],
     'vue/eqeqeq': ['error', 'always'],
     'vue/html-closing-bracket-spacing': 2,
+    'vue/html-self-closing': 'off',
     'vue/html-indent': 2,
     'vue/html-quotes': 2,
     'vue/key-spacing': 2,
@@ -128,7 +129,6 @@ module.exports = {
     'vue/valid-v-text': 2,
     camelcase: 2,
     eqeqeq: ['error', 'always'],
-    quotes: ['error', 'single'],
     semi: ['error', 'never'],
     'array-callback-return': 'off',
     'no-unused-vars': 'off',

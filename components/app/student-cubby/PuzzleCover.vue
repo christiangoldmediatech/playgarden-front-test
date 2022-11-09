@@ -34,7 +34,7 @@
         :id="`pc-path-${indexP}`"
         :key="indexP"
         :d="path"
-        :fill="uncovered.has(indexP) ? 'none' : '#ffffff'"
+        :fill="uncovered.has(indexP) ? 'none' : '#E1E1E1'"
         @mouseenter.stop="handleTooltip(indexP)"
       />
     </svg>

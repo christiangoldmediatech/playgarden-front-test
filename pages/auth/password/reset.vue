@@ -1,14 +1,17 @@
 <template>
-  <v-row align="center" justify="center" no-gutters>
-    <v-col cols="11" md="6">
-      <div class="image">
-        <img alt="Smiling Girl Picture" src="@/assets/png/welcome-back.png">
+  <v-row align="center" justify="center" no-gutters class="py-0 py-md-16">
+    <v-col cols="12" md="6">
+      <!-- CHILD IMAGE -->
+      <div
+        class="image"
+      >
+        <v-img contain alt="Smiling Girl Picture" :src="require('@/assets/png/welcome-back.png')" />
       </div>
     </v-col>
 
     <v-col cols="12" md="6">
       <div class="form mx-auto px-4">
-        <div>
+        <div class="my-5 my-md-0 text-center text-md-left">
           <underlined-title text="Reset Password" />
         </div>
 
@@ -30,6 +33,7 @@
 
 <script>
 import ResetPasswordForm from '@/components/forms/password/ResetPasswordForm.vue'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Reset',
@@ -47,6 +51,9 @@ export default {
   },
 
   async beforeMount () {
+    // Clear state
+    this.logout()
+
     try {
       if (!this.$route.query || !this.$route.query.token) {
         this.$router.push('/')
@@ -67,6 +74,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('auth', ['logout']),
+
     async resetPassword (password) {
       try {
         this.isLoadingForm = true
@@ -102,13 +111,20 @@ export default {
 
 <style lang="scss" scoped>
 .image {
+  margin-top: 48px;
   max-height: 500px;
-  width: 100%;
   display: flex;
   justify-content: center;
   align-content: center;
-  img {
-    max-width: 90%;
+}
+@media (max-width: $breakpoint-md) {
+  .image {
+    margin-top: 80px;
+  }
+}
+@media (max-width: $breakpoint-sm) {
+  .image {
+    max-height: 250px;
   }
 }
 .form {

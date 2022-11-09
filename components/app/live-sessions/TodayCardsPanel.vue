@@ -11,17 +11,28 @@
           <v-col cols="12" class="pl-2 pr-3 lsess-schedule-container-col">
             <template v-if="nextSessions.length > 0">
               <template v-if="$vuetify.breakpoint.smAndDown">
-                <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
+                <today-card
+                  v-for="i in nextSessions"
+                  :key="`today-card-${i.id}`"
+                  :entry="i"
+                  :block="block"
+                />
               </template>
 
               <perfect-scrollbar v-else>
-                <today-card v-for="i in nextSessions" :key="`today-card-${i.id}`" :entry="i" />
+                <today-card
+                  v-for="i in nextSessions"
+                  :key="`today-card-${i.id}`"
+                  :entry="i"
+                  :block="block"
+                />
               </perfect-scrollbar>
             </template>
 
             <template v-else>
               <div class="my-10 lsess-title text-center">
-                There are no pending events for this week.
+                There are no pending events for
+                {{ hasUserLearnAndPlayPlan ? 'you' : '' }} this week.
               </div>
             </template>
           </v-col>
@@ -43,8 +54,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
+import dayjs from 'dayjs'
 
 import TodayCard from './TodayCard.vue'
 
@@ -56,14 +68,26 @@ export default {
     TodayCard
   },
 
+  props: {
+    block: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+
   computed: {
     ...mapState('live-sessions', ['sessions']),
+    ...mapGetters('auth', ['hasUserLearnAndPlayPlan']),
 
-    nextSessions () {
+    nextSessions() {
       const today = new Date()
-      const filtered = this.sessions.filter(({ dateStart, dateEnd }) => {
-        const end = new Date(dateEnd)
+      const filtered = this.sessions.filter((session) => {
+        if (!this.userHasAccess(session)) {
+          return false
+        }
 
+        const end = new Date(session.dateEnd)
         return today < end
       })
 
@@ -75,6 +99,16 @@ export default {
       })
 
       return sorted
+    }
+  },
+
+  methods: {
+    userHasAccess(entry) {
+      const day = dayjs(entry.dateStart).day()
+      return (
+        !this.hasUserLearnAndPlayPlan ||
+        (this.hasUserLearnAndPlayPlan && (day === 0 || day === 6))
+      )
     }
   }
 }
@@ -156,7 +190,7 @@ export default {
   }
 
   .ps__thumb-y {
-    background-color: #B2E68D;
+    background-color: #b2e68d;
     border-radius: 14px;
     transition: none;
     width: 6px;
@@ -169,7 +203,7 @@ export default {
   .ps__rail-y:hover > .ps__thumb-y,
   .ps__rail-y:focus > .ps__thumb-y,
   .ps__rail-y.ps--clicking .ps__thumb-y {
-    background-color: #B2E68D;
+    background-color: #b2e68d;
     width: 6px;
   }
 }

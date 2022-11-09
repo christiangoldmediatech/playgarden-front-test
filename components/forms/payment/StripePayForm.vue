@@ -5,10 +5,9 @@
         class="text-center text-md-left"
         :class="{ 'mt-n10': $vuetify.breakpoint.smAndUp }"
       >
-        <strong
-          class="text-left"
-        >We need your credit card information to confirm who you are, but you
-          will NOT be charged.</strong>
+        <strong class="text-left">
+          We need your credit card information to confirm your identity<span v-if="isNotChargedTextVisbile">, but you will NOT be charged until your 15 day free trial has ended, unless you choose to end your trial early</span>.
+        </strong>
         <br>
         <br>
         <underlined-title
@@ -49,14 +48,12 @@
               <span>
                 I have read and accept the
 
-                <nuxt-link
+                <span
                   class="ml-1 terms-conditions link-text"
-                  :to="{ name: 'terms-conditions' }"
-                  target="_blank"
-                  @click.native.stop=""
+                  @click="goToTermsAndConditions"
                 >
                   Terms & Conditions
-                </nuxt-link>
+                </span>
               </span>
             </template>
           </v-checkbox>
@@ -64,8 +61,9 @@
       </v-row>
 
       <v-btn
-        block
-        class="mt-0 mb-4 main-btn ml-md-0"
+        :block="!isPreschoolFlow"
+        class="mt-0 mb-4 main-btn "
+        :class="{'!pg-block pg-mx-auto pg-w-10/12': isPreschoolFlow, 'ml-md-0': !isPreschoolFlow }"
         min-height="60"
         color="primary"
         :disabled="invalid || lockButton"
@@ -91,15 +89,17 @@
       </v-btn>
     </v-form>
     <div class="pb-4 pb-md-0">
-      <p v-if="isFreeForDaysTextVisible">
-        <center>
-          <span class="font-weight-bold text-completely">
-            Playgarden Prep Online is COMPLETELY FREE for the next 15 days.
-          </span>
-        </center>
-      </p>
+      <slot name="sub-footer">
+        <p v-if="isFreeForDaysTextVisible">
+          <center>
+            <span class="font-weight-bold text-completely">
+              Playgarden Prep Online is COMPLETELY FREE for the next 15 days.
+            </span>
+          </center>
+        </p>
+      </slot>
       <br>
-      <v-divider />
+      <v-divider v-if="isTrialTextVisible" />
       <br>
       <slot name="footer">
         <p v-if="isTrialTextVisible">
@@ -111,7 +111,7 @@
                 account settings. <br></span>
 
               Once your free trial ends you will be placed on the
-              <span class="option-standar">PREMIUM</span> monthly plan, you can
+              <span class="option-standar">ONLINE PRESCHOOL</span> monthly plan, you can
               change plans at any time in your profile page.
             </span>
           </center>
@@ -142,6 +142,11 @@ export default {
       default: 'START LEARNING NOW'
     },
 
+    isNotChargedTextVisbile: {
+      type: Boolean,
+      default: true
+    },
+
     isTrialTextVisible: {
       type: Boolean,
       default: true
@@ -156,7 +161,12 @@ export default {
 
     loading: Boolean,
 
-    noTerms: Boolean
+    noTerms: Boolean,
+
+    isPreschoolFlow: {
+      type: Boolean,
+      default: false
+    }
   },
 
   data: vm => ({
@@ -193,11 +203,16 @@ export default {
 
   methods: {
     ...mapActions('coupons', ['getCoupons']),
+
     getSubmittableData() {
       return {
         token: this.draft.token,
         promotion_id: this.draft.promotion_id
       }
+    },
+
+    goToTermsAndConditions() {
+      window.open('https://playgardenonline.com/terms-of-use/', '_blank')
     },
 
     async _checkValid () {

@@ -16,8 +16,9 @@ export default () => ({
     'app-live-classes-recorded': 1,
     'app-pick-child': 1,
     'app-library': 1,
-    'app-library-activityTypeId': 1,
+    'app-library-search': 1,
     'app-library-favorites': 1,
+    'app-library-category-activityTypeId': 1,
     'app-dashboard': 1,
     'app-dashboard-online-worksheet': 1,
     'app-dashboard-offline-worksheet': 1,
@@ -34,6 +35,7 @@ export default () => ({
     'app-payment-plan': 1,
     'app-virtual-preschool': 1,
     'app-learn-play': 1,
+    'app-learn-play-preview': 1,
     help: 1,
     'shared-slug': 1
   },

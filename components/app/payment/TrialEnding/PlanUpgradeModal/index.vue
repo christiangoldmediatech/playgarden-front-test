@@ -10,7 +10,7 @@
     </div>
 
     <underlined-title
-      text="Preschool @ Home"
+      text="ONLINE PRESCHOOL"
       font-size="32px"
       font-size-mobile="22px"
       letter-spacing="1px"
@@ -87,7 +87,8 @@ export default defineComponent({
     const {
       isPlanUpgradeModalVisible,
       setIsPlanUpgradeModalVisible,
-      setIsTrialEndingPlanSelectedModalVisible
+      setIsTrialEndingPlanSelectedModalVisible,
+      setLessonUnavailability
     } = useNotification({ store })
 
     onMounted(async () => {
@@ -117,11 +118,14 @@ export default defineComponent({
       try {
         await $axios.$patch(PLAN_UPGRADE_PATH)
         upgradeStatus.value = 'upgraded'
+        setLessonUnavailability(false)
         setIsPlanUpgradeModalVisible(false)
         setIsTrialEndingPlanSelectedModalVisible(true)
       } catch (error) {
         upgradeStatus.value = 'failed'
-        console.error(error)
+        // eslint-disable-next-line no-console
+      } finally {
+        store.dispatch('auth/fetchUserInfo')
       }
     }
 

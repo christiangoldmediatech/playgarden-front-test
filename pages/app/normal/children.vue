@@ -1,14 +1,11 @@
 <template>
-  <v-row>
-    <v-row no-gutters>
+  <v-row :class="{'mt-10': !noBackMode}">
+    <v-row v-if="noBackMode" no-gutters class="mt-12">
       <v-btn
         color="accent"
         nuxt
         text
-        :to="{
-          name: 'app-payment',
-          query: { process: 'signup', step: '2' }
-        }"
+        @click="showBackWarning = true"
       >
         <v-icon left>
           mdi-less-than
@@ -17,6 +14,7 @@
         Back
       </v-btn>
     </v-row>
+    <back-warning-dialog v-model="showBackWarning" />
     <v-col cols="12">
       <step-three />
     </v-col>
@@ -24,14 +22,25 @@
 </template>
 
 <script>
-
-import StepThree from '@/components/app/register/StepThree'
+import StepThree from '@/components/app/register/StepThree.vue'
+import BackWarningDialog from '@/components/app/register/BackWarningDialog.vue'
 
 export default {
   name: 'Children',
 
   components: {
-    StepThree
+    StepThree,
+    BackWarningDialog
+  },
+
+  data: () => ({
+    showBackWarning: false
+  }),
+
+  computed: {
+    noBackMode() {
+      return !(this.$route.query.mode === 'no-back')
+    }
   },
 
   created () {

@@ -41,7 +41,7 @@
         </span>
       </div>
 
-      <pg-audio-player ref="audioPlayer">
+      <pg-audio-player ref="audioPlayer" @start-music="saveStartProgress" @ended="saveEndProgress">
         <!-- Music Player Actions -->
         <template
           #actions="{
@@ -53,11 +53,7 @@
         >
           <v-row v-if="currentSong" no-gutters justify="center">
             <v-spacer />
-            <v-col
-              cols="2"
-              align-self="center"
-              class="text-center"
-            >
+            <div class="text-center align-self-center">
               <!-- Previous Song Button -->
               <v-btn
                 icon
@@ -70,12 +66,9 @@
                   mdi-skip-backward
                 </v-icon>
               </v-btn>
-            </v-col>
-            <v-col
-              cols="2"
-              align-self="center"
-              class="text-center"
-            >
+            </div>
+
+            <div class="text-center align-self-center">
               <!-- Pause/Play Song Button -->
               <v-btn
                 v-if="!isPlaying"
@@ -102,12 +95,9 @@
                   mdi-pause-circle-outline
                 </v-icon>
               </v-btn>
-            </v-col>
-            <v-col
-              cols="2"
-              align-self="center"
-              class="text-center"
-            >
+            </div>
+
+            <div class="text-center align-self-center">
               <!-- Next Song Button -->
               <v-btn
                 icon
@@ -120,8 +110,10 @@
                   mdi-skip-forward
                 </v-icon>
               </v-btn>
-            </v-col>
+            </div>
+
             <v-spacer />
+
             <v-col
               v-if="currentSong.description"
               cols="auto"
@@ -147,9 +139,9 @@
 </template>
 
 <script lang="ts">
-import { useNuxtHelper, useMusic } from '@/composables'
-import { MusicLibrary } from '@/models'
-import { defineComponent, ref, nextTick, computed } from '@nuxtjs/composition-api'
+import { useNuxtHelper, useMusic, useLearnPlayV2, useChild } from '@/composables'
+import { MusicLibrary, TypedStore } from '@/models'
+import { defineComponent, ref, nextTick, computed, useStore } from '@nuxtjs/composition-api'
 import MusicQueue from '@/components/app/music/MusicQueue.vue'
 
 export default defineComponent({
@@ -158,8 +150,11 @@ export default defineComponent({
     MusicQueue
   },
 
-  setup (_, { emit }) {
-    // this references `ref="audioPlayer"` when the component is mounted
+  setup() {
+    const store = useStore()
+    const learnPlayV2 = useLearnPlayV2({ store })
+    const childStore = useStore<TypedStore>()
+    const child = useChild({ store: childStore })
     const nuxt = useNuxtHelper()
     const audioPlayer = ref<any>(null)
     const {
@@ -175,8 +170,7 @@ export default defineComponent({
       if (!audioPlayer.value) {
         return
       }
-
-      audioPlayer.value?.refreshSongData(song)
+      audioPlayer.value.refreshSongData(song)
     }
 
     const addSongToPlaylist = (song: MusicLibrary) => {
@@ -184,7 +178,7 @@ export default defineComponent({
         return
       }
 
-      audioPlayer.value?.addSong(song)
+      audioPlayer.value.addSong(song)
     }
 
     const createNewPlaylist = async (incomingPlaylist: MusicLibrary[]) => {
@@ -192,30 +186,42 @@ export default defineComponent({
         return
       }
 
-      audioPlayer.value?.pause()
-      audioPlayer.value?.setPlaylist(incomingPlaylist)
+      audioPlayer.value.pause()
+      audioPlayer.value.setPlaylist(incomingPlaylist)
       await nextTick()
-      audioPlayer.value?.play()
     }
 
-    const changeSong = nuxt.$on('change-song', (song: MusicLibrary) => {
-      if (song) {
-        currentSong.value = song
-        refreshSongData(song)
-      }
-    })
-
     const isPlayerDisabled = computed(() => !currentSong.value || !currentSong.value?.description)
+
+    const saveStartProgress = async (song: any) => {
+      await learnPlayV2.updateProgress(buildProgress(song.id, false))
+    }
+
+    const saveEndProgress = async (songId: any) => {
+      await learnPlayV2.updateProgress(buildProgress(songId, true))
+    }
+
+    const buildProgress = (idSong: number, finish: boolean) => {
+      if (child.currentChildren.value) {
+        const childId = child.currentChildren.value[0].id
+        const songProgress = { id: idSong, started: true, completed: finish }
+        const { id } = learnPlayV2.learnPlayData.value
+        const data = {
+          songs: [songProgress]
+        }
+        return { playAndLearnId: id, childId, data }
+      }
+    }
 
     const playSong = async (playlistIndex: number) => {
       if (!audioPlayer.value) {
         return
       }
 
-      audioPlayer.value?.pause()
-      audioPlayer.value?.selectSongByIndex(playlistIndex)
+      audioPlayer.value.pause()
+      audioPlayer.value.selectSongByIndex(playlistIndex)
       await nextTick()
-      audioPlayer.value?.play()
+      await audioPlayer.value.play()
     }
 
     const removeSong = (playlistIndex: number) => {
@@ -224,7 +230,7 @@ export default defineComponent({
       }
 
       removeSongFromPlaylist(playlistIndex)
-      audioPlayer.value?.removeSongByIndex(playlistIndex)
+      audioPlayer.value.removeSongByIndex(playlistIndex)
     }
 
     return {
@@ -239,7 +245,9 @@ export default defineComponent({
       createNewPlaylist,
       playSong,
       removeSong,
-      refreshSongData
+      refreshSongData,
+      saveStartProgress,
+      saveEndProgress
     }
   }
 })
@@ -250,7 +258,8 @@ export default defineComponent({
   position: relative;
   display: flex;
   justify-content: center;
-  height: 554px !important;
+  height: 328px !important;
+  width: 100% !important;
   background-image: linear-gradient(0deg, #4D4D4D 3.02%, rgba(77, 77, 77, 0) 67%), var(--mp-background-image);
   background-size: cover;
   background-position: center center;

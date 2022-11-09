@@ -20,7 +20,7 @@
           <v-list-item>
             <v-list-item-avatar tile>
               <v-img
-                :src="currentLessonActivity.activityType.icon"
+                :src="currentLessonActivity.meta.activityType.icon"
                 contain
               />
             </v-list-item-avatar>
@@ -28,7 +28,7 @@
             <v-list-item-content>
               <v-list-item-title>
                 <span class="dashboard-item-activity-type">
-                  {{ currentLessonActivity.activityType.name }}
+                  {{ currentLessonActivity.meta.activityType.name }}
                 </span>
                 <span class="dashboard-item-name">
                   with {{ currentLessonActivity.title }}
@@ -44,12 +44,12 @@
         </v-list>
       </template>
     </v-card>
-    <lesson-puzzle-pieces v-if="$vuetify.breakpoint.smAndDown" activities />
+    <lesson-puzzle-pieces v-if="$vuetify.breakpoint.smAndDown && puzzlePiece" activities />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { APP_EVENTS } from '@/models'
 
 import LessonPuzzlePieces from '@/components/app/dashboard/LessonPuzzlePieces.vue'
@@ -63,6 +63,7 @@ export default {
 
   computed: {
     ...mapGetters('admin/curriculum', ['getLesson']),
+    ...mapState('children/lesson', ['puzzlePiece']),
 
     activityId () {
       return parseInt(this.$route.query.id)
@@ -76,19 +77,24 @@ export default {
 
         return validActivities.map(({ id, activity }) => {
           return {
-            title: activity.videos.name,
+            title: activity.activityType.name,
             description: activity.videos.description,
-            activityType: activity.activityType,
-            curriculumType: activity.curriculumType,
+            poster: activity.videos.image,
             src: {
-              src: activity.videos.videoUrl.HLS,
+              url: activity.videos.videoUrl.HLS,
               type: 'application/x-mpegURL'
             },
-            poster: activity.videos.image,
-            lessonActivityId: id,
-            activityId: activity.id,
-            videoId: activity.videos.id,
-            viewed: activity.viewed
+            meta: {
+              videoId: activity.videos.id,
+              author: `with ${activity.videos.name}`,
+              videoType: 'LESSON ACTIVITIES',
+              videoIcon: activity.activityType.icon,
+              lessonActivityId: id,
+              activityId: activity.id,
+              activityType: activity.activityType,
+              curriculumType: activity.curriculumType,
+              viewed: activity.viewed
+            }
           }
         })
       }
@@ -96,7 +102,7 @@ export default {
     },
 
     currentLessonActivityIndex () {
-      return this.playlist.findIndex(({ activityId }) => activityId === this.activityId)
+      return this.playlist.findIndex(mediaObject => mediaObject.meta.activityId === this.activityId)
     },
 
     currentLessonActivity () {
@@ -107,7 +113,7 @@ export default {
     },
 
     videoId () {
-      return this.currentLessonActivity ? this.currentLessonActivity.id : null
+      return this.currentLessonActivity ? this.currentLessonActivity.meta.videoId : null
     }
   },
 

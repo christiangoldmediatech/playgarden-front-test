@@ -150,30 +150,23 @@ export const hours24ToHours12 = (hours, minutes, am = 'am', pm = 'pm') => {
   return `${hours}:${minutes.toString().padStart(2, '0')}${am}`
 }
 
-export const getMondayFriday = (today) => {
-  const monday = new Date(today)
-  const friday = new Date(today)
-  const isSaturday = today.getDay() === 6
-  const isSunday = today.getDay() === 0
-  let offset = 0
-
-  if (isSaturday) {
-    offset = 2
-  } else if (isSunday) {
-    offset = 1
-  }
-
-  monday.setDate(today.getDate() + offset)
-  friday.setDate(today.getDate() + offset)
-  monday.setDate(today.getDate() + (1 - today.getDay()))
-  friday.setDate(today.getDate() + (5 - today.getDay()))
-
-  monday.setHours(0, 0, 0, 0)
-  friday.setHours(23, 59, 59, 999)
-
+export const getMondayFriday = (day) => {
+  const today = dayjs(day).startOf('day')
+  const monday = today.startOf('week').add(1, 'day').toDate()
+  const friday = today.endOf('week').subtract(1, 'day').toDate()
   return {
     monday,
     friday
+  }
+}
+
+export const getWeekStartAndEnd = (day) => {
+  const today = dayjs(day).startOf('day')
+  const sunday = today.startOf('week').toDate()
+  const saturday = today.endOf('week').toDate()
+  return {
+    sunday,
+    saturday
   }
 }
 

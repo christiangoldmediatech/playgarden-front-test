@@ -21,10 +21,14 @@
         />
       </div>
 
-      <div class="grey--text text--darken-2 caption text-md-h6 font-weight-regular my-3 my-md-6">
+      <div class="my-3 grey--text text--darken-2 caption text-md-h6 font-weight-regular my-md-6">
         <p>We hope your little one has enjoyed learning with the Playgarden Prep teachers!</p>
         <p>
-          During your trial period, which ended on {{ lastDayOfTrial }}, you were able to experience all the features of the HOMESCHOOL plan. After the trial period, you were automatically placed in the PREMIUM EDUCATION monthly plan. You can stay in that plan, or you can choose now in which plan you want little one to learn going forward by clicking the plans comparison button.
+          Your trial period ended on {{ lastDayOfTrial }}. You are currently enrolled in the  {{ (plan ) ? plan.name : 'ONLINE PRESCHOOL' }}  plan.If you would like to switch into a different plan, please follow this link!
+        </p>
+        <a class="accent--text font-weight-bold" @click="handleComparePlans">Change my Plan</a>
+
+        <p>
           As always, you cancel your enrollment anytime by going to your Accounts Page.
           Please contact us with any questions about the plans, your enrollment, or anything at all related to Playgarden Prep.
         </p>
@@ -53,10 +57,10 @@
 
 <script lang="ts">
 import dayjs from 'dayjs'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
-import { defineComponent, useStore } from '@nuxtjs/composition-api'
-import { useGlobalModal } from '@/composables'
+import { defineComponent, useStore, onMounted } from '@nuxtjs/composition-api'
+import { useGlobalModal, useAuth } from '@/composables'
 import { TypedStore } from '@/models'
 
 export default defineComponent({
@@ -69,8 +73,14 @@ export default defineComponent({
   setup () {
     const store = useStore<TypedStore>()
     const { showContactUsModal } = useGlobalModal({ store })
+    const { plan, getPlan } = useAuth({ store })
+
+    onMounted(async () => {
+      await getPlan()
+    })
 
     return {
+      plan,
       showContactUsModal
     }
   },
@@ -97,6 +107,10 @@ export default defineComponent({
   },
 
   methods: {
+    ...mapActions('payment', [
+      'getSelectedSubscriptionPlan'
+    ]),
+
     closeModal () {
       this.$store.commit('notifications/SET_TRIAL_EXPIRED_MODAL_VISIBLE', false)
     },

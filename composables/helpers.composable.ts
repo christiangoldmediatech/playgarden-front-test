@@ -11,3 +11,5 @@ export const useGtmHelper = wrapProperty('$gtm', false)
 export const useCookiesHelper = wrapProperty('$cookies', false)
 
 export const useAppEventBusHelper = wrapProperty('$appEventBus', false)
+
+export const useAccessorHelper = wrapProperty('$accessor', false)

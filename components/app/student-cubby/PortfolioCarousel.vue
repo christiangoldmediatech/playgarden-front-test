@@ -88,7 +88,7 @@ import {
 } from '@nuxtjs/composition-api'
 import { useNuxtHelper, useVuetifyHelper } from '@/composables'
 import { OfflineWorksheetLesson } from '@/models'
-import { jsonCopy } from '@/utils'
+import { jsonCopy, isLetter } from '@/utils'
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 import PortfolioCard from './PortfolioCard.vue'
 
@@ -131,9 +131,6 @@ export default defineComponent({
     })
 
     const total = computed(() => {
-      if (isAdmin.value) {
-        return props.category.total
-      }
       return props.category.worksheetUploads
         ? props.category.worksheetUploads.length
         : 0
@@ -169,17 +166,6 @@ export default defineComponent({
 
     function getChild(upload: any) {
       return upload.children ? upload.children : null
-    }
-
-    // Generate alphabet for determinig if a "categoy" is a letter or something else
-    const alpha = Array.from(Array(26)).map((_, i) => i + 65)
-    const alphabet = alpha.map((x: number) => {
-      const letter = String.fromCharCode(x)
-      return `${letter.toUpperCase()}${letter.toLowerCase()}`
-    })
-
-    function isLetter(text: string): boolean {
-      return alphabet.includes(text)
     }
 
     return {

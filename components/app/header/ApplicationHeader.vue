@@ -1,49 +1,63 @@
 <template>
   <v-app-bar
     app
-    class="pb-4 pg-app-bar "
-    :class="{ 'pg-app-bar-height': (!isUserLoggedIn && $vuetify.breakpoint.mdAndUp), 'pg-app-bar-mobile-height': (!isUserLoggedIn && !$vuetify.breakpoint.mdAndUp ), 'd-none mt-n16': scrollDown}"
-    color="white"
-    elevation="1"
+    class="pb-4 pg-app-bar paper-bg d-flex justify-center"
+    :class="{
+      'paper-bg-logged': isUserLoggedIn,
+      'pg-app-bar-height': !isUserLoggedIn && $vuetify.breakpoint.mdAndUp,
+      'pg-app-bar-mobile-height':
+        !isUserLoggedIn && !$vuetify.breakpoint.mdAndUp,
+      'd-none mt-n16': scrollDown
+    }"
+    color="transparent"
+    flat
     prominent
   >
     <v-row
-      class="flex-nowrap pb-10"
+      class="flex-nowrap"
+      :class="[isUserLoggedIn ? 'pb-10' : 'header-container']"
       align="center"
       justify="space-between"
       no-gutters
     >
-      <!-- HAMBURGER MENU -->
-      <v-col class="d-flex align-center" cols="auto">
-        <v-app-bar-nav-icon
-          class="primary pg-app-bar-nav-icon hidden-md-and-up"
-          :class="{ isMd: $vuetify.breakpoint.md }"
-          color="white"
-          tile
-          large
-          @click.stop="toggleDrawer"
-        />
+      <div v-if="showColorBarImg" class="dashes-img">
+        <img
+          src="@/assets/svg/gift-of-learning/bottom-color-dashes.svg"
+        >
+      </div>
 
-        <v-toolbar-title class="mx-3">
-          <!-- <nuxt-link
-            :to="{
-              name: 'app-virtual-preschool',
-            }"
-          > -->
+      <!-- HAMBURGER MENU -->
+      <v-app-bar-nav-icon
+        class="pg-app-bar-nav-icon hidden-lg-and-up ham-menu"
+        :class="{ 'is-md': $vuetify.breakpoint.md }"
+        color="primary"
+        tile
+        x-large
+        @click.stop="toggleDrawer"
+      >
+        <img
+          width="27"
+          height="27"
+          loading="lazy"
+          src="https://playgardenonline.com/wp-content/uploads/2022/02/bar-menu.svg"
+        />
+      </v-app-bar-nav-icon>
+
+      <!-- Logo -->
+      <v-col class="d-flex align-center logo-container" cols="auto">
+        <v-toolbar-title :class="[isUserLoggedIn ? 'mx-3 mt-1' : '']">
           <v-img
-            class="mx-4 cursor-link"
-            :class="{ 'mt-8': $vuetify.breakpoint.mdAndUp}"
+            class="cursor-link ml-12"
+            :class="[isUserLoggedIn ? 'mx-3' : '']"
             alt="Playarden Prep Online Logo"
-            max-height="100"
-            :max-width="$vuetify.breakpoint.mdAndUp ? 290 : 200"
-            :src="require('@/assets/svg/logo.svg')"
+            :max-width="$vuetify.breakpoint.mdAndUp ? 85 : 70"
+            :src="require('@/assets/png/rainbow-logo.png')"
             @click="handleLogoClick"
           />
-          <!-- </nuxt-link> -->
         </v-toolbar-title>
       </v-col>
 
-      <v-col class="pr-3 d-flex align-center" cols="auto">
+      <v-col class="d-flex align-center pg-mr-2 md:pg-mr-0" cols="auto">
         <!-- ITEMS -->
         <div v-if="getVerifyEmail" class="mt-5 hidden-sm-and-down">
           <v-toolbar-items>
@@ -78,7 +92,7 @@
           </v-toolbar-items>
         </div>
         <div v-if="!isUserLoggedIn" class="hidden-sm-and-down">
-          <menu-landing-page class="mt-7" />
+          <menu-landing-page />
         </div>
         <!--divider icon profile and help-->
         <v-divider
@@ -112,7 +126,7 @@
             class="ml-3 px-13"
             color="accent"
             nuxt
-            :to="{ name: 'auth-logout' }"
+            @click="handleLogoutClick"
           >
             LOG OUT
           </v-btn>
@@ -131,7 +145,9 @@
 
             <v-card>
               <v-list dense>
-                <v-list-item>
+                <!-- Hidden by ticket: https://app.shortcut.com/gold-media-tech/story/4106/hide-video-tutorial-option -->
+
+                <!-- <v-list-item>
                   <v-btn
                     class="btn-register text--disabled"
                     :ripple="false"
@@ -153,7 +169,8 @@
 
                 <div class="px-2 py-3">
                   <v-divider />
-                </div>
+                </div> -->
+
                 <v-list-item>
                   <v-btn
                     class="btn-register text--disabled"
@@ -185,24 +202,9 @@
             v-if="isUserLoggedIn && !isUserInSignupProcess"
             class="clickable account-btn"
             src="@/assets/svg/account.svg"
+            data-test-id="account-button"
             @click="goToAccount"
-          >
-
-          <v-btn
-            :color="isUserLoggedIn ? 'primary' : 'accent'"
-            active-class="transparent--text"
-            icon
-            nuxt
-            small
-            :to="{ name: isUserLoggedIn ? 'auth-logout' : 'auth-login' }"
-          >
-            <v-icon v-if="isUserLoggedIn" color="accent">
-              mdi-logout
-            </v-icon>
-            <v-icon v-else color="primary">
-              mdi-login
-            </v-icon>
-          </v-btn>
+          />
 
           <!-- <v-btn
             :color="isUserLoggedIn ? 'primary' : 'accent'"
@@ -215,7 +217,6 @@
             <v-icon v-if="isUserLoggedIn" color="accent">
               mdi-logout
             </v-icon>
-
             <v-icon v-else color="primary">
               mdi-login
             </v-icon>
@@ -255,6 +256,12 @@ export default {
     }
   },
 
+  computed: {
+    showColorBarImg() {
+      return (this.$route.name === 'auth-preschool-normal' || this.$route.name === 'auth-login') && this.$vuetify.breakpoint.mdAndUp
+    }
+  },
+
   created() {
     // eslint-disable-next-line nuxt/no-globals-in-created
     window.addEventListener('scroll', this.toggleHeader)
@@ -273,8 +280,21 @@ export default {
       this.$router.push({ name: 'app-account-index' })
     },
 
+    handleLogoutClick() {
+      const { process, step } = this.$route.query
+      if (process === 'signup' && step === '3') {
+        this.$appEventBus.$emit('click:logout')
+        return
+      }
+
+      this.$router.push({ name: 'auth-logout' })
+    },
+
     handleLogoClick() {
-      if (unauthenticatedRoutes[this.$route.name]) {
+      if (
+        unauthenticatedRoutes[this.$route.name] ||
+        this.isUserInSignupProcess
+      ) {
         window.open(process.env.frontendUrl, '_self')
         return
       }
@@ -305,19 +325,51 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.dashes-img {
+  position: absolute;
+  top: -59px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.ham-menu {
+  margin-right: 14px;
+  margin-left: 38px;
+  margin-bottom: 12px;
+}
+
+.logo-container {
+  @media (max-width: $breakpoint-md) {
+    margin-right: auto;
+  }
+}
+
+.header-container {
+  max-width: 1500px;
+  padding: 31px 56px;
+  position: relative;
+
+  @media (max-width: $breakpoint-md) {
+    padding: 28px 32px 28px 0;
+  }
+}
+
 .pg-app-bar.v-app-bar.v-app-bar--fixed {
   z-index: 1000 !important;
 }
 
 .pg-app-bar::v-deep .v-toolbar__content {
-  padding-left: 0;
-  padding-right: 0;
+  padding: 0;
+  width: 100%;
+  justify-content: center;
 }
 
 .pg-app-bar-nav-icon {
   height: 56px !important;
   width: 56px !important;
-  &.isMd {
+  &.is-md {
     height: 64px !important;
     width: 64px !important;
   }
@@ -332,7 +384,7 @@ export default {
     display: none;
   }
 
-  @media screen and (max-width: 1100px) {
+  @media screen and (max-width: $breakpoint-sm) {
     &.auth-buttons {
       display: none;
     }
@@ -342,7 +394,7 @@ export default {
   }
 }
 
-.cursor-link{
+.cursor-link {
   cursor: pointer !important;
 }
 
@@ -357,21 +409,6 @@ export default {
     margin-right: 12px;
   }
 }
-
-// .pg-app-bar-col {
-//   max-width: 1200px;
-
-//   &.full-width {
-//     max-width: 1600px;
-//     padding-left: 24px;
-//     padding-right: 24px;
-
-//     &.mobile {
-//       padding-left: 0px;
-//       padding-right: 0px;
-//     }
-//   }
-// }
 
 .v-btn--active.custom-active {
   &::before {
@@ -403,23 +440,43 @@ export default {
 }
 
 .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
-  height: 98px !important;
+  height: 170px !important;
 }
 
-@media screen and (max-width:959px ) {
+@media screen and (max-width: 768px) {
   .pg-app-bar::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
-    height: 63px !important;
+    height: 150px !important;
   }
 }
 
 .pg-app-bar-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
-  height: 146px !important;
-}
-.pg-app-bar-mobile-height::v-deep.v-sheet.v-app-bar.v-toolbar:not(.v-sheet--outlined) {
-  height: 65px !important;
+  height: 200px !important;
+
+  @media screen and (max-width: 1024px) {
+    height: 186px !important;
+  }
 }
 .btn-register:before {
   background-color: transparent !important;
+}
+
+.paper-bg {
+  background-image: url('~@/assets/webp/paper-header.webp');
+  background-size: cover;
+  background-position: center bottom;
+
+  @media screen and (max-width: 1201px) {
+    background-image: url('~@/assets/webp/paper-header-mobile.webp');
+    background-size: cover;
+    background-position: center bottom;
+  }
+}
+
+.paper-bg-logged {
+  background-image: url('~@/assets/png/paper-header.png');
+
+  @media screen and (max-width: 1201px) {
+    background-image: url('~@/assets/png/paper-header-mobile.png');
+  }
 }
 </style>

@@ -1,12 +1,14 @@
 <template>
-  <pg-video-player
-    auto-play
-    force-default-poster
-    no-auto-track-change
-    :is-favorites-loading="isLoadingFavorites"
-    @ready="onPlayerReady"
-    @on-favorites-clicked="onFavoritesClicked"
-  />
+  <div class="pg-player-wrapper">
+    <pg-video-player
+      auto-play
+      force-default-poster
+      no-auto-track-change
+      :is-favorites-loading="isLoadingFavorites"
+      @ready="onPlayerReady"
+      @on-favorites-clicked="onFavoritesClicked"
+    />
+  </div>
 </template>
 
 <script lang="ts">

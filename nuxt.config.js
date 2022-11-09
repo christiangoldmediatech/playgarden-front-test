@@ -47,6 +47,9 @@ export default {
         content: process.env.npm_package_description || ''
       }
     ],
+    bodyAttrs: {
+      style: 'overflow: visible !important;'
+    },
     link: [
       {
         rel: 'icon',
@@ -61,6 +64,12 @@ export default {
         type: 'text/css',
         href:
           'https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;700;900&display=swap'
+      },
+      {
+        rel: 'stylesheet',
+        type: 'text/css',
+        href:
+          'https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap'
       },
       {
         rel: 'stylesheet',
@@ -138,6 +147,7 @@ export default {
    ** Nuxt.js dev-modules
    */
   buildModules: [
+    'nuxt-typed-vuex',
     '@nuxt/postcss8',
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
@@ -261,7 +271,7 @@ export default {
       '@gold-media-tech/pg-video-player'
     ],
     build: {
-      extend (config, ctx) {
+      extend(config, ctx) {
         if (ctx.isDev) {
           config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
         }
@@ -290,7 +300,8 @@ export default {
     dropBoxApiKey: process.env.DROPBOX_API_KEY || '',
     baseRouteProd,
     googlePlacesAPI: process.env.GOOGLE_PLACES_API_KEY || 'AIzaSyDh0lrueon0BEux1pIuT40ivuEI92qJr3o',
-    kidsCornerUrl: process.env.KIDS_CORNER_URL || 'http://localhost:8081'
+    kidsCornerUrl: process.env.KIDS_CORNER_URL || 'http://localhost:8081',
+    playgardenAdminUrl: process.env.PLAYGARDEN_ADMMIN_URL || 'http://localhost:8081'
   },
   router: {
     base: process.env.TEST_ENV === 'production' ? baseRouteProd : '/',

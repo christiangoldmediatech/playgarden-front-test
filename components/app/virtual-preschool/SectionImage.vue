@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <div class="pg-h-auto">
+    <div class="pg-h-auto pg-relative">
       <v-img
         :src="section.imageUrl"
         gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
@@ -13,10 +13,9 @@
       >
         <!-- Section Button -->
         <div
+          class="section-btn"
           :class="{
-            'section-top': !$vuetify.breakpoint.smAndDown,
-            'translucent': hover,
-            'section-btn': $vuetify.breakpoint.smAndDown,
+            translucent: hover,
           }"
         >
           <div>{{ section.title }}</div>
@@ -32,16 +31,20 @@
           >
 
           <!-- Lady -->
-          <img class="section-lady" :src="section.teacherUrl">
+          <img class="section-lady" :class="{ 'section-lady-small': medium }" :src="section.teacherUrl">
 
           <!-- Bubble -->
           <div class="section-bubble" />
 
           <!-- Bubble Text -->
-          <div class="section-bubble-text">
+          <div v-if="section.message" class="section-bubble-text" :class="{ 'section-bubble-text-small': small || medium }">
             {{ section.message }}
             <v-btn icon class="my-n4 mx-n2">
-              <v-icon class="white--text" size="22" @click.stop="$emit('click:play', section)">
+              <v-icon
+                class="white--text"
+                size="22"
+                @click.stop="$emit('click:play', section)"
+              >
                 mdi-volume-high
               </v-icon>
             </v-btn>
@@ -74,10 +77,14 @@ export default defineComponent({
     small: {
       type: Boolean,
       default: false
+    },
+    medium: {
+      type: Boolean,
+      default: false
     }
   },
 
-  setup () {
+  setup() {
     return {}
   }
 })
@@ -118,6 +125,11 @@ export default defineComponent({
     left: 10%;
   }
 
+  &-bubble-text-small {
+    top: 6% !important;
+    font-size: 0.95rem !important;
+  }
+
   &-bubble {
     width: 75%;
     background: red;
@@ -135,6 +147,10 @@ export default defineComponent({
     right: 0;
     bottom: 0;
     z-index: 1;
+  }
+
+  &-lady-small {
+    height: 45% !important;
   }
 
   &-start-playing {
@@ -162,26 +178,6 @@ export default defineComponent({
       padding: 8px 12px;
     }
   }
-
-  &-top {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-
-    background: rgb(104, 196, 83);
-    box-sizing: border-box;
-    border-radius: 8px;
-    cursor: pointer;
-
-    & div {
-      color: white;
-      font-size: 18px;
-      font-weight: 500;
-      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-      padding: 8px 12px;
-    }
-  }
-
 }
 
 .translucent {

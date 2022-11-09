@@ -1,8 +1,11 @@
 <template>
   <v-row align="center" justify="center" no-gutters class="py-0 py-md-16">
-    <v-col cols="11" md="6">
-      <div class="image mt-4 mt-md-0" :class="{mobile: $vuetify.breakpoint.smAndDown}">
-        <img alt="Smiling Girl Picture" src="@/assets/png/welcome-back.png">
+    <v-col cols="12" md="6">
+      <!-- CHILD IMAGE -->
+      <div
+        class="image"
+      >
+        <v-img contain alt="Smiling Girl Picture" :src="require('@/assets/png/welcome-back.png')" />
       </div>
     </v-col>
 
@@ -63,15 +66,19 @@ export default {
 
 <style lang="scss" scoped>
 .image {
+  margin-top: 48px;
   max-height: 500px;
-  width: 100%;
   display: flex;
   justify-content: center;
   align-content: center;
-  img {
-    max-width: 90%;
+}
+@media (max-width: $breakpoint-md) {
+  .image {
+    margin-top: 80px;
   }
-  &.mobile {
+}
+@media (max-width: $breakpoint-sm) {
+  .image {
     max-height: 250px;
   }
 }

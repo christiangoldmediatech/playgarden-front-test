@@ -1,6 +1,6 @@
 import { setAxios } from '@/utils'
 
-export default function ({ $axios, redirect, store, app }) {
+export default function ({ $axios, redirect, store, app, route }) {
   $axios.setBaseURL(process.env.apiBaseUrl)
 
   $axios.onRequest((config) => {
@@ -28,7 +28,7 @@ export default function ({ $axios, redirect, store, app }) {
         : error.response.data.message
     }
 
-    if (error.response.status === 401) {
+    if (error.response.status === 401 && route.name !== 'auth-login') {
       store.dispatch('auth/logout', { redirect })
     }
 
@@ -36,7 +36,9 @@ export default function ({ $axios, redirect, store, app }) {
       body = error.response.data.message
     }
 
-    store.commit('SET_NOTIFICATION_MESSAGE', { body, type: 'error' })
+    if (route.name !== 'auth-login') {
+      store.commit('SET_NOTIFICATION_MESSAGE', { body, type: 'error' })
+    }
   })
 
   setAxios($axios)
