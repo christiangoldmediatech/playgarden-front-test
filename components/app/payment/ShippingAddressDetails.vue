@@ -396,6 +396,8 @@ export default {
         this.$snotify.success('Shipping address has been saved successfully!')
         this.$emit('shipping-address-saved')
 
+        this.isEditing = false
+
         this.onCancel()
       } catch (e) {
       } finally {
