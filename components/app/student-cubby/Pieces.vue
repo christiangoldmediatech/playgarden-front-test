@@ -9,7 +9,8 @@
           />
           <p class="mt-2 mb-0">
             <span :class="$vuetify.breakpoint.smAndDown ? 'text-pieces' : ''">
-              Look at all the pieces you've got! Keep going to earn a printable coloring page.
+              Look at all the pieces you've got! Keep going to earn a printable
+              coloring page.
             </span>
           </p>
         </v-col>
@@ -41,11 +42,21 @@
             </v-row>
           </div>
         </v-col>
-        <v-col v-if="puzzle.piecesUnclocked >= puzzle.pieces && !$vuetify.breakpoint.xs" class="d-flex align-center">
-          <a v-if="puzzle.src" :download="puzzle.src" :href="puzzle.src" target="_blank">
-            <v-btn class="elevation-0 ml-auto" fab :large="!$vuetify.breakpoint.smAndDown" color="#68C453">
-              <img src="@/assets/svg/printer.svg" alt="printer icon" />
-            </v-btn></a>
+        <v-col
+          v-if="
+            puzzle.piecesUnclocked >= puzzle.pieces && !$vuetify.breakpoint.xs
+          "
+          class="d-flex align-center"
+        >
+          <v-btn
+            class="elevation-0 ml-auto"
+            fab
+            :large="!$vuetify.breakpoint.smAndDown"
+            color="#68C453"
+            @click="printPuzzle"
+          >
+            <img src="@/assets/svg/printer.svg" alt="printer icon" />
+          </v-btn>
         </v-col>
       </v-row>
 
@@ -60,25 +71,6 @@
             :student-id="studentId"
             :letter="letter"
           />
-        </v-col>
-        <v-col
-          v-if="
-            !$vuetify.breakpoint.smAndDown &&
-              puzzle.piecesUnclocked === puzzle.pieces
-          "
-          class="mt-12"
-          cols="2"
-        >
-          <v-row justify="end" no-gutters>
-            <pg-social-buttons
-              class="mr-3"
-              entity-auto-resolve
-              :entity-id="puzzle.puzzleChildrenId"
-              entity-type="PUZZLE"
-              mini-variant
-              :url="puzzle.src"
-            />
-          </v-row>
         </v-col>
         <v-col v-if="$vuetify.breakpoint.smAndDown" cols="12">
           <div class="mx-3">
@@ -104,14 +96,6 @@
                     :value="puzzle.percentageCompleted"
                   />
                 </v-col>
-                <v-col v-else cols="12">
-                  <pg-social-buttons
-                    class="mt-6"
-                    :entity-id="puzzle.puzzleChildrenId"
-                    entity-type="PUZZLE"
-                    :url="puzzle.src"
-                  />
-                </v-col>
               </v-row>
             </center>
           </div>
@@ -124,8 +108,9 @@
 <script>
 import { mapActions } from 'vuex'
 
-import PuzzleCover from '@/components/app/student-cubby/PuzzleCover'
-import { axios } from '@/utils'
+import PuzzleCover from '@/components/app/student-cubby/PuzzleCover.vue'
+import html2pdf from 'html2pdf.js'
+import html2canvas from 'html2canvas'
 
 export default {
   name: 'Pieces',
@@ -186,6 +171,24 @@ export default {
         this.uncover = this.puzzle.piecesUnclocked
         this.letter = this.puzzle.letter
       }
+    },
+
+    async printPuzzle() {
+      const puzzle = document.getElementById('puzzle')
+      const data = await html2canvas(puzzle)
+      const img = data.toDataURL('image/png')
+      const element = document.createElement('img')
+      element.src = img
+      element.style.width = '100%'
+      html2pdf()
+        .set({
+          margin: 1,
+          filename: `puzzle-letter-${this.letter}.pdf`,
+          jsPDF: { orientation: 'landscape', format: 'a4' }
+        })
+        .from(element)
+        .toImg()
+        .save()
     }
   }
 }
@@ -228,7 +231,8 @@ export default {
 }
 
 @media print {
-  html, body {
+  html,
+  body {
     width: 210mm;
     height: 297mm;
   }
@@ -241,7 +245,8 @@ export default {
     visibility: hidden;
   }
 
-  #puzzle, #puzzle * {
+  #puzzle,
+  #puzzle * {
     visibility: visible;
   }
   #puzzle {
@@ -254,9 +259,8 @@ export default {
     position: fixed;
     bottom: 0;
     left: 120mm;
-    -webkit-print-color-adjust:exact !important;
-    print-color-adjust:exact !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 }
-
 </style>
