@@ -17,7 +17,8 @@ export interface Video extends Entity {
   order: number
   srcVideo: string
   status: string
-  thumbnail: string
+  thumbnail?: string
+  image: string
   topics?: Topic[]
   uploadId: string
   videoUrl: VideoUrl
@@ -25,24 +26,24 @@ export interface Video extends Entity {
 }
 
 export enum VideoStateEnum {
-    ASSISTED= 'ASSITED',
-    ERROR= 'ERROR',
-    COMPLETED='COMPLETED',
-    INCOMPLETED='INCOMPLETED',
-    WON='WON',
-    STARTED='STARTED',
-    VIEWED='VIEWED',
-    CREATED='CREATED',
-    DELETED='DELETED',
-    SAVED='SAVED',
-    UPDATED='UPDATED',
-    UNBLOCKED='UNBLOCKED',
-    VIDEO_STARTED='VIDEO_STARTED',
-    VIDEO_RESUMED='VIDEO_RESUMED',
-    VIDEO_COMPLETED='VIDEO_COMPLETED',
-    VIDEO_PAUSED='VIDEO_PAUSED',
-    VIDEO_SKIPPED='VIDEO_SKIPPED',
-    VIDEO_CLOSED='VIDEO_CLOSED',
-    PLAYED='PLAYED',
-    RESERVED='RESERVED'
+  ASSISTED = 'ASSITED',
+  ERROR = 'ERROR',
+  COMPLETED = 'COMPLETED',
+  INCOMPLETED = 'INCOMPLETED',
+  WON = 'WON',
+  STARTED = 'STARTED',
+  VIEWED = 'VIEWED',
+  CREATED = 'CREATED',
+  DELETED = 'DELETED',
+  SAVED = 'SAVED',
+  UPDATED = 'UPDATED',
+  UNBLOCKED = 'UNBLOCKED',
+  VIDEO_STARTED = 'VIDEO_STARTED',
+  VIDEO_RESUMED = 'VIDEO_RESUMED',
+  VIDEO_COMPLETED = 'VIDEO_COMPLETED',
+  VIDEO_PAUSED = 'VIDEO_PAUSED',
+  VIDEO_SKIPPED = 'VIDEO_SKIPPED',
+  VIDEO_CLOSED = 'VIDEO_CLOSED',
+  PLAYED = 'PLAYED',
+  RESERVED = 'RESERVED'
 }

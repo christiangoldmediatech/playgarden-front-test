@@ -53,7 +53,7 @@
         <v-card class="px-5">
           <v-row align="center" justify="start">
             <v-col cols="2">
-              <v-img :src="currentBookVideo.thumbnail" contain width="100" />
+              <v-img :src="currentBookVideo.thumbnail || currentBookVideo.image" contain width="100" />
             </v-col>
             <v-col cols="7">
               <div class="mb-2">
