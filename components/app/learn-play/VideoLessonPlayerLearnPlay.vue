@@ -131,7 +131,7 @@ export default defineComponent({
       player.value.loadPlaylist([
         {
           title: video.name,
-          poster: video.thumbnail,
+          poster: video.image,
           description: video.description,
           src: {
             url: video.videoUrl.HLS,

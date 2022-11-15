@@ -79,7 +79,7 @@ export default {
           return {
             title: activity.activityType.name,
             description: activity.videos.description,
-            poster: activity.videos.thumbnail,
+            poster: activity.videos.image,
             src: {
               url: activity.videos.videoUrl.HLS,
               type: 'application/x-mpegURL'
