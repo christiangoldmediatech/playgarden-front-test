@@ -1,7 +1,7 @@
 <template>
   <div class="mx-1">
     <v-img
-      :src="playAndLearnVideo.video.thumbnail || playAndLearnVideo.video.image"
+      :src="playAndLearnVideo.video.thumbnail"
       class="rounded-lg clickable"
       content-class="d-flex align-end justify-center"
       width="131px"

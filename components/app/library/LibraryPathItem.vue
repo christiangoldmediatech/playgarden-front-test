@@ -13,7 +13,7 @@
     @mouseleave="scaleDown"
   >
     <template v-if="pathItem.video">
-      <img v-lazyload :data-url="pathItem.video.thumbnail || pathItem.video.image" @click="handleBubblePlay">
+      <img v-lazyload :data-url="pathItem.video.thumbnail" @click="handleBubblePlay">
       <letter-video-card
         :media-object="videoToMediaObject(pathItem.video, 0, undefined)"
         :visible="isScaled"

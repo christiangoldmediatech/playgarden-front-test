@@ -17,7 +17,7 @@ export interface Video extends Entity {
   order: number
   srcVideo: string
   status: string
-  thumbnail?: string
+  thumbnail: string
   image: string
   topics?: Topic[]
   uploadId: string
