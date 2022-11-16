@@ -1,22 +1,28 @@
 <template>
   <div class="week-selector">
-    <v-icon
-      color="accent"
+    <v-btn
+      icon
+      class="elevation-3"
       :disabled="loading"
       @click="$emit('prev-week')"
     >
-      mdi-less-than
-    </v-icon>
+      <v-icon color="accent">
+        mdi-chevron-left
+      </v-icon>
+    </v-btn>
 
-    {{ currentWeek }}
+    <underlined-title :text="currentWeek" font-size="1.75rem" />
 
-    <v-icon
-      color="accent"
+    <v-btn
+      icon
+      class="elevation-3"
       :disabled="loading"
       @click="$emit('next-week')"
     >
-      mdi-greater-than
-    </v-icon>
+      <v-icon color="accent">
+        mdi-chevron-right
+      </v-icon>
+    </v-btn>
   </div>
 </template>
 
@@ -40,22 +46,35 @@ export default {
   },
 
   computed: {
-    currentWeek () {
+    currentWeek() {
       let partA = ''
       let partB = ''
       const days = getWeekStartAndEnd(this.day)
 
-      const PART_A_MONTH = days.sunday.toLocaleString('default', { month: 'long' })
-      partA = `${PART_A_MONTH} ${days.sunday.getDate().toString().padStart(2, '0')}`
+      const PART_A_MONTH = days.sunday.toLocaleString('default', {
+        month: 'long'
+      })
+      partA = `${PART_A_MONTH} ${days.sunday
+        .getDate()
+        .toString()
+        .padStart(2, '0')}`
 
       if (days.sunday.getMonth() !== days.saturday.getMonth()) {
-        const PART_B_MONTH = days.saturday.toLocaleString('default', { month: 'long' })
-        partB = `${PART_B_MONTH} ${days.saturday.getDate().toString().padStart(2, '0')}, ${days.saturday.getFullYear()}`
+        const PART_B_MONTH = days.saturday.toLocaleString('default', {
+          month: 'long'
+        })
+        partB = `${PART_B_MONTH} ${days.saturday
+          .getDate()
+          .toString()
+          .padStart(2, '0')}, ${days.saturday.getFullYear()}`
         if (days.sunday.getFullYear() !== days.saturday.getFullYear()) {
           partA += `, ${days.sunday.getFullYear()}`
         }
       } else {
-        partB = `${days.saturday.getDate().toString().padStart(2, '0')}, ${days.saturday.getFullYear()}`
+        partB = `${days.saturday
+          .getDate()
+          .toString()
+          .padStart(2, '0')}, ${days.saturday.getFullYear()}`
       }
 
       return `${partA} - ${partB}`
@@ -70,5 +89,9 @@ export default {
   font-weight: 400;
   line-height: 1.5;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 </style>

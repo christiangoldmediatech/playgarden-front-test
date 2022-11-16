@@ -9,6 +9,7 @@
     <v-hover v-slot="{ hover }">
       <v-card
         class="lsess-card clickable"
+        :style="{'--borderColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}"
         :class="{ 'lsess-card-scaled': hover, 'lsess-card-active': isLive }"
         :disabled="block"
         @click.stop="openLink"
@@ -20,10 +21,22 @@
         >
         <v-row class="ma-0">
           <v-col class="flex-grow-0 flex-shrink-1">
-            <img
-              class="lsess-card-activity-type"
-              :src="entry.activityType.icon"
-            >
+            <div v-if="entry.teacher" class="pg-relative">
+              <img
+                class="lsess-card-activity-type ml-1 mt-1 pg-object-cover"
+                :src="entry.teacher.img"
+              />
+              <img
+                class="pg-w-[30px] pg-h-[30px] pg-bg-white pg-rounded-full pg-p-1 pg-shadow-sm pg-absolute pg-bottom-0 pg-right-[-5px]"
+                :src="entry.activityType.icon"
+              />
+            </div>
+            <div v-else>
+              <img
+                class="lsess-card-activity-type ml-1 mt-1"
+                :src="entry.activityType.icon"
+              />
+            </div>
           </v-col>
           <v-col>
             <div class="d-flex flex-column justify-space-between fill-height">
@@ -171,6 +184,9 @@ export default {
   }
   &-card {
     transition: transform 250ms;
+    border-radius: 20px !important;
+    padding: 10px;
+    border: 5px solid var(--borderColor) !important;
     &-scaled {
       transform: scale(1.01);
       z-index: 1;

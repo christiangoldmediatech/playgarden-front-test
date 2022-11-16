@@ -1,10 +1,46 @@
 <template>
   <div class="fill-height d-flex flex-column">
     <div class="lsess-daily-container">
-      <v-card class="lsess-daily-card pt-4">
-        <v-row class="mx-0" align="center" justify="center">
-          <img class="mr-3" src="@/assets/svg/sessions-camera.svg">
-          <span class="lsess-title">Live Class Schedule</span>
+      <div class="lsess-daily-card pt-4">
+        <div class="mx-0 pl-3">
+          <span class="lsess-title">Filter by</span>
+          <v-radio-group v-model="radio" @change="$emit('change', $event)">
+            <v-radio
+              label="All classes"
+              value="all"
+              color="#8CD2FF"
+            >
+              <template #label>
+                <span>All classes</span>
+              </template>
+            </v-radio>
+            <v-radio
+              label="Live Classes"
+              value="liveClasses"
+              color="#8CD2FF"
+            >
+              <template #label>
+                <span class="pg-text-[#F89838]">Live Classes</span>
+              </template>
+            </v-radio>
+            <v-radio
+              label="Playdates"
+              value="playdates"
+              color="#8CD2FF"
+            >
+              <template #label>
+                <span class="pg-text-[#68C453]">Playdates</span>
+              </template>
+            </v-radio>
+          </v-radio-group>
+        </div>
+        <v-row class="mx-3 mb-7 mt-2 py-2 pg-border-b-2 pg-border-t-2 pg-border-[#C8C8C8] pg-border-dashed pg-border-l-0 pg-border-r-0 pg-cursor-pointer" align="center" justify="start">
+          <img class="mr-3" src="@/assets/svg/camera.svg" />
+          <span class="lsess-title !pg-font-normal">My playdates</span>
+        </v-row>
+        <v-row class="mx-0 pl-3" align="center" justify="start">
+          <img class="mr-3" src="@/assets/svg/sessions-camera.svg" />
+          <span class="lsess-title">Next Classes</span>
         </v-row>
 
         <v-row class="mx-0 lsess-schedule-container">
@@ -31,25 +67,14 @@
 
             <template v-else>
               <div class="my-10 lsess-title text-center">
-                There are no pending events for
-                {{ hasUserLearnAndPlayPlan ? 'you' : '' }} this week.
+                There are no pending events
+                {{ hasUserLearnAndPlayPlan ? 'for you' : '' }} this week.
               </div>
             </template>
           </v-col>
         </v-row>
-      </v-card>
+      </div>
     </div>
-
-    <v-btn
-      class="lsess-calendar-btn text-none font-weight-bold flex-shrink-1 flex-grow-0"
-      block
-      color="grey lighten-5"
-      solo
-      x-large
-      @click="$emit('mode-change')"
-    >
-      Calendar
-    </v-btn>
   </div>
 </template>
 
@@ -73,6 +98,17 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    type: {
+      type: String,
+      required: false,
+      default: 'all'
+    }
+  },
+
+  data() {
+    return {
+      radio: 'all'
     }
   },
 
@@ -100,6 +136,10 @@ export default {
 
       return sorted
     }
+  },
+
+  mounted() {
+    this.radio = this.type
   },
 
   methods: {

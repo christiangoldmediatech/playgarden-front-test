@@ -59,7 +59,6 @@ export default {
             },
             { title: 'Video Library', to: { name: 'app-library' }, exact: false, dataTestId: 'app-library' },
             { title: 'Music', to: { name: 'app-music' }, exact: false, dataTestId: 'app-music' },
-            { title: 'Playdates', to: { name: 'app-playdates' }, exact: false, dataTestId: 'app-playdates' },
             {
               title: 'Kids Corner',
               dataTestId: 'app-kids-corner',

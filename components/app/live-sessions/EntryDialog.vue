@@ -7,21 +7,31 @@
     z-index="2000"
   >
     <div class="entry-container">
-      <v-card class="entry-card">
-        <template v-if="entry">
-          <div class="green-line-bigger green-line-1" />
-          <div class="green-line-bigger green-line-2" />
+      <template v-if="entry">
+        <v-card class="entry-card" :style="{'--borderColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}">
           <div v-if="$vuetify.breakpoint.smAndDown" class="entry-card-elipse">
-            <img class="entry-card-elipse-img" :src="entry.activityType.icon">
+            <img class="entry-card-elipse-img" :src="entry.activityType.icon" />
           </div>
 
           <v-container class="entry-card-content">
             <v-row>
               <div v-if="$vuetify.breakpoint.mdAndUp" class="entry-card-elipse">
-                <img
-                  class="entry-card-elipse-img"
-                  :src="entry.activityType.icon"
-                >
+                <div v-if="entry.teacher" class="pg-relative">
+                  <img
+                    class="entry-card-elipse-img ml-1 mt-1 pg-object-cover"
+                    :src="entry.teacher.img"
+                  />
+                  <img
+                    class="pg-w-[50px] pg-h-[50px] pg-bg-white pg-rounded-full pg-p-1 pg-shadow-sm pg-absolute pg-bottom-0 pg-right-[-5px]"
+                    :src="entry.activityType.icon"
+                  />
+                </div>
+                <div v-else>
+                  <img
+                    class="lsess-table-entry-type ml-1 mt-1"
+                    :src="entry.activityType.icon"
+                  />
+                </div>
               </div>
               <v-col>
                 <div class="entry-card-title">
@@ -30,12 +40,15 @@
                 <div class="entry-card-date">
                   {{ date }}
                 </div>
-                <div class="entry-card-teacher pb-10">
+                <div v-if="entry.teacher" class="entry-card-teacher pb-10">
+                  With {{ entry.teacher.name }}
+                </div>
+                <div v-else class="entry-card-teacher pb-10">
                   With {{ entry.teacher }}
                 </div>
 
                 <div class="entry-card-description pb-3">
-                  <p class="entry-card-description-title">
+                  <p class="entry-card-description-title" :style="{'--textColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}">
                     Description
                   </p>
                   {{ entry.description }}
@@ -62,9 +75,8 @@
                     </template>
                   </v-btn>
                 </div>
-
                 <div class="entry-card-description pb-6">
-                  <p class="entry-card-description-title">
+                  <p class="entry-card-description-title" :style="{'--textColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}">
                     Recommended ages
                   </p>
                   {{ entry.ages }}
@@ -78,7 +90,7 @@
                   <img
                     class="entry-card-collaborator ml-6"
                     :src="entry.inCollaborationWith"
-                  >
+                  />
                 </div>
               </v-col>
             </v-row>
@@ -116,8 +128,8 @@
               Close
             </v-btn>
           </v-container>
-        </template>
-      </v-card>
+        </v-card>
+      </template>
     </div>
   </v-overlay>
 </template>
@@ -333,10 +345,11 @@ export default {
   }
   &-card {
     position: relative;
-    overflow-y: visible;
+    overflow-y: auto;
     max-height: 100%;
+    border-radius: 40px !important;
+    border: 10px solid var(--borderColor) !important;
     &-elipse {
-      position: absolute;
       width: 156px;
       height: 156px;
       margin: 0 auto;
@@ -344,15 +357,15 @@ export default {
       left: calc(50% - 78px);
       background-color: white;
       box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+      border: unset !important;
       border-radius: 50%;
-      border: solid 10px #68c453;
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 300;
       @media screen and (min-width: 960px) {
-        width: 110px;
-        height: 110px;
+        width: 156px;
+        height: 156px;
         position: static;
         top: auto;
         left: auto;
@@ -361,15 +374,16 @@ export default {
         border: solid 5px #68c453;
       }
       &-img {
-        width: 90px;
-        height: 90px;
+        width: 120px;
+        height: 120px;
         object-fit: contain;
         object-position: center;
         @media screen and (min-width: 960px) {
-          width: 70px;
-          height: 70px;
+          width: 156px;
+          height: 156px;
         }
       }
+
     }
     &-content {
       max-height: calc(99vh - 200px);
@@ -402,6 +416,7 @@ export default {
       &-title {
         font-weight: 700;
         line-height: 1.5;
+        color: var(--textColor);
       }
     }
     &-activity-type {
