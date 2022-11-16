@@ -22,12 +22,23 @@
           "
         />
       </div>
-
       <div class="pg-flex pg-items-center pg-gap-2 pg-mt-3">
-        <img
-          class="lsess-table-entry-type ml-1 mt-1"
-          :src="entry.activityType.icon"
-        />
+        <div v-if="entry.teacher" class="pg-relative">
+          <img
+            class="lsess-table-entry-type ml-1 mt-1 pg-object-cover"
+            :src="entry.teacher.img"
+          />
+          <img
+            class="pg-w-[25px] pg-h-[25px] pg-bg-white pg-rounded-full pg-p-1 pg-shadow-sm pg-absolute pg-bottom-0 pg-right-[-5px]"
+            :src="entry.activityType.icon"
+          />
+        </div>
+        <div v-else>
+          <img
+            class="lsess-table-entry-type ml-1 mt-1"
+            :src="entry.activityType.icon"
+          />
+        </div>
         <span class="pg-font-bold">
           {{
             entry.type === 'LiveClass' ? entry.activityType.name : entry.title

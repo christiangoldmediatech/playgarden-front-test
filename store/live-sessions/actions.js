@@ -43,9 +43,10 @@ export default {
     return this.$axios.$patch(`/live-sessions/${id}/recover`)
   },
 
-  async getUserLiveSessions ({ commit, rootGetters }, { sunday, saturday, admin }) {
+  async getUserLiveSessions ({ commit, rootGetters }, { sunday, saturday, admin, type }) {
     try {
-      let data
+      let data, meetings, total
+
       const params = {
         limit: 100,
         page: 1,
@@ -58,9 +59,12 @@ export default {
         params.active = true
       }
 
-      const { total, meetings, block } = data = await this.$axios.$get('/live-sessions', {
+      const { total: totalData, meetings: meetingsList, block } = data = await this.$axios.$get('/live-sessions', {
         params
       })
+
+      total = totalData
+      meetings = meetingsList
 
       const playdates = await this.$axios.$get('/live-sessions/show-children', {
         params: {
@@ -73,7 +77,14 @@ export default {
         }
       })
 
-      meetings.push(...playdates)
+      if (type !== 'liveClasses') {
+        meetings.push(...playdates)
+      }
+
+      if (type === 'playdates') {
+        meetings = meetings.filter((x) => x.type === 'Playdate')
+        total = meetings.length
+      }
 
       const userInfo = rootGetters['auth/getUserInfo']
       const timezone = (userInfo.timezone) ? userInfo.timezone : 'America/New_York'

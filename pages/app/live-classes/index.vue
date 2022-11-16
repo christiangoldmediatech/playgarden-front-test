@@ -17,21 +17,31 @@
         />
 
         <v-row class="fill-height">
-          <v-col class="lsess-daily" cols="12" md="4" lg="3" xl="2">
-            <today-cards-panel
-              v-if="mode === 'TODAY'"
-              @mode-change="mode = 'CALENDAR'"
-            />
-            <calendar-panel
-              v-else
-              v-model="today"
-              @mode-change="mode = 'TODAY'"
-            />
+          <v-col>
+            <v-navigation-drawer
+              :mini-variant="drawer"
+              absolute
+              bottom
+              mini-variant-width="80"
+              width="400"
+            >
+              <v-row>
+                <v-col cols="12" class="d-flex" :class="[ !drawer ? 'pg-justify-end pg-pr-12': 'pg-justify-center']">
+                  <v-btn icon @click="drawer = !drawer">
+                    <img v-if="drawer" src="@/assets/svg/meetings/open-menu.svg" alt="Open Menu">
+                    <img v-else src="@/assets/svg/meetings/close-menu.svg" alt="Open Menu">
+                  </v-btn>
+                </v-col>
+                <v-col v-if="!drawer" class="lsess-daily" cols="12">
+                  <today-cards-panel :type="filterType" @change="filterMeetings($event)" />
+                </v-col>
+              </v-row>
+            </v-navigation-drawer>
           </v-col>
 
-          <v-col class="pt-0 lsess-schedule" cols="12" md="8" lg="9" xl="10">
+          <v-col class="pt-0 lsess-schedule" cols="11">
             <v-row
-              class="my-0 pos-relative pt-md-2"
+              class="my-0 pos-relative pt-md-2 pg-max-w-5xl pg-mx-auto"
               justify="center"
               align="center"
             >
@@ -80,18 +90,6 @@
                   />
                 </template>
               </v-col>
-
-              <v-btn
-                class="mt-6 text-none mr-md-4 mt-md-0"
-                :class="{
-                  'pos-absolute pos-right-0': $vuetify.breakpoint.mdAndUp
-                }"
-                color="accent"
-                :large="$vuetify.breakpoint.smAndDown"
-                @click.stop="goToRecordings"
-              >
-                Watch recorded classes
-              </v-btn>
             </v-row>
 
             <v-row>
@@ -303,7 +301,6 @@ import {
 } from '@/utils/dateTools'
 import TodayCardsPanel from '@/components/app/live-sessions/TodayCardsPanel.vue'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
-import CalendarPanel from '@/components/app/live-sessions/CalendarPanel.vue'
 import EntryDialog from '@/components/app/live-sessions/EntryDialog.vue'
 import SessionsTable from '@/components/app/live-sessions/SessionsTable.vue'
 import RecordedClassPlayer from '@/components/app/live-sessions/RecordedClassPlayer.vue'
@@ -319,7 +316,6 @@ export default {
   components: {
     TodayCardsPanel,
     TodayCard,
-    CalendarPanel,
     EntryDialog,
     SessionsTable,
     RecordedClassPlayer,
@@ -339,7 +335,9 @@ export default {
       selectedTimezone: 'America/New_York',
       timezoneDialog: false,
       timezoneOptions,
-      viewModeVal: 0
+      viewModeVal: 0,
+      drawer: true,
+      filterType: 'all'
     }
   },
 
@@ -449,7 +447,7 @@ export default {
   methods: {
     async getUserLiveSessions() {
       this.loading = true
-      await this.$store.dispatch('live-sessions/getUserLiveSessions', this.days)
+      await this.$store.dispatch('live-sessions/getUserLiveSessions', { ...this.days, type: this.filterType })
       this.loading = false
     },
 
@@ -473,10 +471,6 @@ export default {
       const { timezone } = this.getUserInfo
       const currentTimezone = getTimezone(timezone)
       this.selectedTimezone = currentTimezone
-    },
-
-    goToRecordings() {
-      this.$router.push({ name: 'app-live-classes-recorded' })
     },
 
     getDateObj() {
@@ -529,6 +523,11 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    filterMeetings (type) {
+      this.filterType = type
+      this.getUserLiveSessions()
     }
   }
 }
