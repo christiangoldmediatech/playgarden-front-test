@@ -2,7 +2,7 @@
   <div class="fill-height d-flex flex-column">
     <div class="lsess-daily-container">
       <div class="lsess-daily-card pt-4">
-        <div class="mx-0 pl-3">
+        <div class="mx-0 pl-6">
           <span class="lsess-title">Filter by</span>
           <v-radio-group v-model="radio" @change="$emit('change', $event)">
             <v-radio
@@ -34,11 +34,11 @@
             </v-radio>
           </v-radio-group>
         </div>
-        <v-row class="mx-3 mb-7 mt-2 py-2 pg-border-b-2 pg-border-t-2 pg-border-[#C8C8C8] pg-border-dashed pg-border-l-0 pg-border-r-0 pg-cursor-pointer" align="center" justify="start">
+        <v-row class="mx-3 mb-7 mt-2 py-2 ml-4 pl-2 pg-border-b-2 pg-border-t-2 pg-border-[#C8C8C8] pg-border-dashed pg-border-l-0 pg-border-r-0 pg-cursor-pointer" align="center" justify="start">
           <img class="mr-3" src="@/assets/svg/camera.svg" />
           <span class="lsess-title !pg-font-normal">My playdates</span>
         </v-row>
-        <v-row class="mx-0 pl-3" align="center" justify="start">
+        <v-row class="mx-0 pl-5" align="center" justify="start">
           <img class="mr-3" src="@/assets/svg/sessions-camera.svg" />
           <span class="lsess-title">Next Classes</span>
         </v-row>

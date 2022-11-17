@@ -1,5 +1,10 @@
-@import './transitions';
-@import './utilities/';
+@import "./transitions";
+@import "./utilities/";
+
+/* Layout */
+#__layout {
+  overflow-y: initial !important;
+}
 
 /* VENDOR */
 /* import them directly into nuxt.config.js */
@@ -47,7 +52,7 @@
 }
 
 .green-line-2 {
-  background-color: #B2E68D;
+  background-color: #b2e68d;
 }
 
 .theme--light.v-divider {
@@ -75,7 +80,7 @@
     position: absolute;
     bottom: 0;
     left: -7.5%;
-    content: '';
+    content: "";
     z-index: -1;
     border-bottom: 11px solid var(--bgColor);
   }
@@ -95,7 +100,7 @@
     position: absolute;
     bottom: 7px;
     left: -5.5%;
-    content: '';
+    content: "";
     z-index: -1;
     border-bottom: 11px solid var(--bgColor);
   }
@@ -211,26 +216,25 @@
 }
 
 .v-application .background-card-learn-play {
-  background-image: url('~@/assets/png/learn-and-play-bg.png') !important;
+  background-image: url("~@/assets/png/learn-and-play-bg.png") !important;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 .background-card {
-  background-image: url('~@/assets/png/green-whirl.png') !important;
+  background-image: url("~@/assets/png/green-whirl.png") !important;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   max-height: 510px !important;
 }
 .background-card-mobile {
-  background-image: url('~@/assets/png/green-whirl.png') !important;
+  background-image: url("~@/assets/png/green-whirl.png") !important;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   min-height: calc(100vh - 255px);
 }
-
 
 // Tailwind inspired css classes
 .\!pg-shadow-button {
@@ -242,7 +246,7 @@
 }
 
 .v2-font {
-  font-family: 'Quicksand', 'Poppins', sans-serif;
+  font-family: "Quicksand", "Poppins", sans-serif;
 }
 
 .pg-player-wrapper {
