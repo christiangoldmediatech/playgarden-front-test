@@ -34,7 +34,7 @@
             </v-radio>
           </v-radio-group>
         </div>
-        <v-row class="mx-3 mb-7 mt-2 py-2 ml-4 pl-2 pg-border-b-2 pg-border-t-2 pg-border-[#C8C8C8] pg-border-dashed pg-border-l-0 pg-border-r-0 pg-cursor-pointer" align="center" justify="start">
+        <v-row class="mx-3 mb-7 mt-2 py-2 ml-4 pl-2 pg-border-b-2 pg-border-t-2 pg-border-[#C8C8C8] pg-border-dashed pg-border-l-0 pg-border-r-0 pg-cursor-pointer" align="center" justify="start" @click="goToMyPlaydates">
           <img class="mr-3" src="@/assets/svg/camera.svg" />
           <span class="lsess-title !pg-font-normal">My playdates</span>
         </v-row>
@@ -149,6 +149,9 @@ export default {
         !this.hasUserLearnAndPlayPlan ||
         (this.hasUserLearnAndPlayPlan && (day === 0 || day === 6))
       )
+    },
+    goToMyPlaydates() {
+      this.$router.push({ name: 'app-live-classes-my-playdates' })
     }
   }
 }

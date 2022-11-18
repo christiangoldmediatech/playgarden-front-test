@@ -44,7 +44,7 @@
                   With {{ entry.teacher.name }}
                 </div>
                 <div v-else class="entry-card-teacher pb-10">
-                  With {{ entry.teacher }}
+                  With {{ entry.teacherName }}
                 </div>
 
                 <div class="entry-card-description pb-3">
@@ -75,11 +75,29 @@
                     </template>
                   </v-btn>
                 </div>
-                <div class="entry-card-description pb-6">
+                <div v-if="entry.type === 'LiveClass'" class="entry-card-description pb-6">
                   <p class="entry-card-description-title" :style="{'--textColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}">
                     Recommended ages
                   </p>
                   {{ entry.ages }}
+                </div>
+                <div v-if="entry.type === 'Playdate'" class="entry-card-description pb-6 pg-flex pg-items-center pg-gap-4">
+                  <p class="entry-card-description-title mb-0" :style="{'--textColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}">
+                    Spots
+                  </p>
+                  <span>
+                    {{ entry.backpackImages.length }} / {{ entry.spots }}
+                  </span>
+                </div>
+
+                <div v-if="entry.type === 'Playdate'" class="entry-card-description pb-6">
+                  <p class="entry-card-description-title mb-0" :style="{'--textColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}">
+                    Who is going?
+                  </p>
+                  <div class="mr-0 mr-sm-8 mt-3">
+                    <child-select v-if="!hasSpotInThisPlaydate" v-model="childId" hide-details />
+                    <child-select v-else-if="child" :value="child.id" disabled hide-details />
+                  </div>
                 </div>
 
                 <div
@@ -107,13 +125,40 @@
               </v-btn>
             </div>
 
-            <div v-if="!past" class="pb-3">
+            <v-btn
+              :disabled="!childId"
+              :loading="isLoadingSpotAction"
+              class="!pg-shadow-button !pg-text-[18px] text-none white--text pg-mb-5"
+              color="#FD82AC"
+              target="_blank"
+              block
+              large
+              data-test-id="card-playdate-join-button"
+              @click="handleReserveSpot"
+            >
+              Reserve Spot
+            </v-btn>
+
+            <div v-if="!past" class="pb-3 mb-3">
               <v-btn
+                v-if="entry.type ==='LiveClass'"
                 class="white--text"
                 color="accent"
                 x-large
                 :href="entry.link"
                 :disabled="!isLive"
+                target="_blank"
+                block
+                @click="doSaveAttendance"
+              >
+                OPEN ZOOM LINK
+              </v-btn>
+              <v-btn
+                v-else-if="child"
+                class="white--text"
+                color="accent"
+                x-large
+                :href="entry.link"
                 target="_blank"
                 block
                 @click="doSaveAttendance"
@@ -135,32 +180,88 @@
 </template>
 
 <script>
+import { ref, computed, useStore } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import { TAG_MANAGER_EVENTS } from '@/models'
-
+import { useChild, usePlaydates, useSnotifyHelper } from '@/composables'
 import { getNumberOrder, hours24ToHours12 } from '@/utils/dateTools'
+import ChildSelect from '@/components/app/ChildSelect.vue'
 
 export default {
   name: 'EntryDialog',
 
-  data: () => {
+  components: {
+    ChildSelect
+  },
+
+  setup(_, { emit }) {
+    const snotify = useSnotifyHelper()
+    const store = useStore()
+    const { reserveASpot } = usePlaydates({ store })
+    const { children } = useChild({ store })
+
+    const childId = ref(null)
+    const isLoadingSpotAction = ref(false)
+    const dialog = ref(false)
+    const entry = ref(null)
+    const playdate = computed(() => entry.value)
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ]
+
+    const child = computed(() => {
+      return children.value.find(({ id }) => {
+        return playdate.value?.backpackImages?.find(({ childrenId }) => {
+          return id === childrenId
+        })
+      })
+    })
+
+    const hasSpotInThisPlaydate = computed(() => {
+      return Boolean(playdate.value?.backpackImages?.find(({ childrenId }) => {
+        return children.value.find(({ id }) => {
+          return id === childrenId
+        })
+      }))
+    })
+
+    const handleReserveSpot = async () => {
+      try {
+        isLoadingSpotAction.value = true
+
+        await reserveASpot({ playdateId: playdate.value.id, childId: childId.value, date: playdate.value.date })
+
+        childId.value = null
+        snotify.success('Spot reserved!')
+        dialog.value = false
+        emit('refresh')
+      } catch (error) {
+        snotify.error(error)
+      } finally {
+        isLoadingSpotAction.value = false
+      }
+    }
+
     return {
-      dialog: false,
-      entry: null,
-      months: [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
-      ]
+      dialog,
+      entry,
+      months,
+      hasSpotInThisPlaydate,
+      childId,
+      isLoadingSpotAction,
+      child,
+      handleReserveSpot
     }
   },
 

@@ -162,7 +162,7 @@
       </v-container>
     </pg-loading>
 
-    <entry-dialog />
+    <entry-dialog @refresh="getUserLiveSessions" />
 
     <recorded-class-player />
 
