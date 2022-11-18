@@ -2,33 +2,44 @@
   <div>
     <div class="mb-4 d-flex align-center">
       <span class="title-dashboard">
-        Printables
+        Worksheets
       </span>
     </div>
-
     <div v-if="getOfflineWorksheet.length > 0" class="card-offline">
-      <v-card
-        v-for="(offlineWorksheet, offlineWorksheetIndex) in getOfflineWorksheet"
-        :key="`offlineworksheet-card-item-${offlineWorksheetIndex}`"
-        class="mb-3"
-        :enabled="true"
-        width="100%"
-        elevation="6"
-        :ripple="false"
-        @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
-      >
-        <div class="d-flex flex-nowrap pa-2 align-center">
-          <div class="text-uppercase dashboard-item-title flex-grow-1">
-            {{ offlineWorksheet.name }}
-          </div>
+      <v-slide-group show-arrows="always">
+        <template #prev>
+          <v-btn icon>
+            <v-img :src="require('@/assets/png/arrow-left.png')" max-width="12px" />
+          </v-btn>
+        </template>
+        <v-slide-item
+          v-for="(offlineWorksheet, offlineWorksheetIndex) in getOfflineWorksheet"
+          :key="`offlineworksheet-card-item-${offlineWorksheetIndex}`"
+        >
+          <v-card class="ma-3" max-width="300px">
+            <v-img :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')" width="300px" height="200px" contain />
+            <div class="d-flex flex-nowrap pa-2 align-center">
+              <div class="worksheet-title flex-grow-1 pr-2">
+                {{ offlineWorksheet.name }}
+              </div>
 
-          <div>
-            <DownloadButtonLearnPlay
-              @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
+              <div>
+                <DownloadButtonLearnPlay
+                  @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
+                />
+              </div>
+            </div>
+          </v-card>
+        </v-slide-item>
+        <template #next>
+          <v-btn icon>
+            <v-img
+              :src="require('@/assets/png/arrow-right.png')"
+              max-width="12px"
             />
-          </div>
-        </div>
-      </v-card>
+          </v-btn>
+        </template>
+      </v-slide-group>
     </div>
     <div v-else>
       <v-card
@@ -37,7 +48,7 @@
         class="my-3"
         cols="4"
       >
-        <v-skeleton-loader type="list-item-avatar" />
+        <v-skeleton-loader type="card" />
       </v-card>
     </div>
   </div>
@@ -97,3 +108,16 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.worksheet-title {
+  font-family: 'Poppins';
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: #606060;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+</style>

@@ -5,7 +5,7 @@
         Sensory Play
       </span>
 
-      <DownloadButtonLearnPlay class="ml-4" @click="downloadArtFiles" />
+      <section-btn class="ml-4" :is-download-btn="true" text="Download PDF" @click="downloadArtFiles" />
     </div>
 
     <p v-if="getArtProjects.length > 0" class="art-text">
@@ -56,13 +56,13 @@
 import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { useLearnPlayV2, useChild } from '@/composables'
 import { FileType, TypedStore } from '@/models'
-import DownloadButtonLearnPlay from './DownloadButtonLearnPlay.vue'
+import SectionBtn from './SectionBtn.vue'
 
 export default defineComponent({
   name: 'ArtProjectLearnPlay',
 
   components: {
-    DownloadButtonLearnPlay
+    SectionBtn
   },
 
   props: {
