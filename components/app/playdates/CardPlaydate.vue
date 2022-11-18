@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card
-      class="mx-auto custom-card-border"
+      class="mx-auto"
       max-width="100%"
       height="100%"
       data-test-id="card-playdate"
@@ -40,7 +40,10 @@
             <v-col cols="8" md="12" class="pl-3 pl-sm-0">
               <div class="grey--text text--darken-2">
                 <div v-if="playdate.teacher" class="text-subtitle-1 text-sm-h6 font-weight-bold">
-                  Playdates with {{ playdate.teacher }}
+                  Playdates with {{ playdate.teacher.name }}
+                </div>
+                <div v-else class="text-subtitle-1 text-sm-h6 font-weight-bold">
+                  Playdates with {{ playdate.teacherName }}
                 </div>
 
                 <div class="mt-2">
@@ -185,7 +188,10 @@
                 <v-col cols="12" sm="6" class="pl-sm-3">
                   <div class="grey--text text--darken-2 pb-1 pt-3 pt-sm-0">
                     <div v-if="playdate.teacher" class="text-center text-sm-left text-h6 text-sm-h5 font-weight-bold">
-                      Playdates with {{ playdate.teacher }}
+                      Playdates with {{ playdate.teacher.name }}
+                    </div>
+                    <div v-else class="text-center text-sm-left text-h6 text-sm-h5 font-weight-bold">
+                      Playdates with {{ playdate.teacherName }}
                     </div>
 
                     <div class="text-center text-md-left text-body-2 text-md-subtitle-1 py-1">
