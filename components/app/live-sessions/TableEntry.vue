@@ -48,7 +48,7 @@
             }}
           </span> <br>
           <span class="pg-font-light pg-text-sm">
-            {{ hours }}
+            {{ time }}
           </span>
         </div>
       </div>
@@ -149,27 +149,10 @@ export default {
       const start = moment(this.entry.dateStart)
       const { timezone } = this.getUserInfo
       return formatTimezone(start, {
-        format: 'HH:mm',
-        timezone,
-        returnObject: false
-      })
-    },
-
-    hours() {
-      const start = moment(this.entry.dateStart)
-      const end = moment(this.entry.dateEnd)
-      const { timezone } = this.getUserInfo
-      const startHour = formatTimezone(start, {
-        format: 'HH:mm',
-        timezone,
-        returnObject: false
-      })
-      const endHour = formatTimezone(end, {
         format: 'HH:mma',
         timezone,
         returnObject: false
       })
-      return `${startHour} - ${endHour}`
     }
   },
 
