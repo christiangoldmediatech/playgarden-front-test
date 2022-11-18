@@ -41,11 +41,16 @@
             :src="entry.activityType.icon"
           />
         </div>
-        <span class="pg-font-bold">
-          {{
-            entry.type === 'LiveClass' ? entry.activityType.name : entry.title
-          }}
-        </span>
+        <div>
+          <span class="pg-font-bold">
+            {{
+              entry.type === 'LiveClass' ? entry.activityType.name : entry.title
+            }}
+          </span> <br>
+          <span class="pg-font-light pg-text-sm">
+            {{ hours }}
+          </span>
+        </div>
       </div>
 
       <div class="ma-1">
@@ -148,6 +153,23 @@ export default {
         timezone,
         returnObject: false
       })
+    },
+
+    hours() {
+      const start = moment(this.entry.dateStart)
+      const end = moment(this.entry.dateEnd)
+      const { timezone } = this.getUserInfo
+      const startHour = formatTimezone(start, {
+        format: 'HH:mm',
+        timezone,
+        returnObject: false
+      })
+      const endHour = formatTimezone(end, {
+        format: 'HH:mma',
+        timezone,
+        returnObject: false
+      })
+      return `${startHour} - ${endHour}`
     }
   },
 
