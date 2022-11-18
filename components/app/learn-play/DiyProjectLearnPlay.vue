@@ -2,10 +2,10 @@
   <div>
     <div class="mb-4 d-flex align-center">
       <span class="title-dashboard">
-        Do-It-Together
+        DIY Project
       </span>
 
-      <DownloadButtonLearnPlay class="ml-4" @click="downloadDiyFiles" />
+      <section-btn class="ml-4" text="Go to project" :is-download-btn="false" @click="downloadDiyFiles" />
     </div>
 
     <p v-if="getDiyProject.length > 0" class="diy-text">
@@ -38,13 +38,13 @@
 import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { useLearnPlayV2, useChild } from '@/composables'
 import { FileType, TypedStore } from '@/models'
-import DownloadButtonLearnPlay from './DownloadButtonLearnPlay.vue'
+import SectionBtn from './SectionBtn.vue'
 
 export default defineComponent({
   name: 'DiyProjectLearnPlay',
 
   components: {
-    DownloadButtonLearnPlay
+    SectionBtn
   },
 
   props: {

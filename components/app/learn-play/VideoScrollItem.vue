@@ -1,37 +1,37 @@
 <template>
-  <div class="mx-1">
-    <v-img
-      :src="playAndLearnVideo.video.thumbnail"
-      class="rounded-lg clickable"
-      content-class="d-flex align-end justify-center"
-      width="131px"
-      aspect-ratio="1.129"
-      gradient="0deg, #000000 -20.15%, rgba(77, 77, 77, 0) 73.48%"
-      @mouseenter="scaleUp"
-      @mouseleave="scaleDown"
-    >
-      <div class="text-center mb-3">
-        <div class="d-flex justify-center mb-2">
+  <div class="d-flex rounded-lg item-wrapper mb-2">
+    <div>
+      <v-img
+        :src="playAndLearnVideo.video.thumbnail"
+        class="rounded-lg clickable"
+        content-class="d-flex align-center justify-center"
+        width="131px"
+        aspect-ratio="1.129"
+        gradient="0deg, #000000 -20.15%, rgba(77, 77, 77, 0) 73.48%"
+        @mouseenter="scaleUp"
+        @mouseleave="scaleDown"
+      >
+        <div class="d-flex justify-center">
           <v-img
             class="scalable-icon"
             :class="{ 'scaled-icon': scaleIcon }"
             :src="require('@/assets/png/play-min.png')"
             contain
-            max-width="39px"
+            max-width="80px"
           />
         </div>
-
-        <div class="video-title-text">
-          {{ playAndLearnVideo.name || playAndLearnVideo.video.name }}
-        </div>
-
-        <div class="video-subtitle-text">
-          {{
-            playAndLearnVideo.description || playAndLearnVideo.video.description
-          }}
-        </div>
-      </div>
-    </v-img>
+      </v-img>
+    </div>
+    <div class="d-flex flex-column pa-3">
+      <span class="video-title-text">
+        {{ playAndLearnVideo.name || playAndLearnVideo.video.name }}
+      </span>
+      <span class="video-subtitle-text">
+        {{
+          playAndLearnVideo.description || playAndLearnVideo.video.description
+        }}
+      </span>
+    </div>
   </div>
 </template>
 
@@ -63,16 +63,31 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.pg-wrapper {
+  position: relative;
+}
+
+.item-wrapper {
+  box-shadow: 0px 5.23457px 15.7037px rgba(0, 0, 0, 0.15);
+  background: white;
+}
+
 .video-title-text {
+  font-family: 'Poppins';
+  font-style: normal;
   font-weight: 700;
-  font-size: 10px;
-  color: white;
+  font-size: 18px;
+  line-height: 27px;
+  color: #606060;
 }
 
 .video-subtitle-text {
+  font-family: 'Poppins';
+  font-style: normal;
   font-weight: 500;
   font-size: 10px;
-  color: white;
+  line-height: 15px;
+  color: #606060;
 }
 
 .scalable-icon {
