@@ -41,11 +41,16 @@
             :src="entry.activityType.icon"
           />
         </div>
-        <span class="pg-font-bold">
-          {{
-            entry.type === 'LiveClass' ? entry.activityType.name : entry.title
-          }}
-        </span>
+        <div>
+          <span class="pg-font-bold">
+            {{
+              entry.type === 'LiveClass' ? entry.activityType.name : entry.title
+            }}
+          </span> <br>
+          <span class="pg-font-light pg-text-sm">
+            {{ time }}
+          </span>
+        </div>
       </div>
 
       <div class="ma-1">
@@ -144,7 +149,7 @@ export default {
       const start = moment(this.entry.dateStart)
       const { timezone } = this.getUserInfo
       return formatTimezone(start, {
-        format: 'HH:mm',
+        format: 'HH:mma',
         timezone,
         returnObject: false
       })
