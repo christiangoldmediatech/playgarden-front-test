@@ -8,7 +8,7 @@
           <div v-else data-test-id="help-content">
             <v-row>
               <v-img
-                max-height="500"
+                height="500px"
                 :src="require('@/assets/jpg/help-banner.jpg')"
               >
                 <v-overlay absolute class="text-center">
@@ -387,19 +387,19 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.main::v-deep {
-  min-height: 500px;
+// .main::v-deep {
+//   min-height: 500px;
 
-  .v-expansion-panel:before {
-    box-shadow: none;
-  }
+//   .v-expansion-panel:before {
+//     box-shadow: none;
+//   }
 
-  .v-overlay__content {
-    width: 600px;
-  }
+//   .v-overlay__content {
+//     width: 600px;
+//   }
 
-  .mt-categories {
-    margin-top: -80px;
-  }
-}
+//   .mt-categories {
+//     margin-top: -80px;
+//   }
+// }
 </style>
