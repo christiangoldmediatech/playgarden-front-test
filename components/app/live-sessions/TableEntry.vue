@@ -28,7 +28,10 @@
             class="lsess-table-entry-type ml-1 mt-1 pg-object-cover"
             :src="entry.teacher.img"
           />
-          <div class="pg-w-[30px] pg-h-[30px] pg-bg-white pg-rounded-full pg-p-0 pg-shadow-sm pg-absolute pg-bottom-0 pg-right-[-5px] pg-flex pg-items-center pg-justify-center">
+          <div
+            v-if="entry.type !== 'Playdate'"
+            class="pg-w-[30px] pg-h-[30px] pg-bg-white pg-rounded-full pg-p-0 pg-shadow-sm pg-absolute pg-bottom-0 pg-right-[-5px] pg-flex pg-items-center pg-justify-center"
+          >
             <img
               class="pg-w-[20px] pg-h-[20px] pg-object-contain"
               :src="entry.activityType.icon"
