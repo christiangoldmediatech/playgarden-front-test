@@ -93,11 +93,11 @@ export default defineComponent({
     })
 
     const playlist = computed<MediaObject[]>(() => {
-      return videos.value.map(({ activityType, name, description, videoUrl, thumbnail, id, viewed }: any) => {
+      return videos.value.map(({ activityType, name, description, videoUrl, image, id, viewed }: any) => {
         return {
           title: activityType.name,
           description,
-          poster: thumbnail,
+          poster: image,
           src: {
             url: videoUrl.HLS,
             type: 'application/x-mpegURL'

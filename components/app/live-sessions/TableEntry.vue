@@ -1,48 +1,64 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <v-card
+    <div
       :disabled="block"
-      class="lsess-table-entry ma-1 clickable pg-relative"
+      class="elevation-3 lsess-table-entry clickable v2-font"
       :class="{
-        'lsess-table-entry-active': isLive,
         'lsess-table-entry-scaled': hover,
+        'lsess-table-entry-playdate': entry.type === 'Playdate',
+        'lsess-table-entry-liveclass': entry.type === 'LiveClass',
         opacity: !entry.active
       }"
       @click.stop="openLink"
     >
       <div class="lsess-table-entry-live">
-        <span v-if="isLive">Live</span>
+        <span v-if="isLive" class="pg-uppercase">Live</span>
         <img
-          v-if="isLive"
-          class="lsess-table-entry-live-icon mt-2 mr-2"
-          src="@/assets/svg/sessions-active-camera.svg"
-        >
-        <img
-          v-if="isFuture"
-          class="lsess-table-entry-live-icon mt-2 mr-2"
-          src="@/assets/svg/sessions-camera.svg"
-        >
+          class="lsess-table-entry-live-icon"
+          :src="
+            entry.type === 'LiveClass'
+              ? require('@/assets/svg/sessions-liveclass-camera.svg')
+              : require('@/assets/svg/sessions-playdate-camera.svg')
+          "
+        />
+      </div>
+      <div class="pg-flex pg-items-center pg-gap-2 pg-mt-3">
+        <div v-if="entry.teacher" class="pg-relative">
+          <img
+            class="lsess-table-entry-type ml-1 mt-1 pg-object-cover"
+            :src="entry.teacher.img"
+          />
+          <div
+            v-if="entry.type !== 'Playdate'"
+            class="pg-w-[30px] pg-h-[30px] pg-bg-white pg-rounded-full pg-p-0 pg-shadow-sm pg-absolute pg-bottom-0 pg-right-[-5px] pg-flex pg-items-center pg-justify-center"
+          >
+            <img
+              class="pg-w-[20px] pg-h-[20px] pg-object-contain"
+              :src="entry.activityType.icon"
+            />
+          </div>
+        </div>
+        <div v-else>
+          <img
+            class="lsess-table-entry-type ml-1 mt-1"
+            :src="entry.activityType.icon"
+          />
+        </div>
+        <div>
+          <span class="pg-font-bold">
+            {{
+              entry.type === 'LiveClass' ? entry.activityType.name : entry.title
+            }}
+          </span> <br>
+          <span class="pg-font-light pg-text-sm">
+            {{ time }}
+          </span>
+        </div>
       </div>
 
-      <v-row class="px-2 my-0" align="end" :title="entry.activityType.name">
-        <img
-          class="lsess-table-entry-type ml-1 mt-1"
-          :src="entry.activityType.icon"
-        >
-
-        <div class="pl-md-2 pl-lg-3 pl-xl-4">
-          <v-row align="center" class="fill-height overflow-hidden my-0">
-            <div>
-              <b>{{ entry.activityType.name }}</b><br>
-              {{ time }}
-            </div>
-          </v-row>
-        </div>
-      </v-row>
-
-      <v-card-actions>
+      <div class="ma-1">
         {{ title }}
-      </v-card-actions>
+      </div>
 
       <!-- Play & Learn lock -->
       <div
@@ -59,7 +75,7 @@
           Upgrade your Plan
         </span>
       </div>
-    </v-card>
+    </div>
   </v-hover>
 </template>
 
@@ -121,6 +137,10 @@ export default {
     },
 
     title() {
+      if (this.entry.title.lenght < 38) {
+        return title
+      }
+
       let str = this.entry.title.substr(0, 37).replace(/\s+$/, '')
       if (this.entry.title.lenght > str.length) {
         str += '...'
@@ -132,7 +152,7 @@ export default {
       const start = moment(this.entry.dateStart)
       const { timezone } = this.getUserInfo
       return formatTimezone(start, {
-        format: 'HH:mm',
+        format: 'HH:mma',
         timezone,
         returnObject: false
       })
@@ -150,21 +170,22 @@ export default {
     openLink() {
       if (this.editMode) {
         this.$nuxt.$emit('open-entry-editor-dialog', this.entry)
-      } else {
-        if (!this.userHasAccess) {
-          this.openPlanUpgradeModal()
-          return
-        }
-
-        this.$nuxt.$emit('open-entry-dialog', this.entry)
-        this.$gtm.push({
-          event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_CLICKED,
-          userId: this.getUserInfo.id,
-          topic: this.entry.activityType.name,
-          topicDescription: this.entry.title,
-          itemDateTime: this.entry.dateStart
-        })
+        return
       }
+
+      if (!this.userHasAccess) {
+        this.openPlanUpgradeModal()
+        return
+      }
+
+      this.$nuxt.$emit('open-entry-dialog', this.entry)
+      this.$gtm.push({
+        event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_CLICKED,
+        userId: this.getUserInfo.id,
+        topic: this.entry.activityType.name,
+        topicDescription: this.entry.title,
+        itemDateTime: this.entry.dateStart
+      })
     }
   }
 }
@@ -178,40 +199,47 @@ export default {
       transition: transform 250ms;
       padding: 8px;
       width: 100%;
-      height: 100%;
-      max-width: 100%;
       overflow: hidden;
-      &.v-card.v-sheet {
-        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.160784);
+      border-radius: 10px;
+
+      &-playdate {
+        border: 3px solid #68c453;
+        background-color: #f8ffee;
       }
-      &-active {
-        border: solid 3px #f89838;
+
+      &-liveclass {
+        border: 3px solid #f89838;
+        background-color: #fff7f0;
       }
+
       &-live {
         position: absolute;
-        top: 0px;
-        right: 0px;
+        top: 2px;
+        right: 2px;
         display: flex;
         align-items: center;
+        gap: 2px;
+
         &-icon {
-          width: 24px;
-          height: 24px;
+          width: 25px;
+          height: 25px;
         }
       }
+
       &-type {
-        width: 60px;
-        height: 60px;
+        width: 45px;
+        height: 45px;
         border-radius: 8px;
-        margin-right: 8px;
-        border: solid 3px #f2f2f2;
         object-fit: contain;
         object-position: center center;
       }
+
       &-title {
         font-size: 1.1rem;
         line-height: 1.25;
         font-weight: bold;
       }
+
       &-scaled {
         transform: scale(1.1);
         z-index: 1;

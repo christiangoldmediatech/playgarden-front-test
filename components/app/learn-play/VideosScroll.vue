@@ -1,11 +1,6 @@
 <template>
-  <v-slide-group show-arrows="always">
-    <template #prev>
-      <v-btn icon>
-        <v-img :src="require('@/assets/png/arrow-left.png')" max-width="12px" />
-      </v-btn>
-    </template>
-    <v-slide-item
+  <v-col class="pa-0 pr-4 scroll-wrapper" :style="{ 'height': `${height}px` }">
+    <div
       v-for="(video, index) in videosLearnPlay"
       :key="`video-scroll-item-${index}`"
     >
@@ -13,16 +8,8 @@
         :play-and-learn-video="video"
         @click.native="currentVideo(video.video)"
       />
-    </v-slide-item>
-    <template #next>
-      <v-btn icon>
-        <v-img
-          :src="require('@/assets/png/arrow-right.png')"
-          max-width="12px"
-        />
-      </v-btn>
-    </template>
-  </v-slide-group>
+    </div>
+  </v-col>
 </template>
 
 <script lang="ts">
@@ -48,6 +35,9 @@ export default defineComponent({
       type: Object as PropType<PlayAndLearn>,
       required: true,
       default: () => ({})
+    },
+    height: {
+      type: Number
     }
   },
 
@@ -78,6 +68,29 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F2F2F2;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #68C453;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.scroll-wrapper {
+  aspect-ratio: 9/16;
+  overflow-y: auto;
+}
+
 .video-scroll {
   overflow-x: scroll;
   overflow-y: hidden;

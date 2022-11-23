@@ -6,13 +6,13 @@
         <menu-mobile />
       </v-col>
 
-      <v-col cols="12" md="auto">
+      <v-col cols="2" md="auto">
         <div class="my-3 my-md-0">
           <span class="title-dashboard">Letter</span>
         </div>
       </v-col>
 
-      <v-col cols="12">
+      <v-col cols="10">
         <carousel-letter
           id="CarouselLetter"
           :value="curriculumTypeId"
@@ -23,16 +23,20 @@
     </v-row>
 
     <v-row class="mx-md-1">
-      <v-col cols="12" md="8">
+      <v-col cols="12">
         <v-col id="videoLesson" cols="12">
           <VideoLessonPlayerLearnPlay :preview-mode="previewMode" />
         </v-col>
+      </v-col>
 
-        <!-- MOBILE WORKSHEETS -->
-        <v-col v-if="$vuetify.breakpoint.mobile" id="worksheets" cols="12">
+      <v-col cols="12" class="mb-4">
+        <!-- WORKSHEETS -->
+        <v-col id="worksheets" class="mt-4" cols="12">
           <OfflineWorksheetsLearnPlay :preview-mode="previewMode" />
         </v-col>
+      </v-col>
 
+      <v-col cols="12" md="8">
         <!-- DIY PROJECT -->
         <v-col id="diy" cols="12">
           <DiyProjectLearnPlay :preview-mode="previewMode" />
@@ -61,11 +65,6 @@
 
       <!-- DESKTOP SECOND COLUMN -->
       <v-col v-if="!$vuetify.breakpoint.mobile" cols="4">
-        <!-- WORKSHEETS -->
-        <v-col id="worksheets" cols="12">
-          <OfflineWorksheetsLearnPlay :preview-mode="previewMode" />
-        </v-col>
-
         <!-- ART PROJECT -->
         <v-col id="art-project" cols="12">
           <ArtProjectLearnPlay :preview-mode="previewMode" />

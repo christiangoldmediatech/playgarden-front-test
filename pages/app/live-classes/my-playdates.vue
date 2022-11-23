@@ -2,25 +2,23 @@
   <v-col class="fill-height">
     <!-- BACK BUTTON -->
     <div class="mt-3">
-      <nuxt-link nuxt :to="{ name: 'app-playdates' }">
+      <nuxt-link nuxt :to="{ name: 'app-live-classes' }">
         <v-icon class="accent--text">
           mdi-chevron-left
         </v-icon>
-        <span class="accent--text font-weight-medium">Go back to Playdates</span>
+        <span class="accent--text font-weight-medium">Go back</span>
       </nuxt-link>
     </div>
 
     <!-- HEADER -->
-    <div class="mt-3 pg-w-full">
-      <underlined-title
-        text="My Educational Playdates"
-        font-size="36px"
-        font-size-mobile="24px"
-      />
+    <div class="mt-5 pg-w-full">
+      <h2 class="pg-text-center pg-text-primary pg-text-4xl">
+        My playdates
+      </h2>
     </div>
 
     <!-- PAGE DESCRIPTION -->
-    <div class="text-body-2 text-md-body-1 mt-3">
+    <div class="text-body-2 text-md-body-1 mt-3 pg-text-center">
       In this section you can find all the playdates that you have reserved
     </div>
 

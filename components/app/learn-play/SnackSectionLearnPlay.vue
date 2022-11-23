@@ -5,7 +5,7 @@
         Snack
       </span>
 
-      <DownloadButtonLearnPlay class="ml-4" @click="downloadSnackFiles" />
+      <section-btn class="ml-4" :is-download-btn="true" text="Download PDF" @click="downloadSnackFiles" />
     </div>
 
     <p v-if="getSnacks.length > 0" class="snack-text">
@@ -46,13 +46,13 @@
 import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { useLearnPlayV2, useChild } from '@/composables'
 import { FileType, TypedStore } from '@/models'
-import DownloadButtonLearnPlay from './DownloadButtonLearnPlay.vue'
+import SectionBtn from './SectionBtn.vue'
 
 export default defineComponent({
   name: 'SnackSectionLearnPlay',
 
   components: {
-    DownloadButtonLearnPlay
+    SectionBtn
   },
 
   props: {

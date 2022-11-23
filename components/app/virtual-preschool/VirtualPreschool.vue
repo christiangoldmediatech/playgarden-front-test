@@ -25,14 +25,6 @@
       />
 
       <section-image
-        class="playdates"
-        medium
-        :section="section.playdates"
-        @click:play="handleAudioPlay"
-        @click="handleClick"
-      />
-
-      <section-image
         class="student-cubby"
         :section="section.cubby"
         small
@@ -147,7 +139,7 @@ export default defineComponent({
       classes: {
         imageUrl: require('@/assets/png/virtual-preschool/live classes.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Lucy-Liveclasses.png'),
-        title: 'Live Classes',
+        title: 'Live Classes & Playdates',
         route: { name: 'app-live-classes' },
         message: 'Enjoy cooking, music, movement zooms and more!',
         audio: `${baseRoute}audio/virtual-preschool/Live classes 2.m4a`
@@ -258,23 +250,20 @@ export default defineComponent({
     grid-row: 3 / 5;
   }
   .live-classes {
-    grid-column: 4 / 5;
+    grid-column: 4 / 6;
     grid-row: 1 / 3;
   }
-  .playdates {
-    grid-column: 5 / 6;
-    grid-row: 1 / 3;
-  }
+
   .music {
     grid-column: 1 / 2;
     grid-row: 4 / 5;
   }
   .library {
-    grid-column: 2 / 3;
+    grid-column: 3 / 4;
     grid-row: 4 / 5;
   }
   .student-cubby {
-    grid-column: 3 / 4;
+    grid-column: 2 / 3;
     grid-row: 4 / 5;
   }
   .kids-corner {

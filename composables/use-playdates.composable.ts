@@ -56,7 +56,6 @@ export const usePlaydates = ({ store }: UseChildPlaydates) => {
   /**
    * Because the user can scroll to 3 weeks in advance, we need a function
    * that returns an array of dates from now to 3 weeks ahead.
-   * @returns {array}
    */
   const getPlaydatesDates = () => {
     const WEEKS_AHEAD = 3
