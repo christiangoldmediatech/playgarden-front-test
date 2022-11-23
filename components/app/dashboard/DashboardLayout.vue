@@ -58,7 +58,7 @@
           lg="4"
           xl="3"
         >
-          <DashboardPanel
+          <dashboard-panel
             v-bind="{ lesson, childId, loading }"
             :next-button="canAdvance"
           />
@@ -82,7 +82,7 @@
           >
             <v-col cols="12" md="3" sm="6">
               <v-row>
-                <ChildSelect
+                <child-select
                   class="mx-3"
                   :value="value"
                   :preview-mode="previewMode"
@@ -98,7 +98,7 @@
                 class="mx-md-2 my-md-0 mx-sm-4 my-sm-2 mx-xs-4 my-xs-2"
                 justify="center"
               >
-                <CarouselLetter
+                <carousel-letter
                   ref="CarouselLetter"
                   :value="curriculumTypeId"
                   :preview-mode="previewMode"
@@ -156,9 +156,9 @@
         </v-col>
       </v-row>
     </v-container>
-    <LessonTeacherVideo />
-    <CourseProgressOverlay />
-    <PuzzlePiecesDialog />
+    <lesson-teacher-video />
+    <course-progress-overlay />
+    <puzzle-pieces-dialog />
   </div>
 </template>
 
@@ -190,9 +190,7 @@ export default {
 
   props: {
     value: {
-      validator: (val) => {
-        return typeof val === 'number' || val === null
-      },
+      type: [Array, Number, Object, String],
       required: true
     },
 
@@ -216,9 +214,7 @@ export default {
     },
 
     childId: {
-      validator: (val) => {
-        return val === null || typeof val === 'number'
-      },
+      type: [Array, Number, Object, String],
       required: false,
       default: null
     }

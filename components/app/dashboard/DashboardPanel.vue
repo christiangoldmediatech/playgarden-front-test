@@ -526,10 +526,7 @@ export default {
     },
 
     childId: {
-      validator: (val) => {
-        // it's a number, numeric string or null
-        return !isNaN(val) || val === null
-      },
+      type: [Array, Number, Object, String],
       required: false,
       default: null
     }
