@@ -87,18 +87,6 @@
             Our teachers are constantly developing new lessons and we will keep uploading them to the well-being plan as they become available.
           </p>
         </v-row>
-        <v-row justify="center" align="center">
-          <v-btn
-            color="#F89838"
-            class="white--text"
-            @click="$router.go(-1)"
-          >
-            <v-icon left>
-              mdi-chevron-left
-            </v-icon>
-            Back
-          </v-btn>
-        </v-row>
       </v-col>
     </v-row>
   </v-card>
@@ -199,7 +187,6 @@ export default defineComponent({
     const refreshMenuSection = () => {
       curriculumTypeId.value = learnPlayV2.learnPlayData.value.curriculumType.id
       nuxt.$on('menu-section', (id: string) => {
-        console.log('change')
         section.value = id
       })
     }
