@@ -168,6 +168,13 @@
   transition: transform 250ms;
 }
 
+.play-icon-v2 {
+  width: 450px;
+  height: 450px;
+  transition: transform 250ms;
+  filter: drop-shadow(0px 3.62243px 10.8673px rgba(0, 0, 0, 0.15));
+}
+
 .play-icon.no-background {
   background-color: transparent !important;
 }
