@@ -1,6 +1,6 @@
 <template>
   <div class="lesson-panel-container">
-    <v-card class="lesson-panel-card mt-0 mt-sm-16 mt-md-0" elevation="0" height="100%">
+    <v-card class="lesson-panel-card mt-0 mt-sm-16 mt-md-0" elevation="0" height="100%" color="transparent">
       <div class="lesson-panel-card-border-top" :class="{ 'lesson-panel-card-border-top-light': useLightTheme }">
         <slot name="panel-toolbar">
           <!-- HORIZONTAL LESSON NAVIGATION BAR -->
@@ -549,7 +549,10 @@ export default {
     }),
 
     useLightTheme() {
-      return this.$route.name === 'app-dashboard-lesson-videos'
+      return this.$route.name === 'app-dashboard-lesson-videos' ||
+        this.$route.name === 'app-dashboard-online-worksheet' ||
+        this.$route.name === 'app-dashboard-offline-worksheet' ||
+        this.$route.name === 'app-dashboard-lesson-activities'
     },
 
     offlineWorksheet() {
