@@ -1,5 +1,5 @@
 <template>
-  <lesson-videos-card>
+  <lesson-videos-card class="my-5">
     <v-list-item-action>
       <v-btn
         v-if="$vuetify.breakpoint.smAndDown || !puzzlePiece"

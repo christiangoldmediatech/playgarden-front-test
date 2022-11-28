@@ -19,6 +19,10 @@
     width: 100%;
   }
 
+  &-outer-light {
+    background-color: white;
+  }
+
   &-size {
     height: var(--pg-letter-day-size);
     width: var(--pg-letter-day-size);
@@ -34,6 +38,11 @@
     background-color: #B2E68D;
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.18);
     user-select: none;
+  }
+
+  &-inner-background {
+    background-image: url("~@/assets/svg/colorful-circle.svg");
+    background-position: center;
   }
 
   &-circle {
@@ -63,5 +72,9 @@
     line-height: 1;
     text-align: center;
     margin-top: 6px;
+  }
+
+  &-number-light {
+    color: #BFBFF7;
   }
 }

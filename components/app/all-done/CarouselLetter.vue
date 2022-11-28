@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="ma-0 pa-0">
+  <v-container fluid class="ma-0 pa-0 carousel-letter-wrapper">
     <unlock-prompt
       v-if="isCurrentLessonUnavailableInPlan && isRouteOnDailyLessons"
       class="pg-mt-[80px]"
@@ -291,3 +291,13 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.carousel-letter-wrapper {
+  background: transparent;
+
+  * {
+    background: transparent;
+  }
+}
+</style>

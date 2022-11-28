@@ -203,7 +203,7 @@ export default {
       .percentage {
         display: flex;
         .remaining-bar {
-          background: rgba(196, 196, 196, 1);
+          background: #ECECEC;
           height: 12px;
           width: 100%;
           border-radius: 6px;
@@ -212,7 +212,7 @@ export default {
         .remaining-progress {
           width: var(--completed);
           height: 100%;
-          background-color: var(--v-accent-base);
+          background-color: #BEB7FF;
           border-radius: 6px;
         }
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{ 'watercolor-background': useBackground }">
     <!-- <v-container v-if="showScreen" fill-height>
       <v-row justify="center" align-sm="center" fill-height>
         <v-col cols="10" sm="6" md="5">
@@ -226,6 +226,13 @@ export default {
 
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
+    useBackground() {
+      return this.$route.name === 'app-dashboard-lesson-videos' ||
+        this.$route.name === 'app-dashboard-online-worksheet' ||
+        this.$route.name === 'app-dashboard-offline-worksheet' ||
+        this.$route.name === 'app-dashboard-lesson-activities'
+    },
+
     overrideMode() {
       if (this.overrides.childId && this.overrides.lessonId) {
         return true
@@ -324,6 +331,21 @@ export default {
 </script>
 
 <style lang="scss">
+.watercolor-background {
+  background-image: url("~@/assets/png/play-learn/acuarela-green.png"),
+    url("~@/assets/png/play-learn/acuarela-yellow.png"),
+    url("~@/assets/png/play-learn/acuarela-yellow.png"),
+    url("~@/assets/png/play-learn/acuarela-yellow.png");
+  background-size: auto,
+    400px 400px,
+    400px 400px,
+    400px 400px;
+  background-position: 20% 0%,
+    100% -15%,
+    -10% 100%,
+    25% 90%;
+}
+
 .dashboard {
   &-container {
     height: calc(100vh - 64px);
