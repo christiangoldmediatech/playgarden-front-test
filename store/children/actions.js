@@ -13,7 +13,7 @@ export default {
   async get({ commit }, route = null) {
     try {
       let { data } = await this.$axios.get('/children')
-      if (data.length > 0 && route && route.name.search('app-dashboard') > -1) {
+      if (data.length > 1 && route && route.name.search('app-dashboard') > -1) {
         const allIds = data.map((i) => {
           return i.id
         })
