@@ -1,6 +1,6 @@
 <template>
   <div class="lesson-panel-container">
-    <v-card class="lesson-panel-card mt-0 mt-sm-16 mt-md-0" elevation="0" height="100%" color="transparent">
+    <v-card class="lesson-panel-card mt-0 mt-sm-16 mt-md-0" elevation="0" height="100%" :color="backgroundColor">
       <div class="lesson-panel-card-border-top" :class="{ 'lesson-panel-card-border-top-light': useLightTheme }">
         <slot name="panel-toolbar">
           <!-- HORIZONTAL LESSON NAVIGATION BAR -->
@@ -524,6 +524,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    backgroundColor: {
+      type: String,
+      default: 'transparent'
     },
 
     childId: {

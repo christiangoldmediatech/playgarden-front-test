@@ -54,6 +54,7 @@
               >
                 <dashboard-panel
                   v-bind="{ lesson, childId: studentId, customOverrides: { lessonId: lesson.id, childId: studentId }, noLinkMode }"
+                  background-color="white"
                   display-mode
                 />
               </v-col>
