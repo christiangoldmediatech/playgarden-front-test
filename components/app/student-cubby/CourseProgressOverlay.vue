@@ -39,8 +39,9 @@
         <perfect-scrollbar ref="scrollbar">
           <v-container class="panel-container" fill-height fluid>
             <v-row
-              class="fill-height flex-nowrap"
+              class="fill-height flex-nowrap "
               :justify="(currentLetter && currentLetter.name === 'Intro') ? 'center' : undefined"
+              :style="{ 'max-width': `${rowMaxWidth}px` }"
             >
               <v-col
                 v-for="lesson in lessons"
@@ -68,6 +69,7 @@
             <dashboard-panel
               v-if="currentMobileLesson && typeof currentMobileLesson === 'object'"
               v-bind="{ lesson: currentMobileLesson, customOverrides: { lessonId: currentMobileLesson.id, childId: studentId } }"
+              background-color="white"
               display-mode
             >
               <!-- Previous Day And Next Day Icon -->
@@ -181,6 +183,14 @@ export default defineComponent({
 
     shouldShowNextDayButton () {
       return this.selectedDayIndex < 4
+    },
+
+    panelColumnMaxWidth() {
+      return 471
+    },
+
+    rowMaxWidth() {
+      return this.lessons.length * 6 * this.panelColumnMaxWidth
     }
   },
 
@@ -265,6 +275,9 @@ export default defineComponent({
           return { ...lesson, doing }
         })
         this.loading = false
+        this.$nextTick(() => {
+          this.$refs.scrollbar.update()
+        })
       })
     },
 
@@ -332,7 +345,6 @@ export default defineComponent({
     width: 100vw;
     height: 100vh;
     max-height: 100vh;
-    max-width: 100vw;
     padding-top: 32px;
     padding-bottom: 8px;
     z-index: 2300;
