@@ -5,7 +5,9 @@
       '--lp-bar-1': dashboardProgressBar1Percentage,
       '--lp-bar-2': dashboardProgressBar2Percentage,
       '--lp-bar-radius': dashboardProgressBarRadius,
-      '--lp-bar-border-type': dashboardProgressBorderType
+      '--lp-bar-border-width': dashboardProgressBarBorderWidth,
+      '--lp-bar-border-type': dashboardProgressBorderType,
+      '--lp-text-color': dashboardProgressTextColor
     }"
   >
     <div class="dashboard-progress-bar-1" />
@@ -98,9 +100,15 @@ export default defineComponent({
     )
 
     // we want the bottom bar to have a soft top border unless they have the same width.
-    const dashboardProgressBarRadius = computed(() =>
-      props.progress <= 95 ? '8px' : undefined
-    )
+    const dashboardProgressBarRadius = computed(() => {
+      if (isProgressCompleted.value) {
+        return '0'
+      }
+
+      return props.progress <= 95 ? '8px' : '0px'
+    })
+
+    const dashboardProgressBarBorderWidth = computed(() => props.progress === 0 ? '7px' : '4px')
 
     const dashboardProgressBorderType = computed(() =>
       props.progress === 0
@@ -108,11 +116,17 @@ export default defineComponent({
         : 'inset 0px 4px 4px rgba(0, 0, 0, 0.25)'
     )
 
+    const dashboardProgressTextColor = computed(() =>
+      isProgressCompleted.value ? '#FFFFFF' : '#606060'
+    )
+
     return {
       dashboardProgressBar1Percentage,
       dashboardProgressBar2Percentage,
       dashboardProgressBarRadius,
       dashboardProgressBorderType,
+      dashboardProgressBarBorderWidth,
+      dashboardProgressTextColor,
       lessonProgressMessage,
       isProgressCompleted
     }
@@ -124,8 +138,9 @@ export default defineComponent({
 .dashboard-progress {
   position: relative;
   margin: 16px 12px;
-  height: 42px;
+  height:61px;
   box-shadow: var(--lp-bar-border-type) !important;
+  border: var(--lp-bar-border-width) solid #C3C6FF;
   border-radius: 8px !important;
 
   &-icon {
@@ -143,7 +158,7 @@ export default defineComponent({
     transform: translate(25%, -50%);
     z-index: 1;
     text-shadow: 1px 1px rgba(255, 255, 255, 0.75);
-    color: #707070;
+    color: var(--lp-text-color);
     font-weight: bold;
     font-size: 18px;
     letter-spacing: 1.5px;
@@ -175,7 +190,9 @@ export default defineComponent({
     top: 0;
     height: 50%;
     width: var(--lp-bar-1);
-    background-color: var(--v-accent-base);
+    background-color:#C4C6FF;
+    border-top-right-radius: var(--lp-bar-radius) !important;
+    border-top-left-radius: 0 !important;
   }
 
   &-bar-2 {
@@ -183,8 +200,10 @@ export default defineComponent({
     top: 50%;
     height: 50%;
     width: var(--lp-bar-2);
-    background-color: var(--v-accent-base);
+    background-color: #C4C6FF;
     border-top-right-radius: var(--lp-bar-radius) !important;
+    border-bottom-right-radius: var(--lp-bar-radius) !important;
+    border-bottom-left-radius: 0 !important;
   }
 }
 
