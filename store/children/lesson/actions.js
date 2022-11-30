@@ -86,18 +86,16 @@ export default {
 
   async saveWorksheetProgress(ctx, { lessonId, childId, worksheet }) {
     try {
-      let childrens, paramId
+      let childrens
       if (Array.isArray(childId)) {
-        paramId = childId[0]
         childrens = childId
       } else {
-        paramId = childId
         childrens = [childId]
       }
       const {
         data
       } = await this.$axios.$post(
-        `/lessons/${lessonId}/children/${paramId}/worksheet`,
+        `/lessons/${lessonId}/children/${childId}/worksheet`,
         { worksheet, childrens }
       )
       return data

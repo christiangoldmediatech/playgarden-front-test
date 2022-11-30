@@ -276,24 +276,18 @@ export default {
     },
 
     async saveProgress () {
-      const promises = []
-
       const date = new Date().toISOString().substr(0, 19)
-      this.children.forEach((child) => {
-        promises.push(
-          this.saveWorksheetProgress({
-            lessonId: this.lesson.id,
-            childId: child.id,
-            worksheet: {
-              id: this.question.id,
-              completed: true,
-              date
-            }
-          })
-        )
+
+      await this.saveWorksheetProgress({
+        lessonId: this.lesson.id,
+        childId: this.children[0].everyone ? this.children[0].allIds : this.children[0].id,
+        worksheet: {
+          id: this.question.id,
+          completed: true,
+          date
+        }
       })
 
-      await Promise.all(promises)
       this.$nuxt.$emit('dashboard-panel-update')
     },
 
