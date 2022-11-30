@@ -1,8 +1,9 @@
 <template>
   <v-card class="dashboard-content-card-2">
     <template v-if="worksheets.length">
-      <div class="dashboard-content-card-2-line-1" />
-      <div class="dashboard-content-card-2-line-2" />
+      <div class="d-flex justify-center w-100 dashboard-content-bars">
+        <img src="@/assets/svg/color-bars.svg" width="80%" />
+      </div>
       <div class="dashboard-content-card-2-content">
         <ow-header
           :day="lesson.day"
@@ -337,29 +338,10 @@ export default {
         justify-content: center;
       }
     }
-    &-line-1 {
-      position: absolute;
-      top: 0;
-      width: 100%;
-      height: 10px;
-      background-color: var(--v-primary-base);
-      box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
-      @media screen and (min-width: 600px) {
-        height: 16px;
-      }
-    }
-    &-line-2 {
-      position: absolute;
-      top: 10px;
-      width: 100%;
-      height: 10px;
-      background-color: #B2E68D;
-      box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
-      @media screen and (min-width: 600px) {
-        height: 16px;
-        top: 16px;
-      }
-    }
+  }
+  &-bars {
+    position: absolute;
+    top: 0;
   }
 }
 .fade-enter-active, .fade-leave-active {

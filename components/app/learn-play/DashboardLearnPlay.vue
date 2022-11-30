@@ -22,7 +22,7 @@
       </v-col>
     </v-row>
 
-    <v-row class="mx-md-1">
+    <v-row v-if="hasPlayAndLearnContent" class="mx-md-1">
       <v-col cols="12">
         <v-col id="videoLesson" cols="12">
           <VideoLessonPlayerLearnPlay :preview-mode="previewMode" />
@@ -76,11 +76,25 @@
         </v-col>
       </v-col>
     </v-row>
+
+    <v-row v-else class="mx-md-1 pa-5" justify="center" align="center">
+      <v-col cols="12">
+        <v-row justify="center" align="center">
+          <v-img :max-width="noContentImgWidth" aspect-ratio="1" :src="require('@/assets/svg/no-content.svg')" />
+        </v-row>
+        <v-row justify="center" align="center" class="px-0 px-md-16 my-5">
+          <p class="no-content-text px-0 px-md-16">
+            Our teachers are constantly developing new lessons and we will keep uploading them to the well-being plan as they become available.
+          </p>
+        </v-row>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
 <script lang="ts">
 import {
+  computed,
   defineComponent,
   onBeforeMount,
   onBeforeUnmount,
@@ -99,10 +113,10 @@ import SnackSectionLearnPlay from '@/components/app/learn-play/SnackSectionLearn
 import PlaylistLearnPlay from '@/components/app/learn-play/PlaylistLearnPlay.vue'
 
 // Composables
-import { useChild, useNuxtHelper, useLearnPlayV2 } from '@/composables'
+import { useChild, useNuxtHelper, useLearnPlayV2, useVuetifyHelper } from '@/composables'
 
 // Models
-import { TypedStore } from '@/models'
+import { PlayAndLearn, TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'DashboardLearnPlay',
@@ -132,6 +146,7 @@ export default defineComponent({
     const $nuxt = useNuxtHelper()
     const childStore = useStore<TypedStore>()
     const nuxt = useNuxtHelper()
+    const vuetify = useVuetifyHelper()
     const curriculumTypeId = ref<null | number>(null)
 
     // All composables
@@ -141,6 +156,8 @@ export default defineComponent({
 
     // Data variables
     const section = ref('')
+    const hasPlayAndLearnContent = ref(true)
+    const noContentImgWidth = computed(() => vuetify.breakpoint.mdAndDown ? '90%' : '30%')
 
     // Watcher
     watch(section, () => {
@@ -162,6 +179,7 @@ export default defineComponent({
 
     const loadPlayAndLearnByCurriculumTypeId = async (curriculumTypeId: number) => {
       await learnPlayV2.getPlayAndLearnByCurriuclumTypeId(curriculumTypeId)
+      checkIfPlayAndLearnHasContent(learnPlayV2.learnPlayData.value)
       $nuxt.$emit('send-learn-play', learnPlayV2.learnPlayData.value)
       refreshMenuSection()
     }
@@ -173,11 +191,17 @@ export default defineComponent({
       })
     }
 
+    const checkIfPlayAndLearnHasContent = (data: PlayAndLearn) => {
+      const { songs, worksheets, files, books, videos } = data
+      hasPlayAndLearnContent.value = !(songs.length === 0 && worksheets.length === 0 && files.length === 0 && books.length === 0 && videos.length === 0)
+    }
+
     // Life cycle hooks
     onBeforeMount(async () => {
       if (!props.previewMode) {
         await child.get()
         await learnPlayV2.getFirstLearnPlay()
+        checkIfPlayAndLearnHasContent(learnPlayV2.learnPlayData.value)
       }
       refreshMenuSection()
 
@@ -192,7 +216,9 @@ export default defineComponent({
     })
 
     return {
-      curriculumTypeId
+      curriculumTypeId,
+      hasPlayAndLearnContent,
+      noContentImgWidth
     }
   }
 })
@@ -226,6 +252,14 @@ export default defineComponent({
 
   .learn-play-video {
     aspect-ratio: 1.555;
+  }
+
+  .no-content-text {
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 33px;
+    text-align: center;
+    color: #606060;
   }
 }
 </style>

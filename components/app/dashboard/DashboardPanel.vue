@@ -1,7 +1,7 @@
 <template>
   <div class="lesson-panel-container">
-    <v-card class="lesson-panel-card mt-0 mt-sm-16 mt-md-0" elevation="0" height="100%">
-      <div class="lesson-panel-card-border-top">
+    <v-card class="lesson-panel-card mt-0 mt-sm-16 mt-md-0" elevation="0" height="100%" :color="backgroundColor">
+      <div class="lesson-panel-card-border-top" :class="{ 'lesson-panel-card-border-top-light': useLightTheme }">
         <slot name="panel-toolbar">
           <!-- HORIZONTAL LESSON NAVIGATION BAR -->
           <v-row
@@ -27,7 +27,7 @@
                     @click.stop="previousLesson"
                     @blur="on.blur"
                   >
-                    <img src="@/assets/svg/back-arrow.svg">
+                    <img :src="useLightTheme ? require('@/assets/svg/back-arrow-green.svg') : require('@/assets/svg/back-arrow.svg')">
                   </v-btn>
                 </template>
                 <span>GO TO PREVIOUS DAY</span>
@@ -39,7 +39,7 @@
                   icon
                   @click.stop="previousLesson"
                 >
-                  <img src="@/assets/svg/back-arrow.svg">
+                  <img :src="useLightTheme ? require('@/assets/svg/back-arrow-green.svg') : require('@/assets/svg/back-arrow.svg')">
                 </v-btn>
               </template>
             </v-col>
@@ -65,7 +65,7 @@
                       @click.stop="advance"
                       @blur="on.blur"
                     >
-                      <img src="@/assets/svg/next-arrow.svg">
+                      <img :src="useLightTheme ? require('@/assets/svg/next-arrow-green.svg') : require('@/assets/svg/next-arrow.svg')">
                     </v-btn>
                   </template>
                   <span>GO TO NEXT DAY</span>
@@ -79,7 +79,7 @@
                     :disabled="!nextButton"
                     @click.stop="advance"
                   >
-                    <img src="@/assets/svg/next-arrow.svg">
+                    <img :src="useLightTheme ? require('@/assets/svg/next-arrow-green.svg') : require('@/assets/svg/next-arrow.svg')">
                   </v-btn>
                 </template>
               </p>
@@ -93,6 +93,7 @@
         :class="{ clickable: !displayMode }"
         :day="lesson ? lesson.day : null"
         :letter="lesson ? lesson.curriculumType.letter : null"
+        :light-theme="useLightTheme"
         @click.native="openCourseProgress"
       />
 
@@ -525,6 +526,11 @@ export default {
       default: false
     },
 
+    backgroundColor: {
+      type: String,
+      default: 'transparent'
+    },
+
     childId: {
       type: [Array, Number, Object, String],
       required: false,
@@ -543,6 +549,13 @@ export default {
     ...mapGetters('children/lesson', {
       previousLessonId: 'getPreviousLessonId'
     }),
+
+    useLightTheme() {
+      return this.$route.name === 'app-dashboard-lesson-videos' ||
+        this.$route.name === 'app-dashboard-online-worksheet' ||
+        this.$route.name === 'app-dashboard-offline-worksheet' ||
+        this.$route.name === 'app-dashboard-lesson-activities'
+    },
 
     offlineWorksheet() {
       if (this.lesson) {
@@ -778,6 +791,11 @@ export default {
       background-color: #b2e68d;
       border-radius: 5px;
     }
+  }
+
+  &-card-border-top-light {
+    background-color: white;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.290196);
   }
 
   &-content {

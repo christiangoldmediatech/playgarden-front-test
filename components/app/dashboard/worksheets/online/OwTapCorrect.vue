@@ -27,9 +27,6 @@
     >
       <template v-if="correct" v-slot:button>
         Continue
-        <v-icon right small>
-          mdi-greater-than
-        </v-icon>
       </template>
     </ow-message>
   </div>

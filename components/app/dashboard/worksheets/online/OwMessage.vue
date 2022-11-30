@@ -2,22 +2,22 @@
   <pg-dialog
     v-model="dialog"
     width="auto"
-    max-width="784"
+    max-width="600"
     max-height="652"
   >
-    <v-card>
-      <v-card-title class="hidden-md-and-up">
-        <v-spacer />
+    <v-card class="rounded-xl">
+      <div class="ow-close-btn">
         <v-btn
-          text
           icon
-          @click.stop="onClose"
+          color="white"
+          class="pg-bg-[#F6B7D2]"
+          @click="onClose"
         >
           <v-icon>
             mdi-close
           </v-icon>
         </v-btn>
-      </v-card-title>
+      </div>
 
       <v-card-text v-if="selectedImage">
         <div class="ow-dialog-title">
@@ -43,7 +43,7 @@
           </div>
         </div>
 
-        <div class="ow-dialog-word">
+        <div v-if="!correct" class="ow-dialog-word">
           {{ selectedImage.word }}
         </div>
 
@@ -55,9 +55,10 @@
 
         <div class="ow-dialog-button">
           <v-btn
-            color="primary"
+            :color="correct ? 'primary' : '#F15959'"
             large
             block
+            class="white--text"
             @click.stop="onClose"
           >
             <slot name="button">
@@ -69,6 +70,10 @@
           </v-btn>
         </div>
       </v-card-text>
+
+      <div class="d-flex justify-center w-100 ow-content-bars">
+        <img src="@/assets/svg/color-bars.svg" width="80%" />
+      </div>
     </v-card>
   </pg-dialog>
 </template>
@@ -183,22 +188,19 @@ export default {
     }
     &-word {
       text-align: center;
-      font-weight: 700;
-      font-size: 13px;
-      line-height: 1.5;
-      @media screen and (min-width: 960px) {
-        display: none;
-      }
+      font-weight: 500;
+      font-size: 25px;
+      line-height: 42px;
+      color: #606060;
     }
     &-text {
       text-align: center;
-      margin-bottom: 28px;
-      font-weight: 500;
-      font-size: 13px;
-      line-height: 1.5;
+
+      color: #606060;
       @media screen and (min-width: 960px) {
-        font-weight: 600;
-        font-size: 22px;
+        font-weight: 400;
+        font-size: 25px;
+        line-height: 42px;
         margin-bottom: 36px;
       }
     }
@@ -212,6 +214,15 @@ export default {
         margin-bottom: 28px;
       }
     }
+  }
+  &-content-bars {
+    position: absolute;
+    bottom: 0;
+  }
+  &-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
   }
 }
 </style>
