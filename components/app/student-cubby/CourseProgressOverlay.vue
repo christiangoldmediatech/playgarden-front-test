@@ -345,7 +345,6 @@ export default defineComponent({
     width: 100vw;
     height: 100vh;
     max-height: 100vh;
-    // max-width: 100vw;
     padding-top: 32px;
     padding-bottom: 8px;
     z-index: 2300;
