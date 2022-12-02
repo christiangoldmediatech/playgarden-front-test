@@ -164,7 +164,7 @@
           >
             <lesson-online-worksheet
               v-for="(onlineWorksheet,
-              onlineWorksheetIndex) in worksheets.ONLINE"
+                      onlineWorksheetIndex) in worksheets.ONLINE"
               :key="onlineWorksheet.id"
               :is-admin="isAdmin"
               :online-worksheet="onlineWorksheet"
@@ -174,8 +174,8 @@
                 noLinkMode
                   ? undefined
                   : generateNuxtRoute('online-worksheet', {
-                      worksheet: onlineWorksheetIndex
-                    })
+                    worksheet: onlineWorksheetIndex
+                  })
               "
               :enabled="completedOnlineWorksheets >= onlineWorksheetIndex"
               :active="worksheetQuery === onlineWorksheetIndex"
@@ -187,7 +187,7 @@
             <v-col cols="12" class="pa-0 dailyLessonsScrolView">
               <lesson-online-worksheet
                 v-for="(onlineWorksheet,
-                onlineWorksheetIndex) in worksheets.ONLINE"
+                        onlineWorksheetIndex) in worksheets.ONLINE"
                 :key="onlineWorksheet.id"
                 :is-admin="isAdmin"
                 :online-worksheet="onlineWorksheet"
@@ -197,8 +197,8 @@
                   noLinkMode
                     ? undefined
                     : generateNuxtRoute('online-worksheet', {
-                        worksheet: onlineWorksheetIndex
-                      })
+                      worksheet: onlineWorksheetIndex
+                    })
                 "
                 :enabled="completedOnlineWorksheets >= onlineWorksheetIndex"
                 :active="worksheetQuery === onlineWorksheetIndex"
