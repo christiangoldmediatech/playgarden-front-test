@@ -2,11 +2,14 @@
   <v-hover v-slot="{ hover }">
     <div
       :disabled="block"
-      class="elevation-3 lsess-table-entry clickable v2-font"
+      class="elevation-3 lsess-table-entry clickable v2-font pg-relative"
       :class="{
         'lsess-table-entry-scaled': hover,
-        'lsess-table-entry-playdate': entry.type === 'Playdate',
-        'lsess-table-entry-liveclass': entry.type === 'LiveClass',
+        'lsess-table-entry-playdate':
+          !entry.cancelled && entry.type === 'Playdate',
+        'lsess-table-entry-liveclass':
+          !entry.cancelled && entry.type === 'LiveClass',
+        'lsess-table-entry-cancelled': entry.cancelled,
         opacity: !entry.active
       }"
       @click.stop="openLink"
@@ -15,6 +18,7 @@
         <span v-if="isLive" class="pg-uppercase">Live</span>
         <img
           class="lsess-table-entry-live-icon"
+          :class="{ grayscale: entry.cancelled }"
           :src="
             entry.type === 'LiveClass'
               ? require('@/assets/svg/sessions-liveclass-camera.svg')
@@ -49,7 +53,8 @@
             {{
               entry.type === 'LiveClass' ? entry.activityType.name : entry.title
             }}
-          </span> <br>
+          </span>
+          <br />
           <span class="pg-font-light pg-text-sm">
             {{ time }}
           </span>
@@ -59,6 +64,25 @@
       <div class="ma-1">
         {{ title }}
       </div>
+
+      <v-tooltip v-if="entry.cancelled" right>
+        <template #activator="{ on, attrs }">
+          <img
+            v-bind="attrs"
+            class="pg-absolute pg-right-2 pg-bottom-2"
+            :src="require('@/assets/svg/exclamation.svg')"
+            alt="Cancelled"
+            v-on="on"
+          />
+        </template>
+        <div class="pg-pt-4 pg-pl-10 pg-pr-2 text-center pg-text-base">
+          <span class="v2-font">
+            Sorry!<br />
+            This class was canceled due to lack of connection. We are waiting
+            for you in the next class!
+          </span>
+        </div>
+      </v-tooltip>
 
       <!-- Play & Learn lock -->
       <div
@@ -201,14 +225,22 @@ export default {
       width: 100%;
       overflow: hidden;
       border-radius: 10px;
+      border-width: 3px;
+      border-style: solid;
+
+      &-cancelled {
+        border-color: #c8c8c8;
+        background-color: #f2f2f2;
+        opacity: 0.6;
+      }
 
       &-playdate {
-        border: 3px solid #68c453;
+        border-color: #68c453;
         background-color: #f8ffee;
       }
 
       &-liveclass {
-        border: 3px solid #f89838;
+        border-color: #f89838;
         background-color: #fff7f0;
       }
 
@@ -248,6 +280,11 @@ export default {
   }
 }
 
+.cancellation-tooltip {
+  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.15));
+  position: absolute;
+}
+
 .locked-overlay {
   position: absolute;
   width: 100%;
@@ -268,5 +305,17 @@ export default {
 
 .opacity {
   opacity: 0.5 !important;
+}
+
+.v-tooltip__content {
+  background-color: transparent !important;
+  background-image: url('~@/assets/svg/tooltip.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  color: var(--v-black-base);
+  z-index: 2 !important;
+  height: 192px;
+  width: 362px;
+  opacity: 1 !important;
 }
 </style>

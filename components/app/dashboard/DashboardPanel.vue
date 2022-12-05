@@ -1,7 +1,15 @@
 <template>
   <div class="lesson-panel-container">
-    <v-card class="lesson-panel-card mt-0 mt-sm-16 mt-md-0" elevation="0" height="100%" :color="backgroundColor">
-      <div class="lesson-panel-card-border-top" :class="{ 'lesson-panel-card-border-top-light': useLightTheme }">
+    <v-card
+      class="lesson-panel-card mt-0 mt-sm-16 mt-md-0"
+      elevation="0"
+      height="100%"
+      :color="backgroundColor"
+    >
+      <div
+        class="lesson-panel-card-border-top"
+        :class="{ 'lesson-panel-card-border-top-light': useLightTheme }"
+      >
         <slot name="panel-toolbar">
           <!-- HORIZONTAL LESSON NAVIGATION BAR -->
           <v-row
@@ -27,7 +35,13 @@
                     @click.stop="previousLesson"
                     @blur="on.blur"
                   >
-                    <img :src="useLightTheme ? require('@/assets/svg/back-arrow-green.svg') : require('@/assets/svg/back-arrow.svg')">
+                    <img
+                      :src="
+                        useLightTheme
+                          ? require('@/assets/svg/back-arrow-green.svg')
+                          : require('@/assets/svg/back-arrow.svg')
+                      "
+                    />
                   </v-btn>
                 </template>
                 <span>GO TO PREVIOUS DAY</span>
@@ -39,7 +53,13 @@
                   icon
                   @click.stop="previousLesson"
                 >
-                  <img :src="useLightTheme ? require('@/assets/svg/back-arrow-green.svg') : require('@/assets/svg/back-arrow.svg')">
+                  <img
+                    :src="
+                      useLightTheme
+                        ? require('@/assets/svg/back-arrow-green.svg')
+                        : require('@/assets/svg/back-arrow.svg')
+                    "
+                  />
                 </v-btn>
               </template>
             </v-col>
@@ -65,7 +85,13 @@
                       @click.stop="advance"
                       @blur="on.blur"
                     >
-                      <img :src="useLightTheme ? require('@/assets/svg/next-arrow-green.svg') : require('@/assets/svg/next-arrow.svg')">
+                      <img
+                        :src="
+                          useLightTheme
+                            ? require('@/assets/svg/next-arrow-green.svg')
+                            : require('@/assets/svg/next-arrow.svg')
+                        "
+                      />
                     </v-btn>
                   </template>
                   <span>GO TO NEXT DAY</span>
@@ -79,7 +105,13 @@
                     :disabled="!nextButton"
                     @click.stop="advance"
                   >
-                    <img :src="useLightTheme ? require('@/assets/svg/next-arrow-green.svg') : require('@/assets/svg/next-arrow.svg')">
+                    <img
+                      :src="
+                        useLightTheme
+                          ? require('@/assets/svg/next-arrow-green.svg')
+                          : require('@/assets/svg/next-arrow.svg')
+                      "
+                    />
                   </v-btn>
                 </template>
               </p>
@@ -197,9 +229,7 @@
                   <v-img
                     height="40px"
                     contain
-                    :src="
-                      require('@/assets/png/dashboard/download-ico.png')
-                    "
+                    :src="require('@/assets/png/dashboard/download-ico.png')"
                   />
                 </v-col>
 
@@ -369,9 +399,7 @@
                       height="70px"
                       class="mb-3"
                       contain
-                      :src="
-                        require('@/assets/png/dashboard/download-ico.png')
-                      "
+                      :src="require('@/assets/png/dashboard/download-ico.png')"
                     />
 
                     <div
@@ -554,10 +582,12 @@ export default {
     }),
 
     useLightTheme() {
-      return this.$route.name === 'app-dashboard-lesson-videos' ||
+      return (
+        this.$route.name === 'app-dashboard-lesson-videos' ||
         this.$route.name === 'app-dashboard-online-worksheet' ||
         this.$route.name === 'app-dashboard-offline-worksheet' ||
         this.$route.name === 'app-dashboard-lesson-activities'
+      )
     },
 
     offlineWorksheet() {
@@ -715,24 +745,6 @@ export default {
 </script>
 
 <style lang="scss">
-.dailyLessonsScrolView {
-  display: flex;
-  flex-direction: row;
-  overflow-x: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  .v-card {
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: 50%;
-  }
-}
-@media screen and(min-width:960px  ) {
-  .dailyLessonsScrolView {
-    display: block;
-  }
-}
 .dashboard {
   &-item {
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15) !important;
@@ -869,7 +881,27 @@ export default {
     }
   }
 }
+</style>
 
+<style lang="scss" scoped>
+.dailyLessonsScrolView {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .v-card {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 50%;
+  }
+}
+@media screen and(min-width:960px) {
+  .dailyLessonsScrolView {
+    display: block;
+  }
+}
 #download-worksheet-btn.v-btn--disabled,
 #download-worksheet-btn.v-btn--disabled i.v-icon,
 #upload-worksheet-btn.v-btn--disabled,
