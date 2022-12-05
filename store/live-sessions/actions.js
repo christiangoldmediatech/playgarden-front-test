@@ -119,5 +119,14 @@ export default {
 
   async saveAttendance (_, id) {
     await this.$axios.post(`/live-sessions/${id}/assistant`)
+  },
+
+  async fetchHolidays ({ commit }, { sunday, saturday }) {
+    try {
+      const response = await this.$axios.$get('/holidays', { params: { dateIntervalStart: sunday, dateIntervalEnd: saturday } })
+      commit('SET_HOLIDAYS', response)
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }

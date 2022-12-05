@@ -1,14 +1,27 @@
 <template>
   <div class="lsess-table">
-    <div class="lsess-table-container">
+    <div id="sessions-table-container" class="lsess-table-container">
       <div v-if="!dayMode" class="pl-16 pr-8">
         <v-row class="my-0">
           <v-col
-            v-for="(day, index) in days"
+            v-for="(day, index) in getDaysFormatted"
             :key="`days-row-column-${index}`"
             class="lsess-table-col lsess-table-col-header"
           >
-            {{ day }}
+            {{ day.name }}
+            <div
+              v-if="day.holiday"
+              class="lsess-table-col-holiday pa-5"
+              :style="{ backgroundColor: hexToRgbA(day.holiday.color, 0.9), width: `calc(100% * ${day.holiday.cols})`, height: `${holidaysHeight}px` }"
+            >
+              <img class="lsess-table-col-holiday-icon mb-4" :src="day.holiday.iconUrl" alt="holiday icon" />
+              <h1 class="lsess-table-col-holiday-title mb-4">
+                {{ day.holiday.name }}
+              </h1>
+              <p class="lsess-table-col-holiday-description">
+                {{ day.holiday.description }}
+              </p>
+            </div>
             <div
               v-if="index === activeDay"
               class="lsess-table-col-header-active"
@@ -120,9 +133,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
+import dayjs from 'dayjs'
+import { defineComponent, onMounted, onUnmounted, ref } from '@nuxtjs/composition-api'
 import TableEntry from './TableEntry.vue'
 
-export default {
+export default defineComponent({
   name: 'SessionsTable',
 
   components: {
@@ -143,7 +158,39 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    holidays: {
+      type: Array,
+      default: () => []
     }
+  },
+
+  setup() {
+    const holidaysHeight = ref(0)
+
+    const resizeOb = ref(new ResizeObserver(function(entries) {
+      // since we are observing only a single element, so we access the first element in entries array
+      const rect = entries[0].contentRect
+
+      // current height
+      holidaysHeight.value = rect.height
+    }))
+
+    const setObserver = () => {
+      const element = document.getElementById('sessions-table-container')
+      if (element) {
+        resizeOb.value.observe(element)
+      }
+    }
+
+    const unsetObserver = () => {
+      const element = document.getElementById('sessions-table-container')
+      if (element) {
+        resizeOb.value.unobserve(element)
+      }
+    }
+
+    return { holidaysHeight, setObserver, unsetObserver }
   },
 
   data: () => {
@@ -184,6 +231,21 @@ export default {
       date.setDate(parts[2])
 
       return date.getDay()
+    },
+
+    getDaysFormatted() {
+      return this.days.map((day, index) => ({
+        name: day,
+        holiday: this.holidaysFormatted.find((holiday) => holiday.day === index)
+      }))
+    },
+
+    holidaysFormatted() {
+      return this.holidays.map((holiday) => ({
+        day: dayjs(holiday.dateStart).get('day'),
+        cols: dayjs(holiday.dateEnd).get('date') - dayjs(holiday.dateStart).get('date') + 1,
+        ...holiday
+      }))
     }
   },
 
@@ -199,9 +261,22 @@ export default {
 
   mounted() {
     this.scrollToFirst()
+    this.setObserver()
+  },
+
+  unmounted() {
+    this.unsetObserver()
   },
 
   methods: {
+    hexToRgbA(hex, opacity) {
+      let c = hex.substring(1).split('')
+      c = '0x' + c.join('')
+      return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',' + opacity + ')'
+    },
+    getHolidayForDay(dayIndex) {
+      return this.holidaysFormatted.find((holiday) => holiday.day === dayIndex)
+    },
     scrollToFirst() {
       if (this.scrolling || this.activeDay < 0 || this.activeDay > 6) {
         return
@@ -260,7 +335,7 @@ export default {
       return total
     }
   }
-}
+})
 </script>
 
 <style lang="scss">
@@ -284,6 +359,7 @@ export default {
       display: flex;
       flex-direction: column;
       &-header {
+        position: relative;
         font-size: 1.1rem;
         line-height: 1.5;
         text-align: center;
@@ -295,6 +371,40 @@ export default {
           margin-top: 8px;
           background-color: #8ab591;
           border-radius: 3px;
+        }
+      }
+      &-holiday {
+        position: absolute;
+        min-width: 100%;
+        border-radius: 8px;
+        z-index: 1;
+        left: 0;
+        top: 60px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        &-icon {
+          width: 100px;
+        }
+
+        &-title {
+          font-family: 'Quicksand';
+          font-weight: 700;
+          font-size: 24px;
+          line-height: 27px;
+          text-align: center;
+          color: #FFF7EE;
+        }
+
+        &-description {
+          font-family: 'Quicksand';
+          font-weight: 600;
+          font-size: 16px;
+          line-height: 20px;
+          text-align: center;
+          color: #FFFFFF;
         }
       }
     }

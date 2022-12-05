@@ -111,6 +111,7 @@
               v-if="!loading"
               :day-mode="viewMode === 'DAY'"
               :today="today"
+              :holidays="getHolidays"
             />
           </v-col>
         </v-row>
@@ -343,6 +344,7 @@ export default {
 
   computed: {
     ...mapState('live-sessions', ['sessions']),
+    ...mapGetters('live-sessions', ['getHolidays']),
     ...mapGetters('auth', ['getUserInfo', 'hasUserLearnAndPlayPlan']),
     ...mapGetters('auth', {
       hasTrialOrPlatinumPlan: 'hasTrialOrPlatinumPlan'
@@ -420,6 +422,7 @@ export default {
   watch: {
     days() {
       this.getUserLiveSessions(this.days)
+      this.getFilteredHolidays()
     },
 
     sessions() {
@@ -441,6 +444,7 @@ export default {
   created() {
     this.setToday(new Date())
     this.getUserLiveSessions(this.days)
+    this.getFilteredHolidays()
     this.setCurrentTimezone()
   },
 
@@ -453,6 +457,13 @@ export default {
 
     ...mapActions('admin/users', ['setTimezone']),
     ...mapActions('auth', ['fetchUserInfo']),
+    ...mapActions('live-sessions', ['fetchHolidays']),
+
+    async getFilteredHolidays() {
+      this.loading = true
+      await this.fetchHolidays({ ...this.days })
+      this.loading = false
+    },
 
     close() {
       this.$nextTick(() => {
