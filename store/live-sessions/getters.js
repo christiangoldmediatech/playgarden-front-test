@@ -98,5 +98,7 @@ export default {
     }
 
     return schedule
-  }
+  },
+
+  getHolidays: (state) => state.holidays
 }
