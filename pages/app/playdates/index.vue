@@ -2,7 +2,7 @@
   <pg-loading :loading="loading" fullscreen>
     <v-col class="fill-height" data-test-id="playdates-content">
       <!-- ACTIVE PLAYDATES -->
-      <div v-if="isPayingUser && !hasUserLearnAndPlayPlan">
+      <div v-if="isPayingUser && !hasPlayAndLearnPlan">
         <v-row
           align="center"
           class="fill-height"
@@ -191,8 +191,8 @@ export default defineComponent({
     )
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
-    const hasUserLearnAndPlayPlan = computed(() => {
-      return store.getters['auth/hasUserLearnAndPlayPlan']
+    const hasPlayAndLearnPlan = computed(() => {
+      return store.getters['auth/hasPlayAndLearnPlan']
     })
 
     const isThanksgivingWeek = computed(() => {
@@ -320,7 +320,7 @@ export default defineComponent({
       removeWeek,
       goToNextWeek,
       goToPreviousWeek,
-      hasUserLearnAndPlayPlan
+      hasPlayAndLearnPlan
     }
   }
 })

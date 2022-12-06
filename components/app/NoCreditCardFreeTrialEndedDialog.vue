@@ -132,7 +132,7 @@ export default defineComponent({
         loading.value = true
 
         const plan = {
-          id: PlanTier.LEARN_PLAY,
+          id: PlanTier.PLAY_AND_LEARN,
           type: 'monthly',
           fromPlaydates: false,
           trial: true

@@ -9,7 +9,9 @@ export interface PlanFeature {
 export interface Plan extends Entity {
   name: string
   planName: string
-  commonBenefits: PlanFeature
+  color: string
+  image: string
+  commonBenefits: PlanFeature & { title?: string }
   homeDeliveryBenefits: PlanFeature | null
   plusBenefits: PlanFeature | null
   monthlyStripeId: string

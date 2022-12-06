@@ -3,10 +3,10 @@ import { PlanTier } from '@/models'
 import { state } from './'
 
 export default getterTree(state, {
-  getAccessToken: state => state.accessToken,
-  getExpiresAt: state => state.expiresAt,
-  getIssuedAt: state => state.issuedAt,
-  getUserInfo: state => state.userInfo || {},
+  getAccessToken: (state) => state.accessToken,
+  getExpiresAt: (state) => state.expiresAt,
+  getIssuedAt: (state) => state.issuedAt,
+  getUserInfo: (state) => state.userInfo || {},
 
   isUserCaregiver: (state): boolean =>
     state.userInfo?.role?.name === 'CAREGIVERS',
@@ -20,13 +20,19 @@ export default getterTree(state, {
   isUserLoggedIn: (state): boolean => Boolean(state.userInfo?.id),
 
   hasTrialOrPlatinumPlan: (state): boolean =>
-    state.userInfo?.planSelected.id === PlanTier.HOMESCHOOL ||
+    state.userInfo?.planSelected.id === PlanTier.ONLINE_PRESCHOOL ||
     state.userInfo?.trial ||
     true, // TODO: remove in February
 
-  getPlaydateInvitationToken: state => state.playdateInvitationToken,
+  getPlaydateInvitationToken: (state) => state.playdateInvitationToken,
   isUserInTrial: (state): boolean => state.userInfo?.trial || false,
 
-  hasUserLearnAndPlayPlan: (state): boolean =>
-    state.userInfo?.planSelected?.id === PlanTier.LEARN_PLAY || false
+  hasPlayAndLearnPlan: (state): boolean =>
+    (state.userInfo?.planSelected &&
+      (state.userInfo.planSelected.id === PlanTier.PLAY_AND_LEARN ||
+        state.userInfo.planSelected.id === PlanTier.PLAY_AND_LEARN_LIVE)) ||
+    false,
+
+  hasPlayAndLearnLivePlan: (state): boolean =>
+    state.userInfo?.planSelected?.id === PlanTier.PLAY_AND_LEARN_LIVE
 })

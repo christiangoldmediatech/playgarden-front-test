@@ -42,7 +42,7 @@
         class="daily-lessons"
         :section="section.dashboard"
         @click:play="handleAudioPlay"
-        @click="showIntroDialog = true"
+        @click="handleDailyLessonsClick"
       />
 
       <section-image
@@ -100,9 +100,7 @@ export default defineComponent({
     const { accessToken } = useAuth({ store })
     const children = useChildren({ store })
     const baseRoute =
-      process.env.testEnv === 'production'
-        ? `${process.env.baseRouteProd}`
-        : '/'
+      process.env.testEnv === 'production' ? process.env.baseRouteProd : '/'
 
     const currentChild = computed(
       (): Utils.Maybe<Child> => store.getters.getCurrentChild?.[0]
@@ -131,7 +129,7 @@ export default defineComponent({
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Katryna-kidscorner.png'),
         route: goToKidsCorner,
         message:
-          'It\'s a little bit silly in the Kids Corner, where kids choose how to learn',
+          "It's a little bit silly in the Kids Corner, where kids choose how to learn",
         audio: `${baseRoute}audio/virtual-preschool/Kidscorner.m4a`
       },
       playdates: {
@@ -170,7 +168,8 @@ export default defineComponent({
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/teacher_well_being.png'),
         title: 'Well-being',
         route: { name: 'app-learn-play' },
-        message: 'Have fun together with activities, games, books and so much more',
+        message:
+          'Have fun together with activities, games, books and so much more',
         audio: ''
       },
       playandlearn: {
@@ -217,13 +216,26 @@ export default defineComponent({
       }
     }
 
+    const hasPlayAndLearnPlanLivePlan = computed(
+      () => store.getters['auth/hasPlayAndLearnLivePlan']
+    )
+
+    const handleDailyLessonsClick = (sectionItem: SectionItem) => {
+      if (hasPlayAndLearnPlanLivePlan.value) {
+        return handleClick(sectionItem)
+      }
+
+      showIntroDialog.value = true
+    }
+
     return {
       section,
       isBirthdayModalvisible,
       showIntroDialog,
       goToKidsCorner,
       handleClick,
-      handleAudioPlay
+      handleAudioPlay,
+      handleDailyLessonsClick
     }
   }
 })

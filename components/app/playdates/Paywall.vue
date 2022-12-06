@@ -37,12 +37,10 @@
             width="250"
             :loading="isLoading"
             @click="
-              hasUserLearnAndPlayPlan
-                ? handleUpgradeRequest()
-                : handleCancelTrial()
+              hasPlayAndLearnPlan ? handleUpgradeRequest() : handleCancelTrial()
             "
           >
-            {{ hasUserLearnAndPlayPlan ? 'UPDATE PLAN' : 'END FREE TRIAL NOW' }}
+            {{ hasPlayAndLearnPlan ? 'UPDATE PLAN' : 'END FREE TRIAL NOW' }}
           </v-btn>
         </v-col>
 
@@ -114,8 +112,8 @@ export default defineComponent({
       PlanAccessHelpers.displayPlanUpgradeModal()
     }
 
-    const hasUserLearnAndPlayPlan = computed(() => {
-      return store.getters['auth/hasUserLearnAndPlayPlan']
+    const hasPlayAndLearnPlan = computed(() => {
+      return store.getters['auth/hasPlayAndLearnPlan']
     })
 
     const handleCancelTrial = async () => {
@@ -152,7 +150,7 @@ export default defineComponent({
       isCreditCardModalVisible,
       handleCancelTrial,
       handleContactUs: showContactUsModal,
-      hasUserLearnAndPlayPlan,
+      hasPlayAndLearnPlan,
       handleUpgradeRequest
     }
   }

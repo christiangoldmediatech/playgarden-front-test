@@ -3,10 +3,10 @@
     <!-- Common benefits -->
     <template v-if="plan.commonBenefits.benefits.length > 0">
       <plan-benefit
-        v-for="benefit in plan.commonBenefits.benefits"
-        :key="benefit"
+        v-for="(benefit, i) in plan.commonBenefits.benefits"
+        :key="i"
+        :color="plan.color"
         :benefit="benefit"
-        :index="index"
       />
     </template>
 
@@ -18,10 +18,10 @@
       "
     >
       <plan-benefit
-        v-for="benefit in plan.homeDeliveryBenefits.benefits"
-        :key="benefit"
+        v-for="(benefit, i) in plan.homeDeliveryBenefits.benefits"
+        :key="i"
         :benefit="benefit"
-        :index="index"
+        :color="plan.color"
       />
     </template>
 
@@ -32,10 +32,10 @@
       </div>
 
       <plan-benefit
-        v-for="benefit in plan.plusBenefits.benefits"
-        :key="benefit"
+        v-for="(benefit, i) in plan.plusBenefits.benefits"
+        :key="i"
         :benefit="benefit"
-        :index="index"
+        :color="plan.color"
       />
     </template>
   </div>
@@ -53,10 +53,6 @@ export default defineComponent({
     plan: {
       type: Object as PropType<Plan>,
       required: true
-    },
-    index: {
-      type: Number,
-      default: 1
     }
   }
 })
