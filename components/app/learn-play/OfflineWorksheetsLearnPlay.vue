@@ -6,41 +6,47 @@
       </span>
     </div>
     <div v-if="getOfflineWorksheet.length > 0" class="card-offline">
-      <v-slide-group show-arrows="always">
-        <template #prev>
-          <v-btn icon>
-            <v-img :src="require('@/assets/png/arrow-left.png')" max-width="12px" />
-          </v-btn>
-        </template>
-        <v-slide-item
-          v-for="(offlineWorksheet, offlineWorksheetIndex) in getOfflineWorksheet"
-          :key="`offlineworksheet-card-item-${offlineWorksheetIndex}`"
-          class="mx-auto"
-        >
-          <v-card class="ma-sm-4 ma-xl-6" :max-width="maxWidth">
-            <v-img :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')" width="300px" height="200px" contain />
-            <div class="d-flex flex-nowrap pa-2 align-center">
-              <div class="worksheet-title flex-grow-1 pr-2">
-                {{ offlineWorksheet.name }}
-              </div>
+      <v-sheet
+        class="mx-auto"
+        elevation="8"
+      >
+        <v-slide-group v-model="selectedWorksheet" center-active show-arrows="always">
+          <template #prev>
+            <v-btn icon>
+              <v-img :src="require('@/assets/png/arrow-left.png')" max-width="12px" />
+            </v-btn>
+          </template>
+          <v-slide-item
+            v-for="(offlineWorksheet, offlineWorksheetIndex) in getOfflineWorksheet"
+            v-slot:default="{ toggle }"
+            :key="`offlineworksheet-card-item-${offlineWorksheetIndex}`"
+            class="mx-2"
+          >
+            <v-card class="ma-4" :max-width="maxWidth" @click="toggle">
+              <v-img :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')" width="300px" height="200px" contain />
+              <div class="d-flex flex-nowrap pa-2 align-center">
+                <div class="worksheet-title flex-grow-1 pr-2">
+                  {{ offlineWorksheet.name }}
+                </div>
 
-              <div>
-                <DownloadButtonLearnPlay
-                  @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
-                />
+                <div>
+                  <DownloadButtonLearnPlay
+                    @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
+                  />
+                </div>
               </div>
-            </div>
-          </v-card>
-        </v-slide-item>
-        <template #next>
-          <v-btn icon>
-            <v-img
-              :src="require('@/assets/png/arrow-right.png')"
-              max-width="12px"
-            />
-          </v-btn>
-        </template>
-      </v-slide-group>
+            </v-card>
+          </v-slide-item>
+          <template #next>
+            <v-btn icon>
+              <v-img
+                :src="require('@/assets/png/arrow-right.png')"
+                max-width="12px"
+              />
+            </v-btn>
+          </template>
+        </v-slide-group>
+      </v-sheet>
     </div>
     <div v-else>
       <v-card
@@ -81,14 +87,15 @@ export default defineComponent({
     const childStore = useStore<TypedStore>()
     const child = useChild({ store: childStore })
     const vuetify = useVuetifyHelper()
+    const selectedWorksheet = null
 
     const maxWidth = computed(() => {
       switch (vuetify.breakpoint.name) {
         case 'xs': return 300
         case 'sm': return 300
         case 'md': return 280
-        case 'lg': return 280
-        case 'xl': return 295
+        case 'lg': return 295
+        case 'xl': return 260
       }
     })
 
@@ -116,7 +123,8 @@ export default defineComponent({
     return {
       handleDownloadWorksheetClick,
       getOfflineWorksheet: learnPlayV2.computedProps.getOfflineWorksheet,
-      maxWidth
+      maxWidth,
+      selectedWorksheet
     }
   }
 })
