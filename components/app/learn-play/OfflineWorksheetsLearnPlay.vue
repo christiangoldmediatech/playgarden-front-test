@@ -16,7 +16,7 @@
           v-for="(offlineWorksheet, offlineWorksheetIndex) in getOfflineWorksheet"
           :key="`offlineworksheet-card-item-${offlineWorksheetIndex}`"
         >
-          <v-card class="ma-3" max-width="300px">
+          <v-card class="ma-4" :max-width="maxWidth">
             <v-img :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')" width="300px" height="200px" contain />
             <div class="d-flex flex-nowrap pa-2 align-center">
               <div class="worksheet-title flex-grow-1 pr-2">
@@ -55,8 +55,8 @@
 </template>
 
 <script lang="ts">
-import { useLearnPlayV2, useChild } from '@/composables'
-import { defineComponent, useStore } from '@nuxtjs/composition-api'
+import { useLearnPlayV2, useChild, useVuetifyHelper } from '@/composables'
+import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
 import { TypedStore } from '@/models'
 import DownloadButtonLearnPlay from './DownloadButtonLearnPlay.vue'
 
@@ -79,6 +79,17 @@ export default defineComponent({
     const learnPlayV2 = useLearnPlayV2({ store })
     const childStore = useStore<TypedStore>()
     const child = useChild({ store: childStore })
+    const vuetify = useVuetifyHelper()
+
+    const maxWidth = computed(() => {
+      switch (vuetify.breakpoint.name) {
+        case 'xs': return 300
+        case 'sm': return 300
+        case 'md': return 280
+        case 'lg': return 280
+        case 'xl': return 320
+      }
+    })
 
     function handleDownloadWorksheetClick(item: any) {
       window.open(item.pdfUrl, '_blank')
@@ -103,7 +114,8 @@ export default defineComponent({
 
     return {
       handleDownloadWorksheetClick,
-      getOfflineWorksheet: learnPlayV2.computedProps.getOfflineWorksheet
+      getOfflineWorksheet: learnPlayV2.computedProps.getOfflineWorksheet,
+      maxWidth
     }
   }
 })
