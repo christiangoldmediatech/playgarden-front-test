@@ -15,8 +15,9 @@
         <v-slide-item
           v-for="(offlineWorksheet, offlineWorksheetIndex) in getOfflineWorksheet"
           :key="`offlineworksheet-card-item-${offlineWorksheetIndex}`"
+          class="mx-auto"
         >
-          <v-card class="ma-4" :max-width="maxWidth">
+          <v-card class="ma-sm-4 ma-xl-6" :max-width="maxWidth">
             <v-img :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')" width="300px" height="200px" contain />
             <div class="d-flex flex-nowrap pa-2 align-center">
               <div class="worksheet-title flex-grow-1 pr-2">
@@ -87,7 +88,7 @@ export default defineComponent({
         case 'sm': return 300
         case 'md': return 280
         case 'lg': return 280
-        case 'xl': return 320
+        case 'xl': return 295
       }
     })
 
