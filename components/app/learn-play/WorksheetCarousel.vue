@@ -25,8 +25,8 @@
               xs="12"
               sm="6"
               md="6"
-              lg="3"
-              xl="2"
+              lg="4"
+              xl="3"
             >
               <v-card
                 class="mx-auto worksheet-card"
@@ -109,8 +109,8 @@ export default defineComponent({
         case 'xs': return 1
         case 'sm': return 2
         case 'md': return 2
-        case 'lg': return 4
-        case 'xl': return 6
+        case 'lg': return 3
+        case 'xl': return 4
       }
     })
     const totalPage = computed(() => {
