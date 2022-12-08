@@ -49,26 +49,6 @@ export default defineComponent({
     const vuetify = useVuetifyHelper()
     const selectedWorksheet = null
 
-    const maxWidth = computed(() => {
-      switch (vuetify.breakpoint.name) {
-        case 'xs': return 300
-        case 'sm': return 300
-        case 'md': return 280
-        case 'lg': return 256
-        case 'xl': return 300
-      }
-    })
-
-    const maxWidthImage = computed(() => {
-      switch (vuetify.breakpoint.name) {
-        case 'xs': return 300
-        case 'sm': return 300
-        case 'md': return 280
-        case 'lg': return 250
-        case 'xl': return 240
-      }
-    })
-
     function handleDownloadWorksheetClick(item: any) {
       window.open(item.pdfUrl, '_blank')
       saveProgress(item)
@@ -93,8 +73,6 @@ export default defineComponent({
     return {
       handleDownloadWorksheetClick,
       getOfflineWorksheet: learnPlayV2.computedProps.getOfflineWorksheet,
-      maxWidth,
-      maxWidthImage,
       selectedWorksheet
     }
   }
