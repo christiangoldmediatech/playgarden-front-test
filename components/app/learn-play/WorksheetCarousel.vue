@@ -3,14 +3,12 @@
     class="mx-auto"
     elevation="8"
   >
-    <v-container class="">
+    <v-container class="fluid">
       <v-row
         class="mb-6"
         no-gutters
       >
-        <v-col
-          cols="1"
-        >
+        <v-col cols="1">
           <div class="d-flex fill-height align-center justify-center">
             <v-btn icon @click="previousWorksheets">
               <v-img :src="require('@/assets/png/arrow-left.png')" max-width="12px" />
@@ -24,11 +22,11 @@
             <v-col
               v-for="(offlineWorksheet, offlineWorksheetIndex) in worksheetsPaginate"
               :key="`offlineworksheet-card-item-${offlineWorksheetIndex}`"
-              cols="4"
-              sm="12"
+              xs="12"
+              sm="6"
               md="6"
-              lg="4"
-              xl="3"
+              lg="3"
+              xl="2"
             >
               <v-card
                 class="mx-auto worksheet-card"
@@ -109,10 +107,10 @@ export default defineComponent({
     const size = computed(() => {
       switch (vuetify.breakpoint.name) {
         case 'xs': return 1
-        case 'sm': return 1
+        case 'sm': return 2
         case 'md': return 2
-        case 'lg': return 3
-        case 'xl': return 4
+        case 'lg': return 4
+        case 'xl': return 6
       }
     })
     const totalPage = computed(() => {
