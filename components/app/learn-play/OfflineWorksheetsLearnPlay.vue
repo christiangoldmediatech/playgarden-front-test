@@ -6,40 +6,7 @@
       </span>
     </div>
     <div v-if="getOfflineWorksheet.length > 0" class="card-offline">
-      <v-slide-group show-arrows="always">
-        <template #prev>
-          <v-btn icon>
-            <v-img :src="require('@/assets/png/arrow-left.png')" max-width="12px" />
-          </v-btn>
-        </template>
-        <v-slide-item
-          v-for="(offlineWorksheet, offlineWorksheetIndex) in getOfflineWorksheet"
-          :key="`offlineworksheet-card-item-${offlineWorksheetIndex}`"
-        >
-          <v-card class="ma-3" max-width="300px">
-            <v-img :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')" width="300px" height="200px" contain />
-            <div class="d-flex flex-nowrap pa-2 align-center">
-              <div class="worksheet-title flex-grow-1 pr-2">
-                {{ offlineWorksheet.name }}
-              </div>
-
-              <div>
-                <DownloadButtonLearnPlay
-                  @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
-                />
-              </div>
-            </div>
-          </v-card>
-        </v-slide-item>
-        <template #next>
-          <v-btn icon>
-            <v-img
-              :src="require('@/assets/png/arrow-right.png')"
-              max-width="12px"
-            />
-          </v-btn>
-        </template>
-      </v-slide-group>
+      <workshhet-carousel :worksheets-data="getOfflineWorksheet" />
     </div>
     <div v-else>
       <v-card
@@ -55,16 +22,16 @@
 </template>
 
 <script lang="ts">
-import { useLearnPlayV2, useChild } from '@/composables'
-import { defineComponent, useStore } from '@nuxtjs/composition-api'
+import { useLearnPlayV2, useChild, useVuetifyHelper } from '@/composables'
+import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
 import { TypedStore } from '@/models'
-import DownloadButtonLearnPlay from './DownloadButtonLearnPlay.vue'
+import WorkshhetCarousel from './WorksheetCarousel.vue'
 
 export default defineComponent({
   name: 'OfflineWorksheetsLearnPlay',
 
   components: {
-    DownloadButtonLearnPlay
+    WorkshhetCarousel
   },
 
   props: {
@@ -79,6 +46,8 @@ export default defineComponent({
     const learnPlayV2 = useLearnPlayV2({ store })
     const childStore = useStore<TypedStore>()
     const child = useChild({ store: childStore })
+    const vuetify = useVuetifyHelper()
+    const selectedWorksheet = null
 
     function handleDownloadWorksheetClick(item: any) {
       window.open(item.pdfUrl, '_blank')
@@ -103,7 +72,8 @@ export default defineComponent({
 
     return {
       handleDownloadWorksheetClick,
-      getOfflineWorksheet: learnPlayV2.computedProps.getOfflineWorksheet
+      getOfflineWorksheet: learnPlayV2.computedProps.getOfflineWorksheet,
+      selectedWorksheet
     }
   }
 })
@@ -114,10 +84,12 @@ export default defineComponent({
   font-family: 'Poppins';
   font-weight: 700;
   font-size: 16px;
-  line-height: 24px;
   color: #606060;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+.worksheet-card{
+  width: calc(38.5vw - 256px)!important;
 }
 </style>
