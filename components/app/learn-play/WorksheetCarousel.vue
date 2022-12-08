@@ -26,6 +26,7 @@
               :key="`offlineworksheet-card-item-${offlineWorksheetIndex}`"
               cols="4"
               sm="12"
+              md="6"
               lg="4"
               xl="3"
             >
@@ -69,7 +70,7 @@
 
 <script lang="ts">
 import { useLearnPlayV2, useChild, useVuetifyHelper } from '@/composables'
-import { defineComponent, useStore, onMounted, ref, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, onMounted, ref, computed, watch } from '@nuxtjs/composition-api'
 import { TypedStore } from '@/models'
 import DownloadButtonLearnPlay from './DownloadButtonLearnPlay.vue'
 
@@ -92,7 +93,6 @@ export default defineComponent({
   },
 
   setup(props) {
-    console.log(props)
     const store = useStore()
     const learnPlayV2 = useLearnPlayV2({ store })
     const childStore = useStore<TypedStore>()
@@ -110,7 +110,7 @@ export default defineComponent({
       switch (vuetify.breakpoint.name) {
         case 'xs': return 1
         case 'sm': return 1
-        case 'md': return 3
+        case 'md': return 2
         case 'lg': return 3
         case 'xl': return 4
       }
@@ -118,6 +118,12 @@ export default defineComponent({
     const totalPage = computed(() => {
       const total = (props.worksheetsData && props.worksheetsData.length > 0) ? (props.worksheetsData.length / size.value) : 0
       return Math.ceil(total)
+    })
+
+    watch(vuetify.breakpoint, (val:any) => {
+      if (val) {
+        paginate(currentPage.value)
+      }
     })
 
     const nextWorksheets = () => {
