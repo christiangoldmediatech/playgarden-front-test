@@ -3,66 +3,64 @@
     class="mx-auto"
     elevation="8"
   >
-    <v-container class="fluid">
-      <v-row
-        class="mb-6"
-        no-gutters
+    <v-row
+      class="mb-6"
+      no-gutters
+    >
+      <v-col cols="1">
+        <div class="d-flex fill-height align-center justify-center">
+          <v-btn icon @click="previousWorksheets">
+            <v-img :src="require('@/assets/png/arrow-left.png')" max-width="12px" />
+          </v-btn>
+        </div>
+      </v-col>
+      <v-col
+        cols="10"
       >
-        <v-col cols="1">
-          <div class="d-flex fill-height align-center justify-center">
-            <v-btn icon @click="previousWorksheets">
-              <v-img :src="require('@/assets/png/arrow-left.png')" max-width="12px" />
-            </v-btn>
-          </div>
-        </v-col>
-        <v-col
-          cols="10"
-        >
-          <v-row>
-            <v-col
-              v-for="(offlineWorksheet, offlineWorksheetIndex) in worksheetsPaginate"
-              :key="`offlineworksheet-card-item-${offlineWorksheetIndex}`"
-              xs="12"
-              sm="6"
-              md="6"
-              lg="4"
-              xl="3"
+        <v-row>
+          <v-col
+            v-for="(offlineWorksheet, offlineWorksheetIndex) in worksheetsPaginate"
+            :key="`offlineworksheet-card-item-${offlineWorksheetIndex}`"
+            xs="12"
+            sm="6"
+            md="6"
+            lg="4"
+            xl="3"
+          >
+            <v-card
+              class="mx-auto worksheet-card ma-4"
             >
-              <v-card
-                class="mx-auto worksheet-card"
-              >
-                <v-img :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')" max-height="200px" contain />
+              <v-img :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')" max-height="200px" contain />
 
-                <div class="d-flex flex-nowrap pa-2 align-center">
-                  <div class="worksheet-title flex-grow-1 pr-2">
-                    {{ offlineWorksheet.name }}
-                  </div>
-
-                  <div>
-                    <DownloadButtonLearnPlay
-                      @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
-                    />
-                  </div>
+              <div class="d-flex flex-nowrap pa-2 align-center">
+                <div class="worksheet-title flex-grow-1 pr-2">
+                  {{ offlineWorksheet.name }}
                 </div>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col
-          cols="1"
-          class="text-right"
-        >
-          <div class="d-flex fill-height align-center justify-center">
-            <v-btn icon @click="nextWorksheets">
-              <v-img
-                :src="require('@/assets/png/arrow-right.png')"
-                max-width="12px"
-              />
-            </v-btn>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
+
+                <div>
+                  <DownloadButtonLearnPlay
+                    @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
+                  />
+                </div>
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col
+        cols="1"
+        class="text-right"
+      >
+        <div class="d-flex fill-height align-center justify-center">
+          <v-btn icon @click="nextWorksheets">
+            <v-img
+              :src="require('@/assets/png/arrow-right.png')"
+              max-width="12px"
+            />
+          </v-btn>
+        </div>
+      </v-col>
+    </v-row>
   </v-sheet>
 </template>
 
