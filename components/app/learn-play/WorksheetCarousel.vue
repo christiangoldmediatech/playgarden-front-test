@@ -8,7 +8,7 @@
         class="mb-6"
         no-gutters
       >
-        <v-col>
+        <v-col cols="1">
           <div class="d-flex fill-height align-center justify-center">
             <v-btn icon @click="previousWorksheets">
               <v-img :src="require('@/assets/png/arrow-left.png')" max-width="12px" />
@@ -49,6 +49,7 @@
           </v-row>
         </v-col>
         <v-col
+          cols="1"
           class="text-right"
         >
           <div class="d-flex fill-height align-center justify-center">
