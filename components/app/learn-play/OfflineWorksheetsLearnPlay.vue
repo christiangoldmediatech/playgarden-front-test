@@ -6,47 +6,7 @@
       </span>
     </div>
     <div v-if="getOfflineWorksheet.length > 0" class="card-offline">
-      <v-sheet
-        class="mx-auto"
-        elevation="8"
-      >
-        <v-slide-group v-model="selectedWorksheet" center-active show-arrows="always">
-          <template #prev>
-            <v-btn icon>
-              <v-img :src="require('@/assets/png/arrow-left.png')" max-width="12px" />
-            </v-btn>
-          </template>
-          <v-slide-item
-            v-for="(offlineWorksheet, offlineWorksheetIndex) in getOfflineWorksheet"
-            v-slot:default="{ toggle }"
-            :key="`offlineworksheet-card-item-${offlineWorksheetIndex}`"
-            class="mx-2"
-          >
-            <v-card class="ma-4" :max-width="maxWidth" @click="toggle">
-              <v-img :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')" width="300px" height="200px" contain />
-              <div class="d-flex flex-nowrap pa-2 align-center">
-                <div class="worksheet-title flex-grow-1 pr-2">
-                  {{ offlineWorksheet.name }}
-                </div>
-
-                <div>
-                  <DownloadButtonLearnPlay
-                    @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
-                  />
-                </div>
-              </div>
-            </v-card>
-          </v-slide-item>
-          <template #next>
-            <v-btn icon>
-              <v-img
-                :src="require('@/assets/png/arrow-right.png')"
-                max-width="12px"
-              />
-            </v-btn>
-          </template>
-        </v-slide-group>
-      </v-sheet>
+      <workshhet-carousel :worksheets-data="getOfflineWorksheet"></workshhet-carousel>
     </div>
     <div v-else>
       <v-card
@@ -65,13 +25,13 @@
 import { useLearnPlayV2, useChild, useVuetifyHelper } from '@/composables'
 import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
 import { TypedStore } from '@/models'
-import DownloadButtonLearnPlay from './DownloadButtonLearnPlay.vue'
+import WorkshhetCarousel from './WorksheetCarousel.vue'
 
 export default defineComponent({
   name: 'OfflineWorksheetsLearnPlay',
 
   components: {
-    DownloadButtonLearnPlay
+    WorkshhetCarousel
   },
 
   props: {
@@ -94,8 +54,18 @@ export default defineComponent({
         case 'xs': return 300
         case 'sm': return 300
         case 'md': return 280
-        case 'lg': return 295
-        case 'xl': return 260
+        case 'lg': return 256
+        case 'xl': return 300
+      }
+    })
+
+    const maxWidthImage = computed(() => {
+      switch (vuetify.breakpoint.name) {
+        case 'xs': return 300
+        case 'sm': return 300
+        case 'md': return 280
+        case 'lg': return 250
+        case 'xl': return 240
       }
     })
 
@@ -124,6 +94,7 @@ export default defineComponent({
       handleDownloadWorksheetClick,
       getOfflineWorksheet: learnPlayV2.computedProps.getOfflineWorksheet,
       maxWidth,
+      maxWidthImage,
       selectedWorksheet
     }
   }
@@ -135,10 +106,12 @@ export default defineComponent({
   font-family: 'Poppins';
   font-weight: 700;
   font-size: 16px;
-  line-height: 24px;
   color: #606060;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+.worksheet-card{
+  width: calc(38.5vw - 256px)!important;
 }
 </style>
