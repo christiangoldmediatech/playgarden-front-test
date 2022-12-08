@@ -12,7 +12,7 @@
           cols="1"
         >
           <div class="d-flex fill-height align-center justify-center">
-            <v-btn icon>
+            <v-btn icon @click="previousWorksheets">
               <v-img :src="require('@/assets/png/arrow-left.png')" max-width="12px" />
             </v-btn>
           </div>
@@ -54,7 +54,7 @@
           class="text-right"
         >
           <div class="d-flex fill-height align-center justify-center">
-            <v-btn icon>
+            <v-btn icon @click="nextWorksheets">
               <v-img
                 :src="require('@/assets/png/arrow-right.png')"
                 max-width="12px"
@@ -99,6 +99,7 @@ export default defineComponent({
     const child = useChild({ store: childStore })
     const worksheetsPaginate = ref<any[]>([])
     const vuetify = useVuetifyHelper()
+    const currentPage = ref(1)
 
     function handleDownloadWorksheetClick(item: any) {
       window.open(item.pdfUrl, '_blank')
@@ -114,9 +115,22 @@ export default defineComponent({
         case 'xl': return 4
       }
     })
+    const totalPage = computed(() => {
+      const total = (props.worksheetsData && props.worksheetsData.length > 0) ? (props.worksheetsData.length / size.value) : 0
+      return Math.ceil(total)
+    })
 
     const nextWorksheets = () => {
-      paginate(1)
+      if (currentPage.value < totalPage.value) {
+        currentPage.value++
+        paginate(currentPage.value)
+      }
+    }
+    const previousWorksheets = () => {
+      if (currentPage.value > 1) {
+        currentPage.value--
+        paginate(currentPage.value)
+      }
     }
 
     const saveProgress = async (item: any) => {
@@ -140,13 +154,14 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      paginate(1)
+      paginate(currentPage.value)
     })
 
     return {
       worksheetsPaginate,
       handleDownloadWorksheetClick,
-      nextWorksheets
+      nextWorksheets,
+      previousWorksheets
     }
   }
 })
