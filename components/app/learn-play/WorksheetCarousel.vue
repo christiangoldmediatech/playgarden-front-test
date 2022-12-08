@@ -30,7 +30,9 @@
             <v-card
               class="mx-auto worksheet-card ma-4"
             >
-              <v-img :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')" max-height="200px" contain />
+              <div class="pt-4">
+                <v-img :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')" max-height="200px" contain />
+              </div>
 
               <div class="d-flex flex-nowrap pa-2 align-center">
                 <div class="worksheet-title flex-grow-1 pr-2">
