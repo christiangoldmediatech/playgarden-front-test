@@ -168,7 +168,6 @@ export default {
     max-width: calc(100% - 24px);
     &-mobile {
       width: 100%;
-      height: 100%;
       max-width: 300px;
       padding: 4px;
       margin: 0px;

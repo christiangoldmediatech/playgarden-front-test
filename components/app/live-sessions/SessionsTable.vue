@@ -9,19 +9,7 @@
             class="lsess-table-col lsess-table-col-header"
           >
             {{ day.name }}
-            <div
-              v-if="day.holiday"
-              class="lsess-table-col-holiday pa-5"
-              :style="{ backgroundColor: hexToRgbA(day.holiday.color, 0.9), width: `calc(100% * ${day.holiday.cols})`, height: `${holidaysHeight}px` }"
-            >
-              <img class="lsess-table-col-holiday-icon mb-4" :src="day.holiday.iconUrl" alt="holiday icon" />
-              <h1 class="lsess-table-col-holiday-title mb-4">
-                {{ day.holiday.name }}
-              </h1>
-              <p class="lsess-table-col-holiday-description">
-                {{ day.holiday.description }}
-              </p>
-            </div>
+            <holiday-card v-if="day.holiday" :holiday="day.holiday" :height="holidaysWeekHeight" top-position="60px" holiday-type="week" />
             <div
               v-if="index === activeDay"
               class="lsess-table-col-header-active"
@@ -44,6 +32,7 @@
             </v-card>
           </template>
           <template v-else>
+            <holiday-card v-if="holidayForDay" :holiday="holidayForDay.holiday" :height="holidaysDayHeight" top-position="0" holiday-type="day" />
             <div
               v-for="hour in totalHours"
               :key="`hour-${hour}`"
@@ -134,15 +123,17 @@
 import { mapGetters } from 'vuex'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import dayjs from 'dayjs'
-import { defineComponent, onMounted, onUnmounted, ref } from '@nuxtjs/composition-api'
+import { defineComponent, ref } from '@nuxtjs/composition-api'
 import TableEntry from './TableEntry.vue'
+import HolidayCard from './HolidayCard.vue'
 
 export default defineComponent({
   name: 'SessionsTable',
 
   components: {
     PerfectScrollbar,
-    TableEntry
+    TableEntry,
+    HolidayCard
   },
 
   props: {
@@ -166,31 +157,47 @@ export default defineComponent({
   },
 
   setup() {
-    const holidaysHeight = ref(0)
+    const holidaysWeekHeight = ref('0px')
+    const holidaysDayHeight = ref('0px')
 
     const resizeOb = ref(new ResizeObserver(function(entries) {
-      // since we are observing only a single element, so we access the first element in entries array
-      const rect = entries[0].contentRect
+      const scrollArea = entries.find((entry) => entry.target.id === 'scrollArea')
+      const sessionsTable = entries.find((entry) => entry.target.id === 'sessions-table-container')
 
-      // current height
-      holidaysHeight.value = rect.height
+      if (sessionsTable) {
+        holidaysWeekHeight.value = `${sessionsTable.contentRect.height}px`
+      }
+
+      if (scrollArea) {
+        holidaysDayHeight.value = `${scrollArea.contentRect.height}px`
+      }
     }))
 
     const setObserver = () => {
-      const element = document.getElementById('sessions-table-container')
-      if (element) {
-        resizeOb.value.observe(element)
+      const tableContainer = document.getElementById('sessions-table-container')
+      const scrollArea = document.getElementById('scrollArea')
+      if (tableContainer) {
+        resizeOb.value.observe(tableContainer)
+      }
+
+      if (scrollArea) {
+        resizeOb.value.observe(scrollArea)
       }
     }
 
     const unsetObserver = () => {
-      const element = document.getElementById('sessions-table-container')
-      if (element) {
-        resizeOb.value.unobserve(element)
+      const tableContainer = document.getElementById('sessions-table-container')
+      const scrollArea = document.getElementById('scrollArea')
+      if (tableContainer) {
+        resizeOb.value.unobserve(tableContainer)
+      }
+
+      if (scrollArea) {
+        resizeOb.value.observe(scrollArea)
       }
     }
 
-    return { holidaysHeight, setObserver, unsetObserver }
+    return { holidaysWeekHeight, holidaysDayHeight, setObserver, unsetObserver }
   },
 
   data: () => {
@@ -246,6 +253,19 @@ export default defineComponent({
         cols: dayjs(holiday.dateEnd).get('date') - dayjs(holiday.dateStart).get('date') + 1,
         ...holiday
       }))
+    },
+
+    holidayForDay() {
+      const currentDate = dayjs(this.today)
+      return this.getDaysFormatted.find((day) => {
+        if (!day.holiday) {
+          return false
+        }
+
+        const startDate = dayjs(day.holiday.dateStart)
+        const endDate = dayjs(day.holiday.dateEnd)
+        return startDate.get('date') <= currentDate.get('date') && currentDate.get('date') <= endDate.get('date')
+      })
     }
   },
 
@@ -269,11 +289,6 @@ export default defineComponent({
   },
 
   methods: {
-    hexToRgbA(hex, opacity) {
-      let c = hex.substring(1).split('')
-      c = '0x' + c.join('')
-      return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',' + opacity + ')'
-    },
     getHolidayForDay(dayIndex) {
       return this.holidaysFormatted.find((holiday) => holiday.day === dayIndex)
     },
@@ -371,40 +386,6 @@ export default defineComponent({
           margin-top: 8px;
           background-color: #8ab591;
           border-radius: 3px;
-        }
-      }
-      &-holiday {
-        position: absolute;
-        min-width: 100%;
-        border-radius: 8px;
-        z-index: 1;
-        left: 0;
-        top: 60px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-
-        &-icon {
-          width: 100px;
-        }
-
-        &-title {
-          font-family: 'Quicksand';
-          font-weight: 700;
-          font-size: 24px;
-          line-height: 27px;
-          text-align: center;
-          color: #FFF7EE;
-        }
-
-        &-description {
-          font-family: 'Quicksand';
-          font-weight: 600;
-          font-size: 16px;
-          line-height: 20px;
-          text-align: center;
-          color: #FFFFFF;
         }
       }
     }
