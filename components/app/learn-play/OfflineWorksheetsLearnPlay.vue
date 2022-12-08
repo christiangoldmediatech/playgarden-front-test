@@ -6,7 +6,7 @@
       </span>
     </div>
     <div v-if="getOfflineWorksheet.length > 0" class="card-offline">
-      <workshhet-carousel :worksheets-data="getOfflineWorksheet"></workshhet-carousel>
+      <workshhet-carousel :worksheets-data="getOfflineWorksheet" />
     </div>
     <div v-else>
       <v-card

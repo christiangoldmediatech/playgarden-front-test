@@ -3,7 +3,7 @@
     class="mx-auto"
     elevation="8"
   >
-    <v-container class="">
+    <v-container class="fluid">
       <v-row
         class="mb-6"
         no-gutters
