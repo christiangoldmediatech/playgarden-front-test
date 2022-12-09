@@ -31,7 +31,7 @@
       :style="{ '--plan-color': plan.color }"
       class="plus-benefits"
     >
-      <div class="accent--text pg-mb-4 pg-mt-6 pg-text-lg pg-font-semibold">
+      <div class="accent--text pg-mb-1 pg-mt-6 pg-text-lg pg-font-semibold">
         AND
       </div>
 
@@ -40,6 +40,7 @@
         :key="benefit"
         :benefit="benefit"
         :color="plan.color"
+        large
       />
     </div>
   </div>
@@ -73,7 +74,7 @@ export default defineComponent({
     height: calc(100% + 1.25rem);
     width: calc(100% + 1rem);
     opacity: 0.3;
-    transform: rotate(-2.65deg);
+    transform: rotate(-2.39deg);
     top: -0.5rem;
     left: -0.5rem;
   }

@@ -20,7 +20,10 @@
     </div>
 
     <!-- Benefit -->
-    <span class="pg-leading-5 pg-text-sm">
+    <span
+      class="pg-leading-5"
+      :class="{ 'pg-text-sm': !large, 'pg-text-base': large }"
+    >
       {{ benefit }}
     </span>
   </div>
@@ -39,6 +42,10 @@ export default defineComponent({
     color: {
       type: String,
       required: true
+    },
+    large: {
+      type: Boolean,
+      default: false
     }
   }
 })
