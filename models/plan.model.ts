@@ -2,6 +2,7 @@
 import { Entity } from '@/models'
 
 export interface PlanFeature {
+  title?: string
   benefits: string[]
   promotions?: string[]
 }
@@ -12,8 +13,8 @@ export interface Plan extends Entity {
   color: string
   image: string
   commonBenefits: PlanFeature & { title?: string }
-  homeDeliveryBenefits: PlanFeature | null
-  plusBenefits: PlanFeature | null
+  homeDeliveryBenefits?: PlanFeature | null
+  plusBenefits?: PlanFeature | null
   monthlyStripeId: string
   anualStripeId: string
   priceAnnual: number

@@ -20,7 +20,7 @@
     <!-- Plan columns -->
     <v-row class="pg-w-[95%] pg-max-w-[1300px] pg-m-auto">
       <v-col
-        v-for="(plan, i) in plans"
+        v-for="plan in plans"
         :key="plan.name"
         cols="12"
         :md="Math.ceil(12 / plans.length)"
@@ -48,7 +48,7 @@
               <!-- Image -->
               <img
                 class="pg-w-full"
-                :src="require(`@/assets/jpg/plans/plan-${i}.jpg`)"
+                :src="plan.image"
                 :alt="plan.name"
               />
             </div>
