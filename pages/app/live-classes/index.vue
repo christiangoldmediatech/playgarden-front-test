@@ -7,7 +7,7 @@
         fluid
       >
         <unlock-prompt
-          v-if="hasPlayAndLearnPlan && !loading"
+          v-if="hasBasicPlayAndLearnPlan && !loading"
           title="LIVE CLASSES"
           desc="Unlock the live classes section"
           img="live-classes.svg"
@@ -137,10 +137,10 @@
       <v-container
         v-else
         class="lclass-mobile"
-        :class="{ 'lclass-mobile-lock': hasPlayAndLearnPlan }"
+        :class="{ 'lclass-mobile-lock': hasBasicPlayAndLearnPlan }"
       >
         <unlock-prompt
-          v-if="hasPlayAndLearnPlan && !loading"
+          v-if="hasBasicPlayAndLearnPlan && !loading"
           title="LIVE CLASSES"
           desc="Unlock the live classes section"
           img="live-classes.svg"
@@ -362,7 +362,7 @@ export default {
   computed: {
     ...mapState('live-sessions', ['sessions']),
     ...mapGetters('live-sessions', ['getHolidays']),
-    ...mapGetters('auth', ['getUserInfo', 'hasPlayAndLearnPlan']),
+    ...mapGetters('auth', ['getUserInfo', 'hasBasicPlayAndLearnPlan']),
     ...mapGetters('auth', {
       hasTrialOrPlatinumPlan: 'hasTrialOrPlatinumPlan'
     }),

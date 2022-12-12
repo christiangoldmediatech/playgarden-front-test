@@ -18,7 +18,7 @@
       <SectionImageLAP
         class="live-classes"
         :section="section.classes"
-        blocked
+        :blocked="!hasPlayAndLearnPlanLivePlan"
         @click="handleClick"
       />
 
@@ -42,7 +42,7 @@
         class="daily-lessons"
         :section="section.dashboard"
         @click:play="handleAudioPlay"
-        @click="handleDailyLessonsClick"
+        @click="showIntroDialog = true"
       />
 
       <section-image
@@ -220,14 +220,6 @@ export default defineComponent({
       () => store.getters['auth/hasPlayAndLearnLivePlan']
     )
 
-    const handleDailyLessonsClick = (sectionItem: SectionItem) => {
-      if (hasPlayAndLearnPlanLivePlan.value) {
-        return handleClick(sectionItem)
-      }
-
-      showIntroDialog.value = true
-    }
-
     return {
       section,
       isBirthdayModalvisible,
@@ -235,7 +227,7 @@ export default defineComponent({
       goToKidsCorner,
       handleClick,
       handleAudioPlay,
-      handleDailyLessonsClick
+      hasPlayAndLearnPlanLivePlan
     }
   }
 })

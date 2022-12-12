@@ -33,6 +33,11 @@ export default getterTree(state, {
         state.userInfo.planSelected.id === PlanTier.PLAY_AND_LEARN_LIVE)) ||
     false,
 
+  hasBasicPlayAndLearnPlan: (state): boolean =>
+    (state.userInfo?.planSelected &&
+      state.userInfo.planSelected.id === PlanTier.PLAY_AND_LEARN) ||
+    false,
+
   hasPlayAndLearnLivePlan: (state): boolean =>
     state.userInfo?.planSelected?.id === PlanTier.PLAY_AND_LEARN_LIVE
 })
