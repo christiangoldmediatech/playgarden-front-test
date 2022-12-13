@@ -96,13 +96,13 @@ export default defineComponent({
     const Billing = useBilling()
     const snotify = useSnotifyHelper()
     const changingSubscriptionTimeInterval = ref(false)
-    const hasUserLearnAndPlayPlan = computed(
-      () => store.getters['auth/hasUserLearnAndPlayPlan']
+    const hasPlayAndLearnPlan = computed(
+      () => store.getters['auth/hasPlayAndLearnPlan']
     )
     const isBillingMonthly = computed(() => props.billingType === 'MONTHLY')
 
     const discountMessage = computed(() => {
-      if (hasUserLearnAndPlayPlan.value) {
+      if (hasPlayAndLearnPlan.value) {
         if (isBillingMonthly.value) {
           return 'Do you want to continue to be enrolled for $9.99 a month, forever?'
         }
@@ -117,7 +117,7 @@ export default defineComponent({
     const loadingBtn = ref(false)
 
     const applyClosingLogicForFlow = () => {
-      if (hasUserLearnAndPlayPlan.value) {
+      if (hasPlayAndLearnPlan.value) {
         emit('cancelLearnAndPlayAccount')
       } else {
         emit('tryPlayAndLearnModal')
@@ -140,7 +140,7 @@ export default defineComponent({
       try {
         const promotionId = await getCouponId()
 
-        if (!hasUserLearnAndPlayPlan.value && !isBillingMonthly.value) {
+        if (!hasPlayAndLearnPlan.value && !isBillingMonthly.value) {
           await changePreschoolSubscriptionToMonthly()
         }
 

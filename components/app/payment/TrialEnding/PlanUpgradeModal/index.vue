@@ -56,9 +56,8 @@
 <script lang="ts">
 import { computed, defineComponent, useContext, useStore, onMounted, ref } from '@nuxtjs/composition-api'
 import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDialog/LargeImageContentDialog.vue'
-import { TypedStore } from '@/models'
+import { Plan, TypedStore } from '@/models'
 import { useNotification } from '@/composables'
-import { Plan } from './types'
 
 const imagePath = require('@/assets/jpg/payment-upgrade.jpeg')
 const PLAN_DETAILS_PATH = '/plans/2'
@@ -98,7 +97,12 @@ export default defineComponent({
 
     const features = computed(() => {
       if (!plan.value) { return null }
-      return [...plan.value.commonBenefits.benefits, ...plan.value.homeDeliveryBenefits.benefits]
+      const benefits: string[] = [...plan.value.commonBenefits.benefits]
+      if (plan.value.homeDeliveryBenefits?.benefits) {
+        benefits.push(...plan.value.homeDeliveryBenefits.benefits)
+      }
+
+      return benefits
     })
 
     const planPrice = computed(() => plan.value?.priceMonthly)

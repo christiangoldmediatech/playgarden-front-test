@@ -20,7 +20,7 @@
     <!-- Plan columns -->
     <v-row class="pg-w-[95%] pg-max-w-[1300px] pg-m-auto">
       <v-col
-        v-for="(plan, i) in plans"
+        v-for="plan in plans"
         :key="plan.name"
         cols="12"
         :md="Math.ceil(12 / plans.length)"
@@ -34,34 +34,29 @@
         >
           <div>
             <!-- Plan image -->
-            <div class="pg-relative">
+            <div
+              class="pg-relative plan-image"
+              :style="{ '--gradient-color': plan.color }"
+            >
               <div class="text-over-image-container pg-px-3 pg-pb-6">
                 <!-- Plan name -->
                 <span class="text-over-image v2-font">
                   {{ plan.name }}
-                </span>
-
-                <!-- Cooming soon -->
-                <span
-                  v-if="plan.name === 'Learning Kits'"
-                  class="v2-font pg-text-lg "
-                >
-                  (Coming soon)
                 </span>
               </div>
 
               <!-- Image -->
               <img
                 class="pg-w-full"
-                :src="require(`@/assets/jpg/plans/plan-${i}.jpg`)"
+                :src="plan.image"
                 :alt="plan.name"
-              >
+              />
             </div>
 
             <!-- Price -->
             <div
               class="pg-text-center pg-my-4 pg-px-4 pg-text-4xl pg-font-semibold v2-font"
-              :style="{ color: colors[i] }"
+              :style="{ color: plan.color }"
             >
               <template v-if="billAnnually">
                 ${{ plan.priceAnnual.toFixed(2) }}
@@ -77,50 +72,28 @@
             <div
               class="pg-px-8 pg-py-1 pg-text-[#FFA0C8] pg-text-lg pg-font-medium v2-font"
             >
-              {{
-                plan.name === 'Play & Learn'
-                  ? 'Weekly curated content for for 1-3 hrs of learning and well-being, including:'
-                  : plan.name === 'Learning Kits'
-                    ? 'Home Delivery of a custom Learning Kit that includes:'
-                    : "What's included:"
-              }}
+              {{ plan.commonBenefits.title || "What's included:" }}
             </div>
 
             <!-- Description -->
-            <plan-description class="pg-p-5" :plan="plan" :index="i" />
+            <plan-description class="pg-p-5" :plan="plan" :color="plan.color" />
           </div>
 
-          <div class="pg-px-4 pg-py-8">
-            <!-- Coming soon -->
-            <v-btn
-              v-if="plan.name === 'Learning Kits'"
-              outlined
-              block
-              :color="colors[i]"
-            >
-              Coming soon
-            </v-btn>
-
-            <!-- Call to enroll -->
-            <div v-else-if="plan.name.toUpperCase() === 'HOMESCHOOL'" class="pg-text-center">
-              <div class="accent--text pg-text-2xl pg-font-bold">
-                Call to enroll
-              </div>
-
-              Limited availability
-            </div>
-
+          <div class="pg-px-8 pg-py-6">
             <!-- Choose plan -->
             <v-btn
-              v-else
               outlined
               block
               :loading="loading"
-              :color="colors[i]"
+              :color="plan.color"
               @click="doAction(plan)"
             >
-              Choose this plan
+              Choose plan
             </v-btn>
+
+            <p class="pg-text-center pg-text-sm pg-mt-4">
+              Playgarden Prep Online is COMPLETELY FREE for the first 15 days.
+            </p>
           </div>
         </div>
       </v-col>
@@ -158,8 +131,6 @@ import { UserFlow } from '@/models'
 import CreditCardModal from '@/components/app/payment/CreditCardModal.vue'
 import PaymentInformationDialog from '../PaymentInformationDialog.vue'
 import PlanDescription from './PlanDescription.vue'
-
-const colors = ['#C399ED', '#96D5DE', '#FAA938', '#B2E68D']
 
 export default defineComponent({
   name: 'SubscriptionPlanSelection',
@@ -218,8 +189,7 @@ export default defineComponent({
       fromPlaydates,
       showContactUsModal,
       isAnnualSubscriptionEnabled,
-      setIsTrialEndingPlanSelectedModalVisible,
-      colors
+      setIsTrialEndingPlanSelectedModalVisible
     }
   },
 
@@ -228,10 +198,8 @@ export default defineComponent({
     /** @type {import('@/models').Plan[]} */
     plans: [],
     selectedPlan: null,
-    productPrice: 324,
     loading: false,
     initialized: false,
-    bkgColor: '#BDDA9F',
     isCreditCardModalVisible: false,
     billAnnually: false,
     paymentInfoDialog: false
@@ -270,7 +238,7 @@ export default defineComponent({
       }
     },
 
-    openDialog (plan) {
+    openDialog(plan) {
       this.paymentInfoDialog = true
       this.selectedPlan = plan
     },
@@ -393,8 +361,8 @@ export default defineComponent({
   justify-content: flex-end;
   align-items: center;
   text-align: center;
-  height: 100%;
   width: 100%;
+  height: calc(100% - 20px);
   color: white;
   font-weight: 600;
   letter-spacing: 1px;
@@ -403,10 +371,35 @@ export default defineComponent({
 .text-over-image {
   font-size: 36px;
   line-height: 40px;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  position: relative;
 
   @media (min-width: 960px) and (max-width: 1264px) {
     font-size: 24px;
     line-height: 32px;
+  }
+}
+
+.plan-image {
+  --gradient-color: transparent;
+  &::before {
+    background: linear-gradient(0deg, var(--gradient-color) 0%, transparent);
+    content: '';
+    width: 100%;
+    height: 33%;
+    display: block;
+    position: absolute;
+    bottom: 4px;
+  }
+
+  &::after {
+    content: '';
+    border: 4px solid var(--gradient-color);
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    height: calc(100% - 40px);
+    width: calc(100% - 40px);
   }
 }
 

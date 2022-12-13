@@ -7,7 +7,7 @@
         <div class="text-center">
           <!-- Section Title and Description -->
           <div class="d-flex align-center justify-center">
-            <img height="80px" src="@/assets/png/student-cubby/patches.svg">
+            <img height="80px" src="@/assets/png/student-cubby/patches.svg" />
             <span class="ml-4 text-h4 text-md-h3">PATCHES</span>
           </div>
           <div class="my-6 text-md-h6 text-body-1">
@@ -27,7 +27,7 @@
         </pg-loading>
       </v-card-text>
       <unlock-prompt
-        v-if="hasUserLearnAndPlayPlan"
+        v-if="hasPlayAndLearnPlan"
         title="PATCHES"
         desc="Master subjects in the Activities section to collect patches for your Student Cubby! Collect all badges to receive a real patch for your backpack."
         img="student-cubby/patches.svg"
@@ -73,8 +73,8 @@ export default {
     const { childId: studentId } = useChildRoute({ store, route, router })
     const { childrenPatchesActivity, getPatchesByChildId } = usePatches()
 
-    const hasUserLearnAndPlayPlan = computed(() => {
-      return store.getters['auth/hasUserLearnAndPlayPlan']
+    const hasPlayAndLearnPlan = computed(() => {
+      return store.getters['auth/hasPlayAndLearnPlan']
     })
 
     const loading = ref(true)
@@ -92,7 +92,7 @@ export default {
       loading,
       childrenPatchesActivity,
       studentId,
-      hasUserLearnAndPlayPlan
+      hasPlayAndLearnPlan
     }
   }
 }

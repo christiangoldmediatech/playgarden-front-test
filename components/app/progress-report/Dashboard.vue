@@ -64,7 +64,8 @@
                         <span
                           class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3"
                         >
-                          General progress statistics for all categories.</span>
+                          General progress statistics for all categories.
+                        </span>
                       </div>
                       <div class="mt-n8">
                         <chart-report v-if="hasReport" :report="report" />
@@ -155,7 +156,7 @@
       </v-row>
     </pg-loading>
     <unlock-prompt
-      v-if="hasUserLearnAndPlayPlan"
+      v-if="hasPlayAndLearnPlan"
       title="PROGRESS REPORT"
       desc="Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas."
       img="student-cubby/progress.png"
@@ -207,7 +208,7 @@ export default {
     ...mapGetters('progress-report', ['report']),
     ...mapGetters('children', { allChildren: 'rows' }),
     ...mapGetters('children', { children: 'rows' }),
-    ...mapGetters('auth', ['hasUserLearnAndPlayPlan']),
+    ...mapGetters('auth', ['hasPlayAndLearnPlan']),
 
     hasReport() {
       return Object.keys(this.report || {}).length > 0
@@ -390,7 +391,7 @@ export default {
       } else {
         this.general = false
         this.dataReportCard = this.getMenu.find(
-          menu => menu.name === reportCardType
+          (menu) => menu.name === reportCardType
         )
       }
     }

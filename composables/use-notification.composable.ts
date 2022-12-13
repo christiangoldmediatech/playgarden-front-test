@@ -174,11 +174,12 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
       return
     }
 
-    const workbookReminderDate = hasLocalStorage()
-      ? JSON.parse(
+    let workbookReminderDate: number | null = null
+    if (hasLocalStorage()) {
+      workbookReminderDate = JSON.parse(
         window.localStorage.getItem('pg-workbook-reminder') ?? 'null'
       )
-      : null
+    }
 
     const shouldShowShippingModal = workbookReminderDate
       ? dayjs().isAfter(dayjs.unix(workbookReminderDate), 'seconds')
@@ -220,7 +221,7 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
   const checkIfPreschoolTrialEndedWithNoCreditCardFlow = () => {
     const { flow, planSelected, trialEnd } = userInfo.value
     const isNoCreditCardFlow = flow === UserFlow.NOCREDITCARD
-    const isOnlinePreschool = planSelected.id === PlanTier.PRESCHOOL
+    const isOnlinePreschool = planSelected.id === PlanTier.ONLINE_PRESCHOOL
     const trialHasEnded = dayjs(dayjs()).diff(trialEnd, 'minute') > 1
     if (isNoCreditCardFlow && isOnlinePreschool && trialHasEnded) {
       isPreschoolTrialEndedWithNoCreditCardFlowModalVisible.value = true
@@ -304,11 +305,19 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
     let didChoosePlan = userInfo.value.planChoosen
 
     const subscription = userInfo.value.subscription
-    const isSubscribedUser = (subscription && (subscription.status === 'active' || subscription.status === 'canceled' || subscription.status === 'past_due'))
+    const isSubscribedUser =
+      subscription &&
+      (subscription.status === 'active' ||
+        subscription.status === 'canceled' ||
+        subscription.status === 'past_due')
 
     if (didTrialEnd && didChoosePlan && isSubscribedUser && subscription) {
       const lastInvoice = await getLastInvoice()
-      if (lastInvoice && lastInvoice.payment_intent && lastInvoice.next_payment_attempt) {
+      if (
+        lastInvoice &&
+        lastInvoice.payment_intent &&
+        lastInvoice.next_payment_attempt
+      ) {
         // payment incomplete
         const datetime = dayjs.unix(lastInvoice.period_end)
         const days = dayjs(datetime).diff(new Date(), 'days')
