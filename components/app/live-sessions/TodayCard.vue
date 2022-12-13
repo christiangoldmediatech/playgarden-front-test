@@ -10,7 +10,7 @@
       <v-card
         class="lsess-card clickable"
         :style="{'--borderColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}"
-        :class="{ 'lsess-card-scaled': hover, 'lsess-card-active': isLive }"
+        :class="{ 'lsess-card-scaled': hover, 'lsess-card-active': isLive, 'lsess-card-cancelled': entry.cancelled }"
         :disabled="block"
         @click.stop="openLink"
       >
@@ -52,6 +52,39 @@
         <v-row class="ma-0">
           <v-col class="pt-0 lsess-card-description">
             {{ entry.description | descriptionFilter }}
+          </v-col>
+          <v-col v-if="entry.cancelled">
+            <img
+              v-bind="attrs"
+              class="pg-absolute pg-right-2 pg-bottom-2"
+              :src="require('@/assets/svg/exclamation.svg')"
+              alt="Cancelled"
+              @click.stop="cancelledDialog = true"
+              v-on="on"
+            />
+            <v-dialog v-model="cancelledDialog" class="rounded-lg" width="80%">
+              <v-card color="white !pg-relative rounded-lg" width="100%">
+                <v-btn
+                  icon
+                  color="white"
+                  class="pg-bg-[#F6B7D2] !pg-absolute pg-top-[10px] pg-right-[10px]"
+                  @click="cancelledDialog = false"
+                >
+                  <v-icon>
+                    mdi-close
+                  </v-icon>
+                </v-btn>
+                <div class="pg-pt-10 pg-pl-4 pg-pr-4 text-center pg-text-base">
+                  <span class="dialog-text">
+                    Sorry!<br />
+                    This class has been cancelled today. See you next time!
+                  </span>
+                </div>
+                <div class="d-flex justify-center w-100 mt-10 dashboard-content-bars">
+                  <img src="@/assets/svg/color-bars.svg" width="90%" />
+                </div>
+              </v-card>
+            </v-dialog>
           </v-col>
         </v-row>
       </v-card>
@@ -107,7 +140,8 @@ export default {
         'Thursday',
         'Friday',
         'Saturday'
-      ]
+      ],
+      cancelledDialog: false
     }
   },
 
@@ -156,19 +190,25 @@ export default {
         topicDescription: this.entry.title,
         itemDateTime: this.entry.dateStart
       })
+    },
+
+    openCancelledDialog() {
+      this.cancelledDialog = true
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.v-dialog__content::v-deep {
+  z-index: 1000 !important;
+}
 .lsess {
   &-daily-entry-container {
     width: calc(100% - 24px);
     max-width: calc(100% - 24px);
     &-mobile {
       width: 100%;
-      height: 100%;
       max-width: 300px;
       padding: 4px;
       margin: 0px;
@@ -187,6 +227,11 @@ export default {
     border-radius: 20px !important;
     padding: 10px;
     border: 5px solid var(--borderColor) !important;
+    &-cancelled {
+      border-color: #c8c8c8 !important;
+      background-color: #f2f2f2 !important;
+      opacity: 0.6;
+    }
     &-scaled {
       transform: scale(1.01);
       z-index: 1;
@@ -224,5 +269,14 @@ export default {
       font-size: 1rem;
     }
   }
+}
+.dialog-text {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  color: #606060;
 }
 </style>

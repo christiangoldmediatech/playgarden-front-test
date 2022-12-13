@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { useLearnPlayV2, useChild, useVuetifyHelper } from '@/composables'
-import { defineComponent, useStore, computed } from '@nuxtjs/composition-api'
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { TypedStore } from '@/models'
 import WorkshhetCarousel from './WorksheetCarousel.vue'
 
