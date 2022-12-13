@@ -27,6 +27,7 @@
       <!-- <NoCreditCardFreeTrialEndedDialog
         v-model="isPreschoolTrialEndedWithNoCreditCardFlowModalVisible"
       /> -->
+      <LearningKitsPopup v-model="learningKitsPopup" />
 
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
@@ -81,6 +82,7 @@ import {
   useMeta
 } from '@nuxtjs/composition-api'
 import { computed, onMounted, ref, watch } from '@vue/composition-api'
+import { useLearningKitsPopup } from '@/composables/payment'
 
 import ApplicationHeader from '@/components/app/header/ApplicationHeader.vue'
 import AppNavigation from '@/components/app/header/AppNavigation.vue'
@@ -107,6 +109,7 @@ import {
   useNotification,
   useVuetifyHelper
 } from '@/composables'
+import LearningKitsPopup from '@/components/app/payment/LearningKitsPopup.vue'
 
 export default defineComponent({
   middleware: ['utmHandler'],
@@ -139,7 +142,8 @@ export default defineComponent({
     AccountInactiveModal: () =>
       import('@/components/app/register/AccountInactiveModal.vue'),
     CanceledTrialModal: () =>
-      import('@/components/app/payment/CanceledTrialModal.vue')
+      import('@/components/app/payment/CanceledTrialModal.vue'),
+    LearningKitsPopup
   },
 
   head: {},
@@ -277,7 +281,10 @@ export default defineComponent({
     const routeName = computed(() => route.value.name)
 
     watch(routeName, () => {
-      if (routeName.value !== 'app-payment-plan' && routeName.value !== 'app-account-index') {
+      if (
+        routeName.value !== 'app-payment-plan' &&
+        routeName.value !== 'app-account-index'
+      ) {
         checkIfShouldShowTrialExpiredModal()
       }
     })
@@ -301,6 +308,7 @@ export default defineComponent({
     })
 
     const isMobile = computed(() => vuetify.breakpoint.mobile)
+    const learningKitsPopup = useLearningKitsPopup({ store })
 
     return {
       isComingSoonDialogOpen,
@@ -311,7 +319,8 @@ export default defineComponent({
       isUserLoggedIn,
       isUserEmailVerified,
       isFullWidth,
-      isMobile
+      isMobile,
+      learningKitsPopup
     }
   }
 })

@@ -389,7 +389,7 @@
           </div>
         </div>
 
-        <learning-kits-popup v-model="learningKitsPopup" :plan="plan" />
+        <learning-kits-popup v-model="learningKitsPopup" />
       </v-col>
 
       <!-- Cancel suscription modal -->
