@@ -77,8 +77,7 @@
                 <div class="pg-pt-10 pg-pl-4 pg-pr-4 text-center pg-text-base">
                   <span class="dialog-text">
                     Sorry!<br />
-                    This class was canceled due to lack of connection. We are waiting
-                    for you in the next class!
+                    This class has been cancelled today. See you next time!
                   </span>
                 </div>
                 <div class="d-flex justify-center w-100 mt-10 dashboard-content-bars">

@@ -78,8 +78,7 @@
         <div class="pg-pt-4 pg-pl-10 pg-pr-2 text-center pg-text-base">
           <span class="v2-font">
             Sorry!<br />
-            This class was canceled due to lack of connection. We are waiting
-            for you in the next class!
+            This class has been cancelled today. See you next time!
           </span>
         </div>
       </v-tooltip>
