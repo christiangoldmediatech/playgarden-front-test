@@ -126,7 +126,7 @@
             </div>
 
             <v-btn
-              :disabled="!childId"
+              :disabled="!childId || entry.cancelled"
               :loading="isLoadingSpotAction"
               class="!pg-shadow-button !pg-text-[18px] text-none white--text pg-mb-5"
               color="#FD82AC"
