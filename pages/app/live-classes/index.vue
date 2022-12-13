@@ -143,14 +143,21 @@
           @next-week="addWeek"
         />
 
-        <v-row class="mt-4" justify="space-around">
-          <today-card
-            v-for="entry in orderedSessions"
-            :key="`lclass-entry-${entry.id}`"
-            v-bind="{ entry }"
-            mobile
-          />
-
+        <v-row class="mt-4 px-4" justify="space-around">
+          <div
+            v-for="(session, index) in sessionsWithHolidays"
+            :key="index"
+            class="today-cards-wrapper"
+            :style="{ 'width': `calc(300px * ${session.sessions.length})` }"
+          >
+            <holiday-card v-if="session.holiday" :holiday="session.holiday" holiday-type="day" height="100%" top-position="0" />
+            <today-card
+              v-for="entry in session.sessions"
+              :key="`lclass-entry-${entry.id}`"
+              v-bind="{ entry }"
+              mobile
+            />
+          </div>
           <v-col v-if="orderedSessions.length === 0" cols="12">
             <v-card>
               <v-card-text class="text-center text-h6">
@@ -310,6 +317,7 @@ import DaySelector from '@/components/app/live-sessions/DaySelector.vue'
 import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
 import { jsonCopy } from '@/utils'
 import dayjs from 'dayjs'
+import HolidayCard from '@/components/app/live-sessions/HolidayCard.vue'
 
 export default {
   name: 'Index',
@@ -322,7 +330,8 @@ export default {
     RecordedClassPlayer,
     WeekSelector,
     DaySelector,
-    UnlockPrompt
+    UnlockPrompt,
+    HolidayCard
   },
 
   data: () => {
@@ -416,6 +425,45 @@ export default {
           break
       }
       return mode
+    },
+
+    sessionsWithHolidays() {
+      const groups = this.getHolidays.map((holiday) => ({
+        holiday: {
+          ...holiday,
+          dateStart: dayjs(holiday.dateStart),
+          dateEnd: dayjs(holiday.dateEnd)
+        },
+        dateStart: holiday.dateStart,
+        dateEnd: holiday.dateEnd,
+        sessions: []
+      }))
+      for (const session of this.orderedSessions) {
+        const matchingHoliday = groups.find((group) => {
+          if (!group.holiday) {
+            return false
+          }
+
+          const sessionDate = dayjs(session.dateStart)
+          return group.holiday.dateStart.get('date') <= sessionDate.get('date') &&
+           sessionDate.get('date') <= group.holiday.dateEnd.get('date')
+        })
+
+        if (matchingHoliday) {
+          matchingHoliday.sessions.push(session)
+        } else {
+          groups.push({ holiday: null, dateStart: session.dateStart, dateEnd: session.dateEnd, sessions: [{ ...session }] })
+        }
+      }
+
+      return groups
+        .filter((group) => group.sessions.length > 0)
+        .sort((sessionA, sessionB) => {
+          const start = new Date(sessionA.dateStart)
+          const end = new Date(sessionB.dateEnd)
+
+          return start.getTime() - end.getTime()
+        })
     }
   },
 
@@ -620,5 +668,12 @@ export default {
 .fullscreen {
   width: 100% !important;
   height: 100% !important;
+}
+.today-cards-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  max-width: 100%;
 }
 </style>
