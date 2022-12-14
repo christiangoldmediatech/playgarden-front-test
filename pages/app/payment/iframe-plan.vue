@@ -100,7 +100,7 @@
   </v-main>
 </template>
 
-<script lang="ts">
+<script>
 import {
   defineComponent
 } from '@nuxtjs/composition-api'
@@ -122,7 +122,7 @@ export default defineComponent({
 
   data: () => ({
     /** @type {import('@/models').Plan[]} */
-    plans: [] as Plan[],
+    plans: [],
     loading: false,
     billAnnually: false,
   }),
