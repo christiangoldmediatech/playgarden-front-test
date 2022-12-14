@@ -121,15 +121,10 @@ export default defineComponent({
   },
 
   data: () => ({
-    draftAddress: {},
     /** @type {import('@/models').Plan[]} */
     plans: [] as Plan[],
-    selectedPlan: null,
     loading: false,
-    initialized: false,
-    isCreditCardModalVisible: false,
     billAnnually: false,
-    paymentInfoDialog: false
   }),
 
   methods: {
