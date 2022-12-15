@@ -312,7 +312,7 @@ export default defineComponent({
     const LEARNING_KITS_POPUP_STORAGE_KEY = 'learningKitsPopupShown'
     const learningKitsPopup = ref(false)
     onMounted(() => {
-      if (localStorage.getItem(LEARNING_KITS_POPUP_STORAGE_KEY) && localStorage.getItem(LEARNING_KITS_POPUP_STORAGE_KEY) === true) {
+      if (localStorage.getItem(LEARNING_KITS_POPUP_STORAGE_KEY) === 'true') {
         return
       }
 
