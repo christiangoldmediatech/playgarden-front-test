@@ -118,12 +118,14 @@
                 class="mb-1 text-h6 black--text font-weight-bold"
               >
                 <div>
-                  <span>{{
-                    billing.planAmount.toLocaleString('en-US', {
-                      style: 'currency',
-                      currency: 'USD'
-                    })
-                  }}</span>
+                  <span>
+                    {{
+                      billing.planAmount.toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD'
+                      })
+                    }}
+                  </span>
                 </div>
               </v-col>
             </v-row>
@@ -292,6 +294,7 @@
           :is-fixed-on-top="false"
           :is-compare-plans-button-visible="false"
         />
+
         <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
           <v-row no-gutters>
             <!-- Plan Name-->
@@ -355,6 +358,38 @@
             </v-col>
           </v-row>
         </v-card>
+
+        <!-- Learning Kits -->
+        <div class="pg-mt-6 card-custom-border">
+          <div class="text-center pa-4">
+            <small class="v2-font pg-font-semibold pg-text-base pg-uppercase">
+              Add-on
+            </small>
+
+            <h3
+              class="v2-font pg-text-[#BA89EB] pg-text-3xl pg-font-semibold mb-2"
+            >
+              Learning Kits
+            </h3>
+
+            <p class="v2-font pg-text-medium">
+              Add home delivery of the Learning Kits to any of the Enrollment
+              Plans
+            </p>
+
+            <v-btn
+              dark
+              color="#D9B4FF"
+              width="50%"
+              x-large
+              @click="learningKitsPopup = true"
+            >
+              View More
+            </v-btn>
+          </div>
+        </div>
+
+        <learning-kits-popup v-model="learningKitsPopup" />
       </v-col>
 
       <!-- Cancel suscription modal -->
@@ -383,12 +418,14 @@
         @cancelPlayAndLearnModal="cancelPlayAndLearnModal = true"
         @cancelLearnAndPlayAccount="removeLearnAndPlaySubscription"
       />
+
       <try-play-and-learn-modal
         :view-try-play-and-learn-modal="viewTryPlayAndLearnModal"
         @cancelAccount="removeSubscription(false)"
         @closeTryPlayAndLearnModal="viewTryPlayAndLearnModal = false"
         @viewWelcomePlayAndLearn="viewWelcomeToPlayAndLearnModal = true"
       />
+
       <applied-coupon-modal
         :view-applied-coupon-modal="viewAppliedCouponModal"
         :billing="billing"
@@ -460,6 +497,7 @@ import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import BillingHistoryCard from '@/components/BillingHistoryCard.vue'
 import debounce from 'lodash/debounce'
+import LearningKitsPopup from './LearningKitsPopup.vue'
 import CancelSuscriptionModal from './CancelSuscriptionModal.vue'
 import CancelAnyway from './CancelSuscriptionFlow/CancelAnyway.vue'
 import CouponDiscountModal from './CancelSuscriptionFlow/DiscountFlow/CouponDiscountModal.vue'
@@ -484,6 +522,7 @@ export default {
     WelcomeToPlayAndLearnModal,
     TryPlayAndLearnModal,
     AppliedCouponModal,
+    LearningKitsPopup,
     CancelPlayAndLearnModal
   },
 
@@ -571,7 +610,8 @@ export default {
     // PAL Cancellation Flow
     viewPlayAndLearnDiscountModal: false,
     // Cancel Anyway Modal
-    viewCancelAnywayModal: false
+    viewCancelAnywayModal: false,
+    learningKitsPopup: false
   }),
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
