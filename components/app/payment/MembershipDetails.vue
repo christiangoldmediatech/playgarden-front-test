@@ -616,7 +616,7 @@ export default {
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
 
-    ...mapGetters('auth', ['hasUserLearnAndPlayPlan']),
+    ...mapGetters('auth', ['hasPlayAndLearnPlan']),
 
     leaveMotivesText() {
       return this.leaveMotives.map((motives) => motives.motive)
@@ -704,7 +704,7 @@ export default {
       return false
     },
     couponCode() {
-      if (this.hasUserLearnAndPlayPlan) {
+      if (this.hasPlayAndLearnPlan) {
         if (this.billing.billingType === 'MONTHLY') {
           return 'PLPROMOMONTHLY'
         }
@@ -715,7 +715,7 @@ export default {
       return 'PSPROMO'
     },
     couponCodeToDisplay() {
-      if (this.hasUserLearnAndPlayPlan) {
+      if (this.hasPlayAndLearnPlan) {
         return 'PLAYANDLEARNPROMO'
       }
 
@@ -915,7 +915,7 @@ export default {
         (motive) => motive.motive === this.leaveMotive
       )
 
-      if (leaveMotive.couponDiscountFlow || this.hasUserLearnAndPlayPlan) {
+      if (leaveMotive.couponDiscountFlow || this.hasPlayAndLearnPlan) {
         this.viewCouponDiscountModal = true
       } else {
         this.viewPlayAndLearnProgramModal = true

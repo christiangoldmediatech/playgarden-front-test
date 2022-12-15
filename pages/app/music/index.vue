@@ -2,7 +2,7 @@
   <v-main class="pt-5 pt-md-16 mt-0 mt-md-5" data-test-id="music-content">
     <unlock-prompt
       v-show="false"
-      v-if="hasUserLearnAndPlayPlan && !loading"
+      v-if="hasPlayAndLearnPlan && !loading"
       title="MUSIC"
       desc="Unlock the full music library"
       img="music.svg"
@@ -166,8 +166,8 @@ export default defineComponent({
         document.documentElement.scrollHeight - MOBILE_PLAYER_HEIGHT
     }
 
-    const hasUserLearnAndPlayPlan = computed(() => {
-      return store.getters['auth/hasUserLearnAndPlayPlan']
+    const hasPlayAndLearnPlan = computed(() => {
+      return store.getters['auth/hasPlayAndLearnPlan']
     })
 
     const { userInfo } = useAuth({ store })
@@ -317,7 +317,7 @@ export default defineComponent({
 
     const availableLettersWithSongsIds = computed(() => {
       const availableIds = new Set()
-      songsByCurriculumTypeWithFavorites.value.forEach(letter =>
+      songsByCurriculumTypeWithFavorites.value.forEach((letter) =>
         availableIds.add(letter.id)
       )
       return Array.from(availableIds)
@@ -377,7 +377,7 @@ export default defineComponent({
       isTopRibbonMinimized,
       disabledLetters,
       onIntersect,
-      hasUserLearnAndPlayPlan
+      hasPlayAndLearnPlan
     }
   }
 })

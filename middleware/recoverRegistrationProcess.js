@@ -19,7 +19,7 @@ export default function ({ redirect, route, store }) {
   // COMPLETED = 6 -> Completed <- no action
 
   const user = store.getters['auth/getUserInfo']
-  const isPlayAndLearnPlan = store.getters['auth/hasUserLearnAndPlayPlan']
+  const isPlayAndLearnPlan = store.getters['auth/hasPlayAndLearnPlan']
   const step = Number(user.registerStep)
   const authFlow = user.flow
   const isLoggedIn = store.getters['auth/isUserLoggedIn']

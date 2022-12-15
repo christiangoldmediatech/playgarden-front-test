@@ -40,7 +40,7 @@
           <img
             :src="require('@/assets/svg/Contexts/Birthday/birthday-hat.svg')"
             width="60"
-          >
+          />
         </v-btn>
         <div class="child-select mt-4 mt-md-0">
           <child-select
@@ -63,21 +63,21 @@
           <!-- PlaygardenPrep Logo -->
           <v-col cols="12">
             <img
-              v-if="!hasUserLearnAndPlayPlan"
+              v-if="!hasPlayAndLearnPlan"
               alt="Playarden Prep Online Logo"
               :height="appBarLogoSize"
               :src="require('@/assets/svg/logo.svg')"
-            >
+            />
             <img
               v-else
               alt="Playarden Prep Online Logo"
               :height="appBarLogoSizeLearnPlay"
               :src="require('@/assets/png/logo-PlayandLearn.svg')"
-            >
+            />
           </v-col>
 
           <!-- Toolbar Title -->
-          <v-col v-if="!hasUserLearnAndPlayPlan" cols="12">
+          <v-col v-if="!hasPlayAndLearnPlan" cols="12">
             <underlined-title
               text="Welcome to School!"
               :font-size="appBarTitleSize"
@@ -86,7 +86,7 @@
           </v-col>
 
           <!-- Toolbar Description -->
-          <v-col v-if="!hasUserLearnAndPlayPlan">
+          <v-col v-if="!hasPlayAndLearnPlan">
             <div class="text-body-1 text-md-h6">
               Are you excited for a fun-filled day of learning?
             </div>
@@ -103,7 +103,7 @@
             class="clickable"
             :src="require('@/assets/png/Profile.png')"
             @click="$router.push({ name: 'app-account-index' })"
-          >
+          />
           <div class="text-caption">
             Profile
           </div>
@@ -118,7 +118,7 @@
                 class="text-center clickable mx-4"
                 v-on="on"
               >
-                <img :src="require('@/assets/png/Help.png')" height="45">
+                <img :src="require('@/assets/png/Help.png')" height="45" />
                 <div class="text-caption">
                   Help
                 </div>
@@ -165,7 +165,7 @@
                       class="mr-2"
                       height="30"
                       :src="require('@/assets/png/FAQ.png')"
-                    >
+                    />
                     FAQ
                   </v-btn>
                 </v-list-item>
@@ -242,7 +242,7 @@ export default defineComponent({
     const isMobileLandscape = computed(() => vuetify.breakpoint.smOnly)
 
     const appBarHeight = computed(() => {
-      if (store.getters['auth/hasUserLearnAndPlayPlan']) {
+      if (store.getters['auth/hasPlayAndLearnPlan']) {
         return isMobileLandscape.value
           ? '100px'
           : isMobile.value
@@ -261,8 +261,8 @@ export default defineComponent({
     const appBarLogoSizeLearnPlay = computed(() =>
       isMobile.value ? '35px' : '75px'
     )
-    const hasUserLearnAndPlayPlan = computed(
-      () => store.getters['auth/hasUserLearnAndPlayPlan']
+    const hasPlayAndLearnPlan = computed(
+      () => store.getters['auth/hasPlayAndLearnPlan']
     )
 
     const store = useStore<TypedStore>()
@@ -296,7 +296,7 @@ export default defineComponent({
       handleSidebarToggle,
       handleClickOnBirthdayIcon,
       isCurrentChildsBirthday,
-      hasUserLearnAndPlayPlan
+      hasPlayAndLearnPlan
     }
   }
 })
