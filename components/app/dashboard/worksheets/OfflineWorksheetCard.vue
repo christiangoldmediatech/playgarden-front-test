@@ -219,10 +219,11 @@ export default {
   }
   &-icon {
     margin: 12px;
+    width: 200px;
     @media screen and (min-width: 960px) {
       position: absolute;
       top: calc(50% - 270px);
-      left: calc(50% - 225px);
+      left: calc(50% - 80px);
       z-index: 100;
     };
   }
