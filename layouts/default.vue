@@ -308,6 +308,7 @@ export default defineComponent({
 
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
+    const LEARNING_KITS_POPUP_STORAGE_KEY = 'learningKitsPopupShown'
     const learningKitsPopup = ref(false)
     onMounted(() => {
       if (localStorage.getItem(LEARNING_KITS_POPUP_STORAGE_KEY)) {
