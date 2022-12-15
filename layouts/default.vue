@@ -101,6 +101,7 @@ import ChangePasswordModal from '@/components/app/notifications/ChangePasswordMo
 import TrialEndingModalForLastDay from '@/components/app/payment/TrialEnding/TrialEndingModalForLastDay.vue'
 import PlanUpgradeModal from '@/components/app/payment/TrialEnding/PlanUpgradeModal/index.vue'
 // import NoCreditCardFreeTrialEndedDialog from '@/components/app/NoCreditCardFreeTrialEndedDialog.vue'
+import dayjs from 'dayjs'
 
 import {
   useAuth,
@@ -311,7 +312,7 @@ export default defineComponent({
     const LEARNING_KITS_POPUP_STORAGE_KEY = 'learningKitsPopupShown'
     const learningKitsPopup = ref(false)
     onMounted(() => {
-      if (localStorage.getItem(LEARNING_KITS_POPUP_STORAGE_KEY)) {
+      if (localStorage.getItem(LEARNING_KITS_POPUP_STORAGE_KEY) && localStorage.getItem(LEARNING_KITS_POPUP_STORAGE_KEY) === true) {
         return
       }
 
