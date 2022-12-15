@@ -316,7 +316,8 @@ export const useNotification = ({ store }: { store: Store<TypedStore> }) => {
       if (
         lastInvoice &&
         lastInvoice.payment_intent &&
-        lastInvoice.next_payment_attempt
+        lastInvoice.next_payment_attempt &&
+        !isSubscribedUser
       ) {
         // payment incomplete
         const datetime = dayjs.unix(lastInvoice.period_end)
