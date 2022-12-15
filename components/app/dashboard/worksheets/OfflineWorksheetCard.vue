@@ -8,8 +8,8 @@
       <template v-if="offlineWorksheet && offlineWorksheet.videoDetail">
         <v-hover v-slot="{ hover }">
           <img
-            :class="['ofws-icon play-icon no-background', { 'scaled-play-icon': hover }]"
-            src="@/assets/svg/play-button-icon.svg"
+            :class="['ofws-icon play-icon-v2 no-background', { 'scaled-play-icon': hover }]"
+            src="@/assets/svg/play-button-icon-v2.svg"
             width="100%"
           >
         </v-hover>
@@ -221,8 +221,8 @@ export default {
     margin: 12px;
     @media screen and (min-width: 960px) {
       position: absolute;
-      top: calc(50% - 125px);
-      left: calc(50% - 75px);
+      top: calc(50% - 270px);
+      left: calc(50% - 225px);
       z-index: 100;
     };
   }
