@@ -82,7 +82,6 @@ import {
   useMeta
 } from '@nuxtjs/composition-api'
 import { computed, onMounted, ref, watch } from '@vue/composition-api'
-import { useLearningKitsPopup } from '@/composables/payment'
 
 import ApplicationHeader from '@/components/app/header/ApplicationHeader.vue'
 import AppNavigation from '@/components/app/header/AppNavigation.vue'
@@ -308,7 +307,25 @@ export default defineComponent({
     })
 
     const isMobile = computed(() => vuetify.breakpoint.mobile)
-    const learningKitsPopup = useLearningKitsPopup({ store })
+
+    const learningKitsPopup = ref(false)
+    onMounted(() => {
+      if (localStorage.getItem(LEARNING_KITS_POPUP_STORAGE_KEY)) {
+        return
+      }
+
+      const user = store.getters['auth/getUserInfo']
+      const registeredAt = user.planSelectedAt || user.createdAt
+      if (!registeredAt) {
+        return
+      }
+
+      const diff = Math.round(dayjs().diff(registeredAt, 'days'))
+      if (diff >= 3 && diff <= 7) {
+        learningKitsPopup.value = true
+        localStorage.setItem(LEARNING_KITS_POPUP_STORAGE_KEY, 'true')
+      }
+    })
 
     return {
       isComingSoonDialogOpen,
