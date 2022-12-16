@@ -132,13 +132,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters('auth', ['getUserInfo', 'hasPlayAndLearnPlan']),
+    ...mapGetters('auth', ['getUserInfo', 'hasBasicPlayAndLearnPlan']),
 
     userHasAccess() {
       const day = dayjs(this.entry.dateStart).day()
       return (
-        !this.hasPlayAndLearnPlan ||
-        (this.hasPlayAndLearnPlan && (day === 0 || day === 6))
+        !this.hasBasicPlayAndLearnPlan ||
+        (this.hasBasicPlayAndLearnPlan && (day === 0 || day === 6))
       )
     },
 
