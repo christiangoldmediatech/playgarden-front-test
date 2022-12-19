@@ -126,7 +126,7 @@
             </div>
 
             <v-btn
-              :disabled="!childId"
+              :disabled="!childId || entry.cancelled"
               :loading="isLoadingSpotAction"
               class="!pg-shadow-button !pg-text-[18px] text-none white--text pg-mb-5"
               color="#FD82AC"
@@ -146,7 +146,7 @@
                 color="accent"
                 x-large
                 :href="entry.link"
-                :disabled="!isLive"
+                :disabled="!isLive || entry.cancelled"
                 target="_blank"
                 block
                 @click="doSaveAttendance"
@@ -160,6 +160,7 @@
                 x-large
                 :href="entry.link"
                 target="_blank"
+                :disabled="entry.cancelled"
                 block
                 @click="doSaveAttendance"
               >

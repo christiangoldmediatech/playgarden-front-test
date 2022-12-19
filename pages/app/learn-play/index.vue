@@ -1,16 +1,18 @@
 <template>
-  <v-main class="background-card-learnd-play">
-    <div class="pg-pt-24 px-lg-16 mb-3">
-      <v-row>
-        <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="2">
-          <play-and-learn-menu-top />
-          <menu-learn-play />
-        </v-col>
-        <v-col cols="12" md="10">
-          <dashboard-learn-play />
-        </v-col>
-      </v-row>
-    </div>
+  <v-main>
+    <v-container fluid class="pg-pt-24 px-lg-16 mb-3">
+      <div>
+        <v-row>
+          <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="2">
+            <play-and-learn-menu-top />
+            <menu-learn-play />
+          </v-col>
+          <v-col cols="12" md="10">
+            <dashboard-learn-play />
+          </v-col>
+        </v-row>
+      </div>
+    </v-container>
   </v-main>
 </template>
 

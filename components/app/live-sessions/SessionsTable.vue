@@ -1,14 +1,15 @@
 <template>
   <div class="lsess-table">
-    <div class="lsess-table-container">
+    <div id="sessions-table-container" class="lsess-table-container">
       <div v-if="!dayMode" class="pl-16 pr-8">
         <v-row class="my-0">
           <v-col
-            v-for="(day, index) in days"
+            v-for="(day, index) in getDaysFormatted"
             :key="`days-row-column-${index}`"
             class="lsess-table-col lsess-table-col-header"
           >
-            {{ day }}
+            {{ day.name }}
+            <holiday-card v-if="day.holiday" :holiday="day.holiday" :height="holidaysWeekHeight" top-position="60px" holiday-type="week" />
             <div
               v-if="index === activeDay"
               class="lsess-table-col-header-active"
@@ -31,6 +32,7 @@
             </v-card>
           </template>
           <template v-else>
+            <holiday-card v-if="holidayForDay" :holiday="holidayForDay.holiday" :height="holidaysDayHeight" top-position="0" holiday-type="day" />
             <div
               v-for="hour in totalHours"
               :key="`hour-${hour}`"
@@ -120,14 +122,18 @@
 <script>
 import { mapGetters } from 'vuex'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
+import dayjs from 'dayjs'
+import { defineComponent, ref } from '@nuxtjs/composition-api'
 import TableEntry from './TableEntry.vue'
+import HolidayCard from './HolidayCard.vue'
 
-export default {
+export default defineComponent({
   name: 'SessionsTable',
 
   components: {
     PerfectScrollbar,
-    TableEntry
+    TableEntry,
+    HolidayCard
   },
 
   props: {
@@ -143,7 +149,55 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    holidays: {
+      type: Array,
+      default: () => []
     }
+  },
+
+  setup() {
+    const holidaysWeekHeight = ref('0px')
+    const holidaysDayHeight = ref('0px')
+
+    const resizeOb = ref(new ResizeObserver(function(entries) {
+      const scrollArea = entries.find((entry) => entry.target.id === 'scrollArea')
+      const sessionsTable = entries.find((entry) => entry.target.id === 'sessions-table-container')
+
+      if (sessionsTable) {
+        holidaysWeekHeight.value = `${sessionsTable.contentRect.height}px`
+      }
+
+      if (scrollArea) {
+        holidaysDayHeight.value = `${scrollArea.contentRect.height}px`
+      }
+    }))
+
+    const setObserver = () => {
+      const tableContainer = document.getElementById('sessions-table-container')
+      const scrollArea = document.getElementById('scrollArea')
+      if (tableContainer) {
+        resizeOb.value.observe(tableContainer)
+      }
+
+      if (scrollArea) {
+        resizeOb.value.observe(scrollArea)
+      }
+    }
+
+    const unsetObserver = () => {
+      const tableContainer = document.getElementById('sessions-table-container')
+      const scrollArea = document.getElementById('scrollArea')
+      if (tableContainer) {
+        resizeOb.value.unobserve(tableContainer)
+      }
+
+      if (scrollArea) {
+        resizeOb.value.observe(scrollArea)
+      }
+    }
+
+    return { holidaysWeekHeight, holidaysDayHeight, setObserver, unsetObserver }
   },
 
   data: () => {
@@ -184,6 +238,34 @@ export default {
       date.setDate(parts[2])
 
       return date.getDay()
+    },
+
+    getDaysFormatted() {
+      return this.days.map((day, index) => ({
+        name: day,
+        holiday: this.holidaysFormatted.find((holiday) => holiday.day === index)
+      }))
+    },
+
+    holidaysFormatted() {
+      return this.holidays.map((holiday) => ({
+        day: dayjs(holiday.dateStart).get('day'),
+        cols: dayjs(holiday.dateEnd).get('date') - dayjs(holiday.dateStart).get('date') + 1,
+        ...holiday
+      }))
+    },
+
+    holidayForDay() {
+      const currentDate = dayjs(this.today)
+      return this.getDaysFormatted.find((day) => {
+        if (!day.holiday) {
+          return false
+        }
+
+        const startDate = dayjs(day.holiday.dateStart)
+        const endDate = dayjs(day.holiday.dateEnd)
+        return startDate.get('date') <= currentDate.get('date') && currentDate.get('date') <= endDate.get('date')
+      })
     }
   },
 
@@ -199,9 +281,17 @@ export default {
 
   mounted() {
     this.scrollToFirst()
+    this.setObserver()
+  },
+
+  unmounted() {
+    this.unsetObserver()
   },
 
   methods: {
+    getHolidayForDay(dayIndex) {
+      return this.holidaysFormatted.find((holiday) => holiday.day === dayIndex)
+    },
     scrollToFirst() {
       if (this.scrolling || this.activeDay < 0 || this.activeDay > 6) {
         return
@@ -260,7 +350,7 @@ export default {
       return total
     }
   }
-}
+})
 </script>
 
 <style lang="scss">
@@ -284,6 +374,7 @@ export default {
       display: flex;
       flex-direction: column;
       &-header {
+        position: relative;
         font-size: 1.1rem;
         line-height: 1.5;
         text-align: center;

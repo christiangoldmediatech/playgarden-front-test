@@ -1,5 +1,5 @@
 export enum PlanTier {
-  LEARN_PLAY = 1,
-  PRESCHOOL = 2,
-  HOMESCHOOL = 3
+  PLAY_AND_LEARN = 1,
+  PLAY_AND_LEARN_LIVE = 2,
+  ONLINE_PRESCHOOL = 3
 }

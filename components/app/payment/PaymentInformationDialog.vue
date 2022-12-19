@@ -173,9 +173,10 @@ export default defineComponent({
 
         if (promotionId.value) {
           await store.dispatch('coupons/updateSubcriptionCoupon', { promotion_id: promotionId.value })
+        } else {
+          await store.dispatch('payment/selectSubscriptionPlan', plan)
         }
 
-        await store.dispatch('payment/selectSubscriptionPlan', plan)
         await Auth.fetchUserInfo()
         setIsTrialEndingPlanSelectedModalVisible(true)
         nuxt.$emit('plan-membership-changed')

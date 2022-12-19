@@ -7,7 +7,7 @@
         fluid
       >
         <unlock-prompt
-          v-if="hasUserLearnAndPlayPlan && !loading"
+          v-if="hasBasicPlayAndLearnPlan && !loading"
           title="LIVE CLASSES"
           desc="Unlock the live classes section"
           img="live-classes.svg"
@@ -26,14 +26,31 @@
               width="400"
             >
               <v-row>
-                <v-col cols="12" class="d-flex" :class="[ !drawer ? 'pg-justify-end pg-pr-12': 'pg-justify-center']">
+                <v-col
+                  cols="12"
+                  class="d-flex"
+                  :class="[
+                    !drawer ? 'pg-justify-end pg-pr-12' : 'pg-justify-center'
+                  ]"
+                >
                   <v-btn icon @click="drawer = !drawer">
-                    <img v-if="drawer" src="@/assets/svg/meetings/open-menu.svg" alt="Open Menu">
-                    <img v-else src="@/assets/svg/meetings/close-menu.svg" alt="Open Menu">
+                    <img
+                      v-if="drawer"
+                      src="@/assets/svg/meetings/open-menu.svg"
+                      alt="Open Menu"
+                    />
+                    <img
+                      v-else
+                      src="@/assets/svg/meetings/close-menu.svg"
+                      alt="Open Menu"
+                    />
                   </v-btn>
                 </v-col>
                 <v-col v-if="!drawer" class="lsess-daily" cols="12">
-                  <today-cards-panel :type="filterType" @change="filterMeetings($event)" />
+                  <today-cards-panel
+                    :type="filterType"
+                    @change="filterMeetings($event)"
+                  />
                 </v-col>
               </v-row>
             </v-navigation-drawer>
@@ -111,6 +128,7 @@
               v-if="!loading"
               :day-mode="viewMode === 'DAY'"
               :today="today"
+              :holidays="getHolidays"
             />
           </v-col>
         </v-row>
@@ -119,10 +137,10 @@
       <v-container
         v-else
         class="lclass-mobile"
-        :class="{ 'lclass-mobile-lock': hasUserLearnAndPlayPlan }"
+        :class="{ 'lclass-mobile-lock': hasBasicPlayAndLearnPlan }"
       >
         <unlock-prompt
-          v-if="hasUserLearnAndPlayPlan && !loading"
+          v-if="hasBasicPlayAndLearnPlan && !loading"
           title="LIVE CLASSES"
           desc="Unlock the live classes section"
           img="live-classes.svg"
@@ -142,14 +160,21 @@
           @next-week="addWeek"
         />
 
-        <v-row class="mt-4" justify="space-around">
-          <today-card
-            v-for="entry in orderedSessions"
-            :key="`lclass-entry-${entry.id}`"
-            v-bind="{ entry }"
-            mobile
-          />
-
+        <v-row class="mt-4 px-4" justify="space-around">
+          <div
+            v-for="(session, index) in sessionsWithHolidays"
+            :key="index"
+            class="today-cards-wrapper"
+            :style="{ 'width': `calc(300px * ${session.sessions.length})` }"
+          >
+            <holiday-card v-if="session.holiday" :holiday="session.holiday" holiday-type="day" height="100%" top-position="0" />
+            <today-card
+              v-for="entry in session.sessions"
+              :key="`lclass-entry-${entry.id}`"
+              v-bind="{ entry }"
+              mobile
+            />
+          </div>
           <v-col v-if="orderedSessions.length === 0" cols="12">
             <v-card>
               <v-card-text class="text-center text-h6">
@@ -309,6 +334,7 @@ import DaySelector from '@/components/app/live-sessions/DaySelector.vue'
 import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
 import { jsonCopy } from '@/utils'
 import dayjs from 'dayjs'
+import HolidayCard from '@/components/app/live-sessions/HolidayCard.vue'
 
 export default {
   name: 'Index',
@@ -321,7 +347,8 @@ export default {
     RecordedClassPlayer,
     WeekSelector,
     DaySelector,
-    UnlockPrompt
+    UnlockPrompt,
+    HolidayCard
   },
 
   data: () => {
@@ -343,7 +370,8 @@ export default {
 
   computed: {
     ...mapState('live-sessions', ['sessions']),
-    ...mapGetters('auth', ['getUserInfo', 'hasUserLearnAndPlayPlan']),
+    ...mapGetters('live-sessions', ['getHolidays']),
+    ...mapGetters('auth', ['getUserInfo', 'hasBasicPlayAndLearnPlan']),
     ...mapGetters('auth', {
       hasTrialOrPlatinumPlan: 'hasTrialOrPlatinumPlan'
     }),
@@ -414,12 +442,52 @@ export default {
           break
       }
       return mode
+    },
+
+    sessionsWithHolidays() {
+      const groups = this.getHolidays.map((holiday) => ({
+        holiday: {
+          ...holiday,
+          dateStart: dayjs(holiday.dateStart),
+          dateEnd: dayjs(holiday.dateEnd)
+        },
+        dateStart: holiday.dateStart,
+        dateEnd: holiday.dateEnd,
+        sessions: []
+      }))
+      for (const session of this.orderedSessions) {
+        const matchingHoliday = groups.find((group) => {
+          if (!group.holiday) {
+            return false
+          }
+
+          const sessionDate = dayjs(session.dateStart)
+          return group.holiday.dateStart.get('date') <= sessionDate.get('date') &&
+           sessionDate.get('date') <= group.holiday.dateEnd.get('date')
+        })
+
+        if (matchingHoliday) {
+          matchingHoliday.sessions.push(session)
+        } else {
+          groups.push({ holiday: null, dateStart: session.dateStart, dateEnd: session.dateEnd, sessions: [{ ...session }] })
+        }
+      }
+
+      return groups
+        .filter((group) => group.sessions.length > 0)
+        .sort((sessionA, sessionB) => {
+          const start = new Date(sessionA.dateStart)
+          const end = new Date(sessionB.dateEnd)
+
+          return start.getTime() - end.getTime()
+        })
     }
   },
 
   watch: {
     days() {
       this.getUserLiveSessions(this.days)
+      this.getFilteredHolidays()
     },
 
     sessions() {
@@ -441,18 +509,29 @@ export default {
   created() {
     this.setToday(new Date())
     this.getUserLiveSessions(this.days)
+    this.getFilteredHolidays()
     this.setCurrentTimezone()
   },
 
   methods: {
     async getUserLiveSessions() {
       this.loading = true
-      await this.$store.dispatch('live-sessions/getUserLiveSessions', { ...this.days, type: this.filterType })
+      await this.$store.dispatch('live-sessions/getUserLiveSessions', {
+        ...this.days,
+        type: this.filterType
+      })
       this.loading = false
     },
 
     ...mapActions('admin/users', ['setTimezone']),
     ...mapActions('auth', ['fetchUserInfo']),
+    ...mapActions('live-sessions', ['fetchHolidays']),
+
+    async getFilteredHolidays() {
+      this.loading = true
+      await this.fetchHolidays({ ...this.days })
+      this.loading = false
+    },
 
     close() {
       this.$nextTick(() => {
@@ -525,7 +604,7 @@ export default {
       }
     },
 
-    filterMeetings (type) {
+    filterMeetings(type) {
       this.filterType = type
       this.getUserLiveSessions()
     }
@@ -609,5 +688,12 @@ export default {
 .fullscreen {
   width: 100% !important;
   height: 100% !important;
+}
+.today-cards-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  max-width: 100%;
 }
 </style>

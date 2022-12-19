@@ -5,36 +5,29 @@
         <div class="mx-0 pl-6">
           <span class="lsess-title">Filter by</span>
           <v-radio-group v-model="radio" @change="$emit('change', $event)">
-            <v-radio
-              label="All classes"
-              value="all"
-              color="#8CD2FF"
-            >
+            <v-radio label="All classes" value="all" color="#8CD2FF">
               <template #label>
                 <span>All classes</span>
               </template>
             </v-radio>
-            <v-radio
-              label="Live Classes"
-              value="liveClasses"
-              color="#8CD2FF"
-            >
+            <v-radio label="Live Classes" value="liveClasses" color="#8CD2FF">
               <template #label>
                 <span class="pg-text-[#F89838]">Live Classes</span>
               </template>
             </v-radio>
-            <v-radio
-              label="Playdates"
-              value="playdates"
-              color="#8CD2FF"
-            >
+            <v-radio label="Playdates" value="playdates" color="#8CD2FF">
               <template #label>
                 <span class="pg-text-[#68C453]">Playdates</span>
               </template>
             </v-radio>
           </v-radio-group>
         </div>
-        <v-row class="mx-3 mb-7 mt-2 py-2 ml-4 pl-2 pg-border-b-2 pg-border-t-2 pg-border-[#C8C8C8] pg-border-dashed pg-border-l-0 pg-border-r-0 pg-cursor-pointer" align="center" justify="start" @click="goToMyPlaydates">
+        <v-row
+          class="mx-3 mb-7 mt-2 py-2 ml-4 pl-2 pg-border-b-2 pg-border-t-2 pg-border-[#C8C8C8] pg-border-dashed pg-border-l-0 pg-border-r-0 pg-cursor-pointer"
+          align="center"
+          justify="start"
+          @click="goToMyPlaydates"
+        >
           <img class="mr-3" src="@/assets/svg/camera.svg" />
           <span class="lsess-title !pg-font-normal">My playdates</span>
         </v-row>
@@ -68,7 +61,7 @@
             <template v-else>
               <div class="my-10 lsess-title text-center">
                 There are no pending events
-                {{ hasUserLearnAndPlayPlan ? 'for you' : '' }} this week.
+                {{ hasPlayAndLearnPlan ? 'for you' : '' }} this week.
               </div>
             </template>
           </v-col>
@@ -114,7 +107,7 @@ export default {
 
   computed: {
     ...mapState('live-sessions', ['sessions']),
-    ...mapGetters('auth', ['hasUserLearnAndPlayPlan']),
+    ...mapGetters('auth', ['hasPlayAndLearnPlan']),
 
     nextSessions() {
       const today = new Date()
@@ -146,8 +139,8 @@ export default {
     userHasAccess(entry) {
       const day = dayjs(entry.dateStart).day()
       return (
-        !this.hasUserLearnAndPlayPlan ||
-        (this.hasUserLearnAndPlayPlan && (day === 0 || day === 6))
+        !this.hasPlayAndLearnPlan ||
+        (this.hasPlayAndLearnPlan && (day === 0 || day === 6))
       )
     },
     goToMyPlaydates() {

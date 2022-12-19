@@ -122,8 +122,8 @@ export default defineComponent({
 
     const routeName = computed(() => route.value.name)
 
-    const hasUserLearnAndPlayPlan = computed(
-      () => store.getters['auth/hasUserLearnAndPlayPlan']
+    const hasPlayAndLearnPlan = computed(
+      () => store.getters['auth/hasPlayAndLearnPlan']
     )
 
     watch(isUserLoggedIn, () => {
@@ -151,7 +151,7 @@ export default defineComponent({
       toolbarStyle,
       setShowContent,
       handleExpiredTrialCountdown,
-      hasUserLearnAndPlayPlan,
+      hasPlayAndLearnPlan,
       isPreschoolTrialEndedWithNoCreditCardFlowModalVisible,
       checkIfPreschoolTrialEndedWithNoCreditCardFlow
     }

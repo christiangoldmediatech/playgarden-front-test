@@ -7,7 +7,7 @@ export default {
       'isUserInSignupProcess',
       'isUserLoggedIn',
       'getUserInfo',
-      'hasUserLearnAndPlayPlan'
+      'hasPlayAndLearnPlan'
     ]),
     ...mapGetters({
       currentChildId: 'getCurrentChild'
@@ -31,7 +31,7 @@ export default {
     items() {
       if (!this.isUserInSignupProcess && this.isUserLoggedIn) {
         let list = []
-        if (!this.hasUserLearnAndPlayPlan) {
+        if (!this.hasPlayAndLearnPlan) {
           list = [
             {
               title: 'Home',

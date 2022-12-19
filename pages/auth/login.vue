@@ -1,6 +1,12 @@
 <template>
-  <v-container :class="{'mt-n14': !$vuetify.breakpoint.mdAndUp}">
-    <v-row :class="{'mt-n4': !$vuetify.breakpoint.mdAndUp}" align="center" justify="center" no-gutters class="py-0 py-md-16">
+  <v-container :class="{ 'mt-n14': !$vuetify.breakpoint.mdAndUp }">
+    <v-row
+      :class="{ 'mt-n4': !$vuetify.breakpoint.mdAndUp }"
+      align="center"
+      justify="center"
+      no-gutters
+      class="py-0 py-md-16"
+    >
       <v-col cols="12" md="6">
         <!-- BACK BUTTON -->
         <v-row>
@@ -20,10 +26,12 @@
         </v-row>
 
         <!-- CHILD IMAGE -->
-        <div
-          class="image"
-        >
-          <v-img contain alt="Smiling Girl Picture" :src="require('@/assets/png/welcome-back.png')" />
+        <div class="image">
+          <v-img
+            contain
+            alt="Smiling Girl Picture"
+            :src="require('@/assets/png/welcome-back.png')"
+          />
         </div>
       </v-col>
 
@@ -70,12 +78,17 @@
           <v-row no-gutters>
             <!-- FACEBOOK -->
             <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
-              <v-btn block height="45" class="social-btn" @click="facebookSignIn">
+              <v-btn
+                block
+                height="45"
+                class="social-btn"
+                @click="facebookSignIn"
+              >
                 <img
                   alt="Facebook"
                   class="mr-1"
                   src="@/assets/svg/facebook_icon.svg"
-                >
+                />
 
                 <span class="spanSocialNetwork">Login with Facebook</span>
               </v-btn>
@@ -88,7 +101,7 @@
                   alt="Google"
                   class="mr-1"
                   src="@/assets/svg/google_icon.svg"
-                >
+                />
 
                 <span class="spanSocialNetwork">Login with Google</span>
               </v-btn>
@@ -112,7 +125,7 @@ export default {
     LoginForm
   },
 
-  data () {
+  data() {
     return {
       loading: false,
       errorMessage: '',
@@ -124,10 +137,10 @@ export default {
     ...mapGetters('auth', {
       userInfo: 'getUserInfo'
     }),
-    ...mapGetters('auth', ['isUserLoggedIn', 'hasUserLearnAndPlayPlan']),
+    ...mapGetters('auth', ['isUserLoggedIn', 'hasPlayAndLearnPlan']),
     ...mapGetters(['getCurrentChild']),
     ...mapGetters('children', { children: 'rows' }),
-    inInvitationProcess () {
+    inInvitationProcess() {
       const { query } = this.$route
 
       return Boolean(
@@ -137,18 +150,18 @@ export default {
       )
     },
 
-    isKidsCornerRedirect () {
+    isKidsCornerRedirect() {
       const { query } = this.$route
       return query.kidsCornerRedirect === 'true'
     },
 
-    isPlaygardenAdminRedirect () {
+    isPlaygardenAdminRedirect() {
       const { query } = this.$route
       return query.playgardenAdminRedirect === 'true'
     }
   },
 
-  created () {
+  created() {
     if (this.isUserLoggedIn) {
       if (this.getCurrentChild?.length > 0) {
         this.$router.push({ name: 'app-virtual-preschool' })
@@ -163,21 +176,33 @@ export default {
 
   mounted() {
     // If already logged in and is redirecting to kids corner, rdirect directly insted of waiting for the login
-    if (this.isKidsCornerRedirect && this.$store.getters['auth/isUserLoggedIn']) {
+    if (
+      this.isKidsCornerRedirect &&
+      this.$store.getters['auth/isUserLoggedIn']
+    ) {
       // Go to kids corner
-      window.open(`${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
+      window.open(
+        `${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`,
+        '_self'
+      )
     }
 
-    if (this.isPlaygardenAdminRedirect && this.$store.getters['auth/isUserLoggedIn']) {
+    if (
+      this.isPlaygardenAdminRedirect &&
+      this.$store.getters['auth/isUserLoggedIn']
+    ) {
       // Go to Playgarden admin
-      window.open(`${process.env.playgardenAdminUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
+      window.open(
+        `${process.env.playgardenAdminUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`,
+        '_self'
+      )
     }
   },
 
   methods: {
     ...mapActions('auth', ['fetchUserInfo']),
     ...mapActions('children', { getChildren: 'get' }),
-    getProviderSignIn (provider) {
+    getProviderSignIn(provider) {
       let nameProvider = ''
       switch (provider) {
         case 'google.com':
@@ -189,7 +214,7 @@ export default {
       }
       return nameProvider
     },
-    getDataFirebase () {
+    getDataFirebase() {
       this.loadingDataSocial = true
       const fireAuthObj = this.$fireAuthObj()
       fireAuthObj
@@ -202,7 +227,9 @@ export default {
                 firstName: profile.given_name || profile.first_name || '',
                 lastName: profile.family_name || profile.last_name || '',
                 email: profile.email,
-                socialNetwork: this.getProviderSignIn(result.additionalUserInfo.providerId),
+                socialNetwork: this.getProviderSignIn(
+                  result.additionalUserInfo.providerId
+                ),
                 socialNetworkId: profile.id
               })
             } else {
@@ -215,18 +242,18 @@ export default {
         })
         .finally(() => fireAuthObj.signOut())
     },
-    facebookSignIn () {
+    facebookSignIn() {
       this.socialSignIn(
         'FACEBOOK',
         new this.$fireAuthObj.FacebookAuthProvider()
       )
     },
 
-    googleSignIn () {
+    googleSignIn() {
       this.socialSignIn('GOOGLE', new this.$fireAuthObj.GoogleAuthProvider())
     },
 
-    async loginWithSocialNetwork (user) {
+    async loginWithSocialNetwork(user) {
       try {
         this.disableAxiosGlobal()
         await this.authLoginSocial(user)
@@ -234,9 +261,14 @@ export default {
         this.loadingDataSocial = false
         if (this.isKidsCornerRedirect) {
           // Go to kids corner
-          window.open(`${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
+          window.open(
+            `${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`,
+            '_self'
+          )
         } else if (this.$route.query.redirect) {
-          await this.$router.push(decodeURIComponent(this.$route.query.redirect))
+          await this.$router.push(
+            decodeURIComponent(this.$route.query.redirect)
+          )
         } else {
           await this.$router.push(this.goToPage(user))
         }
@@ -246,7 +278,7 @@ export default {
       }
     },
 
-    goToPage (user) {
+    goToPage(user) {
       if (user.stripeStatus === 'active' && user.registerStep > 3) {
         if (user.planSelected.id === 2 || user.planSelected.id === 3) {
           return { name: 'app-virtual-preschool', query: {} }
@@ -257,7 +289,9 @@ export default {
       } else if (user.registerStep >= 3) {
         if (this.children.length === 0) {
           return {
-            name: this.hasUserLearnAndPlayPlan ? 'app-play-learn-children' : 'app-normal-children',
+            name: this.hasPlayAndLearnPlan
+              ? 'app-play-learn-children'
+              : 'app-normal-children',
             query: {
               step: '4',
               process: 'signup'
@@ -279,7 +313,7 @@ export default {
       }
     },
 
-    async onFailLoginSocial (user) {
+    async onFailLoginSocial(user) {
       try {
         this.validateEmail(user)
 
@@ -303,7 +337,7 @@ export default {
 
     ...mapActions('auth/socialUser', ['authLoginSocial']),
 
-    async onSubmit (data) {
+    async onSubmit(data) {
       try {
         this.loading = true
         this.errorMessage = ''
@@ -314,28 +348,37 @@ export default {
 
         if (this.isKidsCornerRedirect) {
           // Go to kids corner
-          window.open(`${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`, '_self')
+          window.open(
+            `${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`,
+            '_self'
+          )
         } else if (this.inInvitationProcess) {
           await this.$router.push({
             name: 'app-playdates-join',
             query: this.$route.query
           })
         } else if (this.$route.query.redirect) {
-          await this.$router.push(decodeURIComponent(this.$route.query.redirect))
+          await this.$router.push(
+            decodeURIComponent(this.$route.query.redirect)
+          )
         } else if (this.userInfo.role.id === UserRole.SUPER_ADMIN) {
           const atoken = this.$store.getters['auth/getAccessToken']
-          window.open(`${process.env.playgardenAdminUrl}?atoken=${atoken}`, '_self')
+          window.open(
+            `${process.env.playgardenAdminUrl}?atoken=${atoken}`,
+            '_self'
+          )
         } else {
           await this.$router.push(this.goToPage(this.userInfo))
         }
       } catch (error) {
-        this.errorMessage = 'Oops! The password you entered is incorrect. Please try again, or try resetting your password.'
+        this.errorMessage =
+          'Oops! The password you entered is incorrect. Please try again, or try resetting your password.'
       } finally {
         this.loading = false
       }
     },
 
-    socialSignIn (nameSocialNetwork, provider) {
+    socialSignIn(nameSocialNetwork, provider) {
       const fireAuthObj = this.$fireAuthObj()
       fireAuthObj.signInWithRedirect(provider)
     }

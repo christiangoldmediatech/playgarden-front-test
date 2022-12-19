@@ -13,10 +13,15 @@
 
       <v-card-text class="d-flex flex-column align-center">
         <p class="dialog-text my-5">
-          To gain more teacher feedback on your little one's progress, update to the <span>Online Preschool Plan</span>
+          To gain more teacher feedback on your little one's progress, update to
+          the <span>Online Preschool Plan</span>
         </p>
 
-        <v-btn class="elevation-0 white--text px-16 main-btn" color="#B2E68D" @click="btnAction">
+        <v-btn
+          class="elevation-0 white--text px-16 main-btn"
+          color="#B2E68D"
+          @click="btnAction"
+        >
           COMPARE PLANS
         </v-btn>
       </v-card-text>
@@ -25,14 +30,21 @@
         <img
           src="@/assets/svg/gift-of-learning/bottom-color-dashes.svg"
           class="pg-absolute pg-bottom-0 pg-left-0 pg-right-0 pg-mx-auto pg-w-full lg:pg-w-auto"
-        >
+        />
       </div>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useStore, useRouter, computed, onMounted } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  ref,
+  useStore,
+  useRouter,
+  computed,
+  onMounted
+} from '@nuxtjs/composition-api'
 import { TypedStore } from '@/models'
 
 export default defineComponent({
@@ -42,10 +54,12 @@ export default defineComponent({
     const store = useStore<TypedStore>()
     const router = useRouter()
     const dialog = ref(false)
-    const hasUserLearnAndPlayPlan = computed(() => store.getters['auth/hasUserLearnAndPlayPlan'])
+    const hasPlayAndLearnPlan = computed(
+      () => store.getters['auth/hasPlayAndLearnPlan']
+    )
 
     onMounted(() => {
-      dialog.value = hasUserLearnAndPlayPlan.value
+      dialog.value = hasPlayAndLearnPlan.value
     })
 
     const btnAction = () => {
@@ -72,7 +86,7 @@ export default defineComponent({
   position: absolute;
   top: 20px;
   right: 20px;
-  background: #F6B7D2;
+  background: #f6b7d2;
 }
 
 .dialog-title {
@@ -80,7 +94,7 @@ export default defineComponent({
   font-weight: bold;
   font-size: 40px;
   letter-spacing: 1.35px;
-  color: #78C383;
+  color: #78c383;
 }
 
 .dialog-text {
@@ -94,7 +108,7 @@ export default defineComponent({
   text-transform: capitalize;
 
   span {
-    color: #F89838;
+    color: #f89838;
   }
 }
 

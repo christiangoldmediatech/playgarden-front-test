@@ -10,21 +10,18 @@
           :class="{ mobile: $vuetify.breakpoint.smAndDown }"
         >
           <v-card>
-            <div v-if="!hasUserLearnAndPlayPlan" class="green-line green-line-1" />
-            <div v-if="!hasUserLearnAndPlayPlan" class="green-line green-line-2" />
+            <div v-if="!hasPlayAndLearnPlan" class="green-line green-line-1" />
+            <div v-if="!hasPlayAndLearnPlan" class="green-line green-line-2" />
 
             <v-card-text>
               <div
                 class="text-center"
                 :class="{
-                  'mb-8': hasUserLearnAndPlayPlan && !$vuetify.breakpoint.xs,
+                  'mb-8': hasPlayAndLearnPlan && !$vuetify.breakpoint.xs,
                   'my-6': !$vuetify.breakpoint.xs
                 }"
               >
-                <h1
-                  v-if="hasUserLearnAndPlayPlan"
-                  class="play-and-learn-title"
-                >
+                <h1 v-if="hasPlayAndLearnPlan" class="play-and-learn-title">
                   Who’s at Play and Learn today?
                 </h1>
                 <underlined-title
@@ -52,9 +49,9 @@
                       :class="[
                         'child-option',
                         { scaled: hover },
-                        { 'play-and-learn-option': hasUserLearnAndPlayPlan },
-                        { 'px-6': hasUserLearnAndPlayPlan },
-                        { 'pb-6': hasUserLearnAndPlayPlan }
+                        { 'play-and-learn-option': hasPlayAndLearnPlan },
+                        { 'px-6': hasPlayAndLearnPlan },
+                        { 'pb-6': hasPlayAndLearnPlan }
                       ]"
                     >
                       <v-img
@@ -65,14 +62,14 @@
                         "
                         aspect-ratio="1"
                         contain
-                        :class="{ 'my-6': hasUserLearnAndPlayPlan }"
-                        :width="hasUserLearnAndPlayPlan ? '100px' : '150px'"
-                        :height="hasUserLearnAndPlayPlan ? '100px' : '150px'"
+                        :class="{ 'my-6': hasPlayAndLearnPlan }"
+                        :width="hasPlayAndLearnPlan ? '100px' : '150px'"
+                        :height="hasPlayAndLearnPlan ? '100px' : '150px'"
                       />
                       <span
                         class="font-weight-bold"
                         :class="[
-                          { 'play-and-learn-option-text': hasUserLearnAndPlayPlan },
+                          { 'play-and-learn-option-text': hasPlayAndLearnPlan }
                         ]"
                       >
                         {{ child.firstName }}
@@ -88,7 +85,10 @@
                 text
                 block
                 x-large
-                :class="[{ 'my-8': hasUserLearnAndPlayPlan }, { 'play-and-learn-btn-text': hasUserLearnAndPlayPlan }]"
+                :class="[
+                  { 'my-8': hasPlayAndLearnPlan },
+                  { 'play-and-learn-btn-text': hasPlayAndLearnPlan }
+                ]"
                 :to="{ name: 'app-account-index-student-profile' }"
               >
                 MANAGE STUDENT PROFILES
@@ -117,7 +117,7 @@ export default {
 
   computed: {
     ...mapGetters('children', ['rows']),
-    ...mapGetters('auth', ['hasUserLearnAndPlayPlan']),
+    ...mapGetters('auth', ['hasPlayAndLearnPlan']),
 
     children() {
       const result = jsonCopy(this.rows)
@@ -139,7 +139,7 @@ export default {
   destroyed() {
     document.body.style.overflow = 'scroll'
   },
-  async created () {
+  async created() {
     await this.getChildren()
 
     // NOTE: "everyone" count as one child here
@@ -186,7 +186,7 @@ export default {
   font-weight: 700;
   font-size: 28px;
   line-height: 52px;
-  color: #F89838;
+  color: #f89838;
 
   @media (min-width: 600px) {
     font-size: 38px;
@@ -201,7 +201,7 @@ export default {
 .play-and-learn-option-text {
   font-size: 19px;
   line-height: 65px;
-  color: #7852B5;
+  color: #7852b5;
 
   @media (min-width: 600px) {
     font-size: 39px;
@@ -226,7 +226,7 @@ export default {
   margin-bottom: auto;
 }
 
-.fit-page{
+.fit-page {
   position: absolute;
   top: 0;
   left: 0;

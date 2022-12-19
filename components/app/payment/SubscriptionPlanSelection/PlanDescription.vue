@@ -5,8 +5,8 @@
       <plan-benefit
         v-for="benefit in plan.commonBenefits.benefits"
         :key="benefit"
+        :color="plan.color"
         :benefit="benefit"
-        :index="index"
       />
     </template>
 
@@ -18,16 +18,20 @@
       "
     >
       <plan-benefit
-        v-for="benefit in plan.homeDeliveryBenefits.benefits"
-        :key="benefit"
+        v-for="(benefit, i) in plan.homeDeliveryBenefits.benefits"
+        :key="i"
         :benefit="benefit"
-        :index="index"
+        :color="plan.color"
       />
     </template>
 
     <!-- Plus benefits -->
-    <template v-if="plan.plusBenefits && plan.plusBenefits.benefits.length > 0">
-      <div class="accent--text pg-ml-7 pg-my-4 pg-text-lg pg-font-semibold">
+    <div
+      v-if="plan.plusBenefits && plan.plusBenefits.benefits.length > 0"
+      :style="{ '--plan-color': plan.color }"
+      class="plus-benefits"
+    >
+      <div class="accent--text pg-mb-1 pg-mt-6 pg-text-lg pg-font-semibold">
         AND
       </div>
 
@@ -35,9 +39,10 @@
         v-for="benefit in plan.plusBenefits.benefits"
         :key="benefit"
         :benefit="benefit"
-        :index="index"
+        :color="plan.color"
+        large
       />
-    </template>
+    </div>
   </div>
 </template>
 
@@ -53,11 +58,25 @@ export default defineComponent({
     plan: {
       type: Object as PropType<Plan>,
       required: true
-    },
-    index: {
-      type: Number,
-      default: 1
     }
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.plus-benefits {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    content: '';
+    background-color: var(--plan-color);
+    height: calc(100% + 1.25rem);
+    width: calc(100% + 1rem);
+    opacity: 0.3;
+    transform: rotate(-2.39deg);
+    top: -0.5rem;
+    left: -0.5rem;
+  }
+}
+</style>

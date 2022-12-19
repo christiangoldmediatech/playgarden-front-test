@@ -4,7 +4,7 @@
     <v-col v-if="$vuetify.breakpoint.smAndDown" cols="12" class="pt-2">
       <v-row no-gutters class="px-3">
         <v-col cols="12">
-          <ReportCardTypeSelect
+          <report-card-type-select
             v-model="selectedReportCard"
             hide-details
             :preview-mode="previewMode"
@@ -64,10 +64,11 @@
                         <span
                           class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3"
                         >
-                          General progress statistics for all categories.</span>
+                          General progress statistics for all categories.
+                        </span>
                       </div>
                       <div class="mt-n8">
-                        <ChartReport v-if="hasReport" :report="report" />
+                        <chart-report v-if="hasReport" :report="report" />
                       </div>
                     </v-col>
                   </v-row>
@@ -89,7 +90,7 @@
                           General progress statistics for all categories.
                         </span>
                       </div>
-                      <ChartReport
+                      <chart-report
                         v-if="hasReport"
                         class="mt-n8"
                         :report="report"
@@ -125,7 +126,7 @@
                       cols="12"
                     >
                       <div class="progress-letter-selector">
-                        <LetterSelect
+                        <letter-select
                           v-model="selectedLetter"
                           small-letter
                           v-bind="{ disabledLetters }"
@@ -134,7 +135,7 @@
                       </div>
                     </v-col>
                   </v-row>
-                  <LetterStats :letter-stats="letterStatsData" />
+                  <letter-stats :letter-stats="letterStatsData" />
                 </template>
               </v-card>
             </v-col>
@@ -143,7 +144,7 @@
           <v-card v-else class="px-2 my-4" width="100%">
             <v-row no-gutters>
               <v-col cols="12">
-                <DetailProgress
+                <detail-progress
                   :report-card-type="reportCardTypeSelected"
                   :report="report"
                   :data-report-card-type="dataReportCard"
@@ -154,8 +155,8 @@
         </v-col>
       </v-row>
     </pg-loading>
-    <UnlockPrompt
-      v-if="hasUserLearnAndPlayPlan"
+    <unlock-prompt
+      v-if="hasPlayAndLearnPlan"
       title="PROGRESS REPORT"
       desc="Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas."
       img="student-cubby/progress.png"
@@ -207,7 +208,7 @@ export default {
     ...mapGetters('progress-report', ['report']),
     ...mapGetters('children', { allChildren: 'rows' }),
     ...mapGetters('children', { children: 'rows' }),
-    ...mapGetters('auth', ['hasUserLearnAndPlayPlan']),
+    ...mapGetters('auth', ['hasPlayAndLearnPlan']),
 
     hasReport() {
       return Object.keys(this.report || {}).length > 0
@@ -390,7 +391,7 @@ export default {
       } else {
         this.general = false
         this.dataReportCard = this.getMenu.find(
-          menu => menu.name === reportCardType
+          (menu) => menu.name === reportCardType
         )
       }
     }

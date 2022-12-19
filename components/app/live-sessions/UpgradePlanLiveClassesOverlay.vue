@@ -1,5 +1,5 @@
 <template>
-  <v-overlay v-if="hasUserLearnAndPlayPlan" z-index="5">
+  <v-overlay v-if="hasPlayAndLearnPlan" z-index="5">
     <v-container fluid>
       <div class="upgrade-overlay">
         <v-row>
@@ -11,12 +11,15 @@
                     <img
                       class="upgrade-overlay-lock"
                       src="@/assets/svg/sessions-locked.svg"
-                    >
+                    />
                     <div class="to-unlock-text">
                       To unlock
                     </div>
 
-                    <div class="upgrade-text clickable" @click="openPlanUpgradeModal">
+                    <div
+                      class="upgrade-text clickable"
+                      @click="openPlanUpgradeModal"
+                    >
                       Upgrade your Plan
                     </div>
                   </div>
@@ -30,14 +33,16 @@
                 <img
                   class="upgrade-overlay-icon"
                   src="@/assets/svg/sessions-camera-upgrade.svg"
-                >
+                />
                 <div class="upgrade-overlay-title">
                   LIVE CLASSES
                 </div>
               </div>
 
               <div class="upgrade-overlay-text">
-                Your Play and Learn plan gives you access to only 1 Live Class per week, if you want to get rid of this limitation please upgrade your plan.
+                Your Play and Learn plan gives you access to only 1 Live Class
+                per week, if you want to get rid of this limitation please
+                upgrade your plan.
               </div>
             </v-row>
           </v-col>
@@ -53,19 +58,19 @@ import { computed, defineComponent, useStore } from '@nuxtjs/composition-api'
 export default defineComponent({
   name: 'UpgradeLearnAndPlayOverlay',
 
-  setup () {
+  setup() {
     const store = useStore()
 
     const openPlanUpgradeModal = () => {
       store.commit('notifications/SET_PLAN_UPGRADE_MODAL_VISIBILITY', true)
     }
 
-    const hasUserLearnAndPlayPlan = computed(() => {
-      return store.getters['auth/hasUserLearnAndPlayPlan']
+    const hasPlayAndLearnPlan = computed(() => {
+      return store.getters['auth/hasPlayAndLearnPlan']
     })
 
     return {
-      hasUserLearnAndPlayPlan,
+      hasPlayAndLearnPlan,
       openPlanUpgradeModal
     }
   }
@@ -124,15 +129,15 @@ export default defineComponent({
     height: 187px;
     max-height: 187px;
     box-shadow: 0px 3px 6px 0px #00000029;
-    border: 19px solid #68C453;
-    background-color: #F2F2F2;
+    border: 19px solid #68c453;
+    background-color: #f2f2f2;
     border-radius: 50%;
     position: relative;
     @media screen and (min-width: 1280px) {
       width: 335px;
       max-width: 335px;
       height: 335px;
-      maX-height: 335px;
+      max-height: 335px;
     }
 
     .upgrade-overlay-circle-inner {
@@ -142,9 +147,9 @@ export default defineComponent({
       height: 169px;
       min-height: 16px;
       max-height: 169px;
-      border: 15px solid #B2E68D;
+      border: 15px solid #b2e68d;
       box-shadow: 0px 3px 6px 0px #00000029;
-      background-color: #F2F2F2;
+      background-color: #f2f2f2;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -196,7 +201,7 @@ export default defineComponent({
     line-height: 1.5;
     letter-spacing: 0.96px;
     text-align: center;
-    color: #FFAB37;
+    color: #ffab37;
     text-decoration: underline;
 
     @media screen and (min-width: 1280px) {

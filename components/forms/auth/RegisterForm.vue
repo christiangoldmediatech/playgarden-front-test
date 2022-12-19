@@ -85,10 +85,7 @@
                 <v-row no-gutters>
                   <v-col v-if="isAddressRequired" class="pr-2" cols="12" md="6">
                     <!-- Address -->
-                    <validation-provider
-                      name="Address"
-                      rules="required"
-                    >
+                    <validation-provider name="Address" rules="required">
                       <search-address-autocomplete
                         v-model="addressDraft.address1"
                         @address-components="configureAddress"
@@ -151,19 +148,19 @@
                     <span class="white--text">
                       At least 6 characters—the more characters, the better.
                     </span>
-                    <br>
+                    <br />
                     <span class="white--text">
                       A mixture of both uppercase and lowercase letters.
                     </span>
-                    <br>
+                    <br />
                     <span class="white--text">
                       A mixture of letters and numbers.
                     </span>
-                    <br>
+                    <br />
                     <span class="white--text">
                       Inclusion of at least one special character, e.g., !@#?]
                     </span>
-                    <br>
+                    <br />
                   </v-tooltip>
 
                   <!-- Coupon -->
@@ -190,16 +187,19 @@
                     v-if="Boolean(draft.promotion_id) && isValidCoupon !== null"
                     class="mt-n6 mb-4"
                   >
-                    <span
-                      v-if="isValidCoupon"
-                      class="green--text"
-                    >Valid coupon!</span>
+                    <span v-if="isValidCoupon" class="green--text">
+                      Valid coupon!
+                    </span>
                     <span v-else class="error--text">Invalid coupon!</span>
                   </div>
                 </template>
 
                 <v-row v-if="!noTerms" no-gutters>
-                  <validation-provider v-slot="{ errors }" name="Terms" rules="required">
+                  <validation-provider
+                    v-slot="{ errors }"
+                    name="Terms"
+                    rules="required"
+                  >
                     <v-checkbox
                       v-model="draft.acceptTerms"
                       class="pt-0 mt-0 accept-terms"
@@ -225,7 +225,7 @@
                   block
                   min-height="60"
                   class="mb-6 main-btn"
-                  :class="{ 'white--text': whiteBtn}"
+                  :class="{ 'white--text': whiteBtn }"
                   color="green2"
                   :disabled="invalid || !isValidCoupon"
                   :loading="loading"
@@ -266,7 +266,7 @@
                     alt="Facebook"
                     class="mr-1"
                     src="@/assets/svg/facebook_icon.svg"
-                  >
+                  />
 
                   <span class="spanSocialNetwork">Continue with Facebook</span>
                 </v-btn>
@@ -284,7 +284,7 @@
                     alt="Google"
                     class="mr-1"
                     src="@/assets/svg/google_icon.svg"
-                  >
+                  />
 
                   <span class="spanSocialNetwork">Continue with Google</span>
                 </v-btn>
@@ -346,7 +346,7 @@ export default {
     }
   },
 
-  data: vm => ({
+  data: (vm) => ({
     draft: {},
     addressDraft: {
       address1: null
@@ -411,7 +411,7 @@ export default {
   methods: {
     ...mapActions('coupons', ['getCoupons']),
 
-    configureAddress (data) {
+    configureAddress(data) {
       try {
         // eslint-disable-next-line camelcase
         if (data && data.address_components) {
@@ -527,10 +527,7 @@ export default {
       if (this.addressDraft.address1) {
         data.address = jsonCopy(this.addressDraft)
       }
-      this.$emit(
-        'click:submit',
-        data
-      )
+      this.$emit('click:submit', data)
     },
 
     goToTermsAndConditions() {
@@ -637,5 +634,23 @@ export default {
   color: var(--v-black-base);
   font-weight: 400;
   cursor: pointer;
+}
+
+.v-tooltip__content {
+  background-color: var(--v-accent-base) !important;
+  color: white !important;
+  font-weight: bold !important;
+  border-radius: 6px !important;
+  z-index: 2 !important;
+}
+
+.v-tooltip__content::after {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: -10px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent var(--v-accent-base) transparent transparent;
 }
 </style>

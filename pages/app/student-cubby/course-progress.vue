@@ -4,7 +4,7 @@
       <div class="text-center">
         <!-- Section Title and Description -->
         <div class="d-flex align-center justify-center">
-          <img height="80px" src="@/assets/png/student-cubby/abc.png">
+          <img height="80px" src="@/assets/png/student-cubby/abc.png" />
           <span class="ml-4 text-h4 text-md-h3">CURRICULUM</span>
         </div>
         <div class="my-6 text-md-h6 text-body-1">
@@ -29,7 +29,7 @@
       </pg-loading>
     </v-card-text>
     <unlock-prompt
-      v-if="hasUserLearnAndPlayPlan"
+      v-if="hasPlayAndLearnPlan"
       title="CURRICULUM"
       desc="Scroll through to review your lessons and worksheets!"
       img="student-cubby/abc.png"
@@ -86,8 +86,8 @@ export default defineComponent({
     const letters = ref<ChildProgress[]>([])
     const { getCourseProgressByChildId } = useChildCourseProgress()
 
-    const hasUserLearnAndPlayPlan = computed(() => {
-      return store.getters['auth/hasUserLearnAndPlayPlan']
+    const hasPlayAndLearnPlan = computed(() => {
+      return store.getters['auth/hasPlayAndLearnPlan']
     })
 
     const loading = ref(true)
@@ -130,7 +130,7 @@ export default defineComponent({
       letters,
       studentId,
       showProgress,
-      hasUserLearnAndPlayPlan
+      hasPlayAndLearnPlan
     }
   }
 })

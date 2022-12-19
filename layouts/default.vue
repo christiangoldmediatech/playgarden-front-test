@@ -27,6 +27,7 @@
       <!-- <NoCreditCardFreeTrialEndedDialog
         v-model="isPreschoolTrialEndedWithNoCreditCardFlowModalVisible"
       /> -->
+      <LearningKitsPopup v-model="learningKitsPopup" />
 
       <!-- CONTACT US FORM MODAL -->
       <contact-us-form-modal />
@@ -100,6 +101,7 @@ import ChangePasswordModal from '@/components/app/notifications/ChangePasswordMo
 import TrialEndingModalForLastDay from '@/components/app/payment/TrialEnding/TrialEndingModalForLastDay.vue'
 import PlanUpgradeModal from '@/components/app/payment/TrialEnding/PlanUpgradeModal/index.vue'
 // import NoCreditCardFreeTrialEndedDialog from '@/components/app/NoCreditCardFreeTrialEndedDialog.vue'
+import dayjs from 'dayjs'
 
 import {
   useAuth,
@@ -107,6 +109,7 @@ import {
   useNotification,
   useVuetifyHelper
 } from '@/composables'
+import LearningKitsPopup from '@/components/app/payment/LearningKitsPopup.vue'
 
 export default defineComponent({
   middleware: ['utmHandler'],
@@ -139,7 +142,8 @@ export default defineComponent({
     AccountInactiveModal: () =>
       import('@/components/app/register/AccountInactiveModal.vue'),
     CanceledTrialModal: () =>
-      import('@/components/app/payment/CanceledTrialModal.vue')
+      import('@/components/app/payment/CanceledTrialModal.vue'),
+    LearningKitsPopup
   },
 
   head: {},
@@ -277,7 +281,10 @@ export default defineComponent({
     const routeName = computed(() => route.value.name)
 
     watch(routeName, () => {
-      if (routeName.value !== 'app-payment-plan' && routeName.value !== 'app-account-index') {
+      if (
+        routeName.value !== 'app-payment-plan' &&
+        routeName.value !== 'app-account-index'
+      ) {
         checkIfShouldShowTrialExpiredModal()
       }
     })
@@ -302,6 +309,26 @@ export default defineComponent({
 
     const isMobile = computed(() => vuetify.breakpoint.mobile)
 
+    const LEARNING_KITS_POPUP_STORAGE_KEY = 'learningKitsPopupShown'
+    const learningKitsPopup = ref(false)
+    onMounted(() => {
+      if (localStorage.getItem(LEARNING_KITS_POPUP_STORAGE_KEY) === 'true') {
+        return
+      }
+
+      const user = store.getters['auth/getUserInfo']
+      const registeredAt = user.planSelectedAt || user.createdAt
+      if (!registeredAt) {
+        return
+      }
+
+      const diff = Math.round(dayjs().diff(registeredAt, 'days'))
+      if (diff >= 3 && diff <= 7) {
+        learningKitsPopup.value = true
+        localStorage.setItem(LEARNING_KITS_POPUP_STORAGE_KEY, 'true')
+      }
+    })
+
     return {
       isComingSoonDialogOpen,
       isTrialExpiringRibbonVisible,
@@ -311,7 +338,8 @@ export default defineComponent({
       isUserLoggedIn,
       isUserEmailVerified,
       isFullWidth,
-      isMobile
+      isMobile,
+      learningKitsPopup
     }
   }
 })

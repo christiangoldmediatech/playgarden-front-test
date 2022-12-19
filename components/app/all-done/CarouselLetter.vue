@@ -207,14 +207,14 @@ export default defineComponent({
   computed: {
     ...mapGetters('admin/curriculum', { letters: 'types' }),
 
-    ...mapGetters('auth', ['hasUserLearnAndPlayPlan']),
+    ...mapGetters('auth', ['hasPlayAndLearnPlan']),
 
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
     listLetters() {
       const letters = this.letters.map((letter) => {
         if (!this.forceActivateAllLetters) {
-          const current = this.lettersProgress.find(l => l.id === letter.id)
+          const current = this.lettersProgress.find((l) => l.id === letter.id)
           const isIncludedInDisabled = this.disabledLetters.includes(
             current?.id
           )
@@ -236,10 +236,12 @@ export default defineComponent({
         }
       })
 
-      if (this.hasUserLearnAndPlayPlan) {
-        return letters.filter(item => item.name !== 'Intro' && item.name !== 'Nature')
+      if (this.hasPlayAndLearnPlan) {
+        return letters.filter(
+          (item) => item.name !== 'Intro' && item.name !== 'Nature'
+        )
       } else if (this.isPlayAndLearn) {
-        return letters.filter(item => item.name !== 'Intro')
+        return letters.filter((item) => item.name !== 'Intro')
       } else {
         return letters
       }
@@ -254,7 +256,7 @@ export default defineComponent({
     }
   },
 
-  async created () {
+  async created() {
     if (this.previewMode) {
       return
     }
@@ -266,7 +268,10 @@ export default defineComponent({
     ...mapActions('admin/curriculum', {
       getLetters: 'getTypes'
     }),
-    ...mapActions('children/course-progress', ['getCourseProgressByChildId', 'getPlayAndLearnProgressByChildId']),
+    ...mapActions('children/course-progress', [
+      'getCourseProgressByChildId',
+      'getPlayAndLearnProgressByChildId'
+    ]),
 
     async fetchChildProgress() {
       if (this.previewMode) {
