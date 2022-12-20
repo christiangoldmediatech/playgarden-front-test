@@ -10,7 +10,7 @@
   >
     <template v-slot:selection="{ item }">
       <v-list-item class="pa-0 w-100">
-        <v-list-item-avatar v-if="!item.everyone || !showOnlySelectedName">
+        <v-list-item-avatar v-if="!item.everyone && !showOnlySelectedName">
           <v-img :src="item.backpack.image" />
         </v-list-item-avatar>
 
