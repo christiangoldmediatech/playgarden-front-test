@@ -1,14 +1,14 @@
 <template>
   <v-main class="pt-10 pt-sm-6 pt-md-16 mt-8">
     <pg-loading :loading="loading" fullscreen>
-      <DashboardLayout
+      <dashboard-layout
         v-model="selectedChild"
         v-bind="{ lesson, loading, childId: childrenIds }"
       >
         <nuxt-child />
-      </DashboardLayout>
+      </dashboard-layout>
     </pg-loading>
-    <LessonActivityPlayer />
+    <lesson-activity-player />
   </v-main>
 </template>
 
@@ -119,6 +119,8 @@ export default {
     this.$nuxt.$off('dashboard-panel-update')
     this.$nuxt.$off('dashboard-panel-update-redirect')
     this.$appEventBus.$off(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED)
+
+    this.resetChildren()
   },
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),
@@ -234,6 +236,11 @@ export default {
             query: { ...this.overrides }
           })
         }
+      }
+    },
+    resetChildren() {
+      if (Array.isArray(this.selectedChild)) {
+        this.changeChild(this.selectedChild[0], false)
       }
     }
   }
