@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, nextTick, useStore, watch } from '@nuxtjs/composition-api'
+import { defineComponent, ref, onMounted, computed, nextTick, useStore, watch } from '@nuxtjs/composition-api'
 import { useLibraryV2, useFavorites, useFavoritesApi, useGtmHelper, useChild, useInlineLibraryPlayerCallbacks, usePatch, useVuetifyHelper } from '@/composables'
 import { getHexNonTransparentColor } from '@/utils/colorTools'
 import { isLastIndex } from '@/utils/array.util'
@@ -235,6 +235,7 @@ export default defineComponent({
       kidsCornerVideos.value = [...kidsCornerVideos.value, ...videos]
     }, 100)
 
+    // aqui
     async function handleVideoCardPlay(mediaObject: MediaObject): Promise<any> {
       try {
         if (player.value) {
@@ -336,6 +337,10 @@ export default defineComponent({
       children: currentChildren,
       getNextVideos: getVideosAfterVideoEnded,
       goToPreviousTrack
+    })
+
+    onMounted(async () => {
+      await handleLastReached()
     })
 
     return {
