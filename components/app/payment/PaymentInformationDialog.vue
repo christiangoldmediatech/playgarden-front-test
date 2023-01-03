@@ -171,10 +171,10 @@ export default defineComponent({
           return
         }
 
+        await store.dispatch('payment/selectSubscriptionPlan', plan)
+
         if (promotionId.value) {
           await store.dispatch('coupons/updateSubcriptionCoupon', { promotion_id: promotionId.value })
-        } else {
-          await store.dispatch('payment/selectSubscriptionPlan', plan)
         }
 
         await Auth.fetchUserInfo()
