@@ -122,11 +122,13 @@ export default {
     children() {
       const result = jsonCopy(this.rows)
 
-      /* result.push({
-        id: null,
-        firstName: 'Everyone',
-        everyone: true
-      }) */
+      if (result.length > 0) {
+        const everyone = result.indexOf(result.find(x => x.everyone === true))
+
+        if (everyone > 0) {
+          result.splice(everyone)
+        }
+      }
 
       return result
     }
@@ -163,14 +165,14 @@ export default {
 
         if (this.$route.query.redirect) {
           this.$router.push(decodeURIComponent(this.$route.query.redirect))
-        } else {
-          this.$router.push({
-            name: 'app-virtual-preschool',
-            query: {
-              _time: new Date().getTime() // <- just in order to avoid infinite loading bar
-            }
-          })
         }
+      } else {
+        this.$router.push({
+          name: 'app-virtual-preschool',
+          query: {
+            _time: new Date().getTime() // <- just in order to avoid infinite loading bar
+          }
+        })
       }
     }
   }

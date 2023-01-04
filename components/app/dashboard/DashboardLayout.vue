@@ -190,9 +190,7 @@ export default {
 
   props: {
     value: {
-      validator: (val) => {
-        return typeof val === 'number' || val === null
-      },
+      type: [Array, Number, Object, String],
       required: true
     },
 
@@ -216,9 +214,7 @@ export default {
     },
 
     childId: {
-      validator: (val) => {
-        return val === null || typeof val === 'number'
-      },
+      type: [Array, Number, Object, String],
       required: false,
       default: null
     }

@@ -283,9 +283,13 @@ export default defineComponent({
         data = await this.getPlayAndLearnProgressByChildId({
           id: this.studentId
         })
-      } else {
+      } else if (!this.currentChild[0].everyone) {
         data = await this.getCourseProgressByChildId({
           id: this.studentId
+        })
+      } else {
+        data = await this.getCourseProgressByChildId({
+          id: this.currentChild[0].allIds[0]
         })
       }
 

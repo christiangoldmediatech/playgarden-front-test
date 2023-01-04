@@ -1,12 +1,12 @@
 export default {
-  async resetChild (ctx, { lessonId, childId }) {
+  async resetChild(ctx, { lessonId, childId }) {
     const { data } = await this.$axios.delete(
       `/lessons/${lessonId}/children/${childId}`
     )
     return data
   },
 
-  async getCurrentLessonByChildrenId ({ commit }, { lessonId, childId }) {
+  async getCurrentLessonByChildrenId({ commit }, { lessonId, childId }) {
     const data = await this.$axios.$get(
       `/lessons/${lessonId}/children/${childId}`
     )
@@ -18,7 +18,7 @@ export default {
     return data
   },
 
-  async getCurrentLesson ({ commit }, params) {
+  async getCurrentLesson({ commit }, params) {
     try {
       const data = await this.$axios.$get('/lessons/childrens/current', {
         params
@@ -40,30 +40,43 @@ export default {
     }
   },
 
-  async getCurrentCurriculumType ({ commit }, childId) {
+  async getCurrentCurriculumType({ commit }, childId) {
     try {
-      const data = await this.$axios.$get(`/lessons/children/${childId}/curriculum/current`)
+      const data = await this.$axios.$get(
+        `/lessons/children/${childId}/curriculum/current`
+      )
       return data
     } catch (e) {
       const { data } = e.response
-      if ((data && data.errorCode === 101) || (data && data.errorCode === 102)) {
+      if (
+        (data && data.errorCode === 101) ||
+        (data && data.errorCode === 102)
+      ) {
         return Promise.reject(data)
       }
       return Promise.reject(e)
     }
   },
 
-  setCurrentLessonVideo ({ commit }, video) {
+  setCurrentLessonVideo({ commit }, video) {
     commit('SET_CURRENT_LESSON_VIDEO', video)
   },
 
-  async saveVideoProgress (ctx, { lessonId, childId, video }) {
+  async saveVideoProgress(ctx, { lessonId, childId, video }) {
     try {
+      let childrens, paramId
+      if (Array.isArray(childId)) {
+        paramId = childId[0]
+        childrens = childId
+      } else {
+        paramId = childId
+        childrens = [childId]
+      }
       const {
         data
       } = await this.$axios.$post(
-        `/lessons/${lessonId}/children/${childId}/video`,
-        { video }
+        `/lessons/${lessonId}/children/${paramId}/video`,
+        { video, childrens }
       )
       return data
     } catch (error) {
@@ -71,13 +84,19 @@ export default {
     }
   },
 
-  async saveWorksheetProgress (ctx, { lessonId, childId, worksheet }) {
+  async saveWorksheetProgress(ctx, { lessonId, childId, worksheet }) {
     try {
+      let childrens
+      if (Array.isArray(childId)) {
+        childrens = childId
+      } else {
+        childrens = [childId]
+      }
       const {
         data
       } = await this.$axios.$post(
         `/lessons/${lessonId}/children/${childId}/worksheet`,
-        { worksheet }
+        { worksheet, childrens }
       )
       return data
     } catch (error) {
@@ -85,24 +104,31 @@ export default {
     }
   },
 
-  async saveWorksheetVideoProgress (ctx, { videoId, time, completed }) {
+  async saveWorksheetVideoProgress(ctx, { videoId, time, completed }) {
     try {
       const children = ctx.rootGetters.getCurrentChild
       const childId = children[0].id
       const lesson = ctx.rootGetters['admin/curriculum/getLesson']
       const lessonId = lesson.id
+      let childrens, paramId
+      if (Array.isArray(childId)) {
+        paramId = childId[0]
+        childrens = childId
+      } else {
+        paramId = childId
+        childrens = [childId]
+      }
 
-      const {
-        data
-      } = await this.$axios.$post(
-        `/lessons/${lessonId}/children/${childId}/worksheet-video`,
+      const { data } = await this.$axios.$post(
+        `/lessons/${lessonId}/children/${paramId}/worksheet-video`,
         {
           video: {
             id: videoId,
             date: new Date().toISOString(),
             time,
             completed
-          }
+          },
+          childrens
         }
       )
 
@@ -112,11 +138,19 @@ export default {
     }
   },
 
-  async saveActivityProgress (ctx, { lessonId, childId, activity }) {
+  async saveActivityProgress(ctx, { lessonId, childId, activity }) {
     try {
+      let childrens, paramId
+      if (Array.isArray(childId)) {
+        paramId = childId[0]
+        childrens = childId
+      } else {
+        paramId = childId
+        childrens = [childId]
+      }
       const data = await this.$axios.$post(
-        `/lessons/${lessonId}/children/${childId}/activity`,
-        { activity }
+        `/lessons/${lessonId}/children/${paramId}/activity`,
+        { activity, childrens }
       )
       return data
     } catch (error) {
@@ -124,7 +158,7 @@ export default {
     }
   },
 
-  async getLessonPreview ({ commit }, lessonId) {
+  async getLessonPreview({ commit }, lessonId) {
     const lesson = await this.$axios.$get(`/lessons/${lessonId}`)
     lesson.previewMode = true
     lesson.videos = lesson.videos.map((video) => {
@@ -161,21 +195,19 @@ export default {
     return lesson
   },
 
-  async getLessonChildrenStatus (_, children) {
+  async getLessonChildrenStatus(_, children) {
     const data = await this.$axios.$get('/lessons/children/status', {
       params: { children }
     })
     return data
   },
 
-  async getLessonChildTimeline (_, childId) {
-    const data = await this.$axios.$get(
-      `/lessons/children/${childId}/timeline`
-    )
+  async getLessonChildTimeline(_, childId) {
+    const data = await this.$axios.$get(`/lessons/children/${childId}/timeline`)
     return data
   },
 
-  async getAdvanceLessonChildren ({ commit }, childId) {
+  async getAdvanceLessonChildren({ commit }, childId) {
     try {
       const data = await this.$axios.$get(
         `/lessons/children/${childId}/advance`
