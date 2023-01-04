@@ -1,6 +1,8 @@
 <template>
   <v-overlay
-    :class="`${loading ? 'align-center justify-center' : 'align-start justify-start'}`"
+    :class="
+      `${loading ? 'align-center justify-center' : 'align-start justify-start'}`
+    "
     :dark="false"
     :value="isOverlayVisible"
     z-index="2000"
@@ -40,7 +42,11 @@
           <v-container class="panel-container" fill-height fluid>
             <v-row
               class="fill-height flex-nowrap "
-              :justify="(currentLetter && currentLetter.name === 'Intro') ? 'center' : undefined"
+              :justify="
+                currentLetter && currentLetter.name === 'Intro'
+                  ? 'center'
+                  : undefined
+              "
               :style="{ 'max-width': `${rowMaxWidth}px` }"
             >
               <v-col
@@ -54,7 +60,15 @@
                 xl="4"
               >
                 <dashboard-panel
-                  v-bind="{ lesson, childId: studentId, customOverrides: { lessonId: lesson.id, childId: studentId }, noLinkMode }"
+                  v-bind="{
+                    lesson,
+                    childId: studentId,
+                    customOverrides: {
+                      lessonId: lesson.id,
+                      childId: studentId
+                    },
+                    noLinkMode
+                  }"
                   background-color="white"
                   display-mode
                 />
@@ -67,8 +81,16 @@
         <v-container class="panel-container" fill-height fluid>
           <div class="mobile-panel-container">
             <dashboard-panel
-              v-if="currentMobileLesson && typeof currentMobileLesson === 'object'"
-              v-bind="{ lesson: currentMobileLesson, customOverrides: { lessonId: currentMobileLesson.id, childId: studentId } }"
+              v-if="
+                currentMobileLesson && typeof currentMobileLesson === 'object'
+              "
+              v-bind="{
+                lesson: currentMobileLesson,
+                customOverrides: {
+                  lessonId: currentMobileLesson.id,
+                  childId: studentId
+                }
+              }"
               background-color="white"
               display-mode
             >
@@ -77,14 +99,14 @@
                 <v-row justify="space-between">
                   <v-col v-if="shouldShowPreviousDayButton" class="btnLesson">
                     <v-btn class="ml-3" icon @click.stop="previousDay">
-                      <img src="@/assets/svg/back-arrow.svg">
+                      <img src="@/assets/svg/back-arrow.svg" />
                     </v-btn>
                   </v-col>
                   <v-spacer />
                   <v-col v-if="shouldShowNextDayButton" class="btnLesson">
                     <p class="text-right mr-3">
                       <v-btn icon @click.stop="nextDay">
-                        <img src="@/assets/svg/next-arrow.svg">
+                        <img src="@/assets/svg/next-arrow.svg" />
                       </v-btn>
                     </p>
                   </v-col>
@@ -99,7 +121,12 @@
 </template>
 
 <script>
-import { defineComponent, useStore, useRoute, useRouter } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  useStore,
+  useRoute,
+  useRouter
+} from '@nuxtjs/composition-api'
 import DashboardPanel from '@/components/app/dashboard/DashboardPanel.vue'
 // import BlankDashboardPanel from '@/components/app/dashboard/BlankDashboardPanel.vue'
 import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
@@ -120,7 +147,11 @@ export default defineComponent({
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
-    const { isCurrentLessonUnavailableInPlan } = usePlanAccessHelpers({ store, route, router })
+    const { isCurrentLessonUnavailableInPlan } = usePlanAccessHelpers({
+      store,
+      route,
+      router
+    })
     return {
       isCurrentLessonUnavailableInPlan
     }
@@ -138,12 +169,16 @@ export default defineComponent({
   computed: {
     ...mapGetters({ currentChild: 'getCurrentChild' }),
 
-    noLinkMode () {
+    noLinkMode() {
       return this.$route.name === 'admin-progress-report'
     },
 
-    studentId () {
-      if (['app-student-cubby-course-progress', 'admin-progress-report'].includes(this.$route.name)) {
+    studentId() {
+      if (
+        ['app-student-cubby-course-progress', 'admin-progress-report'].includes(
+          this.$route.name
+        )
+      ) {
         return this.$route.query.id
       }
       if (this.currentChild && this.currentChild.length > 0) {
@@ -152,11 +187,11 @@ export default defineComponent({
       return null
     },
 
-    currentLetter () {
-      return this.letters.find(letter => letter.id === this.selectedLetter)
+    currentLetter() {
+      return this.letters.find((letter) => letter.id === this.selectedLetter)
     },
 
-    currentMobileLesson () {
+    currentMobileLesson() {
       const index = this.selectedDayIndex
       const total = 5
 
@@ -171,17 +206,19 @@ export default defineComponent({
       return null
     },
 
-    disabledLetters () {
-      return this.letters.filter((letter) => {
-        return !letter.enabled
-      }).map(({ id }) => id)
+    disabledLetters() {
+      return this.letters
+        .filter((letter) => {
+          return !letter.enabled
+        })
+        .map(({ id }) => id)
     },
 
-    shouldShowPreviousDayButton () {
+    shouldShowPreviousDayButton() {
       return this.selectedDayIndex > 0
     },
 
-    shouldShowNextDayButton () {
+    shouldShowNextDayButton() {
       return this.selectedDayIndex < 4
     },
 
@@ -195,7 +232,7 @@ export default defineComponent({
   },
 
   watch: {
-    '$vuetify.breakpoint.width' () {
+    '$vuetify.breakpoint.width'() {
       if (this.$refs.scrollbar && this.$vuetify.breakpoint.mdAndUp) {
         this.$nextTick(() => {
           this.$refs.scrollbar.update()
@@ -203,7 +240,7 @@ export default defineComponent({
       }
     },
 
-    '$vuetify.breakpoint.height' () {
+    '$vuetify.breakpoint.height'() {
       if (this.$refs.scrollbar && this.$vuetify.breakpoint.mdAndUp) {
         this.$nextTick(() => {
           this.$refs.scrollbar.update()
@@ -211,14 +248,18 @@ export default defineComponent({
       }
     },
 
-    lessons (val) {
-      if (val.length > 0 && this.$refs.scrollbar && this.$vuetify.breakpoint.mdAndUp) {
+    lessons(val) {
+      if (
+        val.length > 0 &&
+        this.$refs.scrollbar &&
+        this.$vuetify.breakpoint.mdAndUp
+      ) {
         this.$nextTick(() => {
           this.$refs.scrollbar.update()
         })
       }
     },
-    selectedLetter (val) {
+    selectedLetter(val) {
       if (val) {
         this.getAll()
       }
@@ -229,7 +270,7 @@ export default defineComponent({
       }
     }
   },
-  mounted () {
+  mounted() {
     this.$nuxt.$on('show-curriculum-progress', (curriculumTypeId) => {
       if (this.studentId) {
         if (this.selectedLetter !== curriculumTypeId) {
@@ -254,34 +295,39 @@ export default defineComponent({
   methods: {
     ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
 
-    close () {
+    close() {
       this.isOverlayVisible = false
       this.selectedDayIndex = 0
       document.querySelector('html').style.overflowY = 'auto'
     },
 
-    async fetchChildProgress () {
+    async fetchChildProgress() {
       const data = await this.getCourseProgressByChildId({
         id: this.studentId
       })
       this.letters = data
     },
 
-    getAll () {
+    getAll() {
       this.loading = true
       this.fetchChildProgress()
-      this.getCourseProgressByChildId({ id: this.studentId, curriculumTypeId: this.selectedLetter }).then((data) => {
+      this.getCourseProgressByChildId({
+        id: this.studentId,
+        curriculumTypeId: this.selectedLetter
+      }).then((data) => {
         this.lessons = data.map(({ lesson, doing }) => {
           return { ...lesson, doing }
         })
         this.loading = false
-        this.$nextTick(() => {
-          this.$refs.scrollbar.update()
-        })
+        if (this.$refs.scrollbar) {
+          this.$nextTick(() => {
+            this.$refs.scrollbar.update()
+          })
+        }
       })
     },
 
-    nextDay () {
+    nextDay() {
       if (this.selectedDayIndex <= 3) {
         this.selectedDayIndex += 1
       } else {
@@ -289,7 +335,7 @@ export default defineComponent({
       }
     },
 
-    previousDay () {
+    previousDay() {
       if (this.selectedDayIndex <= 0) {
         this.selectedDayIndex = 3
       } else {
@@ -379,7 +425,7 @@ export default defineComponent({
   }
 
   .ps__rail-x {
-    background-color: #F2EDED;
+    background-color: #f2eded;
     transition: none;
     margin-left: 15%;
     margin-right: 15%;
@@ -391,7 +437,7 @@ export default defineComponent({
   .ps--active-x > .ps__rail-x,
   .ps--active-y > .ps__rail-y {
     display: block;
-    background-color: #F2EDED;
+    background-color: #f2eded;
   }
   .ps:hover > .ps__rail-x,
   .ps:hover > .ps__rail-y,
@@ -408,7 +454,7 @@ export default defineComponent({
   .ps .ps__rail-y:focus,
   .ps .ps__rail-x.ps--clicking,
   .ps .ps__rail-y.ps--clicking {
-    background-color: #F2EDED;
+    background-color: #f2eded;
     opacity: 1;
   }
 
