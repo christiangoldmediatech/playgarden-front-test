@@ -236,12 +236,10 @@ export default defineComponent({
         }
       })
 
-      if (this.hasPlayAndLearnPlan) {
+      if (this.hasPlayAndLearnPlan || this.isPlayAndLearn) {
         return letters.filter(
           (item) => item.name !== 'Intro' && item.name !== 'Nature'
         )
-      } else if (this.isPlayAndLearn) {
-        return letters.filter((item) => item.name !== 'Intro')
       } else {
         return letters
       }
