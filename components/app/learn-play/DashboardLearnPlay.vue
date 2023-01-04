@@ -178,7 +178,12 @@ export default defineComponent({
     }
 
     const loadPlayAndLearnByCurriculumTypeId = async (curriculumTypeId: number) => {
-      await learnPlayV2.getPlayAndLearnByCurriuclumTypeId(curriculumTypeId)
+      await learnPlayV2.getInfoByCurriculumTypeId(curriculumTypeId)
+      await learnPlayV2.getVideosByCurriculumTypeId(curriculumTypeId)
+      await learnPlayV2.getSongsByCurriculumTypeId(curriculumTypeId)
+      await learnPlayV2.getFilesByCurriculumTypeId(curriculumTypeId)
+      await learnPlayV2.getWorksheetsByCurriculumTypeId(curriculumTypeId)
+      await learnPlayV2.getBooksByCurriculumTypeId(curriculumTypeId)
       checkIfPlayAndLearnHasContent(learnPlayV2.learnPlayData.value)
       $nuxt.$emit('send-learn-play', learnPlayV2.learnPlayData.value)
       refreshMenuSection()

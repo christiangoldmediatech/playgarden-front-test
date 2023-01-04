@@ -29,5 +29,89 @@ export default {
           reject(error)
         })
     )
+  },
+  getPlayAndLearnInfoByCurriculumTypeId({ commit }, params) {
+    return new Promise((resolve, reject) =>
+      this.$axios
+        .$get(`/play-and-learn/curriculum-type/${params.curriculumTypeId}/info`)
+        .then(resolve)
+        .catch((error) => {
+          snotifyError(commit, {
+            body: 'Sorry! There was an error while getting learn-play.'
+          })
+          // TO DO async away
+          reject(error)
+        })
+    )
+  },
+  getPlayAndLearnVideosByCurriculumTypeId({ commit }, params) {
+    return new Promise((resolve, reject) =>
+      this.$axios
+        .$get(`/play-and-learn/curriculum-type/${params.curriculumTypeId}/videos`)
+        .then(resolve)
+        .catch((error) => {
+          snotifyError(commit, {
+            body: 'Sorry! There was an error while getting learn-play videos.'
+          })
+          // TO DO async away
+          reject(error)
+        })
+    )
+  },
+  getPlayAndLearnSongsByCurriculumTypeId({ commit }, params) {
+    return new Promise((resolve, reject) =>
+      this.$axios
+        .$get(`/play-and-learn/curriculum-type/${params.curriculumTypeId}/songs`)
+        .then(resolve)
+        .catch((error) => {
+          snotifyError(commit, {
+            body: 'Sorry! There was an error while getting learn-play songs.'
+          })
+          // TO DO async away
+          reject(error)
+        })
+    )
+  },
+  getPlayAndLearnFilesByCurriculumTypeId({ commit }, params) {
+    return new Promise((resolve, reject) =>
+      this.$axios
+        .$get(`/play-and-learn/curriculum-type/${params.curriculumTypeId}/files`)
+        .then(resolve)
+        .catch((error) => {
+          snotifyError(commit, {
+            body: 'Sorry! There was an error while getting learn-play files.'
+          })
+          // TO DO async away
+          reject(error)
+        })
+    )
+  },
+  getPlayAndLearnWorksheetsByCurriculumTypeId({ commit }, params) {
+    return new Promise((resolve, reject) =>
+      this.$axios
+        .$get(`/play-and-learn/curriculum-type/${params.curriculumTypeId}/worksheets`)
+        .then(resolve)
+        .catch((error) => {
+          snotifyError(commit, {
+            body: 'Sorry! There was an error while getting learn-play worksheets.'
+          })
+          // TO DO async away
+          reject(error)
+        })
+    )
+  },
+  getPlayAndLearnBooksByCurriculumTypeId({ commit }, params) {
+    return new Promise((resolve, reject) =>
+      this.$axios
+        .$get(`/play-and-learn/curriculum-type/${params.curriculumTypeId}/books`)
+        .then(resolve)
+        .catch((error) => {
+          snotifyError(commit, {
+            body: 'Sorry! There was an error while getting learn-play books.'
+          })
+          // TO DO async away
+          reject(error)
+        })
+    )
   }
 }

@@ -10,13 +10,13 @@
 
         <div id="learn-play-player" class="mb-5 learn-play-video">
           <pg-video-player
-            v-if="learnPlayData && learnPlayData.videos.length > 0"
+            v-if="videos.length > 0"
             class="library-inline-player"
             :control-config="{ favorite: false }"
             inline
             auto-track-change
             @ready="
-              onPlayerReady({ player: $event, videos: learnPlayData.videos })
+              onPlayerReady({ player: $event, videos: videos })
             "
             @on-play="saveStartProgress"
             @on-ended="saveEndProgress"
@@ -62,8 +62,8 @@
           <span class="title-dashboard">More like this</span>
         </div>
         <videos-scroll
-          v-if="learnPlayData && learnPlayData.videos.length > 0"
-          :learn-play="learnPlayData"
+          v-if="videos.length > 0"
+          :learn-play-videos="videos"
           :height="playerHeight"
           @change-video-track="changeVideoTrack"
         />
@@ -80,7 +80,7 @@
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import VideosScroll from '@/components/app/learn-play/VideosScroll.vue'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
-import { defineComponent, onMounted, onUnmounted, ref, useStore, watch } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, onUnmounted, ref, useStore } from '@nuxtjs/composition-api'
 import {
   useLearnPlayV2,
   useCommonPlayerFunctions,
@@ -189,7 +189,7 @@ export default defineComponent({
           started: true,
           completed: finish
         }
-        const { id } = learnPlayV2.learnPlayData.value
+        const { id } = learnPlayV2.playAndLearnInfo.value
         const data = {
           videos: [videoProgress]
         }
@@ -220,7 +220,7 @@ export default defineComponent({
     })
 
     return {
-      learnPlayData: learnPlayV2.learnPlayData,
+      videos: learnPlayV2.playAndLearnVideos,
       ...commonPlayerFunctions,
       title,
       author,
