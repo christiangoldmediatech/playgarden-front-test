@@ -18,8 +18,15 @@ export default {
     commit('ENABLE_AXIOS_GLOBAL_ERROR_HANDLER')
   },
 
-  setChild ({ commit }, { value, oldExp = null, save = false }) {
-    commit('SET_CURRENT_CHILD', value)
+  setChild({ commit }, { value, oldExp = null, save = false }) {
+    if (value[0].everyone) {
+      const valueEveryone = [
+        { ...value[0], id: value[0].id, allIds: value[0].id }
+      ]
+      commit('SET_CURRENT_CHILD', valueEveryone)
+    } else {
+      commit('SET_CURRENT_CHILD', value)
+    }
 
     const moment = new Date()
     moment.setHours(23)
@@ -38,11 +45,23 @@ export default {
         data = value.id
       }
 
+      /**
+        * If the selected child is "everyone", the id will be an array. If so, let's add
+        *  a flag to the localStorage `selectedChild` key.
+      */
+
+      let everyone = false
+      if (Array.isArray(data) && data[0].length > 0) {
+        data = data[0]
+        everyone = true
+      }
+
       window.localStorage.setItem(
         'selectedChild',
         JSON.stringify({
           value: data,
-          expires
+          expires,
+          everyone
         })
       )
     }
@@ -55,19 +74,28 @@ export default {
         data = value.id
       }
 
+      let everyone = false
+      if (Array.isArray(data) && data[0].length > 0) {
+        data = data[0]
+        everyone = true
+      }
+
       this.$cookies.remove('selectedChild')
       this.$cookies.add({
         _key: 'selectedChild',
-        _data: encodeURIComponent(JSON.stringify({
-          value: data,
-          expires
-        })),
+        _data: encodeURIComponent(
+          JSON.stringify({
+            value: data,
+            expires,
+            everyone
+          })
+        ),
         _expireDate: new Date(expires).toISOString()
       })
     }
   },
 
-  resetCurrentChild ({ commit }) {
+  resetCurrentChild({ commit }) {
     commit('SET_CURRENT_CHILD', null)
     commit('SET_CURRENT_CHILD_EXPIRES', null)
 
@@ -80,12 +108,14 @@ export default {
     }
   },
 
-  async initApp ({ dispatch }, { $route, $router }) {
+  async initApp({ dispatch }, { $route, $router }) {
     const isUnauthenticatedRoute = !!unauthenticatedRoutes[$route.name]
     let isLoggedIn = await dispatch('auth/checkAuth', undefined, { root: true })
 
     if (!isLoggedIn) {
-      await dispatch('auth/restoreAuthFromSessionStorage', undefined, { root: true })
+      await dispatch('auth/restoreAuthFromSessionStorage', undefined, {
+        root: true
+      })
     }
 
     isLoggedIn = await dispatch('auth/checkAuth', undefined, { root: true })
@@ -104,9 +134,7 @@ export default {
     let childExpires = getters.getCurrentChildExpires
 
     const shouldRedirectToPickChild =
-      !parentSubscriptionWhitelistedRoutes[$route.name] &&
-      !child &&
-      isAppRoute
+      !parentSubscriptionWhitelistedRoutes[$route.name] && !child && isAppRoute
 
     if (!shouldRedirectToPickChild) {
       return false
@@ -117,7 +145,11 @@ export default {
         // if array, then we get everyone, else we get just the child
         let result
         if (storedData && storedData.value && storedData.value.length === 1) {
-          result = [await dispatch('children/getById', storedData.value[0], { root: true })]
+          result = [
+            await dispatch('children/getById', storedData.value[0], {
+              root: true
+            })
+          ]
         } else {
           result = await dispatch('children/get', undefined, { root: true })
         }
@@ -126,10 +158,14 @@ export default {
           return
         }
 
-        await dispatch('setChild', {
-          value: result,
-          oldExp: storedData.expires
-        }, { root: true })
+        await dispatch(
+          'setChild',
+          {
+            value: result,
+            oldExp: storedData.expires
+          },
+          { root: true }
+        )
 
         // update local value
         child = getters.getCurrentChild
@@ -148,7 +184,8 @@ export default {
         cookiesText = ''
       }
 
-      const cookie = $cookies.getAll(cookiesText)
+      const cookie = $cookies
+        .getAll(cookiesText)
         .find(record => record.name === 'selectedChild')
 
       if (cookie) {
@@ -179,9 +216,7 @@ export default {
         name: 'app-pick-child',
         query: {
           _time: now,
-          redirect: encodeURIComponent(
-            $route.fullPath
-          )
+          redirect: encodeURIComponent($route.fullPath)
         }
       })
       return true

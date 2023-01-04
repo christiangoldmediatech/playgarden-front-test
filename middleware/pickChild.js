@@ -1,16 +1,14 @@
 import { hasLocalStorage } from '@/utils/window'
 import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscriptionWhitelistedRoutes.json'
 
-export default async function ({ redirect, route, store, req, app }) {
+export default async function({ redirect, route, store, req, app }) {
   const isAppRoute = /^app-.*$/.test(route.name)
 
   let child = store.getters.getCurrentChild
   let childExpires = store.getters.getCurrentChildExpires
 
   const shouldRedirectToPickChild =
-    !parentSubscriptionWhitelistedRoutes[route.name] &&
-    !child &&
-    isAppRoute
+    !parentSubscriptionWhitelistedRoutes[route.name] && !child && isAppRoute
 
   if (!shouldRedirectToPickChild) {
     return
@@ -52,7 +50,8 @@ export default async function ({ redirect, route, store, req, app }) {
       cookiesText = ''
     }
 
-    const cookie = app.$cookies.getAll(cookiesText)
+    const cookie = app.$cookies
+      .getAll(cookiesText)
       .find(record => record.name === 'selectedChild')
 
     if (cookie) {
@@ -83,9 +82,7 @@ export default async function ({ redirect, route, store, req, app }) {
       name: 'app-pick-child',
       query: {
         _time: now,
-        redirect: encodeURIComponent(
-          route.fullPath
-        )
+        redirect: encodeURIComponent(route.fullPath)
       }
     })
   }

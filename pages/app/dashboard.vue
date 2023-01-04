@@ -32,6 +32,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({ children: 'getCurrentChild' }),
     ...mapGetters({ currentChild: 'getCurrentChild' }),
     ...mapGetters('auth', {
       playdateInvitationToken: 'getPlaydateInvitationToken',
@@ -88,7 +89,7 @@ export default {
         this.changeChild(this.overrides.childId, false)
       }
     } else {
-      await this.getAllChildren()
+      await this.getAllChildren(this.$route)
     }
     // Load current lesson
     await this.handleLesson(true)
@@ -118,6 +119,8 @@ export default {
     this.$nuxt.$off('dashboard-panel-update')
     this.$nuxt.$off('dashboard-panel-update-redirect')
     this.$appEventBus.$off(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_CLICKED)
+
+    this.resetChildren()
   },
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),
@@ -143,7 +146,12 @@ export default {
       return undefined
     },
     changeChild(newId, redirect = true) {
-      const child = this.allChildren.find(({ id }) => id === parseInt(newId))
+      let child
+      if (!Array.isArray(newId)) {
+        child = this.allChildren.find(({ id }) => id === parseInt(newId))
+      } else {
+        child = this.allChildren.find(item => item.everyone === true)
+      }
       this.setChild({ value: [child], save: true })
       if (redirect) {
         this.handleLesson(true).then(() => {
@@ -160,6 +168,10 @@ export default {
           this.childrenIds === parseInt(this.overrides.childId)
         ) {
           await this.getCurrentLessonByChildrenId(this.overrides)
+        } else if (this.children[0].everyone) {
+          await this.getCurrentLesson({
+            childrenIds: this.children[0].allIds
+          })
         } else {
           await this.getCurrentLesson({
             childrenIds: this.childrenIds
@@ -224,6 +236,11 @@ export default {
             query: { ...this.overrides }
           })
         }
+      }
+    },
+    resetChildren() {
+      if (Array.isArray(this.selectedChild)) {
+        this.changeChild(this.selectedChild[0], false)
       }
     }
   }

@@ -24,6 +24,7 @@
               bottom
               mini-variant-width="80"
               width="400"
+              class="!pg-z-50"
             >
               <v-row>
                 <v-col
@@ -165,9 +166,15 @@
             v-for="(session, index) in sessionsWithHolidays"
             :key="index"
             class="today-cards-wrapper"
-            :style="{ 'width': `calc(300px * ${session.sessions.length})` }"
+            :style="{ width: `calc(300px * ${session.sessions.length})` }"
           >
-            <holiday-card v-if="session.holiday" :holiday="session.holiday" holiday-type="day" height="100%" top-position="0" />
+            <holiday-card
+              v-if="session.holiday"
+              :holiday="session.holiday"
+              holiday-type="day"
+              height="100%"
+              top-position="0"
+            />
             <today-card
               v-for="entry in session.sessions"
               :key="`lclass-entry-${entry.id}`"
@@ -462,14 +469,21 @@ export default {
           }
 
           const sessionDate = dayjs(session.dateStart)
-          return group.holiday.dateStart.get('date') <= sessionDate.get('date') &&
-           sessionDate.get('date') <= group.holiday.dateEnd.get('date')
+          return (
+            group.holiday.dateStart.get('date') <= sessionDate.get('date') &&
+            sessionDate.get('date') <= group.holiday.dateEnd.get('date')
+          )
         })
 
         if (matchingHoliday) {
           matchingHoliday.sessions.push(session)
         } else {
-          groups.push({ holiday: null, dateStart: session.dateStart, dateEnd: session.dateEnd, sessions: [{ ...session }] })
+          groups.push({
+            holiday: null,
+            dateStart: session.dateStart,
+            dateEnd: session.dateEnd,
+            sessions: [{ ...session }]
+          })
         }
       }
 
