@@ -20,7 +20,7 @@ import {
   PropType
 } from '@nuxtjs/composition-api'
 import { useIconScale } from '@/composables'
-import { PlayAndLearn, Video } from '@/models'
+import { PlayAndLearn, PlayAndLearnVideo, Video } from '@/models'
 import VideoScrollItem from './VideoScrollItem.vue'
 
 export default defineComponent({
@@ -31,8 +31,8 @@ export default defineComponent({
   },
 
   props: {
-    learnPlay: {
-      type: Object as PropType<PlayAndLearn>,
+    learnPlayVideos: {
+      type: Array as PropType<PlayAndLearnVideo[]>,
       required: true,
       default: () => ({})
     },
@@ -46,8 +46,8 @@ export default defineComponent({
     const loading = ref(false)
 
     const videosLearnPlay = computed(() => {
-      return props.learnPlay && props.learnPlay.videos.length > 0
-        ? props.learnPlay.videos
+      return props.learnPlayVideos.length > 0
+        ? props.learnPlayVideos
         : []
     })
 
