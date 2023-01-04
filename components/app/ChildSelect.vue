@@ -10,8 +10,12 @@
   >
     <template v-slot:selection="{ item }">
       <v-list-item class="pa-0 w-100">
-        <v-list-item-avatar v-if="!showOnlySelectedName">
+        <v-list-item-avatar v-if="!item.everyone && !showOnlySelectedName">
           <v-img :src="item.backpack.image" />
+        </v-list-item-avatar>
+
+        <v-list-item-avatar v-else>
+          <v-img :src="require('~/assets/svg/everyone.svg')" />
         </v-list-item-avatar>
 
         <v-list-item-content>
@@ -35,8 +39,12 @@
           :value="attrs.inputValue"
         />
 
-        <v-list-item-avatar>
+        <v-list-item-avatar v-if="!item.everyone">
           <v-img :src="item.backpack.image" />
+        </v-list-item-avatar>
+
+        <v-list-item-avatar v-else>
+          <v-img :src="require('~/assets/svg/everyone.svg')" />
         </v-list-item-avatar>
 
         <v-list-item-content>
@@ -107,21 +115,21 @@ export default {
 
     ...mapGetters('children', { children: 'rows' }),
 
-    internalValue () {
+    internalValue() {
       return this.multiple && !Array.isArray(this.value)
         ? [this.value]
         : this.value
     },
 
-    multiple () {
+    multiple() {
       return (
         'multiple' in this.$attrs &&
         (this.$attrs.multiple === '' || this.$attrs.multiple)
       )
     },
 
-    childrenList () {
-      return this.children.map((child) => {
+    childrenList() {
+      const childrens = this.children.map((child) => {
         return {
           value: child.id,
           text: child.firstName,
@@ -129,14 +137,35 @@ export default {
           ...child
         }
       })
+
+      /* if (!(this.managementButton && !this.isUserCaregiver)) {
+        const everyone = childrens.indexOf(
+          childrens.filter(x => x.everyone === true)
+        )
+
+        if (everyone) {
+          childrens.splice(everyone)
+        }
+      } */
+
+      return childrens
     },
 
-    childrenIdWithPlaydates () {
-      return this.playdates
-        // filter children that have playdates
-        .filter(playdate => playdate && Array.isArray(playdate.playdates) && playdate.playdates.length > 0)
-        // map those children id
-        .map(playdate => playdate && playdate.children ? playdate.children.id : undefined)
+    childrenIdWithPlaydates() {
+      return (
+        this.playdates
+          // filter children that have playdates
+          .filter(
+            playdate =>
+              playdate &&
+              Array.isArray(playdate.playdates) &&
+              playdate.playdates.length > 0
+          )
+          // map those children id
+          .map(playdate =>
+            playdate && playdate.children ? playdate.children.id : undefined
+          )
+      )
     }
   },
 
@@ -145,7 +174,7 @@ export default {
       return
     }
 
-    this.getChildren()
+    this.getChildren(this.$route)
   },
 
   methods: {
