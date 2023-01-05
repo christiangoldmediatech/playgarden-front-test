@@ -126,6 +126,7 @@
             </div>
 
             <v-btn
+              v-if="entry.type ==='Playdate'"
               :disabled="!childId || entry.cancelled"
               :loading="isLoadingSpotAction"
               class="!pg-shadow-button !pg-text-[18px] text-none white--text pg-mb-5"
@@ -240,8 +241,6 @@ export default {
     const handleReserveSpot = async () => {
       try {
         isLoadingSpotAction.value = true
-        console.log('playdate--', playdate.value)
-
         await reserveASpot({ playdateId: playdate.value.id, childId: childId.value, date: playdate.value.dateStart })
 
         childId.value = null
