@@ -120,6 +120,11 @@ export default {
       }
     },
 
+    childId: {
+      type: Number,
+      default: undefined
+    },
+
     hashtags: {
       type: String,
       default: '' // 'pg,classes,online'
@@ -249,15 +254,23 @@ export default {
   async created () {
     if (this.entityAutoResolve) {
       try {
+        const payload = this.childId
+          ? {
+              entityId: this.entityId,
+              entityType: this.entityType,
+              childId: this.childId
+            }
+          : {
+              entityId: this.entityId,
+              entityType: this.entityType
+            }
+
         const {
           link,
           imageUrl,
           text,
           description
-        } = await this.createSocialSharing({
-          entityId: this.entityId,
-          entityType: this.entityType
-        })
+        } = await this.createSocialSharing(payload)
 
         this.apiData = { link, imageUrl, text, description }
       } catch (e) {

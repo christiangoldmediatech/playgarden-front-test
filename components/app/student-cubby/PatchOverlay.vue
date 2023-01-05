@@ -31,7 +31,8 @@
           class="mt-6"
           :description="patch.description"
           entity-auto-resolve
-          :entity-id="patch.childrenPatchId"
+          :child-id="childId"
+          :entity-id="patch.id"
           entity-type="PATCH"
           :mini-variant="!$vuetify.breakpoint.xs"
           :url="patch.image"
@@ -57,6 +58,14 @@ export default {
     return {
       patch: null,
       overlay: false
+    }
+  },
+
+  computed: {
+    childId() {
+      const id = this.$route.query.id
+
+      return Number(id)
     }
   },
 
