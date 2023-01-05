@@ -434,6 +434,10 @@ export default {
             this.addressDraft.state = state.long_name
           }
 
+          if (!city) {
+            this.addressDraft.city = 'Not found'
+          }
+
           const country = addressComponents.find(({ types }) =>
             types.includes('country')
           )
