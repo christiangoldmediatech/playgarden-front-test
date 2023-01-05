@@ -240,8 +240,9 @@ export default {
     const handleReserveSpot = async () => {
       try {
         isLoadingSpotAction.value = true
+        console.log('playdate--', playdate.value)
 
-        await reserveASpot({ playdateId: playdate.value.id, childId: childId.value, date: playdate.value.date })
+        await reserveASpot({ playdateId: playdate.value.id, childId: childId.value, date: playdate.value.dateStart })
 
         childId.value = null
         snotify.success('Spot reserved!')
