@@ -405,7 +405,7 @@ export default defineComponent({
       try {
         isLoadingSpotAction.value = true
 
-        await cancelSpotReservation({ playdateId: props.playdate.id, childId: child.value.id, date: props.playdate.date })
+        await cancelSpotReservation({ playdateId: props.playdate.id, childId: child.value.id, date: props.playdate.dateStart })
 
         childId.value = null
         snotify.success('Spot cancelled!')
