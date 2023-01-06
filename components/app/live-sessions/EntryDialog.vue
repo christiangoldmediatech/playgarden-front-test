@@ -126,7 +126,7 @@
             </div>
 
             <v-btn
-              v-if="entry.type ==='Playdate'"
+              v-if="entry.type ==='Playdate' && !hasSpotInThisPlaydate"
               :disabled="!childId || entry.cancelled"
               :loading="isLoadingSpotAction"
               class="!pg-shadow-button !pg-text-[18px] text-none white--text pg-mb-5"
@@ -138,6 +138,21 @@
               @click="handleReserveSpot"
             >
               Reserve Spot
+            </v-btn>
+
+            <v-btn
+              v-if="hasSpotInThisPlaydate"
+              :loading="isLoadingSpotAction"
+              class="!pg-shadow-button !pg-text-[18px] red lighten-4 grey--text text--darken-2 text-transform-none pg-mb-5"
+              block
+              large
+              data-test-id="card-playdate-cancel-button"
+              @click="handleCancelSpot"
+            >
+              <v-icon class="red--text">
+                mdi-delete
+              </v-icon>
+              Cancel Spot
             </v-btn>
 
             <div v-if="!past" class="pb-3 mb-3">
@@ -199,7 +214,7 @@ export default {
   setup(_, { emit }) {
     const snotify = useSnotifyHelper()
     const store = useStore()
-    const { reserveASpot } = usePlaydates({ store })
+    const { reserveASpot, cancelSpotReservation } = usePlaydates({ store })
     const { children } = useChild({ store })
 
     const childId = ref(null)
@@ -254,6 +269,21 @@ export default {
       }
     }
 
+    const handleCancelSpot = async () => {
+      try {
+        isLoadingSpotAction.value = true
+        await cancelSpotReservation({ playdateId: playdate.value.id, childId: child.value.id, date: playdate.value.dateStart })
+        childId.value = null
+        snotify.success('Spot cancelled!')
+        dialog.value = false
+        emit('refresh')
+      } catch (error) {
+        snotify.error('Sorry! Spot could not be cancelled')
+      } finally {
+        isLoadingSpotAction.value = false
+      }
+    }
+
     return {
       dialog,
       entry,
@@ -262,7 +292,8 @@ export default {
       childId,
       isLoadingSpotAction,
       child,
-      handleReserveSpot
+      handleReserveSpot,
+      handleCancelSpot
     }
   },
 
