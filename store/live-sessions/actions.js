@@ -123,7 +123,9 @@ export default {
 
   async fetchHolidays ({ commit }, { sunday, saturday }) {
     try {
-      const response = await this.$axios.$get('/holidays', { params: { dateIntervalStart: sunday, dateIntervalEnd: saturday } })
+      const formattedSunday = sunday.toISOString().split('T')[0]
+      const formattedSaturday = saturday.toISOString().split('T')[0]
+      const response = await this.$axios.$get('/holidays', { params: { dateIntervalStart: formattedSunday, dateIntervalEnd: formattedSaturday } })
       commit('SET_HOLIDAYS', response)
     } catch (error) {
       return Promise.reject(error)
