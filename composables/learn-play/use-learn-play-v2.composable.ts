@@ -91,7 +91,6 @@ export const useLearnPlayV2 = (params: {
   }
 
   const getBooksByCurriculumTypeId = async (curriculumTypeId: number) => {
-    console.log('aqui cargando')
     const params = { curriculumTypeId }
     playAndLearnBooks.value = []
     playAndLearnBooks.value = await store.dispatch(
