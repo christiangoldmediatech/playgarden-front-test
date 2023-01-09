@@ -1,5 +1,5 @@
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
-import { ref, computed } from '@nuxtjs/composition-api'
+import { ref, computed, watch } from '@nuxtjs/composition-api'
 import { Store } from 'vuex/types'
 import { axios } from '@/utils'
 import { PlayAndLearn, PlayAndLearnVideo, Video, MusicLibrary, PlayAndLearnFile, OfflineWorksheet, Book } from '@/models'
@@ -18,6 +18,7 @@ export const useLearnPlayV2 = (params: {
   previewMode?: boolean
 }) => {
   const { store } = params
+  const newVideo = ref(null)
 
   async function getFirstLearnPlay() {
     if (params.previewMode) {
@@ -99,6 +100,10 @@ export const useLearnPlayV2 = (params: {
     )
   }
 
+  watch(playAndLearnBooks, () => {
+    newVideo.value = null
+  })
+
   function buildPlayVideoList(videos: Video[]): MediaObject[] {
     return videos.map((video) => {
       return {
@@ -123,8 +128,6 @@ export const useLearnPlayV2 = (params: {
       data
     )
   }
-
-  const newVideo = ref(null)
 
   // Computed values
   const computedProps = {
