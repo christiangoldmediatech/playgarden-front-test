@@ -10,9 +10,10 @@
       {{ getBook.description }}
     </p>
 
-    <template v-if="currentBookVideo.videoUrl && currentBookVideo.videoUrl.HLS">
+    <template v-if="getRelatedBooks.length > 0">
       <div class="learn-play-video mb-4">
         <pg-video-player
+          v-if="currentBookVideo.videoUrl && currentBookVideo.videoUrl.HLS"
           :control-config="{ favorite: false }"
           inline
           @ready="onPlayerReady({ player: $event, video: currentBookVideo })"
