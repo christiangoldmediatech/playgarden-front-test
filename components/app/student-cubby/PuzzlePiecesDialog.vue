@@ -50,7 +50,8 @@ export default {
   data: () => {
     return {
       localValue: false,
-      localToShow: null
+      localToShow: null,
+      actualShow: null
     }
   },
 
@@ -60,15 +61,6 @@ export default {
         return true
       }
       return this.value
-    },
-
-    actualShow () {
-      if (this.localToShow) {
-        return this.localToShow
-      } else if (this.toShow) {
-        return this.toShow
-      }
-      return null
     }
   },
 
@@ -76,6 +68,12 @@ export default {
     value (val) {
       if (!val) {
         this.close()
+      }
+    },
+
+    toShow(val) {
+      if (val) {
+        this.actualShow = this.toShow
       }
     }
   },
@@ -85,6 +83,8 @@ export default {
       this.localToShow = toShow
       this.localValue = true
     })
+
+    this.setActualShow()
   },
 
   methods: {
@@ -92,6 +92,14 @@ export default {
       this.$emit('input', false)
       this.localValue = false
       this.localToShow = null
+    },
+
+    setActualShow() {
+      if (this.localToShow) {
+        this.actualShow = this.localToShow
+      } else if (this.toShow) {
+        this.actualShow = this.toShow
+      }
     }
   }
 }
