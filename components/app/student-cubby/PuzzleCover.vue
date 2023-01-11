@@ -260,6 +260,12 @@ export default {
 
     width () {
       this.buildPaths()
+    },
+
+    backgroundImage(val) {
+      if (val) {
+        this.dataUrl = val
+      }
     }
   },
 
