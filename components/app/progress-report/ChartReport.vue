@@ -41,7 +41,7 @@ export default {
         return '14px'
       }
 
-      return (this.$vuetify.breakpoint.smAndDown) ? '25px' : '40px'
+      return (this.$vuetify.breakpoint.smAndDown) ? '25px' : '30px'
     },
     getAxisLabelFontSize () {
       return (this.$vuetify.breakpoint.smAndDown) ? '14px' : '18px'
