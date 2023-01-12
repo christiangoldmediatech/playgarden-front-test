@@ -289,7 +289,7 @@ export default {
   },
   env: {
     apiBaseUrl:
-      process.env.API_BASE_URL || 'https://apidev.playgardenonline.com',
+      process.env.API_BASE_URL || 'https://apistg.playgardenonline.com',
     frontendUrl:
       process.env.FRONTEND_URL || 'https://dev.playgardenonline.com/',
     testEnv: process.env.TEST_ENV || 'LOCAL',

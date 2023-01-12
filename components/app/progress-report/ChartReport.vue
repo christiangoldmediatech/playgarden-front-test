@@ -61,13 +61,16 @@ export default {
       let physical = this.report.dataSerie.find((data) => data.nameCardType === 'Physical')
       let socialAndEmotional = this.report.dataSerie.find((data) => data.nameCardType === 'Social and Emotional')
 
+      // console.log('languageAndLiteracy--', languageAndLiteracy)
+
       // In case the percentage is 0, we set the value to 1 so a little bar is rendered
-      cognitive = { ...cognitive, value: cognitive.value ? cognitive.value : 1, itemStyle: { color: '#FA8792', borderRadius: '40%' } }
-      languageAndLiteracy = { ...languageAndLiteracy, value: languageAndLiteracy.value ? languageAndLiteracy.value : 1, itemStyle: { color: '#78C383', borderRadius: '40%' } }
-      physical = { ...physical, value: physical.value ? physical.value : 1, itemStyle: { color: '#69BEFF', borderRadius: '40%' } }
-      socialAndEmotional = { ...socialAndEmotional, value: socialAndEmotional.value ? socialAndEmotional.value : 1, itemStyle: { color: '#FFAF4B', borderRadius: '40%' } }
+      cognitive = { ...cognitive, value: (cognitive && cognitive.value) ? cognitive.value : 1, itemStyle: { color: '#FA8792', borderRadius: '40%' } }
+      languageAndLiteracy = { ...languageAndLiteracy, value: (languageAndLiteracy && languageAndLiteracy.value) ? languageAndLiteracy.value : 1, itemStyle: { color: '#78C383', borderRadius: '40%' } }
+      physical = { ...physical, value: (physical && physical.value) ? physical.value : 1, itemStyle: { color: '#69BEFF', borderRadius: '40%' } }
+      socialAndEmotional = { ...socialAndEmotional, value: (socialAndEmotional && socialAndEmotional.value) ? socialAndEmotional.value : 1, itemStyle: { color: '#FFAF4B', borderRadius: '40%' } }
 
       const dataSeriesPadding = { value: 0, nameCardType: '' }
+      console.log('languageAndLiteracy--', languageAndLiteracy)
 
       return [dataSeriesPadding, cognitive, languageAndLiteracy, physical, socialAndEmotional]
     },
