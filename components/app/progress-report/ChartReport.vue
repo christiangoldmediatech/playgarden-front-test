@@ -1,6 +1,6 @@
 <template>
   <div>
-    <report-chart ref="progress-chart" :graph="chartOptions" />
+    <report-chart ref="progress-chart" :graph="chartOptions" @click="handleClick" />
   </div>
 </template>
 
@@ -27,17 +27,48 @@ export default {
     getCategories () {
       return (this.report.categories) ? this.report.categories : []
     },
+    getCategoriesFormatted () {
+      return ['', ...this.getCategories]
+    },
     getRotate () {
       return (this.$vuetify.breakpoint.xs) ? 30 : 0
     },
     getRotateYaxios () {
       return (this.$vuetify.breakpoint.xs) ? 45 : 0
     },
+    getValueFontSize () {
+      if (this.$vuetify.breakpoint.xs) {
+        return '14px'
+      }
+
+      return (this.$vuetify.breakpoint.smAndDown) ? '25px' : '40px'
+    },
+    getAxisLabelFontSize () {
+      return (this.$vuetify.breakpoint.smAndDown) ? '14px' : '18px'
+    },
+    getLabelFontSize () {
+      return (this.$vuetify.breakpoint.smAndDown) ? '14px' : '18px'
+    },
     getFontSize () {
-      return (this.$vuetify.breakpoint.xs) ? '22px' : '31px'
+      return (this.$vuetify.breakpoint.mdAndDown) ? '18px' : '22px'
     },
     getIconSize () {
       return (this.$vuetify.breakpoint.xs) ? '45' : '60'
+    },
+    getDataSeriesWithStyles() {
+      let cognitive = this.report.dataSerie.find((data) => data.nameCardType === 'Cognitive')
+      let languageAndLiteracy = this.report.dataSerie.find((data) => data.nameCardType === 'Language & Literacy')
+      let physical = this.report.dataSerie.find((data) => data.nameCardType === 'Physical')
+      let socialAndEmotional = this.report.dataSerie.find((data) => data.nameCardType === 'Social and Emotional')
+
+      cognitive = { ...cognitive, itemStyle: { color: '#FA8792', borderRadius: '40%' } }
+      languageAndLiteracy = { ...languageAndLiteracy, itemStyle: { color: '#78C383', borderRadius: '40%' } }
+      physical = { ...physical, itemStyle: { color: '#69BEFF', borderRadius: '40%' } }
+      socialAndEmotional = { ...socialAndEmotional, itemStyle: { color: '#FFAF4B', borderRadius: '40%' } }
+
+      const dataSeriesPadding = { value: 0, nameCardType: '' }
+
+      return [dataSeriesPadding, cognitive, languageAndLiteracy, physical, socialAndEmotional]
     },
     chartOptions () {
       return {
@@ -58,14 +89,25 @@ export default {
           }
         },
         grid: {
-          show: false
+          show: false,
+          containLabel: true
         },
         xAxis: {
           type: 'category',
-          data: this.getCategories,
+          data: this.getCategoriesFormatted,
+          axisLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
           axisLabel: {
             interval: -1,
-            rotate: this.getRotate
+            rotate: this.getRotate,
+            color: '#606060',
+            fontSize: this.getAxisLabelFontSize,
+            fontWeight: 'bold',
+            fontFamily: 'Quicksand, Poppins'
           }
         },
         yAxis: {
@@ -75,65 +117,86 @@ export default {
             show: false
           },
           axisLabel: {
-            formatter: '{value} %',
+            formatter: '',
             rotate: this.getRotateYaxios
           }
         },
         series: [{
-          symbolSize: 50,
-          data: this.report.dataSerie,
-          type: 'scatter',
-          markArea: {
-            label: {
-              show: true
+          data: this.getDataSeriesWithStyles,
+          type: 'bar',
+          barWidth: '80%',
+          barCategoryGap: '10%',
+          label: {
+            show: true,
+            position: 'inside',
+            formatter (val) {
+              return `${val.value} %`
             },
-            itemStyle: {
-              normal: {
-                color: 'rgba(248, 152, 56, 0.25)'
-              }
-            },
-            data: [[{ yAxis: 0 }, { yAxis: 20 }]]
+            color: '#FFFFFF',
+            fontWeight: 'bold',
+            fontFamily: 'Poppins-SemiBold, Poppins',
+            fontSize: this.getValueFontSize
           }
         },
         {
           symbolSize: 20,
+          silent: true,
           data: [],
-          type: 'scatter',
+          type: 'bar',
           markArea: {
             itemStyle: {
-              normal: {
-                color: 'rgba(220, 231, 181, 0.25)'
-              }
+              borderWidth: 1,
+              borderType: 'solid',
+              borderColor: '#CCCCCC'
             },
-            data: [[{ yAxis: 20 }, { yAxis: 80 }]]
+            data: [[{ yAxis: 20 }, { yAxis: 20 }]]
           }
         },
         {
           symbolSize: 20,
+          silent: true,
           data: [],
-          type: 'scatter',
+          type: 'bar',
           markArea: {
             itemStyle: {
               color: '#68d2e0',
-              normal: {
-                color: 'rgba(196, 217, 171, 0.5)'
-              }
+              borderWidth: 1,
+              borderType: 'solid',
+              borderColor: '#CCCCCC'
             },
-            data: [[{ yAxis: 80 }, { yAxis: 100 }]]
+            data: [[{ yAxis: 80 }, { yAxis: 80 }]]
+          }
+        },
+        {
+          symbolSize: 20,
+          silent: true,
+          data: [],
+          type: 'bar',
+          markArea: {
+            itemStyle: {
+              color: '#000000',
+              borderWidth: 1,
+              borderType: 'solid',
+              borderColor: '#CCCCCC'
+            },
+            data: [[{ yAxis: 100 }, { yAxis: 100 }]]
           }
         },
         {
           symbolSize: 20,
           data: [],
-          type: 'scatter',
+          type: 'bar',
+          silent: true,
           markArea: {
             label: {
               show: true,
-              color: '#DADADA',
-              fontSize: this.getFontSize,
+              position: 'left',
+              distance: this.$vuetify.breakpoint.smAndDown ? -110 : -155,
+              color: '#606060',
+              fontSize: this.getLabelFontSize,
               fontWeight: 'bold',
               verticalAlign: 'middle',
-              fontFamily: 'Poppins-SemiBold, Poppins',
+              fontFamily: 'Quicksand, Poppins',
               opacity: 1
             },
             itemStyle: {
@@ -141,21 +204,24 @@ export default {
               borderWidth: 0,
               borderType: 'none'
             },
-            data: [[{ name: 'Area of Strength', yAxis: 85 }, { yAxis: 85 }]]
+            data: [[{ name: 'Area of Strength', yAxis: 90 }, { yAxis: 90 }]]
           }
         },
         {
           symbolSize: 20,
           data: [],
-          type: 'scatter',
+          type: 'bar',
+          silent: true,
           markArea: {
             label: {
               show: true,
-              color: '#DADADA',
-              fontSize: this.getFontSize,
+              position: 'left',
+              distance: this.$vuetify.breakpoint.smAndDown ? -110 : -150,
+              color: '#606060',
+              fontSize: this.getLabelFontSize,
               fontWeight: 'bold',
               verticalAlign: 'middle',
-              fontFamily: 'Poppins-SemiBold, Poppins',
+              fontFamily: 'Quicksand, Poppins',
               opacity: 1
             },
             itemStyle: {
@@ -169,15 +235,18 @@ export default {
         {
           symbolSize: 20,
           data: [],
-          type: 'scatter',
+          type: 'bar',
+          silent: true,
           markArea: {
             label: {
               show: true,
-              color: '#DADADA',
-              fontSize: this.getFontSize,
+              position: 'left',
+              distance: this.$vuetify.breakpoint.smAndDown ? -90 : -100,
+              color: '#606060',
+              fontSize: this.getLabelFontSize,
               fontWeight: 'bold',
               verticalAlign: 'middle',
-              fontFamily: 'Poppins-SemiBold, Poppins',
+              fontFamily: 'Quicksand, Poppins',
               opacity: 1
             },
             itemStyle: {
@@ -199,6 +268,9 @@ export default {
   methods: {
     pointClick (event) {
       this.$nuxt.$emit('detail-progress-report', event)
+    },
+    handleClick (val) {
+      this.$emit('click', val)
     }
   }
 }
