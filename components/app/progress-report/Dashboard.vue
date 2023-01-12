@@ -2,158 +2,89 @@
   <v-row no-gutters :class="{ 'fill-height': $vuetify.breakpoint.mdAndUp }">
     <!-- Type Selector: Mobile -->
     <v-col v-if="$vuetify.breakpoint.smAndDown" cols="12" class="pt-2">
-      <v-row no-gutters class="px-3">
-        <v-col cols="12">
-          <report-card-type-select
-            v-model="selectedReportCard"
-            hide-details
-            :preview-mode="previewMode"
-            @input="$emit('input', getDataGraphicMobile())"
-          />
+      <v-row class="mt-8" no-gutters>
+        <v-col v-for="(item, index) in getMenu" :key="index" cols="6">
+          <div
+            class="panel-item-mobile clickable d-flex align-center justify-center px-8 py-6"
+            :class="{ 'panel-item-mobile-selected': reportCardTypeSelected === item.type, 'mb-7': loading }"
+            @click="changeReportCardType(item.type)"
+          >
+            <div>
+              <span class="panel-item-mobile-text">
+                {{ item.name }}
+              </span>
+            </div>
+          </div>
         </v-col>
+
+        <div v-if="reportCardTypeSelected !== 'General'" class="pg-w-[230px] mt-4">
+          <small-letter-select
+            v-model="selectedLetter"
+            small-letter
+            v-bind="{ disabledLetters }"
+            label-title="Choose letter"
+          />
+        </div>
       </v-row>
     </v-col>
     <!-- Type Selector: Desktop -->
-    <v-row v-else class="mt-8">
-      <v-col v-for="(item, index) in getMenu" :key="index">
-        <v-item>
-          <v-card class="panel-item" @click="loadDetailReport(item.name)">
-            <v-row class="px-2">
-              <v-col cols="3">
-                <v-list-item-avatar size="44">
-                  <v-img
-                    v-if="item.name === 'General'"
-                    :src="require('@/assets/svg/general.svg')"
-                  />
-                  <v-img v-else :src="item.icon" min-width="38px" />
-                </v-list-item-avatar>
-              </v-col>
-              <v-col>
-                <div class="mx-2 my-4">
-                  <span class="text-body-2 text-lg-h7 text-xl-h6">
-                    {{ item.name }}
-                  </span>
-                </div>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-item>
-      </v-col>
-    </v-row>
+    <v-col v-else cols="12">
+      <v-row class="mt-8" no-gutters>
+        <div v-for="(item, index) in getMenu" :key="index" class="mr-4">
+          <div
+            class="panel-item clickable d-flex align-center rounded-lg px-8 py-6"
+            :class="{ 'panel-item-selected': reportCardTypeSelected === item.type, 'mb-7': loading }"
+            @click="changeReportCardType(item.type)"
+          >
+            <div class="mr-2">
+              <v-img
+                width="40px"
+                :src="item.icon"
+              />
+            </div>
+            <div>
+              <span class="panel-item-text">
+                {{ item.name }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="reportCardTypeSelected !== 'General'" class="pg-w-[230px] ml-auto">
+          <small-letter-select
+            v-model="selectedLetter"
+            small-letter
+            v-bind="{ disabledLetters }"
+            label-title="Choose letter"
+          />
+        </div>
+      </v-row>
+    </v-col>
 
     <!-- Report Content -->
     <pg-loading :loading="loading">
-      <v-row class="mt-12">
-        <v-col cols="12">
-          <!-- Report Body: General -->
-          <v-row v-if="general === true" no-gutters>
-            <!-- Chart -->
-            <v-col cols="12" md="7" lg="7" class="py-4 py-md-0 pr-0 pr-md-2">
-              <v-card width="100%" class="pa-2">
-                <!-- Desktop -->
-                <template v-if="$vuetify.breakpoint.mdAndUp">
-                  <v-row no-gutters>
-                    <v-col cols="12">
-                      <div class="pt-4 mb-4 pl-0">
-                        <underlined-title
-                          class="text-h6 text-md-h5"
-                          text="General Progress Report"
-                        />
-                      </div>
-                      <div>
-                        <span
-                          class="text-body-1 text-lg-h7 text-xl-h6 text-justify mt-8 mr-3"
-                        >
-                          General progress statistics for all categories.
-                        </span>
-                      </div>
-                      <div class="mt-n8">
-                        <chart-report v-if="hasReport" :report="report" />
-                      </div>
-                    </v-col>
-                  </v-row>
-                </template>
-                <!-- Mobile -->
-                <template v-else>
-                  <v-row no-gutters>
-                    <v-col cols="12">
-                      <div class="py-4">
-                        <underlined-title
-                          class="text-h6 text-md-h5"
-                          text="General Progress Report"
-                        />
-                      </div>
-                      <div>
-                        <span
-                          class="text-body-1 text-lg-h7 text-xl-h6 text-justify pt-md-8 pr-md-3"
-                        >
-                          General progress statistics for all categories.
-                        </span>
-                      </div>
-                      <chart-report
-                        v-if="hasReport"
-                        class="mt-n8"
-                        :report="report"
-                      />
-                    </v-col>
-                  </v-row>
-                </template>
-              </v-card>
-            </v-col>
-            <!-- Letters -->
-            <v-col cols="12" md="5" lg="5" class="py-4 py-md-0 pl-0 pl-md-2">
-              <v-card width="100%" class="pa-3">
-                <div v-if="loadLetterStatsData">
-                  <v-skeleton-loader type="card-heading" />
-                  <v-skeleton-loader
-                    v-for="n in 5"
-                    :key="n"
-                    type="list-item-avatar-three-line, list-item-one-line, divider"
-                  />
-                </div>
-                <template v-else>
-                  <v-row class="pt-3" no-gutters>
-                    <v-col cols="12">
-                      <div class="pt-4 ml-4 mb-4">
-                        <underlined-title
-                          class="text-h6 text-md-h5 mt-4 mr-4"
-                          :text="letterStatsData.name"
-                        />
-                      </div>
-                    </v-col>
-                    <v-col
-                      :class="!$vuetify.breakpoint.mobile ? 'pr-3' : 'px-3'"
-                      cols="12"
-                    >
-                      <div class="progress-letter-selector">
-                        <letter-select
-                          v-model="selectedLetter"
-                          small-letter
-                          v-bind="{ disabledLetters }"
-                          label-title="Choose letter"
-                        />
-                      </div>
-                    </v-col>
-                  </v-row>
-                  <letter-stats :letter-stats="letterStatsData" />
-                </template>
-              </v-card>
-            </v-col>
-          </v-row>
-          <!-- Report Body: Other types -->
-          <v-card v-else class="px-2 my-4" width="100%">
-            <v-row no-gutters>
-              <v-col cols="12">
-                <detail-progress
-                  :report-card-type="reportCardTypeSelected"
-                  :report="report"
-                  :data-report-card-type="dataReportCard"
-                />
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
-      </v-row>
+      <v-col cols="12" class="mt-6">
+        <!-- Report Body: General -->
+        <v-row v-if="reportCardTypeSelected === 'General'" no-gutters>
+          <!-- Chart -->
+          <v-col cols="12">
+            <v-card width="100%" max-width="100%" elevation="0">
+              <chart-report v-if="hasReport" :report="report" @click="handleBarClick" />
+            </v-card>
+          </v-col>
+          <v-col cols="12">
+            <category-explained v-if="selectedBarData.nameCardType" :data="selectedBarData" :report="report" />
+          </v-col>
+        </v-row>
+
+        <v-row v-else no-gutters>
+          <v-col cols="12">
+            <v-card width="100%" elevation="0">
+              <letter-chart-report :letter-stats="letterStatsData" />
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-col>
     </pg-loading>
     <unlock-prompt
       v-if="hasPlayAndLearnPlan"
@@ -167,21 +98,19 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import ChartReport from '@/components/app/progress-report/ChartReport.vue'
-import ReportCardTypeSelect from '@/components/app/progress-report/ReportCardTypeSelect.vue'
-import LetterStats from '@/components/app/progress-report/LetterStats.vue'
-import DetailProgress from '@/components/app/progress-report/DetailProgress.vue'
-import LetterSelect from '@/components/app/live-sessions/recorded/LetterSelect.vue'
 import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
+import SmallLetterSelect from './SmallLetterSelect.vue'
+import LetterChartReport from './LetterChartReport.vue'
+import CategoryExplained from './CategoryExplained.vue'
 
 export default {
   name: 'Dashboard',
 
   components: {
     ChartReport,
-    ReportCardTypeSelect,
-    LetterStats,
-    DetailProgress,
-    LetterSelect,
+    LetterChartReport,
+    SmallLetterSelect,
+    CategoryExplained,
     UnlockPrompt
   },
 
@@ -195,6 +124,7 @@ export default {
     selectedLetter: null,
     selectedReportCard: 'General',
     loadLetterStatsData: true,
+    selectedBarData: {},
     letterStatsData: {
       name: '',
       reports: []
@@ -228,10 +158,16 @@ export default {
 
     getMenu() {
       const menuGeneral = {
-        name: 'General',
-        icon: 'assets/svg/general.svg'
+        name: 'General Progress',
+        type: 'General',
+        icon: require('@/assets/svg/note.svg')
       }
-      return [menuGeneral, ...this.types]
+      const letterProgress = {
+        name: 'Letters Progress',
+        type: 'Letters',
+        icon: require('@/assets/svg/bar-chart.svg')
+      }
+      return [menuGeneral, letterProgress]
     },
 
     childrenList() {
@@ -257,6 +193,12 @@ export default {
   },
 
   watch: {
+    report(val, oldVal) {
+      if (this.hasReport) {
+        this.selectedBarData = val.dataSerie[0]
+      }
+    },
+
     async selectedChild(val, oldVal) {
       this.loadLetterStatsData = true
       await this.fetchCurrentLesson(val)
@@ -298,6 +240,14 @@ export default {
     ...mapActions({ setChild: 'setChild' }),
     ...mapActions('children', { getChildren: 'get' }),
     ...mapActions('children/lesson', ['getCurrentCurriculumType']),
+
+    handleBarClick(val) {
+      this.selectedBarData = val.data
+    },
+
+    changeReportCardType(type) {
+      this.reportCardTypeSelected = type
+    },
 
     loadDefaultDataLetterStatsDate() {
       this.letterStatsData.name = 'Start a Lesson'
@@ -415,6 +365,38 @@ export default {
 
 .panel-item {
   max-height: 80px !important;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.panel-item-selected {
+  box-shadow: inset 0px 8px 24px rgba(0, 0, 0, 0.15);
+
+  .panel-item-text {
+    color: #FFAF4B;
+  }
+}
+
+.panel-item-text {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+  color: #A8A8A8;
+}
+
+.panel-item-mobile-text {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #A8A8A8;
+}
+
+.panel-item-mobile-selected {
+  border-bottom: 2px solid #707070;
+
+  .panel-item-mobile-text {
+    color: #707070;
+  }
 }
 
 .report-card-type {

@@ -1,5 +1,5 @@
 <template>
-  <v-chart class="chart-report-children" :option="graph" />
+  <v-chart class="chart-report-children" :option="graph" @click="handleClick" />
 </template>
 
 <script>
@@ -13,6 +13,11 @@ export default defineComponent({
       required: true,
       default: () => {}
     }
+  },
+  methods: {
+    handleClick(val) {
+      this.$emit('click', val)
+    }
   }
 })
 </script>
@@ -20,7 +25,6 @@ export default defineComponent({
 <style>
 .chart-report-children {
   width: 100% !important;
-  max-width: 900px !important;
-  min-height: 500px !important;
+  min-height: 600px !important;
 }
 </style>
