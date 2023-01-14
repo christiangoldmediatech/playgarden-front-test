@@ -185,7 +185,7 @@ export default defineComponent({
       await learnPlayV2.getWorksheetsByCurriculumTypeId(curriculumTypeId)
       await learnPlayV2.getBooksByCurriculumTypeId(curriculumTypeId)
       checkIfPlayAndLearnHasContent(learnPlayV2.learnPlayData.value)
-      $nuxt.$emit('send-learn-play', learnPlayV2.learnPlayData.value)
+      $nuxt.$emit('send-learn-play', learnPlayV2.playAndLearnInfo.value)
       refreshMenuSection()
     }
 
