@@ -19,6 +19,9 @@
               onPlayerReady({ player: $event, videos: videos })
             "
             @on-play="saveStartProgress"
+            @on-pause="sendOnPauseAnalytics"
+            @on-skip="sendOnSkipAnalytics"
+            @on-under-30="sendOnUnder30Analytics"
             @on-ended="saveEndProgress"
           >
             <template #inline-play-icon="{ firstPlay }">
@@ -79,12 +82,14 @@
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import VideosScroll from '@/components/app/learn-play/VideosScroll.vue'
-import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
+import { PlayerInstance, PlayerInstanceEvent } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { defineComponent, onMounted, onUnmounted, ref, useStore } from '@nuxtjs/composition-api'
 import {
   useLearnPlayV2,
   useCommonPlayerFunctions,
-  useChild
+  useChild,
+  useVideoAnalytics,
+  useActivityAnalytics
 } from '@/composables'
 import { PlayAndLearnVideo, TypedStore, Video } from '@/models'
 
@@ -109,6 +114,8 @@ export default defineComponent({
     const commonPlayerFunctions = useCommonPlayerFunctions()
     const childStore = useStore<TypedStore>()
     const child = useChild({ store: childStore })
+    const { sendPlayerEventVideoAnalytics } = useVideoAnalytics()
+    const { sendActivityAnalytics, determineCurrentVideo } = useActivityAnalytics(child.currentChildren)
     const player = ref<PlayerInstance | null>(null)
     const title = ref('')
     const author = ref('')
@@ -170,6 +177,8 @@ export default defineComponent({
         return
       }
 
+      sendOnStartAnalytics(media)
+
       await learnPlayV2.updateProgress(buildDataProgress(media, false))
     }
 
@@ -178,7 +187,65 @@ export default defineComponent({
         return
       }
 
+      sendOnEndedAnalytics(media)
+
       await learnPlayV2.updateProgress(buildDataProgress(media, true))
+    }
+
+    const sendOnStartAnalytics = (event: PlayerInstanceEvent): void => {
+      sendPlayerEventVideoAnalytics({
+        children: child.currentChildren, event, status: event.currentTime > 1 ? 'RESUMED' : 'STARTED'
+      })
+
+      sendActivityAnalytics({
+        duration: event.duration,
+        time: event.currentTime,
+        video: determineCurrentVideo(event.currentTrack)
+      }, true)
+    }
+
+    const sendOnPauseAnalytics = (event: PlayerInstanceEvent): void => {
+      sendPlayerEventVideoAnalytics({
+        children: child.currentChildren, event, status: 'PAUSED'
+      })
+
+      sendActivityAnalytics({
+        duration: event.duration,
+        time: event.currentTime,
+        video: determineCurrentVideo(event.currentTrack)
+      })
+    }
+
+    const sendOnEndedAnalytics = (event: PlayerInstanceEvent): void => {
+      sendPlayerEventVideoAnalytics({
+        children: child.currentChildren, event, status: 'COMPLETED'
+      })
+
+      sendActivityAnalytics({
+        duration: event.duration,
+        time: event.currentTime,
+        video: determineCurrentVideo(event.currentTrack)
+      }, false, true)
+    }
+
+    const sendOnSkipAnalytics = (event: PlayerInstanceEvent): void => {
+      sendPlayerEventVideoAnalytics({
+        children: child.currentChildren, event, status: 'SKIPPED'
+      })
+
+      sendActivityAnalytics({
+        duration: event.duration,
+        time: event.currentTime,
+        video: determineCurrentVideo(event.currentTrack)
+      }, false, true)
+    }
+
+    const sendOnUnder30Analytics = (event: PlayerInstanceEvent): void => {
+      sendActivityAnalytics({
+        duration: event.duration,
+        time: event.currentTime,
+        video: determineCurrentVideo(event.currentTrack)
+      })
     }
 
     const buildDataProgress = (media: any, finish: boolean) => {
@@ -228,7 +295,10 @@ export default defineComponent({
       changeVideoTrack,
       saveStartProgress,
       saveEndProgress,
-      playerHeight
+      playerHeight,
+      sendOnPauseAnalytics,
+      sendOnSkipAnalytics,
+      sendOnUnder30Analytics
     }
   }
 })
