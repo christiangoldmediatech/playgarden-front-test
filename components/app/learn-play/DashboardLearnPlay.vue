@@ -116,7 +116,7 @@ import PlaylistLearnPlay from '@/components/app/learn-play/PlaylistLearnPlay.vue
 import { useChild, useNuxtHelper, useLearnPlayV2, useVuetifyHelper } from '@/composables'
 
 // Models
-import { PlayAndLearn, TypedStore } from '@/models'
+import { Book, MusicLibrary, OfflineWorksheet, PlayAndLearn, PlayAndLearnFile, PlayAndLearnVideo, TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'DashboardLearnPlay',
@@ -185,7 +185,13 @@ export default defineComponent({
       await learnPlayV2.getFilesByCurriculumTypeId(curriculumTypeId)
       await learnPlayV2.getWorksheetsByCurriculumTypeId(curriculumTypeId)
       await learnPlayV2.getBooksByCurriculumTypeId(curriculumTypeId)
-      checkIfPlayAndLearnHasContent(learnPlayV2.learnPlayData.value)
+      checkIfPlayAndLearnHasContent(
+        learnPlayV2.playAndLearnVideos.value,
+        learnPlayV2.playAndLearnSongs.value,
+        learnPlayV2.playAndLearnFiles.value,
+        learnPlayV2.playAndLearnWorksheets.value,
+        learnPlayV2.playAndLearnBooks.value
+      )
       refreshMenuSection()
     }
 
@@ -196,8 +202,13 @@ export default defineComponent({
       })
     }
 
-    const checkIfPlayAndLearnHasContent = (data: PlayAndLearn) => {
-      const { songs, worksheets, files, books, videos } = data
+    const checkIfPlayAndLearnHasContent = (
+      videos: PlayAndLearnVideo[],
+      songs: MusicLibrary[],
+      files: PlayAndLearnFile[],
+      worksheets: OfflineWorksheet[],
+      books: Book[]
+    ) => {
       hasPlayAndLearnContent.value = !(songs.length === 0 && worksheets.length === 0 && files.length === 0 && books.length === 0 && videos.length === 0)
     }
 
@@ -206,7 +217,13 @@ export default defineComponent({
       if (!props.previewMode) {
         await child.get()
         await learnPlayV2.getFirstLearnPlay()
-        checkIfPlayAndLearnHasContent(learnPlayV2.learnPlayData.value)
+        checkIfPlayAndLearnHasContent(
+          learnPlayV2.playAndLearnVideos.value,
+          learnPlayV2.playAndLearnSongs.value,
+          learnPlayV2.playAndLearnFiles.value,
+          learnPlayV2.playAndLearnWorksheets.value,
+          learnPlayV2.playAndLearnBooks.value
+        )
       }
       refreshMenuSection()
 
