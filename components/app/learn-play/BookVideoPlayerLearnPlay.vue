@@ -198,7 +198,6 @@ export default defineComponent({
       if (props.previewMode) {
         return
       }
-
       await learnPlayV2.updateProgress(buildDataProgress(media, false))
     }
 
