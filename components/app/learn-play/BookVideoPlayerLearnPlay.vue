@@ -217,7 +217,6 @@ export default defineComponent({
       }
 
       sendOnEndedAnalytics(media)
-
       await learnPlayV2.updateProgress(buildDataProgress(media, true))
     }
 
