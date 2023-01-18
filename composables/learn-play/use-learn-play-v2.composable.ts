@@ -98,6 +98,7 @@ export const useLearnPlayV2 = (params: {
       'children/learn-play/getPlayAndLearnBooksByCurriculumTypeId',
       params
     )
+    learnPlayData.value.books = playAndLearnBooks.value
   }
 
   watch(playAndLearnBooks, () => {
