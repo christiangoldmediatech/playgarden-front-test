@@ -140,7 +140,7 @@
                       <v-card
                         @click.stop="
                           $nuxt.$emit('open-portfolio-overlay', {
-                            child: getChild(worksheet),
+                            child: child,
                             entityId: worksheet.id,
                             entityType: 'WORKSHEET',
                             image: worksheet.url,
