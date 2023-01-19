@@ -66,7 +66,7 @@
           :entity-type="entityType"
           :quote="textShare"
           :title="textShare"
-          :toolbar-title="`Share ${textShare}`"
+          toolbar-title="Share"
           :toolbar-subtitle="textShare"
           :url="image"
         />
