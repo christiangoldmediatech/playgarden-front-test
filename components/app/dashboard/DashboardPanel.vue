@@ -633,7 +633,7 @@ export default defineComponent({
     }),
 
     getLetter () { 
-      return (this.lesson && this.lesson.curriculumType && this.lesson.curriculumType.letter) ? this.lesson.curriculumType.letter[0] : ''
+      return (this.lesson && this.lesson.curriculumType && this.lesson.curriculumType.letter) ? (this.lesson.curriculumType.id !== 28)? this.lesson.curriculumType.letter[0] : this.lesson.curriculumType.letter : ''
     },
 
     getSelectedLetterId() {
