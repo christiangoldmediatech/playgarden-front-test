@@ -137,12 +137,14 @@
           @click.stop="downloadWorksheetsAllLesson()"
           :disabled="loadingDownloadLessonsFile"
         >
-          <v-avatar size="40" color="accent ml-n3">
+          <v-avatar size="40" color="accent ml-n4">
             <v-icon size="25" color="white">
               mdi-download
             </v-icon>
           </v-avatar>
-          <span class="pr-4">
+          <span class="pr-6" :class="{
+                      'title-download-mobile': $vuetify.breakpoint.mobile
+                    }">
             {{ `DOWNLOAD LETTER ${getLetter} WEEK WORKSHEETS` }}
           </span>
         </v-btn>
@@ -229,40 +231,48 @@
           >
             <!-- DOWNLOAD WORKSHEETS -->
             <v-card
-              :disabled="noLinkMode"
+              :disabled="false"
               :ripple="false"
               class="dashboard-item pass-through"
               active-class="dashboard-item-active"
               exact-active-class="dashboard-item-exact"
               @click.stop="handleDownloadWorksheetClick"
-            >
-              <v-row no-gutters class="py-2">
-                <v-col
-                  cols="3"
-                  align-self="center"
-                  class="d-flex justify-center"
                 >
-                  <v-img
-                    height="40px"
-                    contain
-                    :src="require('@/assets/png/dashboard/download-ico.png')"
-                  />
-                </v-col>
+                  <v-row no-gutters align="center">
+                    <v-col cols="4">
+                      <v-img
+                        class="dashboard-item-image"
+                        :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')"
+                        cover
+                        height="100px"
+                      />
+                    </v-col>
 
-                <v-col cols="9" align-self="center">
-                  <div class="text-uppercase dashboard-item-title">
-                    DOWNLOAD WORKSHEET
-                  </div>
+                    <v-col cols="8">
+                      <div class="mx-2 mt-4 mb-2">
+                        <span
+                          :class="[
+                            'dashboard-item-activity-type',
+                          ]"
+                        >
+                        DOWNLOAD WORKSHEET OF THE DAY! 
+                        </span>
+                      </div>
+                      <div class="d-flex flex-nowrap pa-2 mt-n4 align-center text-body-2">
+                        <div class="worksheet-title flex-grow-1 pr-2 dashboard-item-disabled">
+                          Worksheet
+                        </div>
 
-                  <span
-                    v-if="isAdmin && childId"
-                    class="clickable admin-view-worksheets"
-                    @click.stop="goToAdminWorksheets"
-                  >
-                    View worksheets
-                  </span>
-                </v-col>
-              </v-row>
+                        <div>
+                          <v-img
+                          height="40px"
+                          contain
+                          :src="require('@/assets/png/dashboard/download-ico.png')"
+                        />
+                        </div>
+                      </div>
+                    </v-col>
+                  </v-row>
             </v-card>
 
             <!-- WORKSHEET VIDEO -->
@@ -509,8 +519,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import DashboardMixin from '@/mixins/DashboardMixin'
 import LessonAdvanceMixin from '@/mixins/LessonAdvanceMixin'
-import { defineComponent, useRoute, useRouter, useStore } from '@nuxtjs/composition-api'
-import { TypedStore } from '@/models'
+import { defineComponent, useStore } from '@nuxtjs/composition-api'
 
 import { APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
 
@@ -865,6 +874,9 @@ export default defineComponent({
       border-radius: 12px !important;
     }
   }
+}
+.title-download-mobile {
+  font-size: 12px !important;
 }
 .lesson-panel {
   &-container {
