@@ -18,6 +18,13 @@ export default {
     return data
   },
 
+  async getLessonsByLetterId({ commit }, params) {
+    const data = await this.$axios.$get('/lessons', {
+      params
+    })
+    return data
+  },
+
   async getCurrentLesson({ commit }, params) {
     try {
       const data = await this.$axios.$get('/lessons/childrens/current', {

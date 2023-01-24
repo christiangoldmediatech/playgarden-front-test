@@ -130,6 +130,22 @@
       />
 
       <div v-if="lesson" class="lesson-panel-content">
+        <v-btn
+          large
+          color="accent"
+          class="mb-5"
+          @click.stop="downloadWorksheetsAllLesson()"
+          :disabled="loadingDownloadLessonsFile"
+        >
+          <v-avatar size="40" color="accent ml-n3">
+            <v-icon size="25" color="white">
+              mdi-download
+            </v-icon>
+          </v-avatar>
+          <span class="pr-4">
+            {{ `DOWNLOAD LETTER ${getLetter} WEEK WORKSHEETS` }}
+          </span>
+        </v-btn>
         <!-- VIDEO LESSONS -->
         <content-section
           number="1"
@@ -490,9 +506,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import DashboardMixin from '@/mixins/DashboardMixin'
 import LessonAdvanceMixin from '@/mixins/LessonAdvanceMixin'
+import { defineComponent, useRoute, useRouter, useStore } from '@nuxtjs/composition-api'
+import { TypedStore } from '@/models'
 
 import { APP_EVENTS, TAG_MANAGER_EVENTS } from '@/models'
 
@@ -501,8 +519,9 @@ import ContentSection from './ContentSection.vue'
 import ContentList from './ContentList.vue'
 import LessonProgress from './LessonProgress.vue'
 import LessonOnlineWorksheet from './LessonOnlineWorksheet.vue'
+import { useOfflineWorksheet } from '@/composables'
 
-export default {
+export default defineComponent({
   name: 'DashboardPanel',
 
   components: {
@@ -563,12 +582,38 @@ export default {
       type: [Array, Number, Object, String],
       required: false,
       default: null
-    }
+    },
+
   },
 
   data: () => {
     return {
-      uploadDialog: false
+      uploadDialog: false,
+      dataLessons: null,
+      loadingDownloadLessonsFile: false
+    }
+  },
+
+  setup() { 
+    const store = useStore ()
+    const {
+      getUploaded,
+      getFileUpload,
+      mergeFilesOfflineLesson
+    } = useOfflineWorksheet({ store })
+
+    return {
+      getUploaded,
+      getFileUpload,
+      mergeFilesOfflineLesson
+    }
+  },
+
+  watch: {
+    lesson(val) { 
+      if (val) { 
+        this.getLessonsList()
+      }
     }
   },
 
@@ -577,6 +622,14 @@ export default {
     ...mapGetters('children/lesson', {
       previousLessonId: 'getPreviousLessonId'
     }),
+
+    getLetter () { 
+      return (this.lesson && this.lesson.curriculumType && this.lesson.curriculumType.letter) ? this.lesson.curriculumType.letter[0] : ''
+    },
+
+    getSelectedLetterId() {
+      return (this.lesson && this.lesson.curriculumType && this.lesson.curriculumType) ? this.lesson.curriculumType.id : ''
+     },
 
     useLightTheme() {
       return (
@@ -623,7 +676,7 @@ export default {
     }
   },
 
-  created() {
+  created  () {
     this.$nuxt.$on(APP_EVENTS.DASHBOARD_VIDEO_LESSON_CLICKED, (topicData) => {
       this.$gtm.push({
         event: TAG_MANAGER_EVENTS.DASHBOARD_VIDEO_LESSON_CLICKED,
@@ -670,6 +723,7 @@ export default {
         topic: category
       })
     })
+    this.getLessonsList()
   },
 
   beforeDestroy() {
@@ -681,6 +735,7 @@ export default {
   },
 
   methods: {
+    ...mapActions('children/lesson', ['getLessonsByLetterId']),
     goToAdminWorksheets() {
       const routerData = this.$router.resolve({
         name: 'admin-portfolio',
@@ -690,6 +745,38 @@ export default {
       })
 
       window.open(routerData.href, '_blank')
+    },
+
+    async getLessonsList() { 
+      this.dataLessons = await this.getLessonsByLetterId({ curriculumTypeId: this.getSelectedLetterId, page: 1, limit: 10})
+    },
+
+    async downloadWorksheetsAllLesson() {
+      this.loadingDownloadLessonsFile = true
+      const { path } = await this.getFileUpload({
+        type: 'upload-document',
+        folder: 'lesson',
+        filename: `merge-worksheets-letter-${this.getSelectedLetterId}.pdf`
+      })
+
+      if (path) {
+        window.open(path, '_blank')
+      } else {
+        let worksheetsOffline = new Array()
+        this.dataLessons.map((e) => {
+          e.worksheets.find((w) => {
+            if (w.type === 'OFFLINE') worksheetsOffline.push(w.pdfUrl)
+          })
+        })
+
+        const { filePath } = await this.mergeFilesOfflineLesson({
+          files: worksheetsOffline,
+          folder: 'lesson',
+          filename: `merge-worksheets-letter-${this.selectedLetter}.pdf`
+        })
+        window.open(filePath, '_blank')
+      }
+      this.loadingDownloadLessonsFile = false
     },
 
     openPdf() {
@@ -738,7 +825,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss">
