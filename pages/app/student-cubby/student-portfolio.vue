@@ -20,12 +20,13 @@
       <!--carousel letter-->
     </v-card-text>
 
-    <v-row no-gutters class="mt-10">
+    <v-row no-gutters class="mt-0 mt-md-10">
       <v-col cols="12">
         <v-row no-gutters align="end" class="mb-2">
           <template>
-            <div class="mr-3">
+            <div class="mr-3 d-flex flex-column">
               <span
+                v-if="!isMobile"
                 class="text-uppercase font-weight-bold portfolio-carousel-title d-flex align-center"
               >
                 LETTER
@@ -35,30 +36,28 @@
                   small
                   list-mode
                 />
-                <v-btn
-                  v-if="getCurrentLetter && !loading && lessons.length"
-                  text
-                  large
-                  @click.stop="downloadWorksheetsAllLesson()"
-                  :disabled="loadingDownloadLessonsFile"
-                >
-                  <v-avatar size="40" color="primary mr-2">
-                    <v-icon size="25" color="white">
-                      mdi-download
-                    </v-icon>
-                  </v-avatar>
-                  <span>
-                    {{
-                      loadingDownloadLessonsFile
-                        ? 'GETTING DOCUMENT...'
-                        : 'DOWNLOAD ALL WEEK WORKSHEETS'
-                    }}
-                  </span>
-                </v-btn>
               </span>
+              <div
+                v-if="getCurrentLetter && !loading && lessons.length"
+                class="d-flex align-center mt-4"
+              >
+                <span class="portfolio-subtitle">
+                  {{
+                    loadingDownloadLessonsFile
+                      ? 'GETTING DOCUMENT...'
+                      : downloadText
+                  }}
+                </span>
+                <v-btn class="ml-4" color="primary" fab small :disabled="loadingDownloadLessonsFile" @click.stop="downloadWorksheetsAllLesson()">
+                  <v-icon size="25" color="white">
+                    mdi-download
+                  </v-icon>
+                </v-btn>
+              </div>
             </div>
           </template>
         </v-row>
+        <worksheets-wrapper v-if="getCurrentLetter && !loading && lessons.length" :worksheets="allWorksheets" />
       </v-col>
       <pg-loading :loading="loading">
         <v-col cols="12">
@@ -90,22 +89,6 @@
                       }}
                     </v-icon>
                   </span>
-                  <v-btn
-                    text
-                    small
-                    @click.stop="downloadWorksheetsByLesson(lesson.worksheets)"
-                  >
-                    <v-icon size="30" color="primary">
-                      mdi-download
-                    </v-icon>
-                    <span class="">
-                      {{
-                        !$vuetify.breakpoint.smAndUp
-                          ? 'DOWNLOAD'
-                          : 'DOWNLOAD WORKSHEETS'
-                      }}
-                    </span>
-                  </v-btn>
                 </div>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
@@ -121,7 +104,7 @@
                   />
                 </div>
                 <v-slide-group
-                  v-else
+                  v-else-if="!isMobile"
                   mandatory
                   show-arrows
                   center-active
@@ -202,6 +185,79 @@
                     </v-card>
                   </v-slide-item>
                 </v-slide-group>
+                <v-row v-else class="py-1" no-gutters>
+                  <v-col
+                    v-for="(worksheet, index2) in lesson.worksheets"
+                    :key="`category-${index2}-card-${worksheet.id}`"
+                    class="elevation-0 px-1 mb-4"
+                    cols="6"
+                  >
+                    <v-card
+                      height="250"
+                      width="100%"
+                    >
+                      <v-card
+                        @click.stop="
+                          $nuxt.$emit('open-portfolio-overlay', {
+                            child: getChild(worksheet),
+                            entityId: worksheet.id,
+                            entityType: 'WORKSHEET',
+                            image: worksheet.url,
+                            created: worksheet.updatedAt
+                          })
+                        "
+                      >
+                        <v-img :src="worksheet.url" height="168px" contain />
+                      </v-card>
+
+                      <div class="mt-3">
+                        <div class="subheading">
+                          <span
+                            class="d-block text-center primary--text font-bold mb-1"
+                          >
+                            {{ `WORKSHEET ${worksheet.id}` }}
+                          </span>
+                        </div>
+
+                        <div class="subheading">
+                          <span
+                            class="d-block text-center font-bold upload-label-card"
+                          >
+                            UPLOADED DATE:
+                            {{ worksheet.updatedAt | formattedCreatedDate }}
+                          </span>
+                        </div>
+                      </div>
+                    </v-card>
+                  </v-col>
+                  <v-col class="elevation-0 px-1 mb-4" cols="6">
+                    <v-card
+                      height="250"
+                      width="100%"
+                      class="d-flex flex-column items-center justify-center"
+                      @click="uploadDialog = !loadingCurrentLesson"
+                    >
+                      <v-progress-circular
+                        v-if="loadingCurrentLesson"
+                        color="success"
+                        indeterminate
+                        size="42"
+                        width="4"
+                        class="mb-4"
+                      />
+                      <v-icon v-else size="120" color="primary">
+                        mdi-plus-circle
+                      </v-icon>
+                      <span class="add-upload-text font-bold ">
+                        {{
+                          loadingCurrentLesson
+                            ? 'VERIFYING LESSON'
+                            : 'UPLOAD WORKSHEET'
+                        }}
+                      </span>
+                    </v-card>
+                  </v-col>
+                </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
@@ -227,6 +283,7 @@ import PortfolioOverlay from '@/components/app/student-cubby/PortfolioOverlay.vu
 import CarouselLetter from '@/components/app/all-done/CarouselLetter.vue'
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 import UploadOfflineWorksheetDialog from '@/components/app/dashboard/worksheets/UploadOfflineWorksheetDialog.vue'
+import WorksheetsWrapper from '@/components/app/student-cubby/WorksheetsWrapper.vue'
 import {
   computed,
   defineComponent,
@@ -241,9 +298,11 @@ import {
   useChildRoute,
   useOfflineWorksheet,
   useLessonApi,
-  useChildLesson
+  useChildLesson,
+  useVuetifyHelper,
+  useSnotifyHelper
 } from '@/composables'
-import { TypedStore } from '@/models'
+import { Lesson, LessonWorksheet, TypedStore } from '@/models'
 import { axios } from '@/utils'
 
 export default defineComponent({
@@ -253,7 +312,8 @@ export default defineComponent({
     PortfolioOverlay,
     CarouselLetter,
     RecordedLetter,
-    UploadOfflineWorksheetDialog
+    UploadOfflineWorksheetDialog,
+    WorksheetsWrapper
   },
   data: () => {
     return {
@@ -266,6 +326,8 @@ export default defineComponent({
     }
   },
   setup() {
+    const vuetify = useVuetifyHelper()
+    const snotify = useSnotifyHelper()
     const route = useRoute()
     const router = useRouter()
     const store = useStore<TypedStore>()
@@ -274,8 +336,10 @@ export default defineComponent({
     const loadingCurrentLesson = ref(false)
     const loadingDownloadLessonsFile = ref(false)
     const selectedLetter = ref(1)
-    const lessons = ref([])
-    const panel = ref()
+    const lessons = ref<Lesson[]>([])
+    const allWorksheets = ref<LessonWorksheet[]>([])
+    const panel = ref(0)
+    const isMobile = computed(() => vuetify.breakpoint.smAndDown)
     const { childId: studentId } = useChildRoute({ store, route, router })
     const { children } = useChild({ store })
     const {
@@ -293,6 +357,32 @@ export default defineComponent({
     })
     const letters = computed(() => store.getters['admin/curriculum/types'])
 
+    const getUploadedOfflineWorksheets = async (lessonId: number, index: number) => {
+      if (loadingWorksheets.value) {
+        return
+      }
+      loadingWorksheets.value = true
+      
+      let data: any[] = []
+      try {
+        data = await getUploaded(Number(studentId.value), lessonId)
+      } catch {
+        data = []
+      }
+
+      lessons.value[index].worksheets = data
+      loadingWorksheets.value = false
+      loadingCurrentLesson.value = true
+
+      try {
+        await getCurrentLessonByChildrenId(lessonId, Number(studentId.value))
+      } catch {
+        snotify.error('Could no fetch lesson')
+      }
+
+      loadingCurrentLesson.value = false
+    }
+
     const getLessonsByChild = async () => {
       loading.value = true
       const data: any = await getLessonsByCurriculumType(
@@ -301,6 +391,13 @@ export default defineComponent({
         10
       )
       lessons.value = data.lessons || []
+
+      allWorksheets.value = lessons.value.flatMap((lesson) => lesson.worksheets)
+
+      if (lessons.value.length > 0) {
+        await getUploadedOfflineWorksheets(lessons.value[0].id, 0)
+      }
+
       loading.value = false
     }
 
@@ -312,7 +409,7 @@ export default defineComponent({
       studentId,
       async val => {
         if (val) {
-          panel.value = ''
+          panel.value = 0
           await getLessonsByChild()
         }
       },
@@ -345,7 +442,10 @@ export default defineComponent({
       panel,
       selectedLetter,
       getFileUpload,
-      mergeFilesOfflineLesson
+      mergeFilesOfflineLesson,
+      allWorksheets,
+      getUploadedOfflineWorksheets,
+      isMobile
     }
   },
   computed: {
@@ -358,11 +458,27 @@ export default defineComponent({
       } else {
         return {}
       }
+    },
+    formattedLetterName() {
+      const letterName = (this.getCurrentLetter as any)?.name
+      
+      if (!letterName) {
+        return ''
+      }
+      
+      if (letterName === 'Intro' || letterName === 'Nature') {
+        return letterName
+      }
+
+      return letterName[0]
+    },
+    downloadText() {
+      return `DOWNLOAD LETTER ${this.formattedLetterName} WEEK WORKSHEETS`
     }
   },
-  mounted() {
+  async mounted() {
     this.$nuxt.$on('show-curriculum-progress', (curriculumTypeId: any) => {
-      this.panel = ''
+      this.panel = 0
       if (this.studentId) {
         if (this.selectedLetter !== curriculumTypeId) {
           this.lessons = []
@@ -384,18 +500,6 @@ export default defineComponent({
     this.$nuxt.$off('student-portafolio-update-worksheets-lesson')
   },
   methods: {
-    async getUploadedOfflineWorksheets(lessonId: number, index: number) {
-      if (this.loadingWorksheets) {
-        return
-      }
-      this.loadingWorksheets = true
-      const data: any = await this.getUploaded(Number(this.studentId), lessonId)
-      this.$set(this.lessons[index], 'worksheets', data)
-      this.loadingWorksheets = false
-      this.loadingCurrentLesson = true
-      await this.getCurrentLessonByChildrenId(lessonId, Number(this.studentId))
-      this.loadingCurrentLesson = false
-    },
     downloadWorksheetsByLesson(worksheets: []) {
       const worksheetOffline = worksheets.filter(
         (e: any) => e.type === 'OFFLINE'
@@ -420,10 +524,10 @@ export default defineComponent({
       if (path) {
         window.open(path, '_blank')
       } else {
-        let worksheetsOffline = new Array()
+        const worksheetsOffline = new Array()
         this.lessons.map((e: any) => {
           e.worksheets.find((w: any) => {
-            if (w.type === 'OFFLINE') worksheetsOffline.push(w.pdfUrl)
+            if (w.type === 'OFFLINE') { worksheetsOffline.push(w.pdfUrl) }
           })
         })
 
@@ -446,6 +550,22 @@ export default defineComponent({
   font-size: 36px;
   line-height: 1.5;
   letter-spacing: 5.4px;
+}
+
+.portfolio-subtitle {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: start;
+  text-transform: uppercase;
+  color: #515151;
+
+  @media (min-width: $breakpoint-sm) {
+    font-size: 20px;
+    line-height: 36px;
+    text-align: center;
+  }
 }
 
 .title-day {
