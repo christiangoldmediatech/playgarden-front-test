@@ -74,7 +74,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const dialog = computed<boolean>({
       get() {
-        return props.value
+        return false // props.value
       },
       set(value) {
         emit('input', value)
