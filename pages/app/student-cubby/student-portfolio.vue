@@ -392,7 +392,9 @@ export default defineComponent({
       )
       lessons.value = data.lessons || []
 
-      allWorksheets.value = lessons.value.flatMap((lesson) => lesson.worksheets)
+      allWorksheets.value = lessons.value
+        .flatMap((lesson) => lesson.worksheets)
+        .filter((worksheet) => worksheet.type === 'OFFLINE' && !!worksheet.pdfUrl)
 
       if (lessons.value.length > 0) {
         await getUploadedOfflineWorksheets(lessons.value[0].id, 0)
