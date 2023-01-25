@@ -42,7 +42,7 @@
                 exact
                 nuxt
                 text
-                @click="openLink(item.link)"
+                @click="openLink(item.link, item.openInNewTab)"
               >
                 {{ item.title }}
               </v-btn>
@@ -269,7 +269,11 @@ export default {
   },
 
   methods: {
-    openLink(link) {
+    openLink(link, inNewTab) {
+      if (inNewTab) {
+        window.open(link, '_blank')
+        return
+      }
       window.open(link, '_self')
     }
   }
