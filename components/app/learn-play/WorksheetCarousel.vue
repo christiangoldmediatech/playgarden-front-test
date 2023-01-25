@@ -27,25 +27,12 @@
             lg="4"
             xl="3"
           >
-            <v-card
-              class="mx-auto worksheet-card ma-4"
-            >
-              <div class="pt-4">
-                <v-img :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')" max-height="200px" contain />
-              </div>
-
-              <div class="d-flex flex-nowrap pa-2 align-center">
-                <div class="worksheet-title flex-grow-1 pr-2">
-                  {{ offlineWorksheet.name }}
-                </div>
-
-                <div>
-                  <DownloadButtonLearnPlay
-                    @click.stop="handleDownloadWorksheetClick(offlineWorksheet)"
-                  />
-                </div>
-              </div>
-            </v-card>
+            <worksheet-card
+              class="mx-auto ma-4"
+              :thumbnail="offlineWorksheet.pdfThumbnail"
+              :name="offlineWorksheet.name"
+              @click:download="handleDownloadWorksheetClick(offlineWorksheet)"
+            />
           </v-col>
         </v-row>
       </v-col>
@@ -70,13 +57,13 @@
 import { useLearnPlayV2, useChild, useVuetifyHelper } from '@/composables'
 import { defineComponent, useStore, onMounted, ref, computed, watch } from '@nuxtjs/composition-api'
 import { TypedStore } from '@/models'
-import DownloadButtonLearnPlay from './DownloadButtonLearnPlay.vue'
+import WorksheetCard from './WorksheetCard.vue'
 
 export default defineComponent({
   name: 'WorksheetCarousel',
 
   components: {
-    DownloadButtonLearnPlay
+    WorksheetCard
   },
 
   props: {
@@ -170,19 +157,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss" scoped>
-.worksheet-title {
-  font-family: 'Poppins';
-  font-weight: 700;
-  line-height: 1.3;
-  text-overflow: ellipsis;
-  color: #606060;
-  overflow: hidden;
-}
-.worksheet-card{
-  min-height: 280px !important;
-  max-height: 280px !important;
-}
-
-</style>
