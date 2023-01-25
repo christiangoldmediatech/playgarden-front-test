@@ -69,7 +69,7 @@
                 class="px-2 text-none link-text px-lg-4"
                 active-class="custom-active"
                 text
-                @click="openLink(item.link)"
+                @click="openLink(item.link, item.openInNewTab)"
               >
                 {{ item.title }}
               </v-btn>
@@ -302,7 +302,11 @@ export default {
       this.$router.push({ name: 'app-virtual-preschool' })
     },
 
-    openLink(link) {
+    openLink(link, inNewTab) {
+      if (inNewTab) {
+        window.open(link, '_blank')
+        return
+      }
       window.open(link, '_self')
     },
 

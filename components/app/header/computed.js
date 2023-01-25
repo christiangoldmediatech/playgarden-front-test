@@ -63,7 +63,8 @@ export default {
               title: 'Kids Corner',
               dataTestId: 'app-kids-corner',
               external: true,
-              link: `${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`
+              link: `${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`,
+              openInNewTab: false
             },
             {
               title: 'Student Cubby',
@@ -75,6 +76,13 @@ export default {
                 }
               },
               exact: false
+            },
+            {
+              title: 'Community',
+              dataTestId: 'app-community',
+              external: true,
+              link: 'https://community.playgardenprep.com/',
+              openInNewTab: true
             }
             // {
             //   title: 'Parent Corner',
