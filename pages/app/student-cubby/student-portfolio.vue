@@ -104,88 +104,13 @@
                     width="4"
                   />
                 </div>
-                <v-slide-group
+                <upload-worksheet-carousel
                   v-else-if="!isMobile"
-                  mandatory
-                  show-arrows
-                  center-active
-                  class="my-2"
-                >
-                  <v-slide-item
-                    v-for="(worksheet, index2) in lesson.worksheets"
-                    :key="`category-${index2}-card-${worksheet.id}`"
-                    class="pa-1 elevation-0"
-                  >
-                    <v-card
-                      :class="{ 'ml-8': index2 }"
-                      height="270"
-                      width="250"
-                    >
-                      <v-card
-                        @click.stop="
-                          $nuxt.$emit('open-portfolio-overlay', {
-                            child: child,
-                            entityId: worksheet.id,
-                            entityType: 'WORKSHEET',
-                            image: worksheet.url,
-                            created: worksheet.updatedAt
-                          })
-                        "
-                      >
-                        <v-img :src="worksheet.url" height="200" contain />
-                      </v-card>
-
-                      <div class="mt-3">
-                        <div class="subheading">
-                          <span
-                            class="d-block text-center primary--text font-bold mb-1"
-                          >
-                            {{ `WORKSHEET ${worksheet.id}` }}
-                          </span>
-                        </div>
-
-                        <div class="subheading">
-                          <span
-                            class="d-block text-center font-bold upload-label-card"
-                          >
-                            UPLOADED DATE:
-                            {{ worksheet.updatedAt | formattedCreatedDate }}
-                          </span>
-                        </div>
-                      </div>
-                    </v-card>
-                  </v-slide-item>
-                  <v-slide-item class="elevation-0">
-                    <v-card
-                      height="210"
-                      width="200"
-                      class="d-flex flex-column items-center justify-center"
-                      :class="{
-                        'ml-6': lesson.worksheets && lesson.worksheets.length
-                      }"
-                      @click="uploadDialog = !loadingCurrentLesson"
-                    >
-                      <v-progress-circular
-                        v-if="loadingCurrentLesson"
-                        color="success"
-                        indeterminate
-                        size="42"
-                        width="4"
-                        class="mb-4"
-                      />
-                      <v-icon v-else size="140" color="primary">
-                        mdi-plus-circle
-                      </v-icon>
-                      <span class="add-upload-text font-bold ">
-                        {{
-                          loadingCurrentLesson
-                            ? 'VERIFYING LESSON'
-                            : 'UPLOAD WORKSHEET'
-                        }}
-                      </span>
-                    </v-card>
-                  </v-slide-item>
-                </v-slide-group>
+                  :worksheets-data="lesson.worksheets" 
+                  :child="child"
+                  :loading="loadingCurrentLesson"
+                  @click:upload="uploadDialog = !loading" 
+                />
                 <v-row v-else class="py-1" no-gutters>
                   <v-col
                     v-for="(worksheet, index2) in lesson.worksheets"
@@ -285,6 +210,7 @@ import CarouselLetter from '@/components/app/all-done/CarouselLetter.vue'
 import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLetter.vue'
 import UploadOfflineWorksheetDialog from '@/components/app/dashboard/worksheets/UploadOfflineWorksheetDialog.vue'
 import WorksheetsWrapper from '@/components/app/student-cubby/WorksheetsWrapper.vue'
+import UploadWorksheetCarousel from '@/components/app/student-cubby/UploadWorksheetCarousel.vue'
 import {
   computed,
   defineComponent,
@@ -314,7 +240,8 @@ export default defineComponent({
     CarouselLetter,
     RecordedLetter,
     UploadOfflineWorksheetDialog,
-    WorksheetsWrapper
+    WorksheetsWrapper,
+    UploadWorksheetCarousel
   },
   data: () => {
     return {
@@ -372,6 +299,7 @@ export default defineComponent({
       }
 
       lessons.value[index].worksheets = data
+      // lessons.value[index].worksheets = [ ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data ]
       loadingWorksheets.value = false
       loadingCurrentLesson.value = true
 
