@@ -382,6 +382,17 @@ export default {
       const fireAuthObj = this.$fireAuthObj()
       fireAuthObj.signInWithRedirect(provider)
     }
+  },
+  head: {
+    title: 'Login - Playgarden Online',
+    meta: [
+      { charset: 'utf-8' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Login to your Playgarden Online account using email, Facebook, or Google. New to PG Online? Sign up FREE for Online Preschool'
+      }
+    ]
   }
 }
 </script>
