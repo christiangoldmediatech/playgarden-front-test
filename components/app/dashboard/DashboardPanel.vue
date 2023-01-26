@@ -243,6 +243,7 @@
                       <v-img
                         class="dashboard-item-image"
                         :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')"
+                        :position="offlineWorksheet.pdfThumbnail ? 'center center' : 'center 77%'"
                         cover
                         height="100px"
                       />

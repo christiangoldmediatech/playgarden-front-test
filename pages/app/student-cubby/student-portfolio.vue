@@ -39,7 +39,8 @@
               </span>
               <div
                 v-if="getCurrentLetter && !loading && lessons.length"
-                class="d-flex align-center mt-4"
+                class="d-flex align-center mt-4 clickable"
+                @click.stop="downloadWorksheetsAllLesson()"
               >
                 <span class="portfolio-subtitle">
                   {{
@@ -48,7 +49,7 @@
                       : downloadText
                   }}
                 </span>
-                <v-btn class="ml-4" color="primary" fab small :disabled="loadingDownloadLessonsFile" @click.stop="downloadWorksheetsAllLesson()">
+                <v-btn class="ml-4" color="primary" fab small>
                   <v-icon size="25" color="white">
                     mdi-download
                   </v-icon>
@@ -516,6 +517,10 @@ export default defineComponent({
       }
     },
     async downloadWorksheetsAllLesson() {
+      if (this.loadingDownloadLessonsFile) {
+        return
+      }
+
       this.loadingDownloadLessonsFile = true
       const { path } = await this.getFileUpload({
         type: 'upload-document',
