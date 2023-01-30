@@ -52,14 +52,6 @@ export default {
     },
     link: [
       {
-        rel: 'icon',
-        type: 'image/x-icon',
-        href:
-          process.env.TEST_ENV === 'production'
-            ? `${baseRouteProd}favicon.ico`
-            : '/favicon.ico'
-      },
-      {
         rel: 'stylesheet',
         type: 'text/css',
         href:
@@ -154,7 +146,8 @@ export default {
     '@nuxt/typescript-build',
     '@nuxtjs/gtm',
     '@nuxtjs/vuetify',
-    '@nuxtjs/composition-api'
+    '@nuxtjs/composition-api',
+    '@nuxtjs/pwa'
   ],
   /**
    * Vue Options
