@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mb-4 d-flex align-center">
+    <div v-if="loading || getDiyProject.length > 0" class="mb-4 d-flex align-center">
       <span class="title-dashboard">
         DIY Project
       </span>
@@ -25,7 +25,7 @@
           </center>
         </v-col>
       </v-row>
-      <v-row v-else class="mx-2 my-2">
+      <v-row v-if="loading" class="mx-2 my-2">
         <v-col v-for="n in 3" :key="`diy-load-item-${n}`" cols="4">
           <v-skeleton-loader type="image" />
         </v-col>
@@ -91,6 +91,7 @@ export default defineComponent({
 
     return {
       getDiyProject: learnPlayV2.computedProps.getDiyProject,
+      loading: learnPlayV2.loadingPlayAndLearnFiles,
       downloadDiyFiles
     }
   }

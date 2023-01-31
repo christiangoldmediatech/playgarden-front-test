@@ -2,7 +2,7 @@
   <div class="video-lesson-player">
     <v-row no-gutters>
       <v-col cols="12" md="8" class="pr-10">
-        <div class="mb-3">
+        <div v-if="loading || videos.length > 0" class="mb-3">
           <span class="title-dashboard">
             Video Lessons
           </span>
@@ -54,7 +54,7 @@
               </div>
             </template>
           </pg-video-player>
-          <v-card v-else width="100%">
+          <v-card v-if="loading" width="100%">
             <v-skeleton-loader type="card" />
           </v-card>
         </div>
@@ -70,7 +70,7 @@
           :height="playerHeight"
           @change-video-track="changeVideoTrack"
         />
-        <v-card v-else width="100%">
+        <v-card v-if="loading" width="100%">
           <v-skeleton-loader type="list-item-avatar-two-line" />
         </v-card>
       </v-col>
@@ -288,6 +288,7 @@ export default defineComponent({
 
     return {
       videos: learnPlayV2.playAndLearnVideos,
+      loading: learnPlayV2.loadingPlayAndLearnVideos,
       ...commonPlayerFunctions,
       title,
       author,
