@@ -1,6 +1,6 @@
 <template>
   <v-card class="pa-3">
-    <div class="mb-4">
+    <div v-if="loading || songs.length > 0" class="mb-4">
       <span class="title-dashboard">
         Playlist
       </span>
@@ -11,7 +11,7 @@
       :preview-mode="previewMode"
       class="song-card"
     />
-    <div v-else>
+    <div v-if="loading">
       <v-skeleton-loader class="mx-auto" type="card" />
     </div>
 
@@ -22,7 +22,7 @@
             Top five
           </div>
           <top-five v-if="songs && songs.length > 0" :songs="songs" />
-          <div v-else>
+          <div v-if="loading">
             <v-card
               v-for="n in 5"
               :key="`song-load-item-${n}`"
@@ -64,7 +64,8 @@ export default defineComponent({
     const learnPlayV2 = useLearnPlayV2({ store })
 
     return {
-      songs: learnPlayV2.computedProps.songs
+      songs: learnPlayV2.computedProps.songs,
+      loading: learnPlayV2.loadingPlayAndLearnSongs
     }
   }
 })

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="getArtProjects.length > 0" class="mb-4">
+  <div v-if="loading || getArtProjects.length > 0" class="mb-4">
     <div class="mb-4 d-flex align-center">
       <span class="title-dashboard">
         Sensory Play
@@ -35,7 +35,7 @@
           </center>
         </v-row>
       </v-card>
-      <v-card v-else class="justify-center ml-2 mr-8" width="100%">
+      <v-card v-if="loading" class="justify-center ml-2 mr-8" width="100%">
         <v-row
           v-for="n in 3"
           :key="`art-load-project-${n}`"
@@ -110,6 +110,7 @@ export default defineComponent({
 
     return {
       getArtProjects: learnPlayV2.computedProps.getArtProjects,
+      loading: learnPlayV2.loadingPlayAndLearnFiles,
       downloadArtFiles
     }
   }

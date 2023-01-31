@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mb-4 d-flex align-center">
+    <div v-if="loading || getOfflineWorksheet.length > 0" class="mb-4 d-flex align-center">
       <span class="title-dashboard">
         Worksheets
       </span>
@@ -8,7 +8,7 @@
     <div v-if="getOfflineWorksheet.length > 0" class="card-offline">
       <workshhet-carousel :worksheets-data="getOfflineWorksheet" />
     </div>
-    <div v-else>
+    <div v-if="loading">
       <v-card
         v-for="n in 3"
         :key="`worksheet-load-item-${n}`"
@@ -73,6 +73,7 @@ export default defineComponent({
     return {
       handleDownloadWorksheetClick,
       getOfflineWorksheet: learnPlayV2.computedProps.getOfflineWorksheet,
+      loading: learnPlayV2.loadingPlayAndLearnWorksheets,
       selectedWorksheet
     }
   }
