@@ -30,6 +30,7 @@
     "@nuxtjs/composition-api": "^0.22.4",
     "@nuxtjs/firebase": "^6.1.1",
     "@nuxtjs/gtm": "^2.4.0",
+    "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/sentry": "^4.5.0",
     "@sentry/tracing": "^6.0.2",
     "d3": "^6.2.0",
