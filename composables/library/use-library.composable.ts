@@ -1,4 +1,4 @@
-import { ref } from '@nuxtjs/composition-api'
+import { ref, useStore } from '@nuxtjs/composition-api'
 import { axios, isLetter } from '@/utils'
 import { shuffle } from '@/utils/arrayTools'
 import {
@@ -11,7 +11,8 @@ import {
   FavoriteListResponse,
   ActivitiesResponse,
   CurriculumType,
-  ActivityByCurriculumIdResponse
+  ActivityByCurriculumIdResponse,
+  TypedStore
 } from '@/models'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import { useCurriculumTypes, useFavorites } from '@/composables'
@@ -39,7 +40,9 @@ export const useLibraryV2 = () => {
     featuredActivitiesToMediaObjectPlaylist
   } = useLibraryHelpers()
 
-  const { curriculumTypes, getCurriculumTypes } = useCurriculumTypes()
+  const store = useStore<TypedStore>()
+
+  const { curriculumTypes, getCurriculumTypes } = useCurriculumTypes({ store })
   const { getAllFavorites } = useFavorites()
 
   // Get the data for initial home library page load

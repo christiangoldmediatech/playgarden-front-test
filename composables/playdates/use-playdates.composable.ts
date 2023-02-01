@@ -1,6 +1,11 @@
 import { ref, watch } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
-import { MeetingsResponse, Meeting } from '@/models'
+import { MeetingsResponse, Meeting, TypedStore } from '@/models'
+import { Store } from 'vuex/types'
+
+interface UsePlaydatesParams {
+  store: Store<TypedStore>,
+}
 
 enum StatusPlaydate {
   REQUESTED = 'REQUESTED',
@@ -9,7 +14,7 @@ enum StatusPlaydate {
   REJECTED = 'REJECTED'
 }
 
-export const usePlaydates = () => {
+export const usePlaydates = ({ store }: UsePlaydatesParams) => {
   const page = ref(1)
   const total = ref(0)
   const limit = ref(10)
@@ -30,7 +35,13 @@ export const usePlaydates = () => {
   }
 
   const getCurriculumTypes = async () => {
-    return await axios.$get('/curriculum-types')
+    let curriculumTypes = store.getters['admin/curriculum/types']
+
+    if (curriculumTypes.length === 0) {
+      curriculumTypes = await store.dispatch('admin/curriculum/getTypes')
+    }
+
+    return curriculumTypes
   }
 
   const getActivityTypes = async () => {

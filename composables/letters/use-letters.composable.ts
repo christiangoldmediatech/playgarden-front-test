@@ -15,7 +15,13 @@ export const useLetters = ({ store }: { store: Store<TypedStore> }) => {
   const { currentChildren } = useChild({ store })
 
   const getLeters = async () => {
-    letters.value = await axios.$get('/curriculum-types')
+    let curriculumTypes = store.getters['admin/curriculum/types']
+
+    if (curriculumTypes.length === 0) {
+      curriculumTypes = await store.dispatch('admin/curriculum/getTypes')
+    }
+
+    letters.value = curriculumTypes
   }
   const getProgress = async () => {
     if (currentChildren.value) {
