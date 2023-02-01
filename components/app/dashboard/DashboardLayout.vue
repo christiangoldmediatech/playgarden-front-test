@@ -226,7 +226,8 @@ export default {
       return this.$route.name === 'app-dashboard-lesson-videos' ||
         this.$route.name === 'app-dashboard-online-worksheet' ||
         this.$route.name === 'app-dashboard-offline-worksheet' ||
-        this.$route.name === 'app-dashboard-lesson-activities'
+        this.$route.name === 'app-dashboard-lesson-activities' ||
+        this.$route.name === 'app-dashboard'
     },
 
     overrideMode() {
