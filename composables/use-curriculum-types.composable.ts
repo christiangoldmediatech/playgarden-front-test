@@ -10,13 +10,13 @@ const curriculumTypes = ref<CurriculumType[]>([])
 
 export const useCurriculumTypes = ({ store }: UseCurriculumTypesParams) => {
   const getCurriculumTypes = async () => {
-    let curriculumTypes = store.getters['admin/curriculum/types']
+    let savedCurriculumTypes = store.getters['admin/curriculum/types']
 
-    if (curriculumTypes.length === 0) {
-      curriculumTypes = await store.dispatch('admin/curriculum/getTypes')
+    if (savedCurriculumTypes.length === 0) {
+      savedCurriculumTypes = await store.dispatch('admin/curriculum/getTypes')
     }
 
-    curriculumTypes.value = curriculumTypes
+    curriculumTypes.value = savedCurriculumTypes
   }
 
   return {
