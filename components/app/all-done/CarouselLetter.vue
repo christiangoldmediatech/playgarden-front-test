@@ -258,7 +258,9 @@ export default defineComponent({
     if (this.previewMode) {
       return
     }
-    await this.getLetters()
+    if (this.letters.length === 0) {
+      await this.getLetters()
+    }
     await this.fetchChildProgress()
   },
 
