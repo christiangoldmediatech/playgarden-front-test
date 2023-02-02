@@ -51,6 +51,16 @@ export default {
 
         if (sent) {
           this.$snotify.success('Instructions Sent!')
+          setTimeout(() => {
+            const from = this.$route.query.from
+
+            if (from === 'community') {
+              window.open('https://community.playgardenprep.com/login', '_self')
+              return
+            }
+
+            this.$router.push('/')
+          }, 2000)
         } else {
           throw new Error('error')
         }

@@ -73,10 +73,8 @@
         SEND PASSWORD RESET LINK
       </v-btn>
 
-      <p class="login mt-8">
-        <nuxt-link class="primary--text" :to="{ name: 'index' }">
-          <span class="return-link">return to login</span>
-        </nuxt-link>
+      <p class="login mt-8 clickable" @click="handleReturn">
+        <span class="return-link">return to login</span>
       </p>
     </v-form>
   </validation-observer>
@@ -104,6 +102,16 @@ export default {
         email: null,
         phone: null
       }
+    },
+    handleReturn() {
+      const from = this.$route.query.from
+
+      if (from === 'community') {
+        window.open('https://community.playgardenprep.com/login', '_self')
+        return
+      }
+
+      this.$router.push('/')
     }
   }
 }
