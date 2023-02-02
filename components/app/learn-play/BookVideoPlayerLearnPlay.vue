@@ -195,6 +195,7 @@ export default defineComponent({
             type: 'application/x-mpegURL'
           },
           meta: {
+            videoId: video.id,
             author: video.description
           }
         }
