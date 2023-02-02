@@ -1,5 +1,5 @@
 <template>
-  <div v-if="getSnacks.length > 0">
+  <div v-if="loading || getSnacks.length > 0">
     <div class="mb-4 d-flex align-center">
       <span class="title-dashboard">
         Snack
@@ -26,7 +26,7 @@
         </v-col>
       </v-row>
     </v-card>
-    <v-card v-else class="justify-center ml-2 mr-8" width="100%">
+    <v-card v-if="loading" class="justify-center ml-2 mr-8" width="100%">
       <v-row
         v-for="n in 3"
         :key="`snack-load-project-${n}`"
@@ -99,6 +99,7 @@ export default defineComponent({
 
     return {
       getSnacks: learnPlayV2.computedProps.getSnacks,
+      loading: learnPlayV2.loadingPlayAndLearnFiles,
       downloadSnackFiles
     }
   }

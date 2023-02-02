@@ -7,6 +7,12 @@ import { PlayAndLearn, PlayAndLearnVideo, Video, MusicLibrary, PlayAndLearnFile,
 const learnPlayData = ref<PlayAndLearn>(null!)
 const playAndLearnInfo = ref<PlayAndLearn>(null!)
 
+const loadingPlayAndLearnVideos = ref(false)
+const loadingPlayAndLearnSongs = ref(false)
+const loadingPlayAndLearnFiles = ref(false)
+const loadingPlayAndLearnWorksheets = ref(false)
+const loadingPlayAndLearnBooks = ref(false)
+
 const playAndLearnVideos = ref<PlayAndLearnVideo[]>([])
 const playAndLearnSongs = ref<MusicLibrary[]>([])
 const playAndLearnFiles = ref<PlayAndLearnFile[]>([])
@@ -25,9 +31,21 @@ export const useLearnPlayV2 = (params: {
       return
     }
 
+    loadingPlayAndLearnVideos.value = true
+    loadingPlayAndLearnSongs.value = true
+    loadingPlayAndLearnFiles.value = true
+    loadingPlayAndLearnWorksheets.value = true
+    loadingPlayAndLearnBooks.value = true
+
     learnPlayData.value = await store.dispatch(
       'children/learn-play/getFirstLearnPlay'
     )
+
+    loadingPlayAndLearnVideos.value = false
+    loadingPlayAndLearnSongs.value = false
+    loadingPlayAndLearnFiles.value = false
+    loadingPlayAndLearnWorksheets.value = false
+    loadingPlayAndLearnBooks.value = false
 
     playAndLearnInfo.value = { ...learnPlayData.value }
     playAndLearnVideos.value = learnPlayData.value.videos
@@ -57,47 +75,57 @@ export const useLearnPlayV2 = (params: {
 
   const getVideosByCurriculumTypeId = async (curriculumTypeId: number) => {
     const params = { curriculumTypeId }
+    loadingPlayAndLearnVideos.value = true
     playAndLearnVideos.value = []
     playAndLearnVideos.value = await store.dispatch(
       'children/learn-play/getPlayAndLearnVideosByCurriculumTypeId',
       params
     )
+    loadingPlayAndLearnVideos.value = false
   }
 
   const getSongsByCurriculumTypeId = async (curriculumTypeId: number) => {
     const params = { curriculumTypeId }
+    loadingPlayAndLearnSongs.value = true
     playAndLearnSongs.value = []
     playAndLearnSongs.value = await store.dispatch(
       'children/learn-play/getPlayAndLearnSongsByCurriculumTypeId',
       params
     )
+    loadingPlayAndLearnSongs.value = false
   }
 
   const getFilesByCurriculumTypeId = async (curriculumTypeId: number) => {
     const params = { curriculumTypeId }
+    loadingPlayAndLearnFiles.value = true
     playAndLearnFiles.value = []
     playAndLearnFiles.value = await store.dispatch(
       'children/learn-play/getPlayAndLearnFilesByCurriculumTypeId',
       params
     )
+    loadingPlayAndLearnFiles.value = false
   }
 
   const getWorksheetsByCurriculumTypeId = async (curriculumTypeId: number) => {
     const params = { curriculumTypeId }
+    loadingPlayAndLearnWorksheets.value = true
     playAndLearnWorksheets.value = []
     playAndLearnWorksheets.value = await store.dispatch(
       'children/learn-play/getPlayAndLearnWorksheetsByCurriculumTypeId',
       params
     )
+    loadingPlayAndLearnWorksheets.value = false
   }
 
   const getBooksByCurriculumTypeId = async (curriculumTypeId: number) => {
     const params = { curriculumTypeId }
+    loadingPlayAndLearnBooks.value = true
     playAndLearnBooks.value = []
     playAndLearnBooks.value = await store.dispatch(
       'children/learn-play/getPlayAndLearnBooksByCurriculumTypeId',
       params
     )
+    loadingPlayAndLearnBooks.value = false
     learnPlayData.value.books = playAndLearnBooks.value
   }
 
@@ -204,6 +232,11 @@ export const useLearnPlayV2 = (params: {
     getWorksheetsByCurriculumTypeId,
     getBooksByCurriculumTypeId,
     updateProgress,
-    newVideo
+    newVideo,
+    loadingPlayAndLearnVideos,
+    loadingPlayAndLearnSongs,
+    loadingPlayAndLearnFiles,
+    loadingPlayAndLearnWorksheets,
+    loadingPlayAndLearnBooks
   }
 }

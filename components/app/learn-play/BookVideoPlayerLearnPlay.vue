@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mb-4 d-flex align-center">
+    <div v-if="loading || getRelatedBooks.length > 0" class="mb-4 d-flex align-center">
       <span class="title-dashboard">
         This week's recommended books
       </span>
@@ -77,7 +77,7 @@
         </v-card>
       </div>
     </template>
-    <template v-else>
+    <template v-if="loading">
       <v-card class="mb-4" width="100%">
         <v-skeleton-loader type="card" />
       </v-card>
@@ -308,6 +308,7 @@ export default defineComponent({
       currentBookVideo: learnPlayV2.computedProps.currentBookVideo,
       getBook: learnPlayV2.computedProps.getBook,
       getRelatedBooks: learnPlayV2.computedProps.getRelatedBooks,
+      loading: learnPlayV2.loadingPlayAndLearnBooks,
       title,
       author,
       amzLink,
