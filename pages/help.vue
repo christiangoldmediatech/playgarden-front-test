@@ -452,6 +452,10 @@ export default defineComponent({
     flex-direction: row;
     justify-content: space-around;
   }
+
+  @media screen and (min-width: $breakpoint-md) {
+    padding: 0 140px;
+  }
 }
 
 .links-container-title {
