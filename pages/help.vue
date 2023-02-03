@@ -152,6 +152,27 @@
                   </v-expansion-panel>
                 </v-expansion-panels>
               </v-row>
+
+              <v-row class="pb-6" no-gutters>
+                <div class="w-100 links-container d-flex flex-column align-center justify-center">
+                  <p class="links-base links-container-title">
+                    Join the Playgarden Online community today!
+                  </p>
+
+                  <div class="w-100 links-row">
+                    <a
+                      v-for="(link, linkIndex) in links"
+                      :key="linkIndex"
+                      :href="link.link"
+                      target="_blank"
+                      class="links-base link"
+                      :style="{ 'color': link.color }"
+                    >
+                      {{ link.name }}
+                    </a>
+                  </div>
+                </div>
+              </v-row>
             </template>
 
             <v-row v-if="isLogin" class="px-6 px-md-0" justify="center">
@@ -300,6 +321,29 @@ export default defineComponent({
     const categories = ref<FAQCategory[]>([])
     const faqs = ref<Record<number, FAQ[]>>({})
 
+    const links = ref([
+      {
+        name: 'Enrollment Plans',
+        link: 'https://playgardenonline.com/plans/',
+        color: 'rgba(105, 190, 255, 1)'
+      },
+      {
+        name: 'About Us',
+        link: 'https://playgardenonline.com/about-us/',
+        color: 'rgba(195, 153, 237, 1)'
+      },
+      {
+        name: 'Your Teachers',
+        link: 'https://playgardenonline.com/your-teachers/',
+        color: 'rgba(255, 160, 200, 1)'
+      },
+      {
+        name: 'News',
+        link: 'https://playgardenonline.com/news/',
+        color: 'rgba(104, 196, 83, 1)'
+      }
+    ])
+
     const help = ref({
       name: null,
       email: null,
@@ -378,7 +422,8 @@ export default defineComponent({
       help,
       isMobile,
       isLogin: isUserLoggedIn,
-      onSubmit
+      onSubmit,
+      links
     }
   },
 
@@ -387,19 +432,45 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-// .main::v-deep {
-//   min-height: 500px;
+.links-container {
+  background-image: url("~@/assets/png/faq-paper.png");
+  background-position: center center;
+  background-size: 100% 500px;
+  padding: 50px 10px;
 
-//   .v-expansion-panel:before {
-//     box-shadow: none;
-//   }
+  @media screen and (min-width: $breakpoint-xs) {
+    background-size: 100% 323px;
+    padding: 95px 70px;
+  }
+}
 
-//   .v-overlay__content {
-//     width: 600px;
-//   }
+.links-row {
+  display: flex;
+  flex-direction: column;
 
-//   .mt-categories {
-//     margin-top: -80px;
-//   }
-// }
+  @media screen and (min-width: $breakpoint-xs) {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
+
+.links-container-title {
+  color: #F89838;
+}
+
+.links-base {
+  font-family: 'Quicksand';
+  font-weight: 700;
+  line-height: 50px;
+  font-size: 18px;
+  text-align: center;
+
+  @media screen and (min-width: $breakpoint-md) {
+    font-size: 25px;
+  }
+}
+
+.link {
+  text-decoration-line: underline !important;
+}
 </style>
