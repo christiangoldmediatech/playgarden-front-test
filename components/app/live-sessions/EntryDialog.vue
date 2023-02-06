@@ -9,7 +9,7 @@
     <div class="entry-container">
       <template v-if="entry">
         <v-card class="entry-card" :style="{'--borderColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}">
-          <div v-if="$vuetify.breakpoint.smAndDown" class="entry-card-elipse">
+          <div v-if="$vuetify.breakpoint.smAndDown && entry.type === 'LiveClass'" class="entry-card-elipse">
             <img class="entry-card-elipse-img" :src="entry.activityType.icon" />
           </div>
 
@@ -22,12 +22,14 @@
                     :src="entry.teacher.img"
                   />
                   <img
+                    v-if="entry.type === 'LiveClass'"
                     class="pg-w-[50px] pg-h-[50px] pg-bg-white pg-rounded-full pg-p-1 pg-shadow-sm pg-absolute pg-bottom-0 pg-right-[-5px]"
                     :src="entry.activityType.icon"
                   />
                 </div>
                 <div v-else>
                   <img
+                    v-if="entry.type === 'LiveClass'"
                     class="lsess-table-entry-type ml-1 mt-1"
                     :src="entry.activityType.icon"
                   />

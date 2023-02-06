@@ -205,7 +205,7 @@ export default {
       this.$gtm.push({
         event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_CLICKED,
         userId: this.getUserInfo.id,
-        topic: this.entry.activityType.name,
+        topic: this.entry.activityType ? this.entry.activityType : this.entry.title,
         topicDescription: this.entry.title,
         itemDateTime: this.entry.dateStart
       })
