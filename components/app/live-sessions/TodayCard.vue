@@ -27,12 +27,14 @@
                 :src="entry.teacher.img"
               />
               <img
+                v-if="entry.type === 'LiveClass'"
                 class="pg-w-[30px] pg-h-[30px] pg-bg-white pg-rounded-full pg-p-1 pg-shadow-sm pg-absolute pg-bottom-0 pg-right-[-5px]"
                 :src="entry.activityType.icon"
               />
             </div>
             <div v-else>
               <img
+                v-if="entry.type === 'LiveClass'"
                 class="lsess-card-activity-type ml-1 mt-1"
                 :src="entry.activityType.icon"
               />
@@ -41,7 +43,7 @@
           <v-col>
             <div class="d-flex flex-column justify-space-between fill-height">
               <div class="lsess-card-title">
-                {{ entry.activityType.name }}
+                {{ entry.type === 'LiveClass' ? entry.activityType.name : entry.title }}
               </div>
               <div class="lsess-card-subtitle">
                 {{ entry.title }}
@@ -186,7 +188,7 @@ export default {
       this.$gtm.push({
         event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_CLICKED,
         userId: this.getUserInfo.id,
-        topic: this.entry.activityType.name,
+        topic: this.entry.activityType ? this.entry.activityType.name : this.entry.title,
         topicDescription: this.entry.title,
         itemDateTime: this.entry.dateStart
       })
