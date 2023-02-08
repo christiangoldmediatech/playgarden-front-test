@@ -8,59 +8,26 @@
         :order="isMobile ? 2 : 1"
         class="text-center text-md-left"
       >
-        <div>
-          <img src="@/assets/png/error-window.png" height="50px" class="mb-2 pr-3">
-          <img src="@/assets/svg/logo.svg" height="50px">
+        <div class="text-center">
+          <img src="@/assets/png/no-content-found.png" height="130px">
         </div>
-        <div v-if="preText">
-          <underlined-title
-            :text="preText"
-            font-size="48px"
-            font-size-mobile="32px"
-            letter-spacing="10px"
-          />
+        <div class="text-h5 text-center text-md-h4 font-weight-medium grey--text text--darken-2 my-4">
+          This URL appears to be broken. Please reach out to <a class="mailInfo" href="mailto:hello@playgardenprep.com&subject=Hello">hello@playgardenprep.com</a> to let us know!
+          <br />
+          <v-btn
+            class="mt-8"
+            color="primary"
+            large
+            router
+            :to="{ name: 'app-virtual-preschool' }"
+          >
+            Go Back To Home
+          </v-btn>
         </div>
-        <underlined-title
-          :text="text"
-          font-size="48px"
-          font-size-mobile="32px"
-          letter-spacing="10px"
-        />
-        <div class="text-h5 text-md-h4 font-weight-medium grey--text text--darken-2 my-4">
-          {{ description }}
-        </div>
-        <v-btn
-          class="my-3"
-          color="warning"
-          large
-          router
-          :to="{ name: 'app-virtual-preschool' }"
-        >
-          Go Back To Home
-        </v-btn><br>
-        <v-btn
-          class="my-3"
-          color="warning"
-          large
-          router
-          outlined
-          :to="{ name: 'app-dashboard' }"
-        >
-          Go Back To Lessons
-        </v-btn>
-        <v-btn
-          class="my-3"
-          color="warning"
-          large
-          outlined
-          router
-          :to="{ name: 'app-library' }"
-        >
-          Go To Library
-        </v-btn>
       </v-col>
       <v-col cols="12" md="5" class="d-flex justify-left" :order="isMobile ? 1 : 2">
         <v-img
+          class="background-no-found"
           :max-height="isMobile ? '400px' : '700px'"
           contain
           :src="img"
@@ -122,8 +89,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.background-no-found {
+  background-image:
+    url("~@/assets/png/background-no-found.png"),
+    url("~@/assets/png/background-no-found.png"),
+    url("~@/assets/png/background-no-found.png"),
+    url("~@/assets/png/background-no-found.png"),
+    url("~@/assets/png/background-no-found.png");
+  background-size: auto,
+    600px 800px,
+    600px 800px;
+  background-position: 20% 0%,
+    100% -15%,
+    -10% 100%,
+    25% 90%;
+}
 .fill-height {
   height: 100vh !important;
+}
+
+.mailInfo {
+  color: #68C453 !important;
+  text-decoration: underline !important;
+  display: inline-block;
 }
 .v-btn:not(.v-btn--text) {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;

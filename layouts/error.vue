@@ -24,7 +24,7 @@ export default {
 
   data () {
     return {
-      sadBoySpiral: require('@/assets/png/sad-boy-spiral.png'),
+      sadBoySpiral: require('@/assets/png/sad-boy.png'),
       text: '',
       description: '',
       img: ''
