@@ -2,10 +2,12 @@
   <v-row align="center" justify="center" no-gutters class="py-0 py-md-16">
     <v-col cols="12" md="6">
       <!-- CHILD IMAGE -->
-      <div
-        class="image"
-      >
-        <v-img contain alt="Smiling Girl Picture" :src="require('@/assets/png/welcome-back.png')" />
+      <div class="image">
+        <v-img
+          contain
+          alt="Smiling Girl Picture"
+          :src="require('@/assets/png/welcome-back.png')"
+        />
       </div>
     </v-col>
 
@@ -16,7 +18,8 @@
         </div>
 
         <p class="text-center text-md-justify">
-          Enter your email below to reset your password, and you will receive an email with further instructions
+          Enter your email below to reset your password, and you will receive an
+          email with further instructions
         </p>
 
         <forgot-password-form :loading="loading" @click:submit="onSubmit" />
@@ -33,6 +36,8 @@ import ForgotPasswordForm from '@/components/forms/password/ForgotPasswordForm'
 export default {
   name: 'ForgotPassword',
 
+  layout: 'iframe-header',
+
   components: {
     ForgotPasswordForm
   },
@@ -44,7 +49,7 @@ export default {
   methods: {
     ...mapActions('auth/password', ['forgotUserPassword']),
 
-    async onSubmit (draft) {
+    async onSubmit(draft) {
       try {
         this.loading = true
         const { sent } = await this.forgotUserPassword(draft)
@@ -65,7 +70,9 @@ export default {
           throw new Error('error')
         }
       } catch (e) {
-        this.$snotify.error('Sorry! There was an error sending the reset password instructions')
+        this.$snotify.error(
+          'Sorry! There was an error sending the reset password instructions'
+        )
       } finally {
         this.loading = false
       }
