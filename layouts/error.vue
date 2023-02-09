@@ -1,8 +1,7 @@
 <template>
   <error-page
     pre-text="OOPS!"
-    :text="text"
-    :description="description"
+    :error-code="error.statusCode"
     :img="img"
   />
 </template>

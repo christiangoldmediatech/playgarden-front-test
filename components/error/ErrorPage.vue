@@ -4,14 +4,14 @@
       <v-col
         cols="12"
         md="5"
-        offset-md="1"
-        :order="isMobile ? 2 : 1"
+        order="2"
+        order-md="1"
         class="text-center text-md-left"
       >
-        <div class="text-center">
-          <img src="@/assets/png/no-content-found.png" height="130px">
+        <div v-if="errorCode === 404" class="text-center">
+          <img src="@/assets/png/no-content-found.png" :height="isMobile ? '100px' : '130px'">
         </div>
-        <div class="text-h5 text-center text-md-h4 font-weight-medium grey--text text--darken-2 my-4">
+        <div v-if="errorCode === 404" class="error-text">
           This URL appears to be broken. Please reach out to <a class="mailInfo" href="mailto:hello@playgardenprep.com&subject=Hello">hello@playgardenprep.com</a> to let us know!
           <br />
           <v-btn
@@ -24,8 +24,21 @@
             Go Back To Home
           </v-btn>
         </div>
+        <div v-else class="error-text">
+          An unknown error ocurred.
+          <br />
+          <v-btn
+            class="mt-8"
+            color="primary"
+            large
+            router
+            :to="{ name: 'app-virtual-preschool' }"
+          >
+            Go Back To Home
+          </v-btn>
+        </div>
       </v-col>
-      <v-col cols="12" md="5" class="d-flex justify-left" :order="isMobile ? 1 : 2">
+      <v-col cols="12" md="7" class="d-flex justify-left" order="1" order-md="2">
         <v-img
           :max-height="isMobile ? '400px' : '700px'"
           contain
@@ -47,13 +60,9 @@ export default {
       type: String,
       default: ''
     },
-    text: {
-      type: String,
-      default: ''
-    },
-    description: {
-      type: String,
-      default: ''
+    errorCode: {
+      type: Number,
+      default: 404
     },
     img: {
       type: String,
@@ -92,11 +101,31 @@ export default {
 .background-no-found {
   background-image:
     url("~@/assets/png/background-no-found.png");
-  background-size: auto;
-  background-position: right 100% bottom 50%;
+  background-size: 122% 157%;
+  background-position: top 60% right 184%;
+
+  @media screen and (min-width: $breakpoint-xs) {
+    background-size: 90% 212%;
+    background-position: top 60% right -240%;
+  }
 }
+
+.error-text {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 40px;
+  text-align: center;
+  color: #707070;
+
+  @media screen and (min-width: $breakpoint-xs) {
+    font-size: 32px;
+  }
+}
+
 .fill-height {
-  height: 100vh !important;
+  // height: 100vh !important;
 }
 
 .mailInfo {
