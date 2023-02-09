@@ -8,24 +8,11 @@
         order-md="1"
         class="text-center text-md-left"
       >
-        <div v-if="errorCode === 404" class="text-center">
-          <img src="@/assets/png/no-content-found.png" :height="isMobile ? '100px' : '130px'">
+        <div class="text-center">
+          <img :src="errorCode === 404 ? require('@/assets/png/no-content-found.png') : require('@/assets/png/unknown-error.png')" :height="isMobile ? '100px' : '130px'">
         </div>
-        <div v-if="errorCode === 404" class="error-text">
+        <div class="error-text">
           This URL appears to be broken. Please reach out to <a class="mailInfo" href="mailto:hello@playgardenprep.com&subject=Hello">hello@playgardenprep.com</a> to let us know!
-          <br />
-          <v-btn
-            class="mt-8"
-            color="primary"
-            large
-            router
-            :to="{ name: 'app-virtual-preschool' }"
-          >
-            Go Back To Home
-          </v-btn>
-        </div>
-        <div v-else class="error-text">
-          An unknown error ocurred.
           <br />
           <v-btn
             class="mt-8"
