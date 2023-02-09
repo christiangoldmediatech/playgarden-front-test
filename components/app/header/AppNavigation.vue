@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="appDrawer" temporary app width="100%">
+  <v-navigation-drawer v-model="appDrawer" temporary app :width="navigationDrawerWidth">
     <v-container fluid data-test-id="app-navigation-container">
       <div class="pg-flex pg-px-5 pg-py-3 pg-justify-between pg-items-center">
         <!-- Logo -->
@@ -259,6 +259,12 @@ export default {
         { title: 'Privacy Policy', to: { name: 'privacy-policy' } },
         { title: 'Help', to: { name: 'help' } }
       ]
+    }
+  },
+
+  computed: {
+    navigationDrawerWidth() {
+      return this.$vuetify.breakpoint.smAndDown ? '100%' : '40%'
     }
   },
 
