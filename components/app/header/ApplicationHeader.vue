@@ -59,7 +59,7 @@
 
       <v-col class="d-flex align-center pg-mr-2 md:pg-mr-0" cols="auto">
         <!-- ITEMS -->
-        <div v-if="getVerifyEmail" class="mt-5 hidden-sm-and-down">
+        <div v-if="getVerifyEmail" class="mt-5 hidden-md-and-down">
           <v-toolbar-items>
             <template v-for="(item, index) in items">
               <!-- EXTERNAL LINK -->
@@ -91,13 +91,13 @@
             </template>
           </v-toolbar-items>
         </div>
-        <div v-if="!isUserLoggedIn" class="hidden-sm-and-down">
+        <div v-if="!isUserLoggedIn" class="hidden-md-and-down">
           <menu-landing-page />
         </div>
         <!--divider icon profile and help-->
         <v-divider
           v-if="isUserLoggedIn && !isUserInSignupProcess && getVerifyEmail"
-          class="mr-1 pg-app-bar-buttons hidden-sm-and-down auth-buttons"
+          class="mr-1 pg-app-bar-buttons hidden-md-and-down auth-buttons"
           inset
           vertical
         />
@@ -137,7 +137,7 @@
           <v-menu open-on-hover offset-y>
             <template v-slot:activator="{ on }">
               <v-img
-                class="mx-2 clickable account-btn pg-app-bar-buttons hidden-sm-and-down auth-buttons"
+                class="mx-2 clickable account-btn pg-app-bar-buttons hidden-md-and-down auth-buttons"
                 :src="require('@/assets/png/Help.png')"
                 v-on="on"
               />
