@@ -170,6 +170,10 @@ export default defineComponent({
     disableOpenDialog: {
       type: Boolean,
       default: false
+    },
+    disableWeekends: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -305,6 +309,12 @@ export default defineComponent({
 
     activeDay() {
       this.scrollToFirst()
+    }
+  },
+
+  created() {
+    if (this.disableWeekends) {
+      this.days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
     }
   },
 

@@ -66,6 +66,7 @@
               :today="today"
               :holidays="getHolidays"
               disable-open-dialog
+              disable-weekends
             />
           </v-col>
         </v-row>
