@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid :class="containerClasses">
+  <v-container class="background-no-found" fluid :class="containerClasses">
     <v-row align="center" justify="center" no-gutters>
       <v-col
         cols="12"
@@ -27,7 +27,6 @@
       </v-col>
       <v-col cols="12" md="5" class="d-flex justify-left" :order="isMobile ? 1 : 2">
         <v-img
-          class="background-no-found"
           :max-height="isMobile ? '400px' : '700px'"
           contain
           :src="img"
@@ -92,18 +91,9 @@ export default {
 
 .background-no-found {
   background-image:
-    url("~@/assets/png/background-no-found.png"),
-    url("~@/assets/png/background-no-found.png"),
-    url("~@/assets/png/background-no-found.png"),
-    url("~@/assets/png/background-no-found.png"),
     url("~@/assets/png/background-no-found.png");
-  background-size: auto,
-    600px 800px,
-    600px 800px;
-  background-position: 20% 0%,
-    100% -15%,
-    -10% 100%,
-    25% 90%;
+  background-size: auto;
+  background-position: right 100% bottom 50%;
 }
 .fill-height {
   height: 100vh !important;
