@@ -1,8 +1,7 @@
 <template>
   <error-page
     pre-text="OOPS!"
-    :text="text"
-    :description="description"
+    :error-code="error.statusCode"
     :img="img"
   />
 </template>
@@ -24,7 +23,7 @@ export default {
 
   data () {
     return {
-      sadBoySpiral: require('@/assets/png/sad-boy-spiral.png'),
+      sadBoySpiral: require('@/assets/png/sad-boy.png'),
       text: '',
       description: '',
       img: ''

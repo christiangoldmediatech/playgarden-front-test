@@ -1,65 +1,31 @@
 <template>
-  <v-container fluid :class="containerClasses">
+  <v-container class="background-no-found" fluid :class="containerClasses">
     <v-row align="center" justify="center" no-gutters>
       <v-col
         cols="12"
         md="5"
-        offset-md="1"
-        :order="isMobile ? 2 : 1"
+        order="2"
+        order-md="1"
         class="text-center text-md-left"
       >
-        <div>
-          <img src="@/assets/png/error-window.png" height="50px" class="mb-2 pr-3">
-          <img src="@/assets/svg/logo.svg" height="50px">
+        <div class="text-center">
+          <img :src="errorCode === 404 ? require('@/assets/png/no-content-found.png') : require('@/assets/png/unknown-error.png')" :height="isMobile ? '100px' : '130px'">
         </div>
-        <div v-if="preText">
-          <underlined-title
-            :text="preText"
-            font-size="48px"
-            font-size-mobile="32px"
-            letter-spacing="10px"
-          />
+        <div class="error-text">
+          This URL appears to be broken. Please reach out to <a class="mailInfo" href="mailto:hello@playgardenprep.com&subject=Hello">hello@playgardenprep.com</a> to let us know!
+          <br />
+          <v-btn
+            class="mt-8"
+            color="primary"
+            large
+            router
+            :to="{ name: 'app-virtual-preschool' }"
+          >
+            Go Back To Home
+          </v-btn>
         </div>
-        <underlined-title
-          :text="text"
-          font-size="48px"
-          font-size-mobile="32px"
-          letter-spacing="10px"
-        />
-        <div class="text-h5 text-md-h4 font-weight-medium grey--text text--darken-2 my-4">
-          {{ description }}
-        </div>
-        <v-btn
-          class="my-3"
-          color="warning"
-          large
-          router
-          :to="{ name: 'app-virtual-preschool' }"
-        >
-          Go Back To Home
-        </v-btn><br>
-        <v-btn
-          class="my-3"
-          color="warning"
-          large
-          router
-          outlined
-          :to="{ name: 'app-dashboard' }"
-        >
-          Go Back To Lessons
-        </v-btn>
-        <v-btn
-          class="my-3"
-          color="warning"
-          large
-          outlined
-          router
-          :to="{ name: 'app-library' }"
-        >
-          Go To Library
-        </v-btn>
       </v-col>
-      <v-col cols="12" md="5" class="d-flex justify-left" :order="isMobile ? 1 : 2">
+      <v-col cols="12" md="7" class="d-flex justify-left" order="1" order-md="2">
         <v-img
           :max-height="isMobile ? '400px' : '700px'"
           contain
@@ -81,13 +47,9 @@ export default {
       type: String,
       default: ''
     },
-    text: {
-      type: String,
-      default: ''
-    },
-    description: {
-      type: String,
-      default: ''
+    errorCode: {
+      type: Number,
+      default: 404
     },
     img: {
       type: String,
@@ -122,8 +84,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.background-no-found {
+  background-image:
+    url("~@/assets/png/background-no-found.png");
+  background-size: 122% 157%;
+  background-position: top 60% right 184%;
+
+  @media screen and (min-width: $breakpoint-xs) {
+    background-size: 90% 159%;
+    background-position: top 60% right -184%;
+  }
+}
+
+.error-text {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 40px;
+  text-align: center;
+  color: #707070;
+
+  @media screen and (min-width: $breakpoint-xs) {
+    font-size: 32px;
+  }
+}
+
 .fill-height {
-  height: 100vh !important;
+  // height: 100vh !important;
+}
+
+.mailInfo {
+  color: #68C453 !important;
+  text-decoration: underline !important;
+  display: inline-block;
 }
 .v-btn:not(.v-btn--text) {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
