@@ -9,7 +9,13 @@
             class="lsess-table-col lsess-table-col-header"
           >
             {{ day.name }}
-            <holiday-card v-if="day.holiday" :holiday="day.holiday" :height="holidaysWeekHeight" top-position="60px" holiday-type="week" />
+            <holiday-card
+              v-if="day.holiday"
+              :holiday="day.holiday"
+              :height="holidaysWeekHeight"
+              top-position="60px"
+              holiday-type="week"
+            />
             <div
               v-if="index === activeDay"
               class="lsess-table-col-header-active"
@@ -32,7 +38,13 @@
             </v-card>
           </template>
           <template v-else>
-            <holiday-card v-if="holidayForDay" :holiday="holidayForDay.holiday" :height="holidaysDayHeight" top-position="0" holiday-type="day" />
+            <holiday-card
+              v-if="holidayForDay"
+              :holiday="holidayForDay.holiday"
+              :height="holidaysDayHeight"
+              top-position="0"
+              holiday-type="day"
+            />
             <div
               v-for="hour in totalHours"
               :key="`hour-${hour}`"
@@ -107,6 +119,7 @@
                       :key="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
                       :block="block"
                       v-bind="{ entry }"
+                      :disable-open-dialog="disableOpenDialog"
                     />
                   </template>
                 </v-col>
@@ -153,6 +166,10 @@ export default defineComponent({
     holidays: {
       type: Array,
       default: () => []
+    },
+    disableOpenDialog: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -160,18 +177,24 @@ export default defineComponent({
     const holidaysWeekHeight = ref('0px')
     const holidaysDayHeight = ref('0px')
 
-    const resizeOb = ref(new ResizeObserver(function(entries) {
-      const scrollArea = entries.find((entry) => entry.target.id === 'scrollArea')
-      const sessionsTable = entries.find((entry) => entry.target.id === 'sessions-table-container')
+    const resizeOb = ref(
+      new ResizeObserver(function(entries) {
+        const scrollArea = entries.find(
+          (entry) => entry.target.id === 'scrollArea'
+        )
+        const sessionsTable = entries.find(
+          (entry) => entry.target.id === 'sessions-table-container'
+        )
 
-      if (sessionsTable) {
-        holidaysWeekHeight.value = `${sessionsTable.contentRect.height}px`
-      }
+        if (sessionsTable) {
+          holidaysWeekHeight.value = `${sessionsTable.contentRect.height}px`
+        }
 
-      if (scrollArea) {
-        holidaysDayHeight.value = `${scrollArea.contentRect.height}px`
-      }
-    }))
+        if (scrollArea) {
+          holidaysDayHeight.value = `${scrollArea.contentRect.height}px`
+        }
+      })
+    )
 
     const setObserver = () => {
       const tableContainer = document.getElementById('sessions-table-container')
@@ -250,7 +273,10 @@ export default defineComponent({
     holidaysFormatted() {
       return this.holidays.map((holiday) => ({
         day: dayjs(holiday.dateStart).get('day'),
-        cols: dayjs(holiday.dateEnd).get('date') - dayjs(holiday.dateStart).get('date') + 1,
+        cols:
+          dayjs(holiday.dateEnd).get('date') -
+          dayjs(holiday.dateStart).get('date') +
+          1,
         ...holiday
       }))
     },
@@ -264,7 +290,10 @@ export default defineComponent({
 
         const startDate = dayjs(day.holiday.dateStart)
         const endDate = dayjs(day.holiday.dateEnd)
-        return startDate.get('date') <= currentDate.get('date') && currentDate.get('date') <= endDate.get('date')
+        return (
+          startDate.get('date') <= currentDate.get('date') &&
+          currentDate.get('date') <= endDate.get('date')
+        )
       })
     }
   },
@@ -307,7 +336,7 @@ export default defineComponent({
         }
 
         scrollArea.scrollTop = 0
-        const index = day.findIndex(hour => hour.length)
+        const index = day.findIndex((hour) => hour.length)
 
         if (index < 0) {
           return
@@ -337,7 +366,7 @@ export default defineComponent({
     },
 
     noEntries(day) {
-      return day ? day.findIndex(hour => hour.length) === -1 : true
+      return day ? day.findIndex((hour) => hour.length) === -1 : true
     },
 
     findMaxEntriesForHour(hourIndex) {
