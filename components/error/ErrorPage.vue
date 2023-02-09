@@ -92,8 +92,8 @@ export default {
   background-position: top 60% right 184%;
 
   @media screen and (min-width: $breakpoint-xs) {
-    background-size: 90% 212%;
-    background-position: top 60% right -240%;
+    background-size: 90% 159%;
+    background-position: top 60% right -184%;
   }
 }
 
