@@ -29,7 +29,7 @@
       <perfect-scrollbar id="scrollArea">
         <!-- Day mode rendering logic -->
         <template v-if="dayMode">
-          <template v-if="noEntries(getAdvancedSchedule.days[activeDay])">
+          <template v-if="noEntries(advancedSchedule.days[activeDay])">
             <!-- No entries found for this day -->
             <v-card>
               <v-card-text class="text-h6 text-center">
@@ -62,12 +62,12 @@
                     <template
                       v-if="
                         activeDay >= 0 &&
-                          getAdvancedSchedule.days[activeDay] &&
-                          getAdvancedSchedule.days[activeDay][hour - 1].length
+                          advancedSchedule.days[activeDay] &&
+                          advancedSchedule.days[activeDay][hour - 1].length
                       "
                     >
                       <table-entry
-                        v-for="(entry, entryIndex) in getAdvancedSchedule.days[
+                        v-for="(entry, entryIndex) in advancedSchedule.days[
                           activeDay
                         ][hour - 1]"
                         :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
@@ -85,47 +85,55 @@
 
         <!-- Week mode rendering logic -->
         <template v-else>
-          <div
-            v-for="hour in totalHours"
-            :key="`hour-${hour}`"
-            class="lsess-table-hour-row"
-            :style="{ '--rowHeightFactor': findMaxEntriesForHour(hour - 1) }"
-          >
-            <div class="d-flex align-center justify-center lsess-table-offset">
-              {{ hourOffset + hour }}:00
-            </div>
-            <v-row justify="center">
-              <template>
-                <v-col
-                  v-for="(day, dayIndex) in days"
-                  :key="`days-row-${hour}-column-${dayIndex}`"
-                  class="lsess-table-col"
-                  :style="{
-                    '--entriesLength':
-                      getAdvancedSchedule.days[dayIndex][hour - 1].length || 1
-                  }"
-                >
-                  <template
-                    v-if="
-                      getAdvancedSchedule.days[dayIndex] &&
-                        getAdvancedSchedule.days[dayIndex][hour - 1].length
-                    "
+          <template v-for="hour in totalHours">
+            <div
+              v-if="
+                advancedSchedule &&
+                  advancedSchedule.days &&
+                  advancedSchedule.days.length > 0
+              "
+              :key="`hour-${hour}`"
+              class="lsess-table-hour-row"
+              :style="{ '--rowHeightFactor': findMaxEntriesForHour(hour - 1) }"
+            >
+              <div
+                class="d-flex align-center justify-center lsess-table-offset"
+              >
+                {{ hourOffset + hour }}:00
+              </div>
+              <v-row justify="center">
+                <template>
+                  <v-col
+                    v-for="(day, dayIndex) in days"
+                    :key="`days-row-${hour}-column-${dayIndex}`"
+                    class="lsess-table-col"
+                    :style="{
+                      '--entriesLength':
+                        advancedSchedule.days[dayIndex][hour - 1].length || 1
+                    }"
                   >
-                    <table-entry
-                      v-for="(entry, entryIndex) in getAdvancedSchedule.days[
-                        dayIndex
-                      ][hour - 1]"
-                      :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
-                      :key="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
-                      :block="block"
-                      v-bind="{ entry }"
-                      :disable-open-dialog="disableOpenDialog"
-                    />
-                  </template>
-                </v-col>
-              </template>
-            </v-row>
-          </div>
+                    <template
+                      v-if="
+                        advancedSchedule.days[dayIndex] &&
+                          advancedSchedule.days[dayIndex][hour - 1].length
+                      "
+                    >
+                      <table-entry
+                        v-for="(entry, entryIndex) in advancedSchedule.days[
+                          dayIndex
+                        ][hour - 1]"
+                        :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
+                        :key="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
+                        :block="block"
+                        v-bind="{ entry }"
+                        :disable-open-dialog="disableOpenDialog"
+                      />
+                    </template>
+                  </v-col>
+                </template>
+              </v-row>
+            </div>
+          </template>
         </template>
       </perfect-scrollbar>
     </div>
@@ -133,7 +141,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import dayjs from 'dayjs'
 import { defineComponent, ref } from '@nuxtjs/composition-api'
@@ -245,6 +253,7 @@ export default defineComponent({
 
   computed: {
     ...mapGetters('live-sessions', ['getAdvancedSchedule']),
+    ...mapState('live-sessions', ['advancedSchedule']),
 
     hourOffset() {
       return this.getAdvancedSchedule.firstHour - 1
@@ -305,6 +314,15 @@ export default defineComponent({
   watch: {
     getAdvancedSchedule() {
       this.scrollToFirst()
+      this.$store.commit(
+        'live-sessions/SET_ADVANCED_SCHEDULE',
+        this.disableWeekends
+          ? {
+              ...this.getAdvancedSchedule,
+              days: this.getAdvancedSchedule.days.slice(1)
+            }
+          : this.getAdvancedSchedule
+      )
     },
 
     activeDay() {
@@ -315,6 +333,7 @@ export default defineComponent({
   created() {
     if (this.disableWeekends) {
       this.days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+      // Remove first element from array
     }
   },
 

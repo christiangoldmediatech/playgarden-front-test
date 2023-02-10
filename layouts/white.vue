@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-main>
+    <v-main id="container-iframe">
       <nuxt />
     </v-main>
   </v-app>
