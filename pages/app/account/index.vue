@@ -136,6 +136,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/account.scss';
+
 .text-letter-spacing-1 {
   letter-spacing: 1px;
 }
@@ -160,11 +162,6 @@ export default {
     line-height: 30px;
     color: #FFFFFF;
   }
-}
-
-.account-dashed-line {
-  width: 80%;
-  border-top: 1px dashed #78C383;
 }
 
 .account-item {
