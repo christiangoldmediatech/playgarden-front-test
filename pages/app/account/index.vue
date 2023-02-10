@@ -5,19 +5,24 @@
         <v-card
           :flat="isMobile"
           :class="['text-center fill-height', { 'mobile-card': isMobile }]"
+          color="#FFF5E7"
         >
-          <div class="py-md-12 py-2 mx-2">
+          <div class="pt-md-12 d-flex flex-column align-center">
             <img
               class="d-none d-sm-inline"
               height="100px"
-              src="@/assets/svg/account-profile.svg"
+              src="@/assets/svg/account-profile-v2.svg"
             >
 
-            <div class="text-h6 grey--text py-2">
+            <div class="account-section-title py-2">
               Account page
             </div>
 
-            <underlined-title :text="fullName" font-size="32px" />
+            <div class="account-owner-name w-100 mt-5 py-3 mr-4">
+              <h1>{{ fullName }}</h1>
+            </div>
+
+            <div class="account-dashed-line my-4"></div>
           </div>
 
           <pg-select
@@ -47,9 +52,11 @@
             v-for="section in filteredSections"
             v-else
             :key="section.text"
-            :class="btnClasses(section.routeName)"
             :data-test-id="`account-left-panel-${section.text}`"
-            elevation="2"
+            elevation="0"
+            color="transparent"
+            class="clickable account-item py-5 rounded-0"
+            :class="{ 'account-item-selected': selectedRouteName === section.routeName, 'account-item-logout': section.routeName === 'auth-logout' }"
             @click="navigateToPage(section.routeName)"
           >
             {{ section.text }}
@@ -115,17 +122,6 @@ export default {
       this.selectedRouteName = routeName
       this.$router.push({ name: routeName })
     },
-    btnClasses (routeName) {
-      const isSelectedRoute = this.selectedRouteName === routeName
-      const isLogoutBtn = routeName === 'auth-logout'
-
-      return {
-        'py-7 mb-3 text-uppercase font-weight-bold text-letter-spacing-1': true,
-        'grey--text text--darken-2': !isSelectedRoute && !isLogoutBtn,
-        'primary white--text': isSelectedRoute,
-        'orange--text': isLogoutBtn
-      }
-    },
     mobileDrowpdownClasses (routeName) {
       const isLogoutBtn = routeName === 'auth-logout'
 
@@ -140,10 +136,53 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-sheet.v-card:not(.mobile-card) {
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
-}
 .text-letter-spacing-1 {
   letter-spacing: 1px;
+}
+
+.account-section-title {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 22px;
+  color: #F89838;
+}
+
+.account-owner-name {
+  background-color: #A1DC85;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+
+  h1 {
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    color: #FFFFFF;
+  }
+}
+
+.account-dashed-line {
+  width: 80%;
+  border-top: 1px dashed #78C383;
+}
+
+.account-item {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  color: #565454;
+}
+
+.account-item-selected {
+  background-color: #FFAF60 !important;
+  color: white;
+}
+
+.account-item-logout {
+  text-decoration-line: underline;
+  color: #68C453;
 }
 </style>
