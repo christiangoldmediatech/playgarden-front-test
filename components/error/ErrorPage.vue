@@ -12,7 +12,7 @@
           <img :src="errorCode === 404 ? require('@/assets/png/no-content-found.png') : require('@/assets/png/unknown-error.png')" :height="isMobile ? '100px' : '130px'">
         </div>
         <div class="error-text">
-          This URL appears to be broken. Please reach out to <a class="mailInfo" href="mailto:hello@playgardenprep.com&subject=Hello">hello@playgardenprep.com</a> to let us know!
+          This URL appears to be broken. Please reach out to <a class="mailInfo" href="mailto:hello@playgardenprep.com?subject=An%20unknown%20error%20ocurred%20-%20Platform">hello@playgardenprep.com</a> to let us know!
           <br />
           <v-btn
             class="mt-8"
