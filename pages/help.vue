@@ -154,7 +154,7 @@
               </v-row>
 
               <v-row class="pb-6" no-gutters>
-                <div class="w-100 links-container d-flex flex-column align-center justify-center">
+                <div class="w-100 links-container d-flex flex-column align-center justify-center" :class="($vuetify.breakpoint.mobile) ? 'mobile-iframe' : ''">
                   <p class="links-base links-container-title">
                     Join the Playgarden Online community today!
                   </p>
@@ -472,6 +472,10 @@ export default defineComponent({
   @media screen and (min-width: $breakpoint-md) {
     font-size: 25px;
   }
+}
+
+.mobile-iframe {
+  padding-bottom: 120px !important;
 }
 
 .link {
