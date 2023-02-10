@@ -9,7 +9,13 @@
             class="lsess-table-col lsess-table-col-header"
           >
             {{ day.name }}
-            <holiday-card v-if="day.holiday" :holiday="day.holiday" :height="holidaysWeekHeight" top-position="60px" holiday-type="week" />
+            <holiday-card
+              v-if="day.holiday"
+              :holiday="day.holiday"
+              :height="holidaysWeekHeight"
+              top-position="60px"
+              holiday-type="week"
+            />
             <div
               v-if="index === activeDay"
               class="lsess-table-col-header-active"
@@ -23,7 +29,7 @@
       <perfect-scrollbar id="scrollArea">
         <!-- Day mode rendering logic -->
         <template v-if="dayMode">
-          <template v-if="noEntries(getAdvancedSchedule.days[activeDay])">
+          <template v-if="noEntries(advancedSchedule.days[activeDay])">
             <!-- No entries found for this day -->
             <v-card>
               <v-card-text class="text-h6 text-center">
@@ -32,7 +38,13 @@
             </v-card>
           </template>
           <template v-else>
-            <holiday-card v-if="holidayForDay" :holiday="holidayForDay.holiday" :height="holidaysDayHeight" top-position="0" holiday-type="day" />
+            <holiday-card
+              v-if="holidayForDay"
+              :holiday="holidayForDay.holiday"
+              :height="holidaysDayHeight"
+              top-position="0"
+              holiday-type="day"
+            />
             <div
               v-for="hour in totalHours"
               :key="`hour-${hour}`"
@@ -50,12 +62,12 @@
                     <template
                       v-if="
                         activeDay >= 0 &&
-                          getAdvancedSchedule.days[activeDay] &&
-                          getAdvancedSchedule.days[activeDay][hour - 1].length
+                          advancedSchedule.days[activeDay] &&
+                          advancedSchedule.days[activeDay][hour - 1].length
                       "
                     >
                       <table-entry
-                        v-for="(entry, entryIndex) in getAdvancedSchedule.days[
+                        v-for="(entry, entryIndex) in advancedSchedule.days[
                           activeDay
                         ][hour - 1]"
                         :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
@@ -73,46 +85,55 @@
 
         <!-- Week mode rendering logic -->
         <template v-else>
-          <div
-            v-for="hour in totalHours"
-            :key="`hour-${hour}`"
-            class="lsess-table-hour-row"
-            :style="{ '--rowHeightFactor': findMaxEntriesForHour(hour - 1) }"
-          >
-            <div class="d-flex align-center justify-center lsess-table-offset">
-              {{ hourOffset + hour }}:00
-            </div>
-            <v-row justify="center">
-              <template>
-                <v-col
-                  v-for="(day, dayIndex) in days"
-                  :key="`days-row-${hour}-column-${dayIndex}`"
-                  class="lsess-table-col"
-                  :style="{
-                    '--entriesLength':
-                      getAdvancedSchedule.days[dayIndex][hour - 1].length || 1
-                  }"
-                >
-                  <template
-                    v-if="
-                      getAdvancedSchedule.days[dayIndex] &&
-                        getAdvancedSchedule.days[dayIndex][hour - 1].length
-                    "
+          <template v-for="hour in totalHours">
+            <div
+              v-if="
+                advancedSchedule &&
+                  advancedSchedule.days &&
+                  advancedSchedule.days.length > 0
+              "
+              :key="`hour-${hour}`"
+              class="lsess-table-hour-row"
+              :style="{ '--rowHeightFactor': findMaxEntriesForHour(hour - 1) }"
+            >
+              <div
+                class="d-flex align-center justify-center lsess-table-offset"
+              >
+                {{ hourOffset + hour }}:00
+              </div>
+              <v-row justify="center">
+                <template>
+                  <v-col
+                    v-for="(day, dayIndex) in days"
+                    :key="`days-row-${hour}-column-${dayIndex}`"
+                    class="lsess-table-col"
+                    :style="{
+                      '--entriesLength':
+                        advancedSchedule.days[dayIndex][hour - 1].length || 1
+                    }"
                   >
-                    <table-entry
-                      v-for="(entry, entryIndex) in getAdvancedSchedule.days[
-                        dayIndex
-                      ][hour - 1]"
-                      :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
-                      :key="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
-                      :block="block"
-                      v-bind="{ entry }"
-                    />
-                  </template>
-                </v-col>
-              </template>
-            </v-row>
-          </div>
+                    <template
+                      v-if="
+                        advancedSchedule.days[dayIndex] &&
+                          advancedSchedule.days[dayIndex][hour - 1].length
+                      "
+                    >
+                      <table-entry
+                        v-for="(entry, entryIndex) in advancedSchedule.days[
+                          dayIndex
+                        ][hour - 1]"
+                        :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
+                        :key="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
+                        :block="block"
+                        v-bind="{ entry }"
+                        :disable-open-dialog="disableOpenDialog"
+                      />
+                    </template>
+                  </v-col>
+                </template>
+              </v-row>
+            </div>
+          </template>
         </template>
       </perfect-scrollbar>
     </div>
@@ -120,7 +141,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import dayjs from 'dayjs'
 import { defineComponent, ref } from '@nuxtjs/composition-api'
@@ -153,6 +174,14 @@ export default defineComponent({
     holidays: {
       type: Array,
       default: () => []
+    },
+    disableOpenDialog: {
+      type: Boolean,
+      default: false
+    },
+    disableWeekends: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -160,18 +189,24 @@ export default defineComponent({
     const holidaysWeekHeight = ref('0px')
     const holidaysDayHeight = ref('0px')
 
-    const resizeOb = ref(new ResizeObserver(function(entries) {
-      const scrollArea = entries.find((entry) => entry.target.id === 'scrollArea')
-      const sessionsTable = entries.find((entry) => entry.target.id === 'sessions-table-container')
+    const resizeOb = ref(
+      new ResizeObserver(function(entries) {
+        const scrollArea = entries.find(
+          (entry) => entry.target.id === 'scrollArea'
+        )
+        const sessionsTable = entries.find(
+          (entry) => entry.target.id === 'sessions-table-container'
+        )
 
-      if (sessionsTable) {
-        holidaysWeekHeight.value = `${sessionsTable.contentRect.height}px`
-      }
+        if (sessionsTable) {
+          holidaysWeekHeight.value = `${sessionsTable.contentRect.height}px`
+        }
 
-      if (scrollArea) {
-        holidaysDayHeight.value = `${scrollArea.contentRect.height}px`
-      }
-    }))
+        if (scrollArea) {
+          holidaysDayHeight.value = `${scrollArea.contentRect.height}px`
+        }
+      })
+    )
 
     const setObserver = () => {
       const tableContainer = document.getElementById('sessions-table-container')
@@ -218,6 +253,7 @@ export default defineComponent({
 
   computed: {
     ...mapGetters('live-sessions', ['getAdvancedSchedule']),
+    ...mapState('live-sessions', ['advancedSchedule']),
 
     hourOffset() {
       return this.getAdvancedSchedule.firstHour - 1
@@ -250,7 +286,10 @@ export default defineComponent({
     holidaysFormatted() {
       return this.holidays.map((holiday) => ({
         day: dayjs(holiday.dateStart).get('day'),
-        cols: dayjs(holiday.dateEnd).get('date') - dayjs(holiday.dateStart).get('date') + 1,
+        cols:
+          dayjs(holiday.dateEnd).get('date') -
+          dayjs(holiday.dateStart).get('date') +
+          1,
         ...holiday
       }))
     },
@@ -264,7 +303,10 @@ export default defineComponent({
 
         const startDate = dayjs(day.holiday.dateStart)
         const endDate = dayjs(day.holiday.dateEnd)
-        return startDate.get('date') <= currentDate.get('date') && currentDate.get('date') <= endDate.get('date')
+        return (
+          startDate.get('date') <= currentDate.get('date') &&
+          currentDate.get('date') <= endDate.get('date')
+        )
       })
     }
   },
@@ -272,10 +314,26 @@ export default defineComponent({
   watch: {
     getAdvancedSchedule() {
       this.scrollToFirst()
+      this.$store.commit(
+        'live-sessions/SET_ADVANCED_SCHEDULE',
+        this.disableWeekends
+          ? {
+              ...this.getAdvancedSchedule,
+              days: this.getAdvancedSchedule.days.slice(1)
+            }
+          : this.getAdvancedSchedule
+      )
     },
 
     activeDay() {
       this.scrollToFirst()
+    }
+  },
+
+  created() {
+    if (this.disableWeekends) {
+      this.days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+      // Remove first element from array
     }
   },
 
@@ -307,7 +365,7 @@ export default defineComponent({
         }
 
         scrollArea.scrollTop = 0
-        const index = day.findIndex(hour => hour.length)
+        const index = day.findIndex((hour) => hour.length)
 
         if (index < 0) {
           return
@@ -337,7 +395,7 @@ export default defineComponent({
     },
 
     noEntries(day) {
-      return day ? day.findIndex(hour => hour.length) === -1 : true
+      return day ? day.findIndex((hour) => hour.length) === -1 : true
     },
 
     findMaxEntriesForHour(hourIndex) {

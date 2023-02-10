@@ -20,21 +20,23 @@ export default {
     }
 
     // Get the sessions and transform them for easier sorting
-    const sessions = state.sessions.map((session) => {
-      const date = moment(session.dateStart)
-      const endDate = moment(session.dateEnd)
-      const start = dayjs.tz(date, timezone)
-      const end = dayjs.tz(endDate, timezone)
-      return {
-        ...session,
-        weekDay: start.day(),
-        day: start.date(),
-        hour: start.hour(),
-        endHour: end.hour()
-      }
-    }).sort((a, b) => {
-      return a.day - b.day || a.hour - b.hour
-    })
+    const sessions = state.sessions
+      .map((session) => {
+        const date = moment(session.dateStart)
+        const endDate = moment(session.dateEnd)
+        const start = dayjs.tz(date, timezone)
+        const end = dayjs.tz(endDate, timezone)
+        return {
+          ...session,
+          weekDay: start.day(),
+          day: start.date(),
+          hour: start.hour(),
+          endHour: end.hour()
+        }
+      })
+      .sort((a, b) => {
+        return a.day - b.day || a.hour - b.hour
+      })
 
     schedule.sessions = sessions
 

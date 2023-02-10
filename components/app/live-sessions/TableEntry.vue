@@ -128,6 +128,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    disableOpenDialog: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -201,14 +206,18 @@ export default {
         return
       }
 
-      this.$nuxt.$emit('open-entry-dialog', this.entry)
-      this.$gtm.push({
-        event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_CLICKED,
-        userId: this.getUserInfo.id,
-        topic: this.entry.activityType ? this.entry.activityType : this.entry.title,
-        topicDescription: this.entry.title,
-        itemDateTime: this.entry.dateStart
-      })
+      if (!this.disableOpenDialog) {
+        this.$nuxt.$emit('open-entry-dialog', this.entry)
+        this.$gtm.push({
+          event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_CLICKED,
+          userId: this.getUserInfo.id,
+          topic: this.entry.activityType
+            ? this.entry.activityType
+            : this.entry.title,
+          topicDescription: this.entry.title,
+          itemDateTime: this.entry.dateStart
+        })
+      }
     }
   }
 }
