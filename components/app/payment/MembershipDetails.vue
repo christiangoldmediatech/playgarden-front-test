@@ -407,6 +407,17 @@
         @changeLeaveMotive="(e) => (leaveMotive = e)"
       />
 
+      <technical-issues-cancellation-modal :view-modal="viewTechnicalIssuesModal" />
+      <too-expensive-modal :view-modal="viewTooExpensiveModal" />
+      <using-other-platform-modal :view-modal="viewUsingOtherPlatformModal" />
+      <going-to-in-person-modal :view-modal="viewGoingToInPersonModal" />
+      <too-much-time-modal :view-modal="viewTooMuchTimeModal" />
+      <little-one-not-engaged-modal :view-modal="viewLittleOneNotEngagedModal" />
+      <did-not-use-enough-modal :view-modal="viewDidNotUseEnoughModal" />
+      <missing-features-modal :view-modal="viewMissingFeaturesModal" />
+      <did-not-meet-expectations :view-modal="viewDidNotMeetExpectations" />
+      <other-reason-modal :view-modal="viewOtherReasonModal" />
+
       <!-- Discount Flow -->
       <coupon-discount-modal
         :view-coupon-discount-modal="viewCouponDiscountModal"
@@ -492,11 +503,21 @@
 import dayjs from 'dayjs'
 import { get } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
+import debounce from 'lodash/debounce'
 import UpdateBillingMethod from '@/components/app/payment/UpdateBillingMethod'
 import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/PlanDescription'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import BillingHistoryCard from '@/components/BillingHistoryCard.vue'
-import debounce from 'lodash/debounce'
+import TechnicalIssuesCancellationModal from '@/components/app/payment/TechnicalIssuesCancellationModal.vue'
+import TooMuchTimeModal from '@/components/app/payment/TooMuchTimeModal.vue'
+import UsingOtherPlatformModal from '@/components/app/payment/UsingOtherPlatformModal.vue'
+import LittleOneNotEngagedModal from '@/components/app/payment/LittleOneNotEngagedModal.vue'
+import TooExpensiveModal from '@/components/app/payment/TooExpensiveModal.vue'
+import DidNotUseEnoughModal from '@/components/app/payment/DidNotUseEnoughModal.vue'
+import GoingToInPersonModal from '@/components/app/payment/GoingToInPersonModal.vue'
+import MissingFeaturesModal from '@/components/app/payment/MissingFeaturesModal.vue'
+import DidNotMeetExpectations from '@/components/app/payment/DidNotMeetExpectations.vue'
+import OtherReasonModal from '@/components/app/payment/OtherReasonModal.vue'
 import LearningKitsPopup from './LearningKitsPopup.vue'
 import CancelSuscriptionModal from './CancelSuscriptionModal.vue'
 import CancelAnyway from './CancelSuscriptionFlow/CancelAnyway.vue'
@@ -523,7 +544,16 @@ export default {
     TryPlayAndLearnModal,
     AppliedCouponModal,
     LearningKitsPopup,
-    CancelPlayAndLearnModal
+    CancelPlayAndLearnModal,
+    TechnicalIssuesCancellationModal,
+    TooExpensiveModal,
+    UsingOtherPlatformModal,
+    GoingToInPersonModal,
+    LittleOneNotEngagedModal,
+    DidNotUseEnoughModal,
+    MissingFeaturesModal,
+    DidNotMeetExpectations,
+    OtherReasonModal
   },
 
   data: (vm) => ({
@@ -559,46 +589,56 @@ export default {
     leaveMotives: [
       {
         motive: 'Repeated technical issues',
-        couponDiscountFlow: true
+        modal: TechnicalIssuesCancellationModal.name
       },
       {
         motive: 'Too expensive',
-        couponDiscountFlow: true
+        modal: TooExpensiveModal.name
       },
       {
         motive: 'Using another learning platform',
-        couponDiscountFlow: false
+        modal: UsingOtherPlatformModal.name
       },
       {
         motive: 'Going to in person school',
-        couponDiscountFlow: false
+        modal: GoingToInPersonModal.name
       },
       {
         motive: 'Too much time commitment',
-        couponDiscountFlow: false
+        modal: TooMuchTimeModal.name
       },
       {
         motive: "My little one wasn't engaged",
-        couponDiscountFlow: false
+        modal: LittleOneNotEngagedModal.name
       },
       {
         motive: "Didn't use it enough",
-        couponDiscountFlow: true
+        modal: DidNotUseEnoughModal.name
       },
       {
         motive: 'Missing features I need',
-        couponDiscountFlow: true
+        modal: MissingFeaturesModal.name
       },
       {
         motive: "Didn't meet my expectations",
-        couponDiscountFlow: true
+        modal: DidNotMeetExpectations.name
       },
       {
         motive: 'Other (please explain)',
-        couponDiscountFlow: false
+        modal: OtherReasonModal.name
       }
     ],
     learnAndPlayWasCanceled: false,
+    viewTechnicalIssuesModal: false,
+    viewTooExpensiveModal: false,
+    viewUsingOtherPlatformModal: false,
+    viewGoingToInPersonModal: false,
+    viewTooMuchTimeModal: false,
+    viewLittleOneNotEngagedModal: false,
+    viewDidNotUseEnoughModal: false,
+    viewMissingFeaturesModal: false,
+    viewDidNotMeetExpectations: false,
+    viewOtherReasonModal: false,
     // Discount Flow
     viewCouponDiscountModal: false,
     viewTryPlayAndLearnModal: false,
@@ -915,10 +955,26 @@ export default {
         (motive) => motive.motive === this.leaveMotive
       )
 
-      if (leaveMotive.couponDiscountFlow || this.hasPlayAndLearnPlan) {
-        this.viewCouponDiscountModal = true
-      } else {
-        this.viewPlayAndLearnProgramModal = true
+      if (leaveMotive.modal === TechnicalIssuesCancellationModal.name) {
+        this.viewTechnicalIssuesModal = true
+      } else if (leaveMotive.modal === TooExpensiveModal.name) {
+        this.viewTooExpensiveModal = false
+      } else if (leaveMotive.modal === UsingOtherPlatformModal.name) {
+        this.viewUsingOtherPlatformModal = false
+      } else if (leaveMotive.modal === GoingToInPersonModal.name) {
+        this.viewGoingToInPersonModal = false
+      } else if (leaveMotive.modal === TooMuchTimeModal.name) {
+        this.viewTooMuchTimeModal = false
+      } else if (leaveMotive.modal === LittleOneNotEngagedModal.name) {
+        this.viewLittleOneNotEngagedModal = false
+      } else if (leaveMotive.modal === DidNotUseEnoughModal.name) {
+        this.viewDidNotUseEnoughModal = false
+      } else if (leaveMotive.modal === MissingFeaturesModal.name) {
+        this.viewMissingFeaturesModal = false
+      } else if (leaveMotive.modal === DidNotMeetExpectations.name) {
+        this.viewDidNotMeetExpectations = false
+      } else if (leaveMotive.modal === OtherReasonModal.name) {
+        this.viewOtherReasonModal = false
       }
 
       this.removeSubscriptionModal = false
