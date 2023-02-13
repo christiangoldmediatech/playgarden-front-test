@@ -46,7 +46,7 @@ export default {
   },
 
   async getUserLiveSessions(
-    { commit, rootGetters },
+    { commit, rootGetters, state },
     { sunday, saturday, admin, type, isPublic = '' }
   ) {
     try {
@@ -99,9 +99,10 @@ export default {
       }
 
       const userInfo = rootGetters['auth/getUserInfo']
-      const timezone = userInfo.timezone
-        ? userInfo.timezone
-        : 'America/New_York'
+      const timezonePublic = state.timezone
+      const timezone = userInfo.timezone ? userInfo.timezone : timezonePublic
+      console.log('Timezone', timezone)
+      console.log('Timezone Public', timezonePublic)
       const currentTimezone = getTimezone(timezone)
       commit('SET_SESSIONS', meetings)
       commit('SET_TIMEZONE', currentTimezone)

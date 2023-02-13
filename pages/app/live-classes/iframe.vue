@@ -60,6 +60,21 @@
               </v-col>
             </v-row>
 
+            <v-row>
+              <v-col cols="12">
+                <span class="font-weight-bold">
+                  *Hours are in {{ getAcronymCurrent }}, you can change your
+                  time zone by clicking
+                  <span
+                    class=" text-decoration-underline font-weight-bold timezone"
+                    @click="timezoneDialog = true"
+                  >
+                    HERE
+                  </span>
+                </span>
+              </v-col>
+            </v-row>
+
             <sessions-table
               v-if="!loading"
               :day-mode="viewMode === 'DAY'"
@@ -104,6 +119,7 @@
               :key="`lclass-entry-${entry.id}`"
               v-bind="{ entry }"
               mobile
+              disable-open-dialog
             />
           </div>
           <v-col v-if="orderedSessions.length === 0" cols="12">
@@ -119,15 +135,75 @@
     </pg-loading>
 
     <entry-dialog @refresh="getUserLiveSessions" />
+
+    <pg-dialog
+      :value="timezoneDialog"
+      content-class="elevation-0"
+      :fullscreen="fullscreen"
+      persistent
+    >
+      <v-card class="dialog-overlay">
+        <v-row no-gutters justify="start" class="mt-0">
+          <v-col class="mt-16">
+            <v-row
+              class="mt-16 mb-15"
+              justify="center"
+              align-content="center"
+              no-gutters
+            >
+              <v-card
+                cols="12"
+                sm="4"
+                class="px-3 mt-16"
+                width="400"
+                height="200"
+                tile
+              >
+                <v-card-text>
+                  <v-row justify="center" no-gutters>
+                    TIMEZONE
+                  </v-row>
+                  <v-row>
+                    <pg-select
+                      v-model="selectedTimezone"
+                      clearable
+                      hide-details
+                      item-text="name"
+                      item-value="value"
+                      label="Timezone"
+                      solo-labeled
+                      :items="timezoneOptions"
+                      class="select"
+                    />
+                  </v-row>
+                  <v-row justify="center">
+                    <v-btn
+                      class="mt-3 mr-4"
+                      color="accent"
+                      @click="saveTimeZone"
+                    >
+                      Save
+                    </v-btn>
+                    <v-btn class="mt-3" color="" @click="closeTimezoneModal">
+                      Close
+                    </v-btn>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+    </pg-dialog>
   </v-main>
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import {
+  getTimezone,
   getWeekStartAndEnd,
-  timezoneOptions,
-  getTimezone
+  timezoneOptions
 } from '@/utils/dateTools'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
 import EntryDialog from '@/components/app/live-sessions/EntryDialog.vue'
@@ -173,6 +249,7 @@ export default {
   computed: {
     ...mapState('live-sessions', ['sessions']),
     ...mapGetters('live-sessions', ['getHolidays']),
+    ...mapState({ publicTimezone: (state) => state['live-sessions/timezone'] }),
 
     days() {
       if (this.today) {
@@ -314,6 +391,7 @@ export default {
     this.setToday(new Date())
     this.getUserLiveSessions(this.days)
     this.getFilteredHolidays()
+    this.setCurrentTimezone()
   },
 
   methods: {
@@ -327,7 +405,6 @@ export default {
       this.loading = false
     },
 
-    ...mapActions('admin/users', ['setTimezone']),
     ...mapActions('auth', ['fetchUserInfo']),
     ...mapActions('live-sessions', ['fetchHolidays']),
 
@@ -385,6 +462,29 @@ export default {
     filterMeetings(type) {
       this.filterType = type
       this.getUserLiveSessions()
+    },
+
+    async saveTimeZone() {
+      this.loading = true
+      try {
+        this.$store.commit('live-sessions/SET_TIMEZONE', this.selectedTimezone)
+        await this.getUserLiveSessions(this.days)
+        this.viewModeVal = 0
+        this.timezoneDialog = false
+      } catch (err) {
+      } finally {
+        this.loading = false
+      }
+    },
+
+    closeTimezoneModal() {
+      this.timezoneDialog = false
+      this.viewModeVal = 0
+      this.setCurrentTimezone()
+    },
+
+    setCurrentTimezone() {
+      this.selectedTimezone = getTimezone(this.publicTimezone)
     }
   }
 }
