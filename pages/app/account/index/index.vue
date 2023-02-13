@@ -2,62 +2,53 @@
   <pg-loading :loading="isLoading">
     <v-row no-gutters data-test-id="account-content">
       <v-col cols="12" md="6" class="mb-10 pr-md-8 mb-md-0">
-        <!-- Desktop Title -->
-        <div class="pb-6 d-none d-md-block text-uppercase font-weight-bold text-h4 grey--text text--darken-2">
-          General Info
-        </div>
-        <v-card class="pa-4 pa-sm-8 card-custom-border">
-          <!-- Desktop SVG -->
-          <div class="justify-center pb-4 d-none d-sm-flex">
-            <img
-              height="100px"
-              src="@/assets/svg/general-info.svg"
-            >
-          </div>
-
-          <!-- Mobile SVG and Title= -->
-          <div class="justify-center py-2 d-flex d-sm-none">
-            <img
-              height="45px"
-              src="@/assets/svg/general-info.svg"
-            >
-            <span class="mt-1 ml-2 text-uppercase font-weight-bold text-h5 grey--text text--darken-2">
+        <v-card class="pa-4 pa-sm-8 d-flex flex-column align-start account-card-border" :style="{ '--card-custom-color': generalInfoColor }">
+          <!-- Desktop Title -->
+          <div class="w-100 d-flex justify-space-between align-centers">
+            <span class="account-card-title">
               General Info
             </span>
+
+            <v-btn
+              v-if="!isEditingGeneralInfo"
+              text
+              color="#F89838"
+              @click="setEditingGeneralInfo"
+            >
+              <span class="text-decoration-underline">Edit</span>
+              <v-icon right>
+                mdi-pencil
+              </v-icon>
+            </v-btn>
           </div>
 
-          <div class="py-2 text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2">
-            <small>Manage your personal information.</small>
+          <div class="py-2 account-card-subtitle">
+            Manage your personal information.
           </div>
 
-          <general-info />
+          <div class="account-green-dashed-line my-4 mx-auto"></div>
+
+          <general-info v-model="isEditingGeneralInfo" />
         </v-card>
       </v-col>
 
       <v-col v-if="!isUserCaregiver" cols="12" md="6" class="mb-12 pl-md-8 mb-sm-0">
-        <!-- Desktop Title -->
-        <div class="pb-6 d-none d-md-block text-uppercase font-weight-bold text-h4 grey--text text--darken-2">
-          Shipping Address
-        </div>
-        <v-card class="pa-4 pa-sm-8 card-custom-border">
-          <!-- SVG AND TITLE -->
-          <!-- DESKTOP -->
-          <div class="justify-center pb-4 d-none d-sm-flex">
-            <img
-              height="100px"
-              src="@/assets/svg/shipping-address.svg"
-            >
-          </div>
-
-          <!-- MOBILE -->
-          <div class="justify-center py-2 d-flex d-sm-none">
-            <img
-              height="45px"
-              src="@/assets/svg/shipping-address.svg"
-            >
-            <span class="mt-1 ml-2 text-uppercase font-weight-bold text-h5 grey--text text--darken-2">
+        <v-card class="pa-4 pa-sm-8 account-card-border" :style="{ '--card-custom-color': shippingAddressColor }">
+          <!-- Desktop Title -->
+          <div class="w-100 d-flex justify-space-between align-centers">
+            <span class="account-card-title">
               Shipping Address
             </span>
+
+            <v-btn
+              text
+              color="#F89838"
+            >
+              <span class="text-decoration-underline">Edit</span>
+              <v-icon right>
+                mdi-pencil
+              </v-icon>
+            </v-btn>
           </div>
 
           <v-fade-transition mode="out-in">
@@ -71,15 +62,11 @@
 
             <!-- SHIPPING ADDRESS IS PRESENT -->
             <div v-else-if="isShippingAddressFormVisible" key="shipping-address-present">
-              <div class="my-2 text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2">
-                <small>We use this information to send Playgarden Prep educational materials to users who subscribe to our $99.99/monthly plan.
-                  <span
-                    class="text-decoration-underline font-weight-bold timezone"
-                    @click="$router.push({
-                      name: 'app-payment-plan',
-                    })"
-                  > Learn more</span></small>
+              <div class="my-2 account-card-subtitle">
+                We use this information to send you Playgarden Prep educational materials.
               </div>
+
+              <div class="account-green-dashed-line my-4"></div>
 
               <shipping-address-details
                 :edit-by-default="isEditingShippingAddress"
@@ -138,15 +125,22 @@ export default defineComponent({
   setup () {
     const route = useRoute()
     const ShippingAddress = useShippingAddress()
+    const isEditingGeneralInfo = ref(false)
     const isEditingShippingAddress = ref(false)
     const isShippingAddressFormVisible = ref(false)
     const isLoading = ref(true)
+    const generalInfoColor = ref('120, 195, 131')
+    const shippingAddressColor = ref('106, 199, 249')
     const snotify = useSnotifyHelper()
 
     onMounted(() => {
       handleRouteAction()
       checkShippingAddress()
     })
+
+    const setEditingGeneralInfo = () => {
+      isEditingGeneralInfo.value = true
+    }
 
     async function checkShippingAddress () {
       try {
@@ -178,10 +172,14 @@ export default defineComponent({
 
     return {
       isLoading,
+      isEditingGeneralInfo,
       isEditingShippingAddress,
       isShippingAddressFormVisible,
       showShippingAddressForm,
-      checkShippingAddress
+      checkShippingAddress,
+      generalInfoColor,
+      shippingAddressColor,
+      setEditingGeneralInfo
     }
   },
 
@@ -192,10 +190,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.card-custom-border {
-  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25) !important;
-  border-radius: 8px !important;
-}
+@import '~/assets/scss/account.scss';
 
 .pg-text-\[20px\] {
   font-size: 20px;

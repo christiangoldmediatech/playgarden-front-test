@@ -1,4 +1,59 @@
-.account-dashed-line {
-  width: 80%;
+.account-green-dashed-line {
+  width: 100%;
   border-top: 1px dashed #78C383;
+}
+
+.account-orange-dashed-line {
+  width: 100%;
+  border-top: 1px dashed #F89838;
+}
+
+.account-card-border {
+  border: 1px solid rgba(var(--card-custom-color), 0.26);
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 26px;
+}
+
+.account-card-title {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 30px;
+  color: rgb(var(--card-custom-color));
+}
+
+.account-card-subtitle {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #C6C6C6;
+}
+
+.account-page-title {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 30px;
+  color: #F89838;
+}
+
+.account-page-subtitle {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 21px;
+  color: #C6C6C6;
+}
+
+.account-field-label {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 22px;
+  color: #707070;
 }

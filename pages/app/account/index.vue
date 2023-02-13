@@ -22,7 +22,9 @@
               <h1>{{ fullName }}</h1>
             </div>
 
-            <div class="account-dashed-line my-4"></div>
+            <div class="w-100 px-4">
+              <div class="account-green-dashed-line my-4"></div>
+            </div>
           </div>
 
           <pg-select
