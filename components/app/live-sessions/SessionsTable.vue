@@ -74,6 +74,7 @@
                         :key="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
                         :block="block"
                         v-bind="{ entry }"
+                        :disable-open-dialog="disableOpenDialog"
                       />
                     </template>
                   </v-col>
