@@ -382,6 +382,7 @@ export default {
   },
 
   created() {
+    this.$store.dispatch('auth/logout')
     this.setToday(new Date())
     this.getUserLiveSessions(this.days)
     this.getFilteredHolidays()
