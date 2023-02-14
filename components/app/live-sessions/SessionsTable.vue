@@ -278,10 +278,21 @@ export default defineComponent({
     },
 
     getDaysFormatted() {
-      return this.days.map((day, index) => ({
-        name: day,
-        holiday: this.holidaysFormatted.find((holiday) => holiday.day === index)
-      }))
+      if (this.disableWeekends) {
+        return this.days.map((day, index) => ({
+          name: day,
+          holiday: this.holidaysFormatted.find(
+            (holiday) => holiday.day === index + 1
+          )
+        }))
+      } else {
+        return this.days.map((day, index) => ({
+          name: day,
+          holiday: this.holidaysFormatted.find(
+            (holiday) => holiday.day === index
+          )
+        }))
+      }
     },
 
     holidaysFormatted() {
