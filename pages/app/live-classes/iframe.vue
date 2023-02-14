@@ -1,138 +1,132 @@
 <template>
   <v-main class="pg-mt-8" data-test-id="live-classes-content">
-    <pg-loading :loading="loading" fullscreen>
-      <v-container
-        v-if="$vuetify.breakpoint.lgAndUp"
-        class="lsess-container"
-        fluid
-      >
-        <v-row class="fill-height">
-          <v-col class="pt-0 lsess-schedule">
-            <v-row
-              class="my-0 pos-relative pt-md-2 pg-max-w-5xl pg-mx-auto"
-              justify="center"
-              align="center"
+    <section v-if="$vuetify.breakpoint.mdAndUp" class="lsess-container" fluid>
+      <v-row class="fill-height">
+        <v-col class="pt-0 lsess-schedule">
+          <v-row
+            class="my-0 pos-relative pt-md-2 pg-max-w-5xl pg-mx-auto"
+            justify="center"
+            align="center"
+          >
+            <v-btn-toggle
+              v-model="viewModeVal"
+              class="mt-6 text-none ml-md-4 mt-md-0"
+              :class="{
+                'pos-absolute pos-left-0': $vuetify.breakpoint.mdAndUp
+              }"
             >
-              <v-btn-toggle
-                v-model="viewModeVal"
-                class="mt-6 text-none ml-md-4 mt-md-0"
+              <v-btn
+                :color="viewMode === 'WEEK' ? 'accent' : 'white'"
+                class="lsess-switcher-btn text-none font-weight-light"
                 :class="{
-                  'pos-absolute pos-left-0': $vuetify.breakpoint.mdAndUp
+                  'white--text': viewMode === 'WEEK'
                 }"
               >
-                <v-btn
-                  :color="viewMode === 'WEEK' ? 'accent' : 'white'"
-                  class="lsess-switcher-btn text-none font-weight-light"
-                  :class="{
-                    'white--text': viewMode === 'WEEK'
-                  }"
-                >
-                  Week
-                </v-btn>
-                <v-btn
-                  :color="viewMode === 'DAY' ? 'accent' : 'white'"
-                  class="lsess-switcher-btn text-none font-weight-light"
-                  :class="{
-                    'white--text': viewMode === 'DAY'
-                  }"
-                >
-                  Day
-                </v-btn>
-              </v-btn-toggle>
+                Week
+              </v-btn>
+              <v-btn
+                :color="viewMode === 'DAY' ? 'accent' : 'white'"
+                class="lsess-switcher-btn text-none font-weight-light"
+                :class="{
+                  'white--text': viewMode === 'DAY'
+                }"
+              >
+                Day
+              </v-btn>
+            </v-btn-toggle>
 
-              <v-col class="hidden-sm-and-down" cols="12">
-                <template v-if="viewMode === 'WEEK'">
-                  <week-selector
-                    v-if="today"
-                    :day="getDateObj()"
-                    @prev-week="removeWeek"
-                    @next-week="addWeek"
-                  />
-                </template>
-                <template v-if="viewMode === 'DAY'">
-                  <day-selector
-                    v-if="today"
-                    :day="getDateObj()"
-                    @prev-day="removeDay"
-                    @next-day="addDay"
-                  />
-                </template>
-              </v-col>
-            </v-row>
+            <v-col class="hidden-sm-and-down" cols="12">
+              <template v-if="viewMode === 'WEEK'">
+                <week-selector
+                  v-if="today"
+                  :day="getDateObj()"
+                  @prev-week="removeWeek"
+                  @next-week="addWeek"
+                />
+              </template>
+              <template v-if="viewMode === 'DAY'">
+                <day-selector
+                  v-if="today"
+                  :day="getDateObj()"
+                  @prev-day="removeDay"
+                  @next-day="addDay"
+                />
+              </template>
+            </v-col>
+          </v-row>
 
-            <v-row>
-              <v-col cols="12">
-                <span class="font-weight-bold">
-                  *Hours are in {{ getAcronymCurrent }}, you can change your
-                  time zone by clicking
-                  <span
-                    class=" text-decoration-underline font-weight-bold timezone"
-                    @click="timezoneDialog = true"
-                  >
-                    HERE
-                  </span>
+          <v-row>
+            <v-col cols="12">
+              <span class="font-weight-bold">
+                *Hours are in {{ getAcronymCurrent }}, you can change your time
+                zone by clicking
+                <span
+                  class=" text-decoration-underline font-weight-bold timezone"
+                  @click="timezoneDialog = true"
+                >
+                  HERE
                 </span>
-              </v-col>
-            </v-row>
+              </span>
+            </v-col>
+          </v-row>
 
-            <sessions-table
-              v-if="!loading"
-              :day-mode="viewMode === 'DAY'"
-              :today="today"
-              :holidays="getHolidays"
-              disable-open-dialog
-              disable-weekends
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+          <sessions-table
+            v-if="!loading"
+            :day-mode="viewMode === 'DAY'"
+            :today="today"
+            :holidays="getHolidays"
+            disable-open-dialog
+            disable-weekends
+          />
+        </v-col>
+      </v-row>
+    </section>
 
-      <v-container v-else class="lclass-mobile">
-        <div class="header">
-          <img class="camera-icon" src="@/assets/svg/sessions-camera.svg" />
-          Live Classes Schedule
+    <section v-else class="lclass-mobile">
+      <div class="header">
+        <img class="camera-icon" src="@/assets/svg/sessions-camera.svg" />
+        Live Classes Schedule
+      </div>
+
+      <week-selector
+        v-if="today"
+        :day="getDateObj()"
+        @prev-week="removeWeek"
+        @next-week="addWeek"
+      />
+
+      <v-row class="mt-4 px-4" justify="space-around">
+        <div
+          v-for="(session, index) in sessionsWithHolidays"
+          :key="index"
+          class="today-cards-wrapper"
+          :style="{ width: `calc(300px * ${session.sessions.length})` }"
+        >
+          <holiday-card
+            v-if="session.holiday"
+            :holiday="session.holiday"
+            holiday-type="day"
+            height="100%"
+            top-position="0"
+          />
+          <today-card
+            v-for="entry in session.sessions"
+            :key="`lclass-entry-${entry.id}`"
+            v-bind="{ entry }"
+            mobile
+            disable-open-dialog
+          />
         </div>
-
-        <week-selector
-          v-if="today"
-          :day="getDateObj()"
-          @prev-week="removeWeek"
-          @next-week="addWeek"
-        />
-
-        <v-row class="mt-4 px-4" justify="space-around">
-          <div
-            v-for="(session, index) in sessionsWithHolidays"
-            :key="index"
-            class="today-cards-wrapper"
-            :style="{ width: `calc(300px * ${session.sessions.length})` }"
-          >
-            <holiday-card
-              v-if="session.holiday"
-              :holiday="session.holiday"
-              holiday-type="day"
-              height="100%"
-              top-position="0"
-            />
-            <today-card
-              v-for="entry in session.sessions"
-              :key="`lclass-entry-${entry.id}`"
-              v-bind="{ entry }"
-              mobile
-              disable-open-dialog
-            />
-          </div>
-          <v-col v-if="orderedSessions.length === 0" cols="12">
-            <v-card>
-              <v-card-text class="text-center text-h6">
-                There are no live classes programmed for this week. Check back
-                later.
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </pg-loading>
+        <v-col v-if="orderedSessions.length === 0" cols="12">
+          <v-card>
+            <v-card-text class="text-center text-h6">
+              There are no live classes programmed for this week. Check back
+              later.
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </section>
 
     <entry-dialog @refresh="getUserLiveSessions" />
 
