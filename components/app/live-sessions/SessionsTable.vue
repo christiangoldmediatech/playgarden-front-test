@@ -54,7 +54,9 @@
               <div
                 class="d-flex align-center justify-center lsess-table-offset"
               >
-                {{ hourOffset + hour }}:00
+                <span class="hour">
+                  {{ getHourNoMilitaryTime(hourOffset + hour) }} {{ getAmOrPm(hourOffset + hour) }}
+                </span>
               </div>
               <v-row justify="center">
                 <template v-if="dayMode">
@@ -100,7 +102,9 @@
               <div
                 class="d-flex align-center justify-center lsess-table-offset"
               >
-                {{ hourOffset + hour }}:00
+                <span class="hour">
+                  {{ getHourNoMilitaryTime(hourOffset + hour) }} :00 {{ getAmOrPm(hourOffset + hour) }}
+                </span>
               </div>
               <v-row justify="center">
                 <template>
@@ -359,6 +363,19 @@ export default defineComponent({
   },
 
   methods: {
+    getHourNoMilitaryTime(hour) {
+      if (hour === 0) {
+        return 12
+      } else if (hour > 12) {
+        return hour - 12
+      } else {
+        return hour
+      }
+    },
+
+    getAmOrPm(hour) {
+      return (hour > 12) ? 'pm' : 'am'
+    },
     getHolidayForDay(dayIndex) {
       return this.holidaysFormatted.find((holiday) => holiday.day === dayIndex)
     },
@@ -482,6 +499,10 @@ export default defineComponent({
   // .v-carousel__controls {
   //   display: none;
   // }
+
+  .hour {
+    font-size: 12px !important;
+  }
 
   .ps {
     position: relative;
