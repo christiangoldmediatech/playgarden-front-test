@@ -180,7 +180,7 @@ export default {
       const start = moment(this.entry.dateStart)
       const { timezone } = this.getUserInfo
       return `${word} ${formatTimezone(start, {
-        format: 'HH:mm',
+        format: 'hh:mma',
         timezone,
         returnObject: false
       })}`
