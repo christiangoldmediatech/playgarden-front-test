@@ -501,7 +501,7 @@ export default defineComponent({
   // }
 
   .hour {
-    font-size: 14px !important;
+    font-size: 12px !important;
   }
 
   .ps {
