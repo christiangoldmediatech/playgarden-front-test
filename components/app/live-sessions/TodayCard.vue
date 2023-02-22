@@ -9,8 +9,14 @@
     <v-hover v-slot="{ hover }">
       <v-card
         class="lsess-card clickable"
-        :style="{'--borderColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}"
-        :class="{ 'lsess-card-scaled': hover, 'lsess-card-active': isLive, 'lsess-card-cancelled': entry.cancelled }"
+        :style="{
+          '--borderColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'
+        }"
+        :class="{
+          'lsess-card-scaled': hover,
+          'lsess-card-active': isLive,
+          'lsess-card-cancelled': entry.cancelled
+        }"
         :disabled="block"
         @click.stop="openLink"
       >
@@ -18,7 +24,7 @@
           v-if="isLive"
           class="active-camera"
           src="@/assets/svg/sessions-active-camera.svg"
-        >
+        />
         <v-row class="ma-0">
           <v-col class="flex-grow-0 flex-shrink-1">
             <div v-if="entry.teacher" class="pg-relative">
@@ -43,7 +49,11 @@
           <v-col>
             <div class="d-flex flex-column justify-space-between fill-height">
               <div class="lsess-card-title">
-                {{ entry.type === 'LiveClass' ? entry.activityType.name : entry.title }}
+                {{
+                  entry.type === 'LiveClass'
+                    ? entry.activityType.name
+                    : entry.title
+                }}
               </div>
               <div class="lsess-card-subtitle">
                 {{ entry.title }}
@@ -82,7 +92,9 @@
                     This class has been cancelled today. See you next time!
                   </span>
                 </div>
-                <div class="d-flex justify-center w-100 mt-10 dashboard-content-bars">
+                <div
+                  class="d-flex justify-center w-100 mt-10 dashboard-content-bars"
+                >
                   <img src="@/assets/svg/color-bars.svg" width="90%" />
                 </div>
               </v-card>
@@ -129,6 +141,10 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    disableOpenDialog: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -164,7 +180,7 @@ export default {
       const start = moment(this.entry.dateStart)
       const { timezone } = this.getUserInfo
       return `${word} ${formatTimezone(start, {
-        format: 'HH:mm',
+        format: 'hh:mma',
         timezone,
         returnObject: false
       })}`
@@ -184,14 +200,18 @@ export default {
 
   methods: {
     openLink() {
-      this.$nuxt.$emit('open-entry-dialog', this.entry)
-      this.$gtm.push({
-        event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_CLICKED,
-        userId: this.getUserInfo.id,
-        topic: this.entry.activityType ? this.entry.activityType.name : this.entry.title,
-        topicDescription: this.entry.title,
-        itemDateTime: this.entry.dateStart
-      })
+      if (!this.disableOpenDialog) {
+        this.$nuxt.$emit('open-entry-dialog', this.entry)
+        this.$gtm.push({
+          event: TAG_MANAGER_EVENTS.LIVE_CLASSES_ITEM_CLICKED,
+          userId: this.getUserInfo.id,
+          topic: this.entry.activityType
+            ? this.entry.activityType.name
+            : this.entry.title,
+          topicDescription: this.entry.title,
+          itemDateTime: this.entry.dateStart
+        })
+      }
     },
 
     openCancelledDialog() {

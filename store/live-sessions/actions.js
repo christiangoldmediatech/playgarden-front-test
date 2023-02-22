@@ -2,16 +2,18 @@ import { snotifyError } from '@/utils/vuex'
 import { getTimezone } from '@/utils/dateTools'
 
 export default {
-  createLiveSession (_, data) {
+  createLiveSession(_, data) {
     return this.$axios.$post('/live-sessions', data)
   },
 
-  deleteLiveSession (_, id) {
+  deleteLiveSession(_, id) {
     return this.$axios.$delete(`/live-sessions/${id}`)
   },
 
-  async getParticipants (_, id) {
-    const participants = await this.$axios.$get(`/live-sessions/${id}/assistant`)
+  async getParticipants(_, id) {
+    const participants = await this.$axios.$get(
+      `/live-sessions/${id}/assistant`
+    )
     return participants.map((data) => {
       const { user } = data
       user.fullName = `${user.firstName} ${user.lastName}`
@@ -35,15 +37,18 @@ export default {
     )
   },
 
-  updateLiveSession (_, { id, data }) {
+  updateLiveSession(_, { id, data }) {
     return this.$axios.$patch(`/live-sessions/${id}`, data)
   },
 
-  recoverLiveSession (_, id) {
+  recoverLiveSession(_, id) {
     return this.$axios.$patch(`/live-sessions/${id}/recover`)
   },
 
-  async getUserLiveSessions ({ commit, rootGetters }, { sunday, saturday, admin, type }) {
+  async getUserLiveSessions(
+    { commit, rootGetters, state },
+    { sunday, saturday, admin, type, isPublic = '' }
+  ) {
     try {
       let data, meetings, total
 
@@ -59,23 +64,30 @@ export default {
         params.active = true
       }
 
-      const { total: totalData, meetings: meetingsList, block } = data = await this.$axios.$get('/live-sessions', {
+      const {
+        total: totalData,
+        meetings: meetingsList,
+        block
+      } = (data = await this.$axios.$get(`/live-sessions${isPublic}`, {
         params
-      })
+      }))
 
       total = totalData
       meetings = meetingsList
 
-      const playdates = await this.$axios.$get('/live-sessions/show-children', {
-        params: {
-          page: params.limit,
-          limit: params.page,
-          startDate: params.startDate,
-          endDate: params.endDate,
-          type: 'Playdate',
-          includeActivityType: true
+      const playdates = await this.$axios.$get(
+        `/live-sessions${isPublic}/show-children`,
+        {
+          params: {
+            page: params.limit,
+            limit: params.page,
+            startDate: params.startDate,
+            endDate: params.endDate,
+            type: 'Playdate',
+            includeActivityType: true
+          }
         }
-      })
+      )
 
       if (type !== 'liveClasses') {
         meetings.push(...playdates)
@@ -87,7 +99,8 @@ export default {
       }
 
       const userInfo = rootGetters['auth/getUserInfo']
-      const timezone = (userInfo.timezone) ? userInfo.timezone : 'America/New_York'
+      const timezonePublic = state.timezone
+      const timezone = userInfo.timezone ? userInfo.timezone : timezonePublic
       const currentTimezone = getTimezone(timezone)
       commit('SET_SESSIONS', meetings)
       commit('SET_TIMEZONE', currentTimezone)
@@ -99,7 +112,7 @@ export default {
     }
   },
 
-  async getRecorded (_, { curriculumTypeId = null, activityTypeId = null }) {
+  async getRecorded(_, { curriculumTypeId = null, activityTypeId = null }) {
     try {
       const data = await this.$axios.$get('/live-sessions', {
         params: {
@@ -117,15 +130,20 @@ export default {
     }
   },
 
-  async saveAttendance (_, id) {
+  async saveAttendance(_, id) {
     await this.$axios.post(`/live-sessions/${id}/assistant`)
   },
 
-  async fetchHolidays ({ commit }, { sunday, saturday }) {
+  async fetchHolidays({ commit }, { sunday, saturday, isPublic = '' }) {
     try {
       const formattedSunday = sunday.toISOString().split('T')[0]
       const formattedSaturday = saturday.toISOString().split('T')[0]
-      const response = await this.$axios.$get('/holidays', { params: { dateIntervalStart: formattedSunday, dateIntervalEnd: formattedSaturday } })
+      const response = await this.$axios.$get(`/holidays${isPublic}`, {
+        params: {
+          dateIntervalStart: formattedSunday,
+          dateIntervalEnd: formattedSaturday
+        }
+      })
       commit('SET_HOLIDAYS', response)
     } catch (error) {
       return Promise.reject(error)
