@@ -102,6 +102,7 @@ export default {
     sections () {
       return [
         { text: 'General', routeName: 'app-account-index', show: true },
+        { text: 'Personal Information', routeName: 'app-account-index-personal', show: true },
         { text: 'Student Profile', routeName: 'app-account-index-student-profile', show: true },
         { text: 'Membership', routeName: 'app-account-index-membership', show: !this.isUserCaregiver },
         { text: 'Caregivers', routeName: 'app-account-index-caregiver', show: !this.isUserCaregiver },
