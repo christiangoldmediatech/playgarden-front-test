@@ -1,133 +1,203 @@
 <template>
   <v-main class="pg-mt-8" data-test-id="live-classes-content">
-    <pg-loading :loading="loading" fullscreen>
-      <v-container
-        v-if="$vuetify.breakpoint.lgAndUp"
-        class="lsess-container"
-        fluid
-      >
-        <v-row class="fill-height">
-          <v-col class="pt-0 lsess-schedule">
-            <v-row
-              class="my-0 pos-relative pt-md-2 pg-max-w-5xl pg-mx-auto"
-              justify="center"
-              align="center"
+    <section v-if="$vuetify.breakpoint.mdAndUp" class="lsess-container" fluid>
+      <v-row class="fill-height">
+        <v-col class="pt-0 lsess-schedule">
+          <v-row
+            class="my-0 pos-relative pt-md-2 pg-max-w-5xl pg-mx-auto"
+            justify="center"
+            align="center"
+          >
+            <v-btn-toggle
+              v-model="viewModeVal"
+              class="mt-6 text-none ml-md-4 mt-md-0"
+              :class="{
+                'pos-absolute pos-left-0': $vuetify.breakpoint.mdAndUp
+              }"
             >
-              <v-btn-toggle
-                v-model="viewModeVal"
-                class="mt-6 text-none ml-md-4 mt-md-0"
+              <v-btn
+                :color="viewMode === 'WEEK' ? 'accent' : 'white'"
+                class="lsess-switcher-btn text-none font-weight-light"
                 :class="{
-                  'pos-absolute pos-left-0': $vuetify.breakpoint.mdAndUp
+                  'white--text': viewMode === 'WEEK'
                 }"
               >
-                <v-btn
-                  :color="viewMode === 'WEEK' ? 'accent' : 'white'"
-                  class="lsess-switcher-btn text-none font-weight-light"
-                  :class="{
-                    'white--text': viewMode === 'WEEK'
-                  }"
+                Week
+              </v-btn>
+              <v-btn
+                :color="viewMode === 'DAY' ? 'accent' : 'white'"
+                class="lsess-switcher-btn text-none font-weight-light"
+                :class="{
+                  'white--text': viewMode === 'DAY'
+                }"
+              >
+                Day
+              </v-btn>
+            </v-btn-toggle>
+
+            <v-col class="hidden-sm-and-down" cols="12">
+              <template v-if="viewMode === 'WEEK'">
+                <week-selector
+                  v-if="today"
+                  :day="getDateObj()"
+                  @prev-week="removeWeek"
+                  @next-week="addWeek"
+                />
+              </template>
+              <template v-if="viewMode === 'DAY'">
+                <day-selector
+                  v-if="today"
+                  :day="getDateObj()"
+                  @prev-day="removeDay"
+                  @next-day="addDay"
+                />
+              </template>
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="12">
+              <span class="font-weight-bold">
+                *Hours are in {{ getAcronymCurrent }}, you can change your time
+                zone by clicking
+                <span
+                  class=" text-decoration-underline font-weight-bold timezone"
+                  @click="timezoneDialog = true"
                 >
-                  Week
-                </v-btn>
-                <v-btn
-                  :color="viewMode === 'DAY' ? 'accent' : 'white'"
-                  class="lsess-switcher-btn text-none font-weight-light"
-                  :class="{
-                    'white--text': viewMode === 'DAY'
-                  }"
-                >
-                  Day
-                </v-btn>
-              </v-btn-toggle>
+                  HERE
+                </span>
+              </span>
+            </v-col>
+          </v-row>
 
-              <v-col class="hidden-sm-and-down" cols="12">
-                <template v-if="viewMode === 'WEEK'">
-                  <week-selector
-                    v-if="today"
-                    :day="getDateObj()"
-                    @prev-week="removeWeek"
-                    @next-week="addWeek"
-                  />
-                </template>
-                <template v-if="viewMode === 'DAY'">
-                  <day-selector
-                    v-if="today"
-                    :day="getDateObj()"
-                    @prev-day="removeDay"
-                    @next-day="addDay"
-                  />
-                </template>
-              </v-col>
-            </v-row>
+          <sessions-table
+            v-if="!loading"
+            :day-mode="viewMode === 'DAY'"
+            :today="today"
+            :holidays="getHolidays"
+            disable-open-dialog
+            disable-weekends
+          />
+        </v-col>
+      </v-row>
+    </section>
 
-            <sessions-table
-              v-if="!loading"
-              :day-mode="viewMode === 'DAY'"
-              :today="today"
-              :holidays="getHolidays"
-              disable-open-dialog
-              disable-weekends
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+    <section v-else class="lclass-mobile">
+      <div class="header">
+        <img class="camera-icon" src="@/assets/svg/sessions-camera.svg" />
+        Live Classes Schedule
+      </div>
 
-      <v-container v-else class="lclass-mobile">
-        <div class="header">
-          <img class="camera-icon" src="@/assets/svg/sessions-camera.svg" />
-          Live Classes Schedule
+      <week-selector
+        v-if="today"
+        :day="getDateObj()"
+        @prev-week="removeWeek"
+        @next-week="addWeek"
+      />
+
+      <v-row class="mt-4 px-4" justify="space-around">
+        <div
+          v-for="(session, index) in sessionsWithHolidays"
+          :key="index"
+          class="today-cards-wrapper"
+          :style="{ width: `calc(300px * ${session.sessions.length})` }"
+        >
+          <holiday-card
+            v-if="session.holiday"
+            :holiday="session.holiday"
+            holiday-type="day"
+            height="100%"
+            top-position="0"
+          />
+          <today-card
+            v-for="entry in session.sessions"
+            :key="`lclass-entry-${entry.id}`"
+            v-bind="{ entry }"
+            mobile
+            disable-open-dialog
+          />
         </div>
-
-        <week-selector
-          v-if="today"
-          :day="getDateObj()"
-          @prev-week="removeWeek"
-          @next-week="addWeek"
-        />
-
-        <v-row class="mt-4 px-4" justify="space-around">
-          <div
-            v-for="(session, index) in sessionsWithHolidays"
-            :key="index"
-            class="today-cards-wrapper"
-            :style="{ width: `calc(300px * ${session.sessions.length})` }"
-          >
-            <holiday-card
-              v-if="session.holiday"
-              :holiday="session.holiday"
-              holiday-type="day"
-              height="100%"
-              top-position="0"
-            />
-            <today-card
-              v-for="entry in session.sessions"
-              :key="`lclass-entry-${entry.id}`"
-              v-bind="{ entry }"
-              mobile
-            />
-          </div>
-          <v-col v-if="orderedSessions.length === 0" cols="12">
-            <v-card>
-              <v-card-text class="text-center text-h6">
-                There are no live classes programmed for this week. Check back
-                later.
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </pg-loading>
+        <v-col v-if="orderedSessions.length === 0" cols="12">
+          <v-card>
+            <v-card-text class="text-center text-h6">
+              There are no live classes programmed for this week. Check back
+              later.
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </section>
 
     <entry-dialog @refresh="getUserLiveSessions" />
+
+    <pg-dialog
+      :value="timezoneDialog"
+      content-class="elevation-0"
+      :fullscreen="fullscreen"
+      persistent
+    >
+      <v-card class="dialog-overlay">
+        <v-row no-gutters justify="start" class="mt-0">
+          <v-col class="mt-16">
+            <v-row
+              class="mt-16 mb-15"
+              justify="center"
+              align-content="center"
+              no-gutters
+            >
+              <v-card
+                cols="12"
+                sm="4"
+                class="px-3 mt-16"
+                width="400"
+                height="200"
+                tile
+              >
+                <v-card-text>
+                  <v-row justify="center" no-gutters>
+                    TIMEZONE
+                  </v-row>
+                  <v-row>
+                    <pg-select
+                      v-model="selectedTimezone"
+                      clearable
+                      hide-details
+                      item-text="name"
+                      item-value="value"
+                      label="Timezone"
+                      solo-labeled
+                      :items="timezoneOptions"
+                      class="select"
+                    />
+                  </v-row>
+                  <v-row justify="center">
+                    <v-btn
+                      class="mt-3 mr-4"
+                      color="accent"
+                      @click="saveTimeZone"
+                    >
+                      Save
+                    </v-btn>
+                    <v-btn class="mt-3" color="" @click="closeTimezoneModal">
+                      Close
+                    </v-btn>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+    </pg-dialog>
   </v-main>
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import {
+  getTimezone,
   getWeekStartAndEnd,
-  timezoneOptions,
-  getTimezone
+  timezoneOptions
 } from '@/utils/dateTools'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
 import EntryDialog from '@/components/app/live-sessions/EntryDialog.vue'
@@ -173,6 +243,7 @@ export default {
   computed: {
     ...mapState('live-sessions', ['sessions']),
     ...mapGetters('live-sessions', ['getHolidays']),
+    ...mapState({ publicTimezone: (state) => state['live-sessions/timezone'] }),
 
     days() {
       if (this.today) {
@@ -311,9 +382,11 @@ export default {
   },
 
   created() {
+    this.$store.dispatch('auth/logout')
     this.setToday(new Date())
     this.getUserLiveSessions(this.days)
     this.getFilteredHolidays()
+    this.setCurrentTimezone()
   },
 
   methods: {
@@ -327,7 +400,6 @@ export default {
       this.loading = false
     },
 
-    ...mapActions('admin/users', ['setTimezone']),
     ...mapActions('auth', ['fetchUserInfo']),
     ...mapActions('live-sessions', ['fetchHolidays']),
 
@@ -385,6 +457,29 @@ export default {
     filterMeetings(type) {
       this.filterType = type
       this.getUserLiveSessions()
+    },
+
+    async saveTimeZone() {
+      this.loading = true
+      try {
+        this.$store.commit('live-sessions/SET_TIMEZONE', this.selectedTimezone)
+        await this.getUserLiveSessions(this.days)
+        this.viewModeVal = 0
+        this.timezoneDialog = false
+      } catch (err) {
+      } finally {
+        this.loading = false
+      }
+    },
+
+    closeTimezoneModal() {
+      this.timezoneDialog = false
+      this.viewModeVal = 0
+      this.setCurrentTimezone()
+    },
+
+    setCurrentTimezone() {
+      this.selectedTimezone = getTimezone(this.publicTimezone)
     }
   }
 }
