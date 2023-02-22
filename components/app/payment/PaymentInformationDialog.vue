@@ -170,7 +170,6 @@ export default defineComponent({
           loading.value = false
           return
         }
-
         await store.dispatch('payment/selectSubscriptionPlan', plan)
 
         if (promotionId.value) {

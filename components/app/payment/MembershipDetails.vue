@@ -160,7 +160,6 @@
 
               <template
                 v-if="billing.planAmountDiscount || billing.percentOff"
-                no-gutters
               >
                 <v-col class="mt-1" cols="12" md="5">
                   <span
@@ -347,7 +346,7 @@
                 block
                 color="error"
                 x-large
-                @click="removeSubscriptionModal = true"
+                @click="handleCancelMembershipClick"
               >
                 CANCEL MEMBERSHIP
               </v-btn>
@@ -394,7 +393,6 @@
 
       <!-- Cancel suscription modal -->
       <cancel-suscription-modal
-        v-model="otherLeaveMotive"
         :remove-subscription-modal="removeSubscriptionModal"
         :is-mobile="isMobile"
         :leave-motive="leaveMotive"
@@ -402,21 +400,99 @@
         :is-last-leave-motive="isLastLeaveMotive"
         :loading="loading"
         :is-validate-motive="isValidateMotive"
-        @removeSubscription="removeSubscription"
+        @removeSubscription="getCancellationFlow"
         @removeSubscriptionModal="removeSubscriptionModal = false"
         @changeLeaveMotive="(e) => (leaveMotive = e)"
       />
 
-      <technical-issues-cancellation-modal :view-modal="viewTechnicalIssuesModal" />
-      <too-expensive-modal :view-modal="viewTooExpensiveModal" />
-      <using-other-platform-modal :view-modal="viewUsingOtherPlatformModal" />
-      <going-to-in-person-modal :view-modal="viewGoingToInPersonModal" />
-      <too-much-time-modal :view-modal="viewTooMuchTimeModal" />
-      <little-one-not-engaged-modal :view-modal="viewLittleOneNotEngagedModal" />
-      <did-not-use-enough-modal :view-modal="viewDidNotUseEnoughModal" />
-      <missing-features-modal :view-modal="viewMissingFeaturesModal" />
-      <did-not-meet-expectations :view-modal="viewDidNotMeetExpectations" />
-      <other-reason-modal :view-modal="viewOtherReasonModal" />
+      <annual-subscription-cancellation-modal
+        v-model="viewAnnualCancellationModal"
+        :reason-message="leaveMotive"
+        :billing="billing"
+        :plan-id="plan.id"
+        @reloadInformation="reloadInformation"
+      />
+
+      <technical-issues-cancellation-modal
+        v-model="viewTechnicalIssuesModal"
+        :plan="plan"
+        :plan-info="planInfo"
+        :billing-type="billing.billingType"
+        :reason-message="leaveMotive"
+        @reloadInformation="reloadInformation"
+      />
+      <too-expensive-modal
+        v-model="viewTooExpensiveModal"
+        :plan="plan"
+        :plan-info="planInfo"
+        :billing-type="billing.billingType"
+        :reason-message="leaveMotive"
+        @reloadInformation="reloadInformation"
+      />
+      <using-other-platform-modal
+        v-model="viewUsingOtherPlatformModal"
+        :plan="plan"
+        :plan-info="planInfo"
+        :billing-type="billing.billingType"
+        :reason-message="leaveMotive"
+        @reloadInformation="reloadInformation"
+      />
+      <going-to-in-person-modal
+        v-model="viewGoingToInPersonModal"
+        :plan="plan"
+        :plan-info="planInfo"
+        :billing-type="billing.billingType"
+        :reason-message="leaveMotive"
+        @reloadInformation="reloadInformation"
+      />
+      <too-much-time-modal
+        v-model="viewTooMuchTimeModal"
+        :plan="plan"
+        :plan-info="planInfo"
+        :billing-type="billing.billingType"
+        :reason-message="leaveMotive"
+        @reloadInformation="reloadInformation"
+      />
+      <little-one-not-engaged-modal
+        v-model="viewLittleOneNotEngagedModal"
+        :plan="plan"
+        :plan-info="planInfo"
+        :billing-type="billing.billingType"
+        :reason-message="leaveMotive"
+        @reloadInformation="reloadInformation"
+      />
+      <did-not-use-enough-modal
+        v-model="viewDidNotUseEnoughModal"
+        :plan="plan"
+        :plan-info="planInfo"
+        :billing-type="billing.billingType"
+        :reason-message="leaveMotive"
+        @reloadInformation="reloadInformation"
+      />
+      <missing-features-modal
+        v-model="viewMissingFeaturesModal"
+        :plan="plan"
+        :plan-info="planInfo"
+        :billing-type="billing.billingType"
+        :reason-message="leaveMotive"
+        @reloadInformation="reloadInformation"
+      />
+      <did-not-meet-expectations
+        v-model="viewDidNotMeetExpectations"
+        :plan="plan"
+        :plan-info="planInfo"
+        :billing-type="billing.billingType"
+        :reason-message="leaveMotive"
+        @reloadInformation="reloadInformation"
+      />
+      <other-reason-modal
+        v-model="viewOtherReasonModal"
+        :plan="plan"
+        :plan-info="planInfo"
+        :billing-type="billing.billingType"
+        :reason-message="leaveMotive"
+        @reloadInformation="reloadInformation"
+      />
 
       <!-- Discount Flow -->
       <coupon-discount-modal
@@ -454,10 +530,6 @@
       />
       <welcome-to-play-and-learn-modal
         :view-welcome-to-play-and-learn-modal="viewWelcomeToPlayAndLearnModal"
-      />
-      <cancel-play-and-learn-modal
-        :cancel-play-and-learn-modal="cancelPlayAndLearnModal"
-        @closeCancelPlayAndLearnModal="cancelPlayAndLearnModal = false"
       />
 
       <!-- Cancel Anyway Modal -->
@@ -518,6 +590,7 @@ import GoingToInPersonModal from '@/components/app/payment/GoingToInPersonModal.
 import MissingFeaturesModal from '@/components/app/payment/MissingFeaturesModal.vue'
 import DidNotMeetExpectations from '@/components/app/payment/DidNotMeetExpectations.vue'
 import OtherReasonModal from '@/components/app/payment/OtherReasonModal.vue'
+import AnnualSubscriptionCancellationModal from '@/components/app/payment/AnnualSubscriptionCancellationModal.vue'
 import LearningKitsPopup from './LearningKitsPopup.vue'
 import CancelSuscriptionModal from './CancelSuscriptionModal.vue'
 import CancelAnyway from './CancelSuscriptionFlow/CancelAnyway.vue'
@@ -526,7 +599,6 @@ import PlayAndLearnProgramModal from './CancelSuscriptionFlow/PlayAndLearnFlow/P
 import WelcomeToPlayAndLearnModal from './CancelSuscriptionFlow/PlayAndLearnFlow/WelcomeToPlayAndLearnModal.vue'
 import TryPlayAndLearnModal from './CancelSuscriptionFlow/DiscountFlow/TryPlayAndLearnModal.vue'
 import AppliedCouponModal from './CancelSuscriptionFlow/DiscountFlow/AppliedCouponModal.vue'
-import CancelPlayAndLearnModal from './CancelSuscriptionFlow/DiscountFlow/CancelPlayAndLearnModal.vue'
 
 export default {
   name: 'MembershipDetails',
@@ -544,7 +616,7 @@ export default {
     TryPlayAndLearnModal,
     AppliedCouponModal,
     LearningKitsPopup,
-    CancelPlayAndLearnModal,
+    TooMuchTimeModal,
     TechnicalIssuesCancellationModal,
     TooExpensiveModal,
     UsingOtherPlatformModal,
@@ -553,7 +625,8 @@ export default {
     DidNotUseEnoughModal,
     MissingFeaturesModal,
     DidNotMeetExpectations,
-    OtherReasonModal
+    OtherReasonModal,
+    AnnualSubscriptionCancellationModal
   },
 
   data: (vm) => ({
@@ -584,8 +657,8 @@ export default {
     removeSubscriptionModal: false,
     userCards: [],
     plan: {},
+    planInfo: {},
     leaveMotive: '',
-    otherLeaveMotive: '',
     leaveMotives: [
       {
         motive: 'Repeated technical issues',
@@ -639,6 +712,7 @@ export default {
     viewMissingFeaturesModal: false,
     viewDidNotMeetExpectations: false,
     viewOtherReasonModal: false,
+    viewAnnualCancellationModal: false,
     // Discount Flow
     viewCouponDiscountModal: false,
     viewTryPlayAndLearnModal: false,
@@ -646,7 +720,6 @@ export default {
     // PAL Program Flow
     viewPlayAndLearnProgramModal: false,
     viewWelcomeToPlayAndLearnModal: false,
-    cancelPlayAndLearnModal: false,
     // PAL Cancellation Flow
     viewPlayAndLearnDiscountModal: false,
     // Cancel Anyway Modal
@@ -682,14 +755,7 @@ export default {
     },
 
     isValidateMotive() {
-      if (
-        this.leaveMotive === 'Other (please explain)' &&
-        (this.otherLeaveMotive === '' || this.otherLeaveMotive.length < 5)
-      ) {
-        return true
-      } else {
-        return !this.leaveMotive
-      }
+      return !this.leaveMotive
     },
 
     getTotalPay() {
@@ -795,10 +861,17 @@ export default {
     }),
     ...mapActions('payment', [
       'getSelectedSubscriptionPlan',
+      'fetchSubscriptionPlanById',
       'cancelSubscription',
       'fetchBillingCards',
       'fetchBillingDetails'
     ]),
+
+    handleCancelMembershipClick() {
+      this.resetCancellationFlowsControls()
+      this.leaveMotive = ''
+      this.removeSubscriptionModal = true
+    },
 
     loadData() {
       this.getBillingDetails()
@@ -922,59 +995,64 @@ export default {
       this.learnAndPlayWasCanceled = true
       await this.removeSubscription(false)
     },
-    async removeSubscription(ignoreFlow = true) {
-      if (ignoreFlow) {
-        this.getCancelationFlow()
-        return
-      }
-
+    async reloadInformation(reloadPlan = false) {
       try {
         this.loading = true
-        const reason = this.isLastLeaveMotive
-          ? this.otherLeaveMotive || this.leaveMotive
-          : this.leaveMotive
-        await this.cancelSubscription(reason)
-        this.$snotify.success('Subscription has been canceled successfully!')
-        await this.getBillingDetails()
         // update auser info on store
         await this.fetchUserInfoIntoStore()
-        this.removeSubscriptionModal = false
+        await this.getBillingDetails()
+
+        if (reloadPlan) {
+          await this.getPlan()
+        }
       } catch (e) {
         // In the future we can handle the error
       } finally {
         this.loading = false
-        if (this.learnAndPlayWasCanceled) {
-          this.cancelPlayAndLearnModal = true
-        } else {
-          this.viewCancelAnywayModal = true
-        }
       }
     },
-    getCancelationFlow() {
+
+    resetCancellationFlowsControls() {
+      this.viewAnnualCancellationModal = false
+      this.viewTechnicalIssuesModal = false
+      this.viewTooExpensiveModal = false
+      this.viewUsingOtherPlatformModal = false
+      this.viewGoingToInPersonModal = false
+      this.viewTooMuchTimeModal = false
+      this.viewLittleOneNotEngagedModal = false
+      this.viewDidNotUseEnoughModal = false
+      this.viewMissingFeaturesModal = false
+      this.viewDidNotMeetExpectations = false
+      this.viewOtherReasonModal = false
+    },
+
+    getCancellationFlow() {
       const leaveMotive = this.leaveMotives.find(
         (motive) => motive.motive === this.leaveMotive
       )
 
-      if (leaveMotive.modal === TechnicalIssuesCancellationModal.name) {
+      if (this.billing.billingType === 'ANNUAL') {
+        this.viewAnnualCancellationModal = true
+      } else if (leaveMotive.modal === TechnicalIssuesCancellationModal.name) {
         this.viewTechnicalIssuesModal = true
       } else if (leaveMotive.modal === TooExpensiveModal.name) {
-        this.viewTooExpensiveModal = false
+        this.viewTooExpensiveModal = true
       } else if (leaveMotive.modal === UsingOtherPlatformModal.name) {
-        this.viewUsingOtherPlatformModal = false
+        this.viewUsingOtherPlatformModal = true
       } else if (leaveMotive.modal === GoingToInPersonModal.name) {
-        this.viewGoingToInPersonModal = false
+        this.viewGoingToInPersonModal = true
       } else if (leaveMotive.modal === TooMuchTimeModal.name) {
-        this.viewTooMuchTimeModal = false
+        this.viewTooMuchTimeModal = true
       } else if (leaveMotive.modal === LittleOneNotEngagedModal.name) {
-        this.viewLittleOneNotEngagedModal = false
+        this.viewLittleOneNotEngagedModal = true
       } else if (leaveMotive.modal === DidNotUseEnoughModal.name) {
-        this.viewDidNotUseEnoughModal = false
+        this.viewDidNotUseEnoughModal = true
       } else if (leaveMotive.modal === MissingFeaturesModal.name) {
-        this.viewMissingFeaturesModal = false
+        this.viewMissingFeaturesModal = true
       } else if (leaveMotive.modal === DidNotMeetExpectations.name) {
-        this.viewDidNotMeetExpectations = false
+        this.viewDidNotMeetExpectations = true
       } else if (leaveMotive.modal === OtherReasonModal.name) {
-        this.viewOtherReasonModal = false
+        this.viewOtherReasonModal = true
       }
 
       this.removeSubscriptionModal = false
@@ -994,7 +1072,9 @@ export default {
       try {
         this.disableAxiosGlobal()
         const response = await this.getSelectedSubscriptionPlan()
+        const planInfo = await this.fetchSubscriptionPlanById(response.plan.id)
         this.plan = response.plan
+        this.planInfo = planInfo
       } catch (e) {
       } finally {
         this.enableAxiosGlobal()

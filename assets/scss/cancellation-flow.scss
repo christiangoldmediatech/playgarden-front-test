@@ -1,0 +1,20 @@
+.cancellation-icon {
+  height: 120px;
+  object-fit: contain;
+}
+
+.cancellation-title {
+  font-family: 'Quicksand';
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 60px;
+}
+
+.btn-text ::v-deep .v-btn__content{
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.96px;
+  text-transform: uppercase;
+}

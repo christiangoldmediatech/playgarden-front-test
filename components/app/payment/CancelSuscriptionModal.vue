@@ -34,7 +34,7 @@
         little ones!
       </p>
 
-      <v-radio-group class="px-10" @change="$emit('changeLeaveMotive', $event)">
+      <v-radio-group v-model="radioValue" class="px-10" @change="$emit('changeLeaveMotive', $event)">
         <v-radio
           v-for="lm in leaveMotives"
           :key="lm"
@@ -48,17 +48,6 @@
           </template>
         </v-radio>
       </v-radio-group>
-
-      <validation-provider v-slot="{ errors }" name="reason" rules="required">
-        <v-text-field
-          v-show="isLastLeaveMotive"
-          v-model="otherLeaveMotive"
-          class="px-12"
-          solo
-          dense
-          :error-messages="errors"
-        />
-      </validation-provider>
     </v-card-text>
 
     <v-col class="text-center" cols="12">
@@ -93,13 +82,12 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@nuxtjs/composition-api'
+import { defineComponent, watch, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'CancelSuscriptionModal',
 
   props: {
-    value: String,
     removeSubscriptionModal: Boolean,
     isMobile: Boolean,
     leaveMotive: String,
@@ -108,19 +96,18 @@ export default defineComponent({
     loading: Boolean,
     isValidateMotive: Boolean
   },
-  emits: ['input'],
-  setup(props, { emit }) {
-    const otherLeaveMotive = computed({
-      get() {
-        return props.value
-      },
-      set(value) {
-        emit('input', value)
+
+  setup(props) {
+    const radioValue = ref(null)
+
+    watch(() => props.removeSubscriptionModal, () => {
+      if (props.removeSubscriptionModal) {
+        radioValue.value = null
       }
     })
 
     return {
-      otherLeaveMotive
+      radioValue
     }
   }
 })
