@@ -41,8 +41,10 @@
             </span>
 
             <v-btn
+              v-if="!isEditingShippingAddress"
               text
               color="#F89838"
+              @click="setEditingShippingAddress"
             >
               <span class="text-decoration-underline">Edit</span>
               <v-icon right>
@@ -69,6 +71,7 @@
               <div class="account-green-dashed-line my-4"></div>
 
               <shipping-address-details
+                v-model="isEditingShippingAddress"
                 :edit-by-default="isEditingShippingAddress"
                 @shipping-address-cancel="checkShippingAddress"
                 @shipping-address-saved="checkShippingAddress"
@@ -142,6 +145,10 @@ export default defineComponent({
       isEditingGeneralInfo.value = true
     }
 
+    const setEditingShippingAddress = () => {
+      isEditingShippingAddress.value = true
+    }
+
     async function checkShippingAddress () {
       try {
         isLoading.value = true
@@ -179,7 +186,8 @@ export default defineComponent({
       checkShippingAddress,
       generalInfoColor,
       shippingAddressColor,
-      setEditingGeneralInfo
+      setEditingGeneralInfo,
+      setEditingShippingAddress
     }
   },
 

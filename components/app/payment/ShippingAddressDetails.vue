@@ -1,48 +1,75 @@
 <template>
   <div id="shipping-address-form">
     <!-- Editable user shipping address -->
-    <validation-observer v-if="isEditing" v-slot="{ invalid, passes, reset }">
+    <validation-observer v-slot="{ invalid, passes, reset }">
       <v-form @submit.prevent="passes(onSubmit)">
         <v-row no-gutters>
           <v-col cols="12">
+            <span class="d-inline-block account-field-label mb-2">Address</span>
             <search-address-autocomplete
               v-model="draft.address1"
+              :use-new-style="true"
               @address-components="configureAddress"
             />
           </v-col>
 
           <v-col cols="12">
-            <!-- Street 2 -->
-            <pg-text-field
-              v-model="draft.address2"
-              clearable
-              :loading="loading"
-              placeholder="Apt, Suite, PO BOX (optional)"
-              label="Apt, Suite, PO BOX (optional)"
-              solo-labeled
-            />
-          </v-col>
+            <v-row no-gutters>
+              <v-col cols="12">
+                <v-row no-gutters>
+                  <v-col cols="6" class="pr-4">
+                    <!-- Street 2 -->
+                    <span class="d-inline-block account-field-label mb-2">
+                      Apt, Suite, PO BOX (optional)
+                    </span>
+                  </v-col>
+                  <v-col cols="6" class="pl-4">
+                    <!-- City -->
+                    <span class="d-inline-block account-field-label mb-2">City</span>
+                  </v-col>
+                </v-row>
+              </v-col>
 
-          <v-col cols="12">
-            <!-- City -->
-            <validation-provider v-slot="{ errors }" name="City" rules="required">
-              <pg-text-field
-                v-model="draft.city"
-                clearable
-                :error-messages="errors"
-                :loading="loading"
-                placeholder="City"
-                label="City"
-                solo-labeled
-              />
-            </validation-provider>
+              <v-col cols="12">
+                <v-row no-gutters>
+                  <v-col cols="6" class="pr-4">
+                    <!-- Street 2 -->
+                    <pg-text-field
+                      v-model="draft.address2"
+                      clearable
+                      :loading="loading"
+                      background-color="#F7F7F7"
+                      color="#AAAAAA"
+                      solo
+                      dense
+                    />
+                  </v-col>
+                  <v-col cols="6" class="pl-4">
+                    <!-- City -->
+                    <validation-provider v-slot="{ errors }" name="City" rules="required">
+                      <pg-text-field
+                        v-model="draft.city"
+                        clearable
+                        :error-messages="errors"
+                        :loading="loading"
+                        background-color="#F7F7F7"
+                        color="#AAAAAA"
+                        solo
+                        dense
+                      />
+                    </validation-provider>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
           </v-col>
 
           <v-col
-            :cols="shouldWrapOnDesktop ? 4 : 12"
-            :class="{ 'pr-4': shouldWrapOnDesktop }"
+            cols="6"
+            class="pr-4"
           >
             <!-- State -->
+            <span class="d-inline-block account-field-label mb-2">State</span>
             <validation-provider
               v-slot="{ errors }"
               name="State"
@@ -53,18 +80,20 @@
                 clearable
                 :error-messages="errors"
                 :loading="loading"
-                placeholder="State"
-                label="State"
-                solo-labeled
+                background-color="#F7F7F7"
+                color="#AAAAAA"
+                solo
+                dense
               />
             </validation-provider>
           </v-col>
 
           <v-col
-            :cols="shouldWrapOnDesktop ? 4 : 12"
-            :class="{ 'pr-4': shouldWrapOnDesktop }"
+            cols="6"
+            class="pl-4"
           >
             <!-- Country -->
+            <span class="d-inline-block account-field-label mb-2">Country</span>
             <validation-provider
               v-slot="{ errors }"
               name="Country"
@@ -89,18 +118,20 @@
                 clearable
                 :error-messages="errors"
                 :loading="loading"
-                placeholder="Country"
-                label="Country"
-                solo-labeled
+                background-color="#F7F7F7"
+                color="#AAAAAA"
+                solo
+                dense
               />
             </validation-provider>
           </v-col>
 
           <v-col
-            :cols="shouldWrapOnDesktop ? 4 : 12"
-            :class="{ 'px-4': shouldWrapOnDesktop }"
+            cols="6"
+            class="pr-4"
           >
             <!-- Zipcode -->
+            <span class="d-inline-block account-field-label mb-2">Zip Code</span>
             <validation-provider
               v-slot="{ errors }"
               name="Zipcode"
@@ -111,9 +142,10 @@
                 clearable
                 :error-messages="errors"
                 :loading="loading"
-                placeholder="Zip code"
-                label="Zip code"
-                solo-labeled
+                background-color="#F7F7F7"
+                color="#AAAAAA"
+                solo
+                dense
               />
             </validation-provider>
           </v-col>
@@ -134,14 +166,16 @@
                 clearable
                 :error-messages="errors"
                 :loading="loading"
-                placeholder="Phone number"
-                label="Phone number"
-                solo-labeled
+                background-color="#F7F7F7"
+                color="#AAAAAA"
+                solo
+                dense
               />
             </validation-provider>
           </v-col>
         </v-row>
         <v-btn
+          v-if="isEditing"
           block
           :color="saveButtonColor"
           :disabled="invalid"
@@ -153,7 +187,7 @@
         </v-btn>
 
         <v-btn
-          v-if="!hideCancelButton"
+          v-if="!hideCancelButton && isEditing"
           block
           color="grey"
           :loading="loading"
@@ -167,7 +201,7 @@
     </validation-observer>
 
     <!-- Readonly user shipping address -->
-    <v-row v-else class="grey--text">
+    <v-row class="grey--text">
       <v-col cols="4">
         Street
       </v-col>
@@ -203,16 +237,6 @@
         <b>{{ draft.zipCode }}</b>
       </v-col>
     </v-row>
-
-    <v-btn
-      v-if="!isEditing"
-      x-large
-      class="primary mt-8"
-      block
-      @click="isEditing = true"
-    >
-      Change Address
-    </v-btn>
   </div>
 </template>
 
@@ -242,6 +266,11 @@ export default {
   mixins: [submittable],
 
   props: {
+    value: {
+      type: Boolean,
+      default: false
+    },
+
     editByDefault: {
       type: Boolean,
       default: false
@@ -273,7 +302,6 @@ export default {
   },
 
   data: () => ({
-    isEditing: false,
     loading: false,
     draft: { ...draftDefault }
   }),
@@ -284,6 +312,14 @@ export default {
     },
     shouldWrapOnDesktop () {
       return this.wrapStateAndZipCodeFields && !this.isMobile
+    },
+    isEditing: {
+      get() {
+        return this.value
+      },
+      set(val) {
+        this.$emit('input', val)
+      }
     }
   },
 
@@ -418,8 +454,14 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@import '~/assets/scss/account.scss';
+
 .shipping-info-text {
   color: #B7B7B7;
+}
+
+::v-deep .v-text-field .v-input__control .v-input__slot input {
+  color: #AAAAAA !important;
 }
 </style>

@@ -14,7 +14,11 @@
     hide-no-data
     data-test-id="autocomplete-location-field"
     :filter="itemsFilter"
-    solo-labeled
+    :solo-labeled="!useNewStyle"
+    :solo="useNewStyle"
+    :dense="useNewStyle"
+    :background-color="useNewStyle ? '#F7F7F7' : '#FFFFFF'"
+    :color="useNewStyle ? '#AAAAAA' : '#606060'"
     type="search"
     autocomplete="off"
     clearable
@@ -71,6 +75,11 @@ export default Vue.extend({
 
   props: {
     loading: {
+      type: Boolean,
+      default: false
+    },
+
+    useNewStyle: {
       type: Boolean,
       default: false
     },

@@ -349,6 +349,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/assets/scss/account.scss';
+
 .text-caption {
   color: var(--v-black-base);
 }
