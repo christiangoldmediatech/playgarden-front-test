@@ -60,6 +60,12 @@ export default defineComponent({
           }
         )
 
+        playAndLearn.playAndLearnVideos.value = playAndLearn.learnPlayData.value.videos
+        playAndLearn.playAndLearnSongs.value = playAndLearn.learnPlayData.value.songs
+        playAndLearn.playAndLearnFiles.value = playAndLearn.learnPlayData.value.files
+        playAndLearn.playAndLearnWorksheets.value = playAndLearn.learnPlayData.value.worksheets
+        playAndLearn.playAndLearnBooks.value = playAndLearn.learnPlayData.value.books
+
         const curriculumTypes = await $axios.$get('/curriculum-types', {
           headers: { Authorization: `Bearer ${token}` }
         })
