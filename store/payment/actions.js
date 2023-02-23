@@ -148,6 +148,18 @@ export default {
     }
   },
 
+  fetchSubscriptionPlanById({ commit }, id) {
+    try {
+      return this.$axios.$get(`/plans/${id}`)
+    } catch (error) {
+      snotifyError(commit, {
+        body: 'Sorry! There was an error while getting Subscription plans!'
+      })
+
+      throw error
+    }
+  },
+
   getSelectedSubscriptionPlan() {
     return this.$axios.$get('/auth/user/plan')
   },
