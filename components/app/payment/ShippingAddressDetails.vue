@@ -1,7 +1,7 @@
 <template>
   <div id="shipping-address-form">
     <!-- Editable user shipping address -->
-    <validation-observer v-slot="{ invalid, passes, reset }">
+    <validation-observer v-if="isEditing" v-slot="{ invalid, passes, reset }">
       <v-form @submit.prevent="passes(onSubmit)">
         <v-row no-gutters>
           <v-col cols="12">
@@ -201,40 +201,65 @@
     </validation-observer>
 
     <!-- Readonly user shipping address -->
-    <v-row class="grey--text">
-      <v-col cols="4">
-        Street
-      </v-col>
-      <v-col cols="8" class="text-right">
-        <b>{{ draft.address1 }} {{ (draft.address2 ? `, ${draft.address2}` : '') }}</b>
-      </v-col>
-
-      <v-col cols="4">
-        City
-      </v-col>
-      <v-col cols="8" class="text-right">
-        <b>{{ draft.city }}</b>
+    <v-row v-else no-gutters>
+      <v-col cols="6" class="pr-4">
+        <span class="d-inline-block account-field-label mb-2">Street</span>
+        <pg-text-field
+          :value="formattedAddress"
+          background-color="#F7F7F7"
+          color="#AAAAAA"
+          solo
+          dense
+          disabled
+        />
       </v-col>
 
-      <v-col cols="4">
-        State
-      </v-col>
-      <v-col cols="8" class="text-right">
-        <b>{{ draft.state }}</b>
-      </v-col>
-
-      <v-col cols="4">
-        Country
-      </v-col>
-      <v-col cols="8" class="text-right">
-        <b>{{ draft.country && draft.country.name ? draft.country.name : '' }}</b>
+      <v-col cols="6" class="pl-4">
+        <span class="d-inline-block account-field-label mb-2">City</span>
+        <pg-text-field
+          :value="draft.city"
+          background-color="#F7F7F7"
+          color="#AAAAAA"
+          solo
+          dense
+          disabled
+        />
       </v-col>
 
-      <v-col cols="4">
-        Zip Code
+      <v-col cols="6" class="pr-4">
+        <span class="d-inline-block account-field-label mb-2">State</span>
+        <pg-text-field
+          :value="draft.state"
+          background-color="#F7F7F7"
+          color="#AAAAAA"
+          solo
+          dense
+          disabled
+        />
       </v-col>
-      <v-col cols="8" class="text-right">
-        <b>{{ draft.zipCode }}</b>
+
+      <v-col cols="6" class="pl-4">
+        <span class="d-inline-block account-field-label mb-2">Country</span>
+        <pg-text-field
+          :value="formattedCountry"
+          background-color="#F7F7F7"
+          color="#AAAAAA"
+          solo
+          dense
+          disabled
+        />
+      </v-col>
+
+      <v-col cols="6" class="pr-4">
+        <span class="d-inline-block account-field-label mb-2">Zip Code</span>
+        <pg-text-field
+          :value="draft.zipCode"
+          background-color="#F7F7F7"
+          color="#AAAAAA"
+          solo
+          dense
+          disabled
+        />
       </v-col>
     </v-row>
   </div>
@@ -320,6 +345,12 @@ export default {
       set(val) {
         this.$emit('input', val)
       }
+    },
+    formattedAddress() {
+      return `${this.draft.address1} ${this.draft.address2 ? `, ${this.draft.address2}` : ''}`
+    },
+    formattedCountry() {
+      return this.draft.country && this.draft.country.name ? this.draft.country.name : ''
     }
   },
 
