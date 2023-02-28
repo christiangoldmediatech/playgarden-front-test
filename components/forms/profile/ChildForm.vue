@@ -70,7 +70,7 @@
                         <v-btn
                           v-if="removable(item)"
                           text
-                          color="error"
+                          color="#F83838"
                           class="text-decoration-underline"
                           @click.stop="removeChild(item, indexD)"
                         >
