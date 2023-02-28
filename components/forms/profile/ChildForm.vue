@@ -81,10 +81,55 @@
                     <!-- Backpack Picker -->
                     <v-row class="mb-6" no-gutters>
                       <v-col cols="12">
-                        <child-icon-selector :value="item.backpackId" :backpacks="backpacks" @update:value="updateBackpackId(item, $event)" />
+                        <v-row justify="center" no-gutters>
+                          <v-col cols="12" md="10" lg="12">
+                            <v-row no-gutters>
+                              <v-col cols="12">
+                                <span class="account-field-label">
+                                  Change icon:
+                                </span>
+                              </v-col>
+                              <v-sheet
+                                class="my-2"
+                                width="100%"
+                              >
+                                <v-slide-group
+                                  v-model="item.backpackId"
+                                  show-arrows="always"
+                                >
+                                  <v-slide-item
+                                    v-for="backpack in backpacks"
+                                    :key="backpack.id"
+                                    v-slot="{ active, toggle }"
+                                    :value="backpack.id"
+                                  >
+                                    <img
+                                      :alt="backpack.name"
+                                      class="clickable image mx-2"
+                                      :class="{ active }"
+                                      :src="backpack.image"
+                                      height="100px"
+                                      @click="toggle"
+                                    >
+                                  </v-slide-item>
+                                  <template v-slot:next>
+                                    <v-icon color="#F89838" x-large>
+                                      mdi-chevron-right
+                                    </v-icon>
+                                  </template>
+                                  <template v-slot:prev>
+                                    <v-icon color="#F89838" x-large>
+                                      mdi-chevron-left
+                                    </v-icon>
+                                  </template>
+                                </v-slide-group>
+                              </v-sheet>
+                            </v-row>
+                          </v-col>
+                        </v-row>
+                        <input v-model="item.backpackId" type="hidden">
                       </v-col>
                     </v-row>
-                    <input v-model="item.backpackId" type="hidden">
                   </validation-provider>
                   <v-row>
                     <v-col
@@ -92,6 +137,7 @@
                       cols="6"
                     >
                       <!-- First name -->
+                      <span class="d-inline-block account-field-label mb-2">First name</span>
                       <validation-provider
                         v-slot="{ errors }"
                         :name="
@@ -104,16 +150,20 @@
                           clearable
                           :disabled="loading"
                           :error-messages="errors"
-                          label="First name"
-                          solo-labeled
+                          background-color="#F7F7F7"
+                          color="#AAAAAA"
+                          solo
+                          dense
+                          flat
                         />
                       </validation-provider>
                     </v-col>
                     <v-col
-                      class="pr-2"
+                      class="pl-2"
                       cols="6"
                     >
                       <!-- Last name -->
+                      <span class="d-inline-block account-field-label mb-2">Last name</span>
                       <validation-provider
                         v-slot="{ errors }"
                         :name="
@@ -126,79 +176,99 @@
                           clearable
                           :disabled="loading"
                           :error-messages="errors"
-                          label="Last name"
-                          solo-labeled
+                          background-color="#F7F7F7"
+                          color="#AAAAAA"
+                          solo
+                          dense
+                          flat
                         />
                       </validation-provider>
                     </v-col>
                   </v-row>
-                  <!-- Birthday date -->
-                  <v-menu
-                    v-model="item._menu"
-                    :close-on-content-click="false"
-                    min-width="290px"
-                    solo
-                    transition="scale-transition"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
+                  <v-row class="mb-2" no-gutters>
+                    <v-col cols="6" class="pr-2">
+                      <!-- Birthday date -->
+                      <span class="d-inline-block account-field-label mb-2">Date of birth</span>
+                      <v-menu
+                        v-model="item._menu"
+                        :close-on-content-click="false"
+                        min-width="290px"
+                        solo
+                        transition="scale-transition"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <validation-provider
+                            v-slot="{ errors }"
+                            :name="
+                              (removable(item) ? `Child #${indexD + 1} - ` : '') +
+                                'Birthday date'
+                            "
+                            rules="required"
+                          >
+                            <pg-text-field
+                              v-bind="attrs"
+                              :disabled="loading"
+                              :error-messages="errors"
+                              readonly
+                              background-color="#F7F7F7"
+                              color="#AAAAAA"
+                              solo
+                              dense
+                              flat
+                              :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
+                              validate-on-blur
+                              :value="item._birthdayFormatted"
+                              v-on="on"
+                            />
+                          </validation-provider>
+                        </template>
+                        <v-date-picker
+                          v-model="item._birthdayPicker"
+                          :max="new Date().toISOString().substr(0, 10)"
+                          min="1990-01-01"
+                          @input="onInputBirthday(item)"
+                        />
+                      </v-menu>
+                    </v-col>
+                    <v-col cols="6" class="pl-2">
+                      <!-- Gender -->
+                      <span class="d-inline-block account-field-label mb-2">Gender </span>
                       <validation-provider
                         v-slot="{ errors }"
                         :name="
-                          (removable(item) ? `Child #${indexD + 1} - ` : '') +
-                            'Birthday date'
+                          (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Gender'
                         "
                         rules="required"
                       >
-                        <pg-text-field
-                          v-bind="attrs"
-                          :disabled="loading"
+                        <pg-select
+                          v-model="item.gender"
+                          :items="genders"
+                          clearable
                           :error-messages="errors"
-                          label="Birthday date"
-                          readonly
-                          solo-labeled
-                          :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
-                          validate-on-blur
-                          :value="item._birthdayFormatted"
-                          v-on="on"
+                          :loading="loading"
+                          background-color="#F7F7F7"
+                          color="#AAAAAA"
+                          solo
+                          dense
                         />
                       </validation-provider>
-                    </template>
-                    <v-date-picker
-                      v-model="item._birthdayPicker"
-                      :max="new Date().toISOString().substr(0, 10)"
-                      min="1990-01-01"
-                      @input="onInputBirthday(item)"
-                    />
-                  </v-menu>
-                  <!-- Gender -->
-                  <validation-provider
-                    :name="
-                      (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Gender'
-                    "
-                    rules="required"
-                  >
-                    <v-row class="mb-6">
-                      <v-col
-                        v-for="(gender, indexG) in genders"
-                        :key="indexG"
-                        cols="6"
-                      >
-                        <v-btn
-                          block
-                          class="custom-btn"
-                          :color="
-                            item.gender === gender ? 'primary' : 'grey lighten-5'
-                          "
-                          :disabled="loading"
-                          x-large
-                          @click="item.gender = gender"
-                        >
-                          {{ gender === "FEMALE" ? "Girl" : "Boy" }}
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                    <input v-model="item.gender" type="hidden">
-                  </validation-provider>
+                    </v-col>
+                    <v-col cols="6 d-flex flex-column justify-center" class="pr-2">
+                      <div>
+                        <span class="child-base-text pg-text-[#78C383]">Current letter: </span>
+                        <span class="child-base-text">
+                          {{ item.progress.curriculumType.letter ? `Letter ${item.progress.curriculumType.letter}` : undefined }}
+                        </span>
+                      </div>
+                      <div>
+                        <span class="child-base-text pg-text-[#78C383]">Current day: </span>
+                        <span class="child-base-text">
+                          {{ item.progress.day ? `Day ${item.progress.day}` : undefined }}
+                        </span>
+                      </div>
+                    </v-col>
+                  </v-row>
+
                   <v-btn
                     v-if="isChildChanged(item)"
                     block
@@ -320,14 +390,12 @@ import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
 
 import UserChildTimelineDialog from '@/components/forms/profile/UserChildTimelineDialog.vue'
-import ChildIconSelector from '@/components/forms/children/ChildIconSelector.vue'
 
 export default {
   name: 'ChildForm',
 
   components: {
-    UserChildTimelineDialog,
-    ChildIconSelector
+    UserChildTimelineDialog
   },
 
   data: () => ({
@@ -336,7 +404,16 @@ export default {
     childrenProgress: [],
     items: [],
     isEditing: [],
-    genders: ['MALE', 'FEMALE']
+    genders: [
+      {
+        text: 'Boy',
+        value: 'MALE'
+      },
+      {
+        text: 'Girl',
+        value: 'FEMALE'
+      }
+    ]
   }),
 
   computed: {
@@ -659,5 +736,9 @@ export default {
 
 .v-btn:not(.v-btn--text) {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+::v-deep .v-text-field .v-input__control .v-input__slot input {
+  color: #AAAAAA !important;
 }
 </style>
