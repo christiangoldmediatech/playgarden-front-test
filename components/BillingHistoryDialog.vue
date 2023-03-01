@@ -1,80 +1,120 @@
 <template>
-  <v-overlay
-    v-bind="{ value }"
-    :dark="false"
-    light
-    z-index="2000"
+  <pg-dialog
+    v-model="viewModal"
+    max-width="600"
+    content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl v2-font"
+    @click:outside="closeDialog"
   >
     <div class="billing-history-dialog">
-      <div class="text-right">
+      <v-col class="text-right pg-pr-3" cols="12">
         <v-btn
-          class="billing-history-dialog-close-btn"
           icon
-          @click.stop="$emit('input', false)"
+          color="white"
+          class="pg-bg-[#F6B7D2]"
+          @click="closeDialog"
         >
-          <v-icon color="white">
+          <v-icon>
             mdi-close
           </v-icon>
         </v-btn>
-      </div>
-
-      <v-card class="billing-history-dialog-card pa-4 px-md-10">
-        <v-container fluid>
-          <v-row class="font-weight-bold text-h5 grey--text text--darken-2 my-2">
-            BILLING HISTORY
-          </v-row>
-
-          <v-row class="billing-history-dialog-header mt-4 mb-0">
-            <v-col cols="6">
-              Date
-            </v-col>
-            <v-col cols="6">
-              Plan and price
-            </v-col>
-          </v-row>
-
-          <div v-for="(billing, billingIndex) in billings" :key="`billing-${billing.id}`">
-            <v-row class="my-0" align="center">
+      </v-col>
+      <v-row no-gutters>
+        <v-col cols="12" class="px-10">
+          <p
+            class="text-left pg-text-[25px] pg-text-[#707070] pg-font-[500]"
+          >
+            Billing History
+          </p>
+        </v-col>
+      </v-row>
+      <v-row no-gutters class="px-6 mb-4">
+        <v-col cols="12" class="billing-history-card-style">
+          <v-card class="billing-history-dialog-card elevation-0 pt-5 px-5" color="transparent">
+            <v-row class="billing-history-dialog-header mb-0">
               <v-col cols="6">
-                {{ billing.dateFormatted }}
+                <span class="header">Date</span>
               </v-col>
-
               <v-col cols="6" class="d-flex">
-                <div class="text-right">
-                  ${{ billing.totalFormatted }} {{ billing.currency.toUpperCase() }} /{{ billing.period }} plan<br>
-                  <a class="accent--text text-caption text-decoration-underline" :href="billing.invoiceUrl" target="_blank">
-                    View Invoice
-                  </a>
-                </div>
+                <span class="header ml-auto">Plan and price</span>
               </v-col>
             </v-row>
-
-            <v-divider v-if="billingIndex !== (billings.length - 1)" />
-          </div>
-        </v-container>
-      </v-card>
+            <v-row v-if="loading" no-gutters>
+              <v-col cols="12" class="d-flex">
+                <v-progress-circular class="mx-auto py-10" color="accent" indeterminate></v-progress-circular>
+              </v-col>
+            </v-row>
+            <div v-else>
+              <div v-for="(billing, billingIndex) in billings" :key="`billing-${billing.id}`">
+                <v-row class="my-0" align="center">
+                  <v-col cols="6">
+                    <span class="row-data">{{ billing.dateFormatted }}</span>
+                  </v-col>
+                  <v-col cols="6" class="d-flex">
+                    <div class="d-flex flex-column ml-auto">
+                      <span class="row-data">${{ billing.totalFormatted }} {{ billing.currency.toUpperCase() }} /{{ billing.period }} plan<br></span>
+                      <a class="accent--text text-caption text-decoration-underline ml-auto" :href="billing.invoiceUrl" target="_blank">
+                        View Invoice
+                      </a>
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-divider v-if="billingIndex !== (billings.length - 1)" />
+              </div>
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
+      <img
+        src="@/assets/svg/color-dashes.svg"
+        class="pg-w-full pg-mb-[-12px] px-4"
+      />
     </div>
-  </v-overlay>
+  </pg-dialog>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, watch, computed, ref } from '@nuxtjs/composition-api'
 import { useBilling } from '@/composables'
 
 export default defineComponent({
   name: 'BillingHistoryDialog',
-
   props: {
     value: {
       type: Boolean,
       required: true
     }
   },
+  emits: ['input'],
+  setup (props, { emit }) {
+    const loading = ref(false)
+    const { billings, getBillingHistory } = useBilling()
 
-  setup () {
-    const { billings } = useBilling()
+    const viewModal = computed({
+      get() {
+        return props.value
+      },
+      set(val) {
+        emit('input', val)
+      }
+    })
+
+    watch(() => props.value, async () => {
+      if (props.value) {
+        loading.value = true
+        await getBillingHistory()
+        loading.value = false
+      }
+    })
+
+    const closeDialog = () => {
+      viewModal.value = false
+    }
+
     return {
-      billings
+      loading,
+      viewModal,
+      billings,
+      closeDialog
     }
   }
 })
@@ -83,20 +123,35 @@ export default defineComponent({
 <style lang="scss" scoped>
 .billing-history-dialog {
   width: 95vw;
-  max-width: 800px;
+  max-width: 600px;
   max-height: 95vh;
-  .billing-history-dialog-close-btn {
-    position: relative;
-    right: -16px;
-  }
+
   .billing-history-dialog-card {
     max-height: calc(95vh - 36px);
     overflow-y: auto;
   }
-  .billing-history-dialog-header {
-    background-color: #68C453;
-    border-radius: 16px 16px 0px 0px;
-    color: white;
-  }
+}
+
+.billing-history-card-style {
+  border: 1px solid #C2DAA5 !important;
+  border-radius: 27px !important;
+}
+
+.header, .row-data {
+  font-family: 'Poppins';
+  font-style: normal;
+  color: #707070;
+}
+
+.header {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+.row-data {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
 }
 </style>

@@ -206,7 +206,10 @@
           subtitle="View your billing history"
           color="#FAC3D9"
           text-color="#606060"
+          @click="viewBillingHistory = true"
         />
+
+        <billing-history-dialog v-model="viewBillingHistory" />
 
         <!-- <v-card class="mb-6 pa-4 px-md-10 py-md-6 card-custom-border">
           <v-row
@@ -565,6 +568,7 @@ import { get } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
 import UpdateBillingMethod from '@/components/app/payment/UpdateBillingMethod'
 import AddCouponModal from '@/components/app/payment/AddCouponModal'
+import BillingHistoryDialog from '@/components/BillingHistoryDialog.vue'
 import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/PlanDescription'
 import MembershipBtn from '@/components/app/payment/MembershipBtn.vue'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
@@ -593,6 +597,7 @@ export default {
   components: {
     UpdateBillingMethod,
     AddCouponModal,
+    BillingHistoryDialog,
     PlanDescription,
     MembershipBtn,
     TrialIsExpiring,
@@ -621,6 +626,7 @@ export default {
   data: () => ({
     loading: false,
     viewAddCouponModal: false,
+    viewBillingHistory: false,
     isValidCoupon: false,
     isValidatingCoupon: false,
     promotionCode: null,
