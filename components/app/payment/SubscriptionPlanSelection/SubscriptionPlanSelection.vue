@@ -303,7 +303,6 @@ export default defineComponent({
               return
             }
           }
-
           await this.selectSubscriptionPlan(plan)
           await this.Auth.fetchUserInfo()
           this.setIsTrialEndingPlanSelectedModalVisible(true)

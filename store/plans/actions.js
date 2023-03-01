@@ -6,6 +6,10 @@ export default {
 
   getPlanInfo (_, id) {
     return this.$axios.$get(`/plans/${id}`)
+  },
+
+  recordCancelPlanReason (_, data) {
+    return this.$axios.$post('/plans/cancellation/reason', data)
   }
 
 }
