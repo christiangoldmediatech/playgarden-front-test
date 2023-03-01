@@ -165,7 +165,7 @@
                 <v-btn
                   color="#68C453"
                   text
-                  @click="addCoupon = !addCoupon"
+                  @click="viewAddCouponModal = true"
                 >
                   <span class="account-secondary-btn">
                     View coupon history
@@ -177,7 +177,7 @@
                 <v-btn
                   class="rounded-0 elevation-0 my-4"
                   color="#F89838"
-                  @click="addCoupon = !addCoupon"
+                  @click="viewAddCouponModal = true"
                 >
                   <v-icon
                     color="white"
@@ -190,37 +190,15 @@
                   </span>
                 </v-btn>
               </v-col>
-
-              <v-col v-if="addCoupon" class="mt-2" cols="12">
-                <v-row no-gutters>
-                  <pg-text-field
-                    v-model="promotionCode"
-                    label="Promotion Code"
-                    :color="isValidCoupon ? '' : 'error'"
-                    :suffix="getTextValidateCoupon"
-                    :loading="isValidatingCoupon"
-                    solo
-                  />
-                  <small class="note-text mt-n4 mb-5">
-                    *Note that you may only use one promotion code at a time;
-                    adding a new promo code will remove any currently-active
-                    coupons that were previously applied.
-                  </small>
-                  <v-btn
-                    :disabled="!isValidCoupon"
-                    color="primary"
-                    class="mb-3"
-                    x-large
-                    block
-                    @click="savePromotion"
-                  >
-                    APPLY COUPON
-                  </v-btn>
-                </v-row>
-              </v-col>
             </v-row>
           </div>
         </v-card>
+
+        <add-coupon-modal
+          v-model="viewAddCouponModal"
+          @loadData="loadData"
+        />
+
         <!-- Payment Method -->
         <membership-btn
           class="mb-4"
@@ -585,12 +563,11 @@
 import dayjs from 'dayjs'
 import { get } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
-import debounce from 'lodash/debounce'
 import UpdateBillingMethod from '@/components/app/payment/UpdateBillingMethod'
+import AddCouponModal from '@/components/app/payment/AddCouponModal'
 import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/PlanDescription'
 import MembershipBtn from '@/components/app/payment/MembershipBtn.vue'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
-import BillingHistoryCard from '@/components/BillingHistoryCard.vue'
 import TechnicalIssuesCancellationModal from '@/components/app/payment/TechnicalIssuesCancellationModal.vue'
 import TooMuchTimeModal from '@/components/app/payment/TooMuchTimeModal.vue'
 import UsingOtherPlatformModal from '@/components/app/payment/UsingOtherPlatformModal.vue'
@@ -615,6 +592,7 @@ export default {
   name: 'MembershipDetails',
   components: {
     UpdateBillingMethod,
+    AddCouponModal,
     PlanDescription,
     MembershipBtn,
     TrialIsExpiring,
@@ -640,14 +618,13 @@ export default {
     AnnualSubscriptionCancellationModal
   },
 
-  data: (vm) => ({
+  data: () => ({
     loading: false,
-    addCoupon: false,
+    viewAddCouponModal: false,
     isValidCoupon: false,
     isValidatingCoupon: false,
     promotionCode: null,
     promotion_id: null,
-    checkValid: debounce(vm._checkValid, 1050),
     billing: {
       billingType: '',
       membershipInterval: 0,
@@ -759,14 +736,6 @@ export default {
 
     isCaregiver() {
       return this.getUserInfo.role.id === 4
-    },
-
-    getTextValidateCoupon() {
-      if (this.promotionCode) {
-        return this.isValidCoupon ? 'VALID COUPON' : 'INVALID COUPON'
-      } else {
-        return ''
-      }
     },
 
     isValidateMotive() {
@@ -896,26 +865,6 @@ export default {
       this.$nuxt.$on('plan-membership-changed', this.getPlan)
     },
 
-    async savePromotion() {
-      try {
-        this.loading = true
-        await this.updateSubcriptionCoupon({ promotion_id: this.promotion_id })
-        this.loadData()
-      } catch (err) {
-      } finally {
-        this.promotion_id = null
-        this.promotionCode = null
-        this.loading = false
-        this.addCoupon = false
-      }
-    },
-
-    closeCouponModal() {
-      this.promotion_id = null
-      this.promotionCode = null
-      this.addCoupon = false
-    },
-
     handleRouteAction() {
       const action = this.$route.query.action
 
@@ -925,31 +874,6 @@ export default {
           break
         default:
           break
-      }
-    },
-
-    async _checkValid() {
-      try {
-        this.isValidatingCoupon = true
-        if (this.promotionCode) {
-          const coupons = await this.getCoupons({
-            active: true,
-            code: this.promotionCode
-          })
-          if (coupons.length > 0) {
-            this.promotion_id = coupons[0].promotion_id
-            this.isValidCoupon = true
-            this.lockButton = false
-          } else {
-            this.isValidCoupon = false
-            this.promotion_id = null
-          }
-        }
-      } catch (error) {
-        this.isValidCoupon = false
-        this.lockButton = true
-      } finally {
-        this.isValidatingCoupon = false
       }
     },
 

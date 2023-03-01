@@ -2,7 +2,7 @@
   <div>
     <pg-dialog
       v-model="viewModal"
-      max-width="400"
+      max-width="600"
       content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl v2-font"
       @click:outside="closeDialog"
     >
@@ -48,7 +48,7 @@
         <v-btn
           class="px-16 white--text elevation-0"
           color="#B2E68D"
-          :loading="loading"
+          :loading="loading || isValidatingCoupon"
           @click="savePromotion"
         >
           APPLY
@@ -59,7 +59,7 @@
           class="px-16 text-decoration-underline"
           text
           color="#FFAB37"
-          :loading="loading"
+          :loading="loading || isValidatingCoupon"
           @click="closeDialog"
         >
           CANCEL
@@ -70,7 +70,83 @@
         class="pg-w-full pg-mb-[-12px] px-4"
       />
     </pg-dialog>
-    <pg-dialog v-model="viewSuccessModal"></pg-dialog>
+    <pg-dialog
+      v-model="viewSuccessModal"
+      max-width="600"
+      content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl v2-font"
+      @click:outside="closeLastDialog"
+    >
+      <v-col class="text-right pg-pr-3" cols="12">
+        <v-btn
+          icon
+          color="white"
+          class="pg-bg-[#F6B7D2]"
+          @click="closeLastDialog"
+        >
+          <v-icon>
+            mdi-close
+          </v-icon>
+        </v-btn>
+      </v-col>
+
+      <v-col cols="12" class="pa-0">
+        <v-row no-gutters justify="center">
+          <img
+            class="applied-coupon-icon"
+            src="@/assets/svg/wink.svg"
+            alt="happy icon"
+          />
+        </v-row>
+        <v-row no-gutters justify="center">
+          <h1 class="cancellation-title pg-text-[#78C383] !pg-text-[20px]">
+            Coupon applied!
+          </h1>
+        </v-row>
+      </v-col>
+
+      <v-col v-if="coupon" cols="12" class="px-10 py-0 mt-6">
+        <v-row justify="center">
+          <p class="account-field-label text-center !pg-text-[20px]">
+            <span
+              v-if="coupon.percent_off"
+            >
+              {{ coupon.percent_off }} %
+            </span>
+            <span
+              v-if="coupon.amount_off"
+            >
+              $
+              {{
+                getAmountOff.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD'
+                })
+              }}
+            </span>
+            <span>
+              discount on your membership
+            </span>
+          </p>
+        </v-row>
+      </v-col>
+
+      <v-col cols="12" class="text-center">
+        <v-btn
+          class="px-16 text-decoration-underline"
+          text
+          large
+          color="#FFAB37"
+          @click="closeLastDialog"
+        >
+          CANCEL
+        </v-btn>
+      </v-col>
+
+      <img
+        src="@/assets/svg/color-dashes.svg"
+        class="pg-w-full pg-mb-[-12px] px-4"
+      />
+    </pg-dialog>
   </div>
 </template>
 
@@ -94,6 +170,7 @@ export default defineComponent({
     const isValidCoupon = ref(false)
     const isValidatingCoupon = ref(false)
     const promotionId = ref(null)
+    const coupon = ref<any>(null)
     const store = useStore<TypedStore>()
     const viewModal = computed({
       get() {
@@ -104,6 +181,8 @@ export default defineComponent({
       }
     })
     const viewSuccessModal = ref(false)
+
+    const getAmountOff = computed(() => (coupon.value?.amount_off / 100).toFixed(2))
 
     watch(promotionCode, (val) => {
       if (val) {
@@ -129,6 +208,7 @@ export default defineComponent({
           if (coupons.length > 0) {
             promotionId.value = coupons[0].promotion_id
             isValidCoupon.value = true
+            coupon.value = coupons[0]
           } else {
             isValidCoupon.value = false
             promotionId.value = null
@@ -155,7 +235,7 @@ export default defineComponent({
       try {
         loading.value = true
         await store.dispatch('coupons/updateSubcriptionCoupon', { promotion_id: promotionId.value })
-        emit('loadData')
+        viewSuccessModal.value = true
       } catch (err) {
       } finally {
         promotionId.value = null
@@ -168,6 +248,12 @@ export default defineComponent({
     const closeDialog = () => {
       promotionCode.value = ''
       viewModal.value = false
+      viewSuccessModal.value = false
+    }
+
+    const closeLastDialog = () => {
+      viewSuccessModal.value = false
+      emit('loadData')
     }
 
     return {
@@ -177,8 +263,11 @@ export default defineComponent({
       promotionCode,
       getTextValidateCoupon,
       checkValid,
+      coupon,
+      getAmountOff,
       isValidatingCoupon,
       closeDialog,
+      closeLastDialog,
       isValidCoupon,
       savePromotion
     }
@@ -188,5 +277,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/account.scss';
 
+.applied-coupon-icon {
+  height: 120px;
+  object-fit: contain;
+}
 </style>
