@@ -3,7 +3,7 @@
     <v-row no-gutters data-test-id="caregivers-content">
       <!-- Desktop Title -->
       <v-col cols="12" sm="6" class="d-none d-sm-block">
-        <div class="account-page-title">
+        <div class="account-page-title !pg-text-[#78C383]">
           Caregivers
         </div>
         <div class="account-page-subtitle">

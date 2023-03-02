@@ -263,7 +263,7 @@
         <billing-history-card /> -->
         <membership-btn
           title="Payment Method"
-          subtitle="Mastercard ************03887"
+          :subtitle="cardMaskedNumber"
           color="#CFBCE3"
           text-color="#606060"
         />
@@ -738,6 +738,10 @@ export default {
         this.leaveMotives[this.leaveMotives.length - 1].motive ===
         this.leaveMotive
       )
+    },
+
+    cardMaskedNumber() {
+      return ''
     },
 
     isCaregiver() {
