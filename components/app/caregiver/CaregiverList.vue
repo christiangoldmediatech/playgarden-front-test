@@ -2,38 +2,24 @@
   <pg-loading :loading="loading">
     <v-row no-gutters data-test-id="caregivers-content">
       <!-- Desktop Title -->
-      <v-col cols="12" class="d-none d-md-block">
-        <div class="text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-12">
+      <v-col cols="12" sm="6" class="d-none d-sm-block">
+        <div class="account-page-title">
           Caregivers
         </div>
+        <div class="account-page-subtitle">
+          Give access to your child’s caregiver!
+        </div>
+        <div class="my-4 pr-10 pl-2">
+          <div class="account-green-dashed-line"></div>
+        </div>
+      </v-col>
+      <v-col cols="12" sm="6" class="d-sm-flex justify-sm-end pb-12 pb-sm-0">
+        <add-caregiver />
       </v-col>
 
       <!-- Caregivers List Information -->
       <v-col cols="12" md="6" class="pr-md-8 mb-6 mb-md-0">
         <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
-          <!-- Desktop SVG -->
-          <div class="justify-center pb-4 d-none d-md-flex">
-            <img
-              height="100px"
-              src="@/assets/svg/caregivers.svg"
-            >
-          </div>
-
-          <!-- Mobile SVG and Title= -->
-          <div class="d-flex d-md-none justify-center py-2">
-            <img
-              height="45px"
-              src="@/assets/svg/caregivers.svg"
-            >
-            <span class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2">
-              Caregivers
-            </span>
-          </div>
-
-          <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2">
-            <small>Give access to your child's caregiver!</small>
-          </div>
-
           <!-- List -->
           <v-row
             v-for="(caregiver, caregiverIndex) in caregivers"
@@ -98,13 +84,6 @@
             </v-col>
           </v-row>
         </v-card>
-
-        <!-- Add Caregiver Button -->
-        <v-row no-gutters justify="center">
-          <v-col cols="12" class="max-width-400">
-            <add-caregiver />
-          </v-col>
-        </v-row>
       </v-col>
     </v-row>
   </pg-loading>
@@ -161,6 +140,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/account.scss';
+
 .card-custom-border {
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25) !important;
   border-radius: 8px !important;

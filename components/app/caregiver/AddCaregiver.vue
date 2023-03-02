@@ -9,12 +9,15 @@
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         v-bind="attrs"
-        block
-        class="mb-6"
-        color="primary"
-        x-large
+        color="#F89838"
+        large
+        class="rounded-0 white--text"
+        elevation="0"
         v-on="on"
       >
+        <v-icon color="white" left>
+          mdi-plus-circle
+        </v-icon>
         Add Caregiver
       </v-btn>
     </template>
