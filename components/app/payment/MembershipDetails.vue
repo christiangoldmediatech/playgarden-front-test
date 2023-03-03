@@ -211,61 +211,18 @@
 
         <billing-history-dialog v-model="viewBillingHistory" />
 
-        <!-- <v-card class="mb-6 pa-4 px-md-10 py-md-6 card-custom-border">
-          <v-row
-            no-gutters
-            class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2"
-            justify="center"
-          >
-            Payment Method
-          </v-row>
-          <v-row
-            v-for="(card, indexUC) in userCards"
-            :key="indexUC"
-            align="center"
-            no-gutters
-          >
-            <v-col
-              cols="4"
-              class="mt-8 text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold"
-            >
-              {{ card.details.brand }}
-            </v-col>
-            <v-col
-              cols="8"
-              class="mt-8 text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold"
-            >
-              •••• •••• •••• {{ card.details.last4 }}
-            </v-col>
-            <v-col cols="12" class="justify-center mt-8 d-flex">
-              <v-btn color="primary" text x-large @click="onUpdateCard(card)">
-                Change Payment Method
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-row v-if="userCards.length === 0">
-            <v-col cols="12" class="mb-1 grey--text">
-              <span>To add a Payment Method, select a Payment Plan below.</span>
-            </v-col>
-            <v-col cols="12">
-              <v-btn
-                color="primary mb-3"
-                x-large
-                block
-                @click="handleChangePlan"
-              >
-                CHOOSE PLAN
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-card>
-
-        <billing-history-card /> -->
         <membership-btn
           title="Payment Method"
           :subtitle="cardMaskedNumber"
           color="#CFBCE3"
           text-color="#606060"
+          @click="viewCardsModal = true"
+        />
+
+        <cards-modal
+          v-model="viewCardsModal"
+          :user-cards="userCards"
+          @reloadBilling="onSuccessUpdateBilling"
         />
       </v-col>
 
@@ -529,35 +486,6 @@
         :is-mobile="isMobile"
         @closeCancelAnywayModal="viewCancelAnywayModal = false"
       />
-
-      <pg-dialog
-        v-model="stripeCardModal"
-        content-class="white"
-        :fullscreen="isMobile"
-        max-width="1000"
-        persistent
-      >
-        <v-col cols="12">
-          <v-row class="pr-3" justify="end">
-            <v-btn icon @click.stop="stripeCardModal = false">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-row>
-
-          <v-row class="px-6">
-            <v-col>
-              <update-billing-method
-                v-if="stripeCardModal"
-                :card-id="cardToUpate.id"
-                no-terms
-                no-trial
-                @update:success="onSuccessUpdateBilling"
-                @click:cancel="stripeCardModal = false"
-              />
-            </v-col>
-          </v-row>
-        </v-col>
-      </pg-dialog>
     </v-row>
   </pg-loading>
 </template>
@@ -566,8 +494,8 @@
 import dayjs from 'dayjs'
 import { get } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
-import UpdateBillingMethod from '@/components/app/payment/UpdateBillingMethod'
 import AddCouponModal from '@/components/app/payment/AddCouponModal'
+import CardsModal from '@/components/app/payment/CardsModal.vue'
 import BillingHistoryDialog from '@/components/BillingHistoryDialog.vue'
 import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/PlanDescription'
 import MembershipBtn from '@/components/app/payment/MembershipBtn.vue'
@@ -595,8 +523,8 @@ import AppliedCouponModal from './CancelSuscriptionFlow/DiscountFlow/AppliedCoup
 export default {
   name: 'MembershipDetails',
   components: {
-    UpdateBillingMethod,
     AddCouponModal,
+    CardsModal,
     BillingHistoryDialog,
     PlanDescription,
     MembershipBtn,
@@ -626,6 +554,7 @@ export default {
   data: () => ({
     loading: false,
     viewAddCouponModal: false,
+    viewCardsModal: false,
     viewBillingHistory: false,
     isValidCoupon: false,
     isValidatingCoupon: false,
@@ -646,8 +575,6 @@ export default {
       discountCode: null,
       stripeStatus: ''
     },
-    cardToUpate: null,
-    stripeCardModal: false,
     removeSubscriptionModal: false,
     userCards: [],
     plan: {},
@@ -741,6 +668,12 @@ export default {
     },
 
     cardMaskedNumber() {
+      const card = this.userCards[0]
+
+      if (card) {
+        return `${card.details.brand} •••• •••• •••• ${card.details.last4}`
+      }
+
       return ''
     },
 
@@ -936,10 +869,6 @@ export default {
         this.loading = false
       }
     },
-    onUpdateCard(card) {
-      this.stripeCardModal = true
-      this.cardToUpate = card
-    },
     async removeLearnAndPlaySubscription() {
       this.learnAndPlayWasCanceled = true
       await this.removeSubscription(false)
@@ -1007,7 +936,6 @@ export default {
       this.removeSubscriptionModal = false
     },
     onSuccessUpdateBilling() {
-      this.stripeCardModal = false
       this.getBillingCards()
       this.getBillingDetails()
     },
