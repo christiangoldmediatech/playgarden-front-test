@@ -22,6 +22,10 @@ export default {
     return this.$axios.$delete(`/caregivers/${id}`)
   },
 
+  editCaregiver (_, { id, body }) {
+    return this.$axios.$patch(`/caregivers/info/${id}`, body)
+  },
+
   async fetchCaregiversList ({ commit }) {
     try {
       const { data } = await this.$axios.get('/caregivers')

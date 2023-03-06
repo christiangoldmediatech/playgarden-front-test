@@ -19,67 +19,129 @@
 
       <!-- Caregivers List Information -->
       <v-col cols="12" md="6" class="pr-md-8 mb-6 mb-md-0">
-        <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
+        <v-card v-if="caregivers.length === 0" class="account-caregiver-card px-6 py-6">
+          <v-row no-gutters align="center">
+            <v-col cols="3">
+              <img src="@/assets/svg/caregiver.svg" height="80px" />
+            </v-col>
+            <v-col cols="9">
+              <p class="account-caregiver-placeholder ma-0">
+                Give access to your child’s caregiver!
+              </p>
+            </v-col>
+          </v-row>
+        </v-card>
+
+        <v-card v-else class="pa-4 px-md-10 py-md-6 account-caregiver-card">
           <!-- List -->
           <v-row
             v-for="(caregiver, caregiverIndex) in caregivers"
             :key="caregiver.id"
             no-gutters
           >
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-3">
-              <small>Caregiver {{ caregiverIndex + 1 }}</small>
+            <v-col v-if="caregivers.length > 0 && !isEditing" class="!pg-relative" cols="12">
+              <v-row no-gutters align="center">
+                <v-btn
+                  text
+                  class="!pg-absolute pg-top-[-10px] pg-right-[-20px]"
+                  color="#F89838"
+                  @click="setEditing(caregiver)"
+                >
+                  <span class="text-decoration-underline">Edit</span>
+                  <v-icon right>
+                    mdi-pencil
+                  </v-icon>
+                </v-btn>
+
+                <div class="account-caregiver-circle mr-4">
+                  C{{ caregiverIndex + 1 }}
+                </div>
+                <p class="account-caregiver-name ma-0">
+                  {{ caregiver.fullName }}
+                </p>
+              </v-row>
             </v-col>
 
-            <v-col cols="11" class="text-h6 text-md-h5 grey--text font-weight-bold text-truncate">
-              {{ caregiver.fullName }}
-            </v-col>
+            <v-col v-if="isEditing" class="!pg-relative" cols="12">
+              <v-btn
+                v-if="isEditing"
+                class="text-decoration-underline !pg-absolute pg-top-[-10px] pg-right-[-20px]"
+                color="#F83838"
+                text
+                @click="remove(caregiver)"
+              >
+                DELETE CAREGIVER
+              </v-btn>
 
-            <v-col v-if="isEditing" cols="1" class="d-flex justify-end">
-              <v-btn color="accent" icon text @click="remove(caregiver)">
-                <v-icon>
-                  mdi-close-circle-outline
-                </v-icon>
+              <v-row class="mt-8" no-gutters>
+                <v-row no-gutters>
+                  <v-col cols="6" class="pr-4">
+                    <span class="d-inline-block account-field-label mb-2">First name</span>
+                    <pg-text-field
+                      v-model="form.firstName"
+                      background-color="#F7F7F7"
+                      color="#AAAAAA"
+                      solo
+                      dense
+                      flat
+                      :disabled="!isEditing"
+                    />
+                  </v-col>
+
+                  <v-col cols="6" class="pl-4">
+                    <span class="d-inline-block account-field-label mb-2">Last name</span>
+                    <v-text-field
+                      v-model="form.lastName"
+                      background-color="#F7F7F7"
+                      color="#AAAAAA"
+                      solo
+                      flat
+                      :disabled="!isEditing"
+                    />
+                  </v-col>
+                </v-row>
+              </v-row>
+
+              <v-btn
+                x-large
+                block
+                :loading="loading"
+                :disabled="loading"
+                class="rounded-0 white--text"
+                elevation="0"
+                color="#AAD579"
+                @click="saveCaregivers(form)"
+              >
+                SAVE
+              </v-btn>
+              <v-btn
+                x-large
+                block
+                :loading="loading"
+                :disabled="loading"
+                text
+                class="text-decoration-underline"
+                color="#F89838"
+                @click="isEditing = false"
+              >
+                CANCEL
               </v-btn>
             </v-col>
           </v-row>
-
-          <v-btn
-            v-if="caregivers.length > 0 && !isEditing"
-            x-large
-            block
-            class="mt-6"
-            color="primary"
-            @click="isEditing = true"
-          >
-            Edit
-          </v-btn>
-
-          <v-btn
-            v-if="isEditing"
-            x-large
-            block
-            text
-            class="mt-6"
-            color="grey"
-            @click="isEditing = false"
-          >
-            Cancel
-          </v-btn>
         </v-card>
       </v-col>
 
       <v-col cols="12" md="6" class="pl-md-8 mb-12 mb-md-0">
         <!-- Pending Invites List -->
-        <v-card class="pa-4 px-md-10 py-md-6 mb-12 card-custom-border">
-          <v-row no-gutters>
-            <!-- Plan Name-->
-            <v-col cols="12" class="text-center">
-              <div class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mb-6">
-                Pending Invites Sent
-              </div>
+        <v-card class="account-caregiver-card px-6 py-6">
+          <v-row no-gutters align="center">
+            <v-col cols="3">
+              <img src="@/assets/svg/pending-invite.svg" height="80px" />
             </v-col>
-
-            <v-col cols="12">
+            <v-col cols="9">
+              <p class="account-caregiver-title mb-2">
+                Pending invites sent
+              </p>
               <invitation-list />
             </v-col>
           </v-row>
@@ -105,6 +167,7 @@ export default {
   data () {
     return {
       isEditing: false,
+      form: {},
       caregivers: [],
       loading: false
     }
@@ -115,7 +178,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('caregiver', ['fetchCaregiversList', 'deleteCaregiver']),
+    ...mapActions('caregiver', ['fetchCaregiversList', 'deleteCaregiver', 'editCaregiver']),
 
     async getCaregiversData () {
       try {
@@ -126,6 +189,26 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    async saveCaregivers(item) {
+      try {
+        this.loading = true
+        const caregiver = await this.editCaregiver({ id: item.id, body: { firstName: item.firstName, lastName: item.lastName } })
+
+        if (caregiver) {
+          await this.getCaregiversData()
+        }
+      } catch (e) {
+      } finally {
+        this.isEditing = false
+        this.loading = false
+      }
+    },
+
+    setEditing(item) {
+      this.isEditing = true
+      this.form = { ...item }
     },
 
     remove ({ id, firstName }) {
