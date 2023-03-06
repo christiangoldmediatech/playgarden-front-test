@@ -77,7 +77,9 @@
         v-if="isEditing"
         x-large
         block
-        color="warning"
+        class="white--text rounded-0"
+        color="#AAD579"
+        elevation="0"
         :loading="loading"
         @click="saveUserInfo"
       >
@@ -88,10 +90,11 @@
         x-large
         block
         text
-        color="grey"
+        class="text-decoration-underline"
+        color="#F89838"
         @click="isEditing = false"
       >
-        Cancel
+        CANCEL
       </v-btn>
     </template>
 
@@ -108,8 +111,9 @@
           v-bind="attrs"
           x-large
           block
-          color="primary"
-          text
+          class="white--text rounded-0"
+          color="#AAD579"
+          elevation="0"
           v-on="on"
         >
           Change Password
