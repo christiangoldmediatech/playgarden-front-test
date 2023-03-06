@@ -75,6 +75,10 @@
           </v-btn>
         </v-col>
       </v-row>
+      <img
+        src="@/assets/svg/color-dashes.svg"
+        class="pg-w-full pg-mb-[-12px] px-4 mt-7"
+      />
     </pg-dialog>
     <pg-dialog
       v-model="stripeCardModal"
