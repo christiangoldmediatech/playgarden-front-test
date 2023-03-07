@@ -7,11 +7,15 @@
       :confirmation-btn-text="confirmationBtnText"
       @confirmation="handleConfirmation"
     >
-      <div>
-        <p class="base-model-title mb-0" v-html="baseMessage"></p>
-        <p>{{ data }}</p>
-      </div>
+      <p class="base-model-title mb-0" v-html="baseMessage"></p>
     </base-cancellation-modal>
+
+    <last-modal
+      v-model="viewLastModal"
+      :explanation-required="true"
+      :loading="loading"
+      @confirmation="handleLastAction"
+    />
 
     <positive-cancellation-modal v-model="viewPositiveModal">
       <template>
@@ -38,6 +42,7 @@
 import { computed, defineComponent, ref, useStore, watch } from '@nuxtjs/composition-api'
 import BaseCancellationModal from '@/components/app/payment/BaseCancellationModal.vue'
 import PositiveCancellationModal from '@/components/app/payment/PositiveCancellationModal.vue'
+import LastModal from '@/components/app/payment/LastModal.vue'
 import NegativeCancellationModal from '@/components/app/payment/NegativeCancellationModal.vue'
 import FinalCancellationMessage from '@/components/app/payment/FinalCancellationMessage.vue'
 import { TypedStore } from '@/models'
@@ -72,6 +77,7 @@ export default defineComponent({
     BaseCancellationModal,
     PositiveCancellationModal,
     NegativeCancellationModal,
+    LastModal,
     FinalCancellationMessage
   },
   emits: ['input', 'closeModal', 'reloadInformation'],
@@ -81,13 +87,12 @@ export default defineComponent({
     const { applyDiscountCode, cancelSubscription } = useCancellation({ store, snotify })
     const loading = ref(false)
     const viewBaseModal = ref(false)
+    const viewLastModal = ref(false)
     const viewPositiveModal = ref(false)
     const viewNegativeModal = ref(false)
     const subscriptionCancelled = ref(false)
     const subtitle = computed(() => 'Let us know about the issues you\'ve been experiencing—we\'d love to fix them for you!')
     const latestCancellationReason = computed(() => store.getters['plans/getLatestCancellationReason'])
-
-    const data = computed(() => JSON.stringify(latestCancellationReason.value))
 
     const hasPreschoolPlan = computed(
       () => !store.getters['auth/hasPlayAndLearnPlan']
@@ -165,10 +170,10 @@ export default defineComponent({
       }
     })
 
-    watch(startFlow, async () => {
+    watch(startFlow, () => {
       if (startFlow.value) {
         if (latestCancellationReason.value?.cancellationFlow === CancellationFlowEnum.DISCOUNT) {
-          await applySubscriptionCancellingLogic()
+          viewLastModal.value = true
         } else {
           viewBaseModal.value = true
         }
@@ -216,6 +221,29 @@ export default defineComponent({
       }
     }
 
+    const handleLastAction = async (data: { confirmation: boolean, explanation: string }) => {
+      loading.value = true
+
+      try {
+        await store.dispatch(
+          'plans/recordCancelPlanReason',
+          {
+            reason: props.reasonMessage,
+            explanation: data.explanation,
+            planId: props.plan?.id
+          }
+        )
+
+        await applySubscriptionCancellingLogic()
+      } catch {
+        snotify.error('Could not process plan cancellation')
+      } finally {
+        loading.value = false
+        viewLastModal.value = false
+        startFlow.value = false
+      }
+    }
+
     const applySubscriptionCancellingLogic = async () => {
       await cancelSubscription(props.reasonMessage)
       subscriptionCancelled.value = true
@@ -223,16 +251,17 @@ export default defineComponent({
     }
 
     return {
-      data,
       loading,
       viewBaseModal,
+      viewLastModal,
       viewPositiveModal,
       viewNegativeModal,
       baseMessage,
       confirmationBtnText,
       positiveModalMessage,
       subtitle,
-      handleConfirmation
+      handleConfirmation,
+      handleLastAction
     }
   }
 })
