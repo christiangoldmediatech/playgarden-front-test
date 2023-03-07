@@ -10,7 +10,7 @@
       We use this information to send you Playgarden Prep educational materials.
     </div>
 
-    <div class="account-green-dashed-line mt-2 mb-4 mx-auto"></div>
+    <div class="account-blue-dashed-line mt-2 mb-4 mx-auto"></div>
 
     <v-col v-if="address" cols="12">
       <v-row no-gutters>

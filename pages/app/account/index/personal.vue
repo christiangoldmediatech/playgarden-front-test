@@ -68,7 +68,7 @@
                 We use this information to send you Playgarden Prep educational materials.
               </div>
 
-              <div class="account-green-dashed-line my-4"></div>
+              <div class="account-blue-dashed-line my-4"></div>
 
               <shipping-address-details
                 v-model="isEditingShippingAddress"

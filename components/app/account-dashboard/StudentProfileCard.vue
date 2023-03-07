@@ -10,7 +10,7 @@
       In this section you can edit the Child’s information or add a new Child.
     </div>
 
-    <div class="account-green-dashed-line mt-2 mb-4 mx-auto"></div>
+    <div class="account-orange-dashed-line"></div>
 
     <v-col cols="12">
       <v-row no-gutters>
