@@ -19,7 +19,7 @@ export const useCancellation = ({ store, snotify }: UseCancellationParams) => {
     }
   }
 
-  const applyDiscountCode = async (code: string) => {
+  const applyDiscountCode = async (code: string, cancelReason: string) => {
     try {
       const promotionId = await getCouponId(code)
 
@@ -27,14 +27,15 @@ export const useCancellation = ({ store, snotify }: UseCancellationParams) => {
         promotion_id: promotionId
       })
       await store.dispatch('plans/setLatestCancellationReason', {
-        cancellationFlow: CancellationFlowEnum.DISCOUNT
+        cancellationFlow: CancellationFlowEnum.DISCOUNT,
+        cancelReason
       })
     } catch {
       snotify.error('Could not apply discount. Please, try again later.')
     }
   }
 
-  const changeSubscription = async (planId: number, billMonthly: boolean) => {
+  const changeSubscription = async (planId: number, billMonthly: boolean, cancelReason: string) => {
     const plan = {} as any
     plan.id = planId
     plan.type = billMonthly ? 'monthly' : 'annual'
@@ -43,7 +44,8 @@ export const useCancellation = ({ store, snotify }: UseCancellationParams) => {
     try {
       await store.dispatch('payment/selectSubscriptionPlan', plan)
       await store.dispatch('plans/setLatestCancellationReason', {
-        cancellationFlow: CancellationFlowEnum.PLAN_DOWNGRADE
+        cancellationFlow: CancellationFlowEnum.PLAN_DOWNGRADE,
+        cancelReason
       })
     } catch (e) {
       snotify.error('Could not select plan. Please, try again later.')
@@ -53,7 +55,8 @@ export const useCancellation = ({ store, snotify }: UseCancellationParams) => {
   const cancelSubscription = async (reason: string) => {
     await store.dispatch('payment/cancelSubscription', reason)
     await store.dispatch('plans/setLatestCancellationReason', {
-      cancellationFlow: CancellationFlowEnum.CANCEL_ANYWAY
+      cancellationFlow: CancellationFlowEnum.CANCEL_ANYWAY,
+      cancelReason: reason
     })
   }
 

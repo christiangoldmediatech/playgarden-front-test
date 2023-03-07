@@ -312,7 +312,7 @@ export default defineComponent({
         )
 
         if (data.confirmation) {
-          await applyDiscountCode(discountCode.value)
+          await applyDiscountCode(discountCode.value, props.reasonMessage)
           viewFirstPositiveModal.value = true
         } else if (hasBasicPlayAndLearnPlan.value) {
           await applySubscriptionCancelLogic()
@@ -434,7 +434,7 @@ export default defineComponent({
         //   return false
         // }
 
-        await changeSubscription(planId, isBillingMonthly.value)
+        await changeSubscription(planId, isBillingMonthly.value, props.reasonMessage)
 
         return true
       } catch {

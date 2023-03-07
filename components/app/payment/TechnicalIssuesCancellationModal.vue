@@ -207,7 +207,7 @@ export default defineComponent({
         )
 
         if (data.confirmation) {
-          await applyDiscountCode(discountCode.value)
+          await applyDiscountCode(discountCode.value, props.reasonMessage)
           viewPositiveModal.value = true
         } else {
           await applySubscriptionCancellingLogic()
