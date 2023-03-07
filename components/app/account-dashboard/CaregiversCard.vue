@@ -13,24 +13,30 @@
     <div class="account-green-dashed-line mt-2 mb-4 mx-auto"></div>
 
     <v-col cols="12">
-      <v-row no-gutters>
-        <v-col cols="6" class="d-flex flex-column">
-          <span class="account-field-label">Full name</span>
-          <p class="account-field-value ma-0">
-            {{ userInfo.fullName }}
+      <v-row v-if="caregivers.length === 0" no-gutters align="center">
+        <v-col cols="3">
+          <img src="@/assets/svg/caregiver.svg" height="80px" />
+        </v-col>
+        <v-col cols="9">
+          <p class="account-caregiver-placeholder ma-0">
+            Give access to your child’s caregiver!
           </p>
         </v-col>
-        <v-col cols="6" class="d-flex flex-column">
-          <span class="account-field-label">Phone number</span>
-          <p class="account-field-value ma-0">
-            {{ userInfo.phoneNumber }}
-          </p>
-        </v-col>
-        <v-col cols="12" class="mt-4 d-flex flex-column">
-          <span class="account-field-label">Email</span>
-          <p class="account-field-value ma-0">
-            {{ userInfo.email }}
-          </p>
+      </v-row>
+      <v-row
+        v-for="(caregiver, caregiverIndex) in caregivers"
+        :key="caregiver.id"
+        no-gutters
+      >
+        <v-col class="!pg-relative" cols="12">
+          <v-row no-gutters align="center">
+            <div class="account-caregiver-circle mr-4">
+              C{{ caregiverIndex + 1 }}
+            </div>
+            <p class="account-caregiver-name ma-0">
+              {{ caregiver.fullName }}
+            </p>
+          </v-row>
         </v-col>
       </v-row>
     </v-col>
@@ -51,7 +57,7 @@
 
 <script lang="ts">
 import { TypedStore } from '@/models'
-import { computed, defineComponent, ref, useRouter, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'CaregiversCard',
@@ -61,15 +67,24 @@ export default defineComponent({
     const store = useStore<TypedStore>()
     const router = useRouter()
 
-    const userInfo = computed(() => store.getters['auth/getUserInfo'])
+    const caregivers = ref<any>([])
+
+    const fetchCaregivers = async () => {
+      const { users } = await store.dispatch('caregiver/fetchCaregiversList')
+      caregivers.value = users
+    }
 
     const goToPage = () => {
-      router.push({ name: 'app-account-index-personal' })
+      router.push({ name: 'app-account-index-caregiver' })
     }
+
+    onMounted(async () => {
+      await fetchCaregivers()
+    })
 
     return {
       caregiverColor,
-      userInfo,
+      caregivers,
       goToPage
     }
   }
