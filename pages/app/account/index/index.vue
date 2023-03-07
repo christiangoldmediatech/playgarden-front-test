@@ -7,8 +7,8 @@
         <student-profile-card class="mt-8" />
         <caregivers-card class="mt-8" />
       </v-col>
-      <v-col cols="6">
-        here 2
+      <v-col cols="6" class="pl-4">
+        <membership-card />
       </v-col>
     </v-row>
   </v-container>
@@ -20,6 +20,7 @@ import GeneralInfoCard from '@/components/app/account-dashboard/GeneralInfoCard.
 import ShippingAddressCard from '@/components/app/account-dashboard/ShippingAddressCard.vue'
 import StudentProfileCard from '@/components/app/account-dashboard/StudentProfileCard.vue'
 import CaregiversCard from '@/components/app/account-dashboard/CaregiversCard.vue'
+import MembershipCard from '@/components/app/account-dashboard/MembershipCard.vue'
 
 export default defineComponent({
   name: 'Index',
@@ -27,7 +28,8 @@ export default defineComponent({
     GeneralInfoCard,
     ShippingAddressCard,
     StudentProfileCard,
-    CaregiversCard
+    CaregiversCard,
+    MembershipCard
   },
   setup() {
 
