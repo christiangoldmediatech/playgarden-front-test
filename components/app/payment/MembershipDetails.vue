@@ -248,12 +248,17 @@
               {{ card.details.brand }}
             </v-col>
             <v-col
-              cols="8"
+              cols="7"
               class="mt-8 text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold"
             >
               •••• •••• •••• {{ card.details.last4 }}
             </v-col>
-            <v-col cols="12" class="justify-center mt-8 d-flex">
+            <v-col v-if="userCards && userCards.length > 1" cols="1" class="mt-7">
+              <v-icon right color="error" @click="removePaymentMethod(card)">
+                mdi-trash-can-outline
+              </v-icon>
+            </v-col>
+            <v-col cols="12" class="justify-center mt-2 d-flex">
               <v-btn color="primary" text x-large @click="onUpdateCard(card)">
                 Change Payment Method
               </v-btn>
@@ -864,7 +869,8 @@ export default {
       'fetchSubscriptionPlanById',
       'cancelSubscription',
       'fetchBillingCards',
-      'fetchBillingDetails'
+      'fetchBillingDetails',
+      'removeBillingCard'
     ]),
 
     handleCancelMembershipClick() {
@@ -990,6 +996,14 @@ export default {
     onUpdateCard(card) {
       this.stripeCardModal = true
       this.cardToUpate = card
+    },
+
+    async removePaymentMethod(card) {
+      if (card && card.id) {
+        await this.removeBillingCard(card.id)
+        this.getBillingCards()
+        this.getBillingDetails()
+      }
     },
     async removeLearnAndPlaySubscription() {
       this.learnAndPlayWasCanceled = true
