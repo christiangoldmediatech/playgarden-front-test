@@ -842,8 +842,8 @@ export default {
       }
     }
   },
-  created() {
-    this.loadData()
+  async created() {
+    await this.loadData()
   },
   mounted() {
     this.handleRouteAction()
@@ -855,6 +855,7 @@ export default {
   methods: {
     ...mapActions('coupons', ['getCoupons', 'updateSubcriptionCoupon']),
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
+    ...mapActions('plans', ['fetchLatestCancellationReason']),
 
     ...mapActions('auth', {
       fetchUserInfoIntoStore: 'fetchUserInfo'
@@ -873,10 +874,11 @@ export default {
       this.removeSubscriptionModal = true
     },
 
-    loadData() {
-      this.getBillingDetails()
-      this.getBillingCards()
-      this.getPlan()
+    async loadData() {
+      await this.getBillingDetails()
+      await this.getBillingCards()
+      await this.fetchLatestCancellationReason()
+      await this.getPlan()
       this.$nuxt.$on('children-changed', this.getBillingDetails)
       this.$nuxt.$on('plan-membership-changed', this.getPlan)
     },
@@ -885,7 +887,7 @@ export default {
       try {
         this.loading = true
         await this.updateSubcriptionCoupon({ promotion_id: this.promotion_id })
-        this.loadData()
+        await this.loadData()
       } catch (err) {
       } finally {
         this.promotion_id = null
@@ -1001,6 +1003,7 @@ export default {
         // update auser info on store
         await this.fetchUserInfoIntoStore()
         await this.getBillingDetails()
+        await this.fetchLatestCancellationReason()
 
         if (reloadPlan) {
           await this.getPlan()

@@ -1,6 +1,7 @@
 import { TypedStore } from '@/models'
 import { Snotify } from '@/types/snotify'
 import { Store } from 'vuex/types'
+import { CancellationFlowEnum } from '../../enums/cancellation-flow.enum'
 
 interface UseCancellationParams {
   store: Store<TypedStore>,
@@ -25,6 +26,9 @@ export const useCancellation = ({ store, snotify }: UseCancellationParams) => {
       await store.dispatch('coupons/updateSubcriptionCoupon', {
         promotion_id: promotionId
       })
+      await store.dispatch('plans/setLatestCancellationReason', {
+        cancellationFlow: CancellationFlowEnum.DISCOUNT
+      })
     } catch {
       snotify.error('Could not apply discount. Please, try again later.')
     }
@@ -38,6 +42,9 @@ export const useCancellation = ({ store, snotify }: UseCancellationParams) => {
     plan.applyTrialPeriod = true
     try {
       await store.dispatch('payment/selectSubscriptionPlan', plan)
+      await store.dispatch('plans/setLatestCancellationReason', {
+        cancellationFlow: CancellationFlowEnum.PLAN_DOWNGRADE
+      })
     } catch (e) {
       snotify.error('Could not select plan. Please, try again later.')
     }
@@ -45,6 +52,9 @@ export const useCancellation = ({ store, snotify }: UseCancellationParams) => {
 
   const cancelSubscription = async (reason: string) => {
     await store.dispatch('payment/cancelSubscription', reason)
+    await store.dispatch('plans/setLatestCancellationReason', {
+      cancellationFlow: CancellationFlowEnum.CANCEL_ANYWAY
+    })
   }
 
   return {

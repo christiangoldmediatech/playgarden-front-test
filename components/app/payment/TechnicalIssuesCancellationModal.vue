@@ -7,7 +7,10 @@
       :confirmation-btn-text="confirmationBtnText"
       @confirmation="handleConfirmation"
     >
-      <p class="base-model-title mb-0" v-html="baseMessage"></p>
+      <div>
+        <p class="base-model-title mb-0" v-html="baseMessage"></p>
+        <p>{{ data }}</p>
+      </div>
     </base-cancellation-modal>
 
     <positive-cancellation-modal v-model="viewPositiveModal">
@@ -39,6 +42,7 @@ import NegativeCancellationModal from '@/components/app/payment/NegativeCancella
 import FinalCancellationMessage from '@/components/app/payment/FinalCancellationMessage.vue'
 import { TypedStore } from '@/models'
 import { useCancellation, useSnotifyHelper } from '@/composables'
+import { CancellationFlowEnum } from '@/enums/cancellation-flow.enum'
 
 export default defineComponent({
   name: 'TechnicalIssuesCancellationModal',
@@ -81,6 +85,9 @@ export default defineComponent({
     const viewNegativeModal = ref(false)
     const subscriptionCancelled = ref(false)
     const subtitle = computed(() => 'Let us know about the issues you\'ve been experiencing—we\'d love to fix them for you!')
+    const latestCancellationReason = computed(() => store.getters['plans/getLatestCancellationReason'])
+
+    const data = computed(() => JSON.stringify(latestCancellationReason.value))
 
     const hasPreschoolPlan = computed(
       () => !store.getters['auth/hasPlayAndLearnPlan']
@@ -158,9 +165,13 @@ export default defineComponent({
       }
     })
 
-    watch(startFlow, () => {
+    watch(startFlow, async () => {
       if (startFlow.value) {
-        viewBaseModal.value = true
+        if (latestCancellationReason.value?.cancellationFlow === CancellationFlowEnum.DISCOUNT) {
+          await applySubscriptionCancellingLogic()
+        } else {
+          viewBaseModal.value = true
+        }
       }
     })
 
@@ -194,9 +205,7 @@ export default defineComponent({
           await applyDiscountCode(discountCode.value)
           viewPositiveModal.value = true
         } else {
-          await cancelSubscription(props.reasonMessage)
-          subscriptionCancelled.value = true
-          viewNegativeModal.value = true
+          await applySubscriptionCancellingLogic()
         }
       } catch {
         snotify.error('Could not process plan cancellation')
@@ -207,7 +216,14 @@ export default defineComponent({
       }
     }
 
+    const applySubscriptionCancellingLogic = async () => {
+      await cancelSubscription(props.reasonMessage)
+      subscriptionCancelled.value = true
+      viewNegativeModal.value = true
+    }
+
     return {
+      data,
       loading,
       viewBaseModal,
       viewPositiveModal,

@@ -10,6 +10,18 @@ export default {
 
   recordCancelPlanReason (_, data) {
     return this.$axios.$post('/plans/cancellation/reason', data)
+  },
+
+  async fetchLatestCancellationReason({ commit }) {
+    const latestReason = await this.$axios.$get('/plans/cancellation/latest')
+
+    commit('SET_LATEST_CANCELLATION_REASON', latestReason)
+
+    return latestReason
+  },
+
+  async setLatestCancellationReason(_, data) {
+    return await this.$axios.$patch('/plans/cancellation/flow', data)
   }
 
 }

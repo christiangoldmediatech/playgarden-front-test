@@ -92,6 +92,7 @@ import FinalCancellationMessage from '@/components/app/payment/FinalCancellation
 import CreditCardModal from '@/components/app/payment/CreditCardModal.vue'
 import { PlanTier, TypedStore, UserFlow } from '@/models'
 import { useAuth, useBilling, useCancellation, useSnotifyHelper } from '@/composables'
+import { CancellationFlowEnum } from '@/enums/cancellation-flow.enum'
 
 export default defineComponent({
   name: 'CancellationSteps',
@@ -164,6 +165,9 @@ export default defineComponent({
     const subscriptionCancelled = ref(false)
     const viewCreditCardModal = ref(false)
     const stepWhenViewingCreditCardModal = ref(0)
+    const latestCancellationReason = computed(() => store.getters['plans/getLatestCancellationReason'])
+
+    const data = computed(() => JSON.stringify(latestCancellationReason.value))
 
     const hasPreschoolPlan = computed(
       () => !store.getters['auth/hasPlayAndLearnPlan']
@@ -245,9 +249,17 @@ export default defineComponent({
       }
     })
 
-    watch(startFlow, () => {
+    watch(startFlow, async () => {
       if (startFlow.value) {
-        viewBaseModal.value = true
+        if (latestCancellationReason.value?.cancellationFlow === CancellationFlowEnum.DISCOUNT) {
+          if (hasPreschoolPlan.value || hasPlayAndLearnLivePlan.value) {
+            viewFirstNegativeModal.value = true
+          } else {
+            await applySubscriptionCancelLogic()
+          }
+        } else {
+          viewBaseModal.value = true
+        }
       }
     })
 
@@ -424,6 +436,7 @@ export default defineComponent({
 
     return {
       loading,
+      data,
       viewBaseModal,
       viewFirstPositiveModal,
       viewFirstNegativeModal,
