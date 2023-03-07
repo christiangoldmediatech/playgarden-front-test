@@ -95,6 +95,10 @@ export default {
       return this.userInfo.fullName // `${this.userInfo.firstName ?? ''} ${this.userInfo.lastName ?? ''}`.trim()
     },
 
+    routeName () {
+      return this.$route.name
+    },
+
     isMobile () {
       return this.$vuetify.breakpoint.smAndDown
     },
@@ -116,8 +120,14 @@ export default {
     }
   },
 
-  mounted () {
-    this.selectedRouteName = this.$route.name
+  watch: {
+    routeName() {
+      this.selectedRouteName = this.routeName
+    }
+  },
+
+  mounted() {
+    this.selectedRouteName = this.routeName
   },
 
   methods: {
