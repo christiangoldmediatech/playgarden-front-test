@@ -163,18 +163,6 @@
 
               <v-col cols="12" class="d-flex justify-center">
                 <v-btn
-                  color="#68C453"
-                  text
-                  @click="viewAddCouponModal = true"
-                >
-                  <span class="account-secondary-btn">
-                    View coupon history
-                  </span>
-                </v-btn>
-              </v-col>
-
-              <v-col cols="12" class="d-flex justify-center">
-                <v-btn
                   class="rounded-0 elevation-0 my-4"
                   color="#F89838"
                   @click="viewAddCouponModal = true"
