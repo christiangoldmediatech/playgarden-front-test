@@ -11,6 +11,13 @@
       <p class="base-model-title mb-0" v-html="baseMessage"></p>
     </base-cancellation-modal>
 
+    <last-modal
+      v-model="viewLastModal"
+      :explanation-required="true"
+      :loading="loading"
+      @confirmation="handleLastAction"
+    />
+
     <!-- First step -->
     <positive-cancellation-modal v-model="viewFirstPositiveModal">
       <template>
@@ -85,6 +92,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref, useStore, watch } from '@nuxtjs/composition-api'
 import BaseCancellationModal from '@/components/app/payment/BaseCancellationModal.vue'
+import LastModal from '@/components/app/payment/LastModal.vue'
 import PositiveCancellationModal from '@/components/app/payment/PositiveCancellationModal.vue'
 import NegativeCancellationModal from '@/components/app/payment/NegativeCancellationModal.vue'
 import IntermediateCancellationModal from '@/components/app/payment/IntermediateCancellationModal.vue'
@@ -92,6 +100,7 @@ import FinalCancellationMessage from '@/components/app/payment/FinalCancellation
 import CreditCardModal from '@/components/app/payment/CreditCardModal.vue'
 import { PlanTier, TypedStore, UserFlow } from '@/models'
 import { useAuth, useBilling, useCancellation, useSnotifyHelper } from '@/composables'
+import { CancellationFlowEnum } from '@/enums/cancellation-flow.enum'
 
 export default defineComponent({
   name: 'CancellationSteps',
@@ -135,6 +144,7 @@ export default defineComponent({
   },
   components: {
     BaseCancellationModal,
+    LastModal,
     PositiveCancellationModal,
     NegativeCancellationModal,
     IntermediateCancellationModal,
@@ -155,6 +165,7 @@ export default defineComponent({
 
     const loading = ref(false)
     const viewBaseModal = ref(false)
+    const viewLastModal = ref(false)
     const viewFirstPositiveModal = ref(false)
     const viewFirstNegativeModal = ref(false)
     const viewSecondPositiveModal = ref(false)
@@ -164,6 +175,9 @@ export default defineComponent({
     const subscriptionCancelled = ref(false)
     const viewCreditCardModal = ref(false)
     const stepWhenViewingCreditCardModal = ref(0)
+    const latestCancellationReason = computed(() => store.getters['plans/getLatestCancellationReason'])
+
+    const data = computed(() => JSON.stringify(latestCancellationReason.value))
 
     const hasPreschoolPlan = computed(
       () => !store.getters['auth/hasPlayAndLearnPlan']
@@ -247,7 +261,15 @@ export default defineComponent({
 
     watch(startFlow, () => {
       if (startFlow.value) {
-        viewBaseModal.value = true
+        if (latestCancellationReason.value?.cancellationFlow === CancellationFlowEnum.DISCOUNT) {
+          if (hasPreschoolPlan.value || hasPlayAndLearnLivePlan.value) {
+            viewFirstNegativeModal.value = true
+          } else {
+            viewLastModal.value = true
+          }
+        } else {
+          viewBaseModal.value = true
+        }
       }
     })
 
@@ -290,7 +312,7 @@ export default defineComponent({
         )
 
         if (data.confirmation) {
-          await applyDiscountCode(discountCode.value)
+          await applyDiscountCode(discountCode.value, props.reasonMessage)
           viewFirstPositiveModal.value = true
         } else if (hasBasicPlayAndLearnPlan.value) {
           await applySubscriptionCancelLogic()
@@ -302,6 +324,29 @@ export default defineComponent({
       } finally {
         loading.value = false
         viewBaseModal.value = false
+        startFlow.value = false
+      }
+    }
+
+    const handleLastAction = async (data: { confirmation: boolean, explanation: string }) => {
+      loading.value = true
+
+      try {
+        await store.dispatch(
+          'plans/recordCancelPlanReason',
+          {
+            reason: props.reasonMessage,
+            explanation: data.explanation,
+            planId: props.plan?.id
+          }
+        )
+
+        await applySubscriptionCancelLogic()
+      } catch {
+        snotify.error('Could not process plan cancellation')
+      } finally {
+        loading.value = false
+        viewLastModal.value = false
         startFlow.value = false
       }
     }
@@ -389,7 +434,7 @@ export default defineComponent({
         //   return false
         // }
 
-        await changeSubscription(planId, isBillingMonthly.value)
+        await changeSubscription(planId, isBillingMonthly.value, props.reasonMessage)
 
         return true
       } catch {
@@ -424,7 +469,9 @@ export default defineComponent({
 
     return {
       loading,
+      data,
       viewBaseModal,
+      viewLastModal,
       viewFirstPositiveModal,
       viewFirstNegativeModal,
       viewSecondPositiveModal,
@@ -440,6 +487,7 @@ export default defineComponent({
       tryToChangeSubscription,
       retryFailedSubscriptionChange,
       handleBaseConfirmation,
+      handleLastAction,
       handleFirstIntermediateResponse,
       handleSecondIntermediateResponse
     }

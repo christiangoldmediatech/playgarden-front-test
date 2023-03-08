@@ -10,6 +10,13 @@
       <p class="base-model-title mb-0" v-html="baseMessage"></p>
     </base-cancellation-modal>
 
+    <last-modal
+      v-model="viewLastModal"
+      :explanation-required="true"
+      :loading="loading"
+      @confirmation="handleLastAction"
+    />
+
     <positive-cancellation-modal v-model="viewPositiveModal">
       <template>
         <p class="positive-message pg-text-[#78C383] pg-font-[700]">
@@ -35,10 +42,12 @@
 import { computed, defineComponent, ref, useStore, watch } from '@nuxtjs/composition-api'
 import BaseCancellationModal from '@/components/app/payment/BaseCancellationModal.vue'
 import PositiveCancellationModal from '@/components/app/payment/PositiveCancellationModal.vue'
+import LastModal from '@/components/app/payment/LastModal.vue'
 import NegativeCancellationModal from '@/components/app/payment/NegativeCancellationModal.vue'
 import FinalCancellationMessage from '@/components/app/payment/FinalCancellationMessage.vue'
 import { TypedStore } from '@/models'
 import { useCancellation, useSnotifyHelper } from '@/composables'
+import { CancellationFlowEnum } from '@/enums/cancellation-flow.enum'
 
 export default defineComponent({
   name: 'TechnicalIssuesCancellationModal',
@@ -68,6 +77,7 @@ export default defineComponent({
     BaseCancellationModal,
     PositiveCancellationModal,
     NegativeCancellationModal,
+    LastModal,
     FinalCancellationMessage
   },
   emits: ['input', 'closeModal', 'reloadInformation'],
@@ -77,10 +87,12 @@ export default defineComponent({
     const { applyDiscountCode, cancelSubscription } = useCancellation({ store, snotify })
     const loading = ref(false)
     const viewBaseModal = ref(false)
+    const viewLastModal = ref(false)
     const viewPositiveModal = ref(false)
     const viewNegativeModal = ref(false)
     const subscriptionCancelled = ref(false)
     const subtitle = computed(() => 'Let us know about the issues you\'ve been experiencing—we\'d love to fix them for you!')
+    const latestCancellationReason = computed(() => store.getters['plans/getLatestCancellationReason'])
 
     const hasPreschoolPlan = computed(
       () => !store.getters['auth/hasPlayAndLearnPlan']
@@ -160,7 +172,11 @@ export default defineComponent({
 
     watch(startFlow, () => {
       if (startFlow.value) {
-        viewBaseModal.value = true
+        if (latestCancellationReason.value?.cancellationFlow === CancellationFlowEnum.DISCOUNT) {
+          viewLastModal.value = true
+        } else {
+          viewBaseModal.value = true
+        }
       }
     })
 
@@ -191,12 +207,10 @@ export default defineComponent({
         )
 
         if (data.confirmation) {
-          await applyDiscountCode(discountCode.value)
+          await applyDiscountCode(discountCode.value, props.reasonMessage)
           viewPositiveModal.value = true
         } else {
-          await cancelSubscription(props.reasonMessage)
-          subscriptionCancelled.value = true
-          viewNegativeModal.value = true
+          await applySubscriptionCancellingLogic()
         }
       } catch {
         snotify.error('Could not process plan cancellation')
@@ -207,16 +221,47 @@ export default defineComponent({
       }
     }
 
+    const handleLastAction = async (data: { confirmation: boolean, explanation: string }) => {
+      loading.value = true
+
+      try {
+        await store.dispatch(
+          'plans/recordCancelPlanReason',
+          {
+            reason: props.reasonMessage,
+            explanation: data.explanation,
+            planId: props.plan?.id
+          }
+        )
+
+        await applySubscriptionCancellingLogic()
+      } catch {
+        snotify.error('Could not process plan cancellation')
+      } finally {
+        loading.value = false
+        viewLastModal.value = false
+        startFlow.value = false
+      }
+    }
+
+    const applySubscriptionCancellingLogic = async () => {
+      await cancelSubscription(props.reasonMessage)
+      subscriptionCancelled.value = true
+      viewNegativeModal.value = true
+    }
+
     return {
       loading,
       viewBaseModal,
+      viewLastModal,
       viewPositiveModal,
       viewNegativeModal,
       baseMessage,
       confirmationBtnText,
       positiveModalMessage,
       subtitle,
-      handleConfirmation
+      handleConfirmation,
+      handleLastAction
     }
   }
 })
