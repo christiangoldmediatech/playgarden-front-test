@@ -9,6 +9,7 @@
       </v-col>
       <v-col cols="6" class="pl-4">
         <membership-card />
+        <notifications-card class="mt-8" />
       </v-col>
     </v-row>
   </v-container>
@@ -21,6 +22,7 @@ import ShippingAddressCard from '@/components/app/account-dashboard/ShippingAddr
 import StudentProfileCard from '@/components/app/account-dashboard/StudentProfileCard.vue'
 import CaregiversCard from '@/components/app/account-dashboard/CaregiversCard.vue'
 import MembershipCard from '@/components/app/account-dashboard/MembershipCard.vue'
+import NotificationsCard from '@/components/app/account-dashboard/NotificationsCard.vue'
 
 export default defineComponent({
   name: 'Index',
@@ -29,7 +31,8 @@ export default defineComponent({
     ShippingAddressCard,
     StudentProfileCard,
     CaregiversCard,
-    MembershipCard
+    MembershipCard,
+    NotificationsCard
   },
   setup() {
 
