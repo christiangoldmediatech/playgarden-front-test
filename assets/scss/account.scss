@@ -207,3 +207,21 @@
   text-decoration-line: underline;
   text-transform: none;
 }
+
+.account-small-header {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #FFA0C8;
+}
+
+.account-small-value {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #707070;
+}

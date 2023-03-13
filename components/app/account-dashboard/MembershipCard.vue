@@ -12,8 +12,128 @@
 
     <div class="account-pink-dashed-line my-4 mx-auto"></div>
 
-    <v-col cols="12">
+    <v-col v-if="billing" cols="12">
       <v-row no-gutters>
+        <v-col cols="12" class="mb-4">
+          <span class="account-field-label">Your next billing date is:</span>
+          <p class="account-field-value ma-0">
+            {{ billing.nextBillingDate }}
+          </p>
+        </v-col>
+
+        <v-col cols="12" class="mb-4">
+          <span class="account-field-label">
+            Your {{ membershipInterval }} membership fee is:
+          </span>
+          <div
+            v-if="billing.planAmountDiscount"
+            cols="12"
+            class="account-field-value"
+          >
+            <div>
+              <span>{{
+                billing.planAmountDiscount.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD'
+                })
+              }}</span>
+              <span class="strikethrough old_price grey--text">
+                {{
+                  billing.planAmount.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD'
+                  })
+                }}
+              </span>
+            </div>
+          </div>
+          <div
+            v-else-if="billing.percentOff"
+            cols="12"
+            class="account-field-value"
+          >
+            <div>
+              <span>{{
+                getTotalPay.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD'
+                })
+              }}</span>
+              <span class="strikethrough old_price grey--text">
+                {{
+                  billing.planAmount.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD'
+                  })
+                }}
+              </span>
+            </div>
+          </div>
+          <div
+            v-else
+            cols="12"
+            class="account-field-value"
+          >
+            <div>
+              <span>
+                {{
+                  billing.planAmount.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD'
+                  })
+                }}
+              </span>
+            </div>
+          </div>
+        </v-col>
+
+        <v-col v-if="billing.planAmountDiscount || billing.percentOff" cols="12" class="mb-4">
+          <span class="account-field-label">
+            Coupon applied
+          </span>
+          <v-icon color="#68C453">
+            mdi-check-circle
+          </v-icon>
+        </v-col>
+
+        <v-col v-if="plan" cols="12" class="mb-4">
+          <span class="account-field-label">Your plan is:</span>
+          <p class="account-field-value ma-0">
+            {{ plan.name }}
+          </p>
+        </v-col>
+
+        <v-col v-if="billings.length > 0" class="mb-4">
+          <span class="account-field-label">Billing history:</span>
+          <v-btn class="text-decoration-underline text-transform-none" color="#FFAB37" text x-small @click="goToPage">
+            View all
+          </v-btn>
+          <v-row no-gutters class="mb-2">
+            <v-col cols="6">
+              <span class="account-small-header">Date</span>
+            </v-col>
+            <v-col cols="6">
+              <span class="account-small-header">Price</span>
+            </v-col>
+          </v-row>
+          <div v-for="billing in billings" :key="`billing-${billing.id}`">
+            <v-row class="mb-2" align="center" no-gutters>
+              <v-col cols="6">
+                <span class="account-small-value">{{ billing.dateFormatted }}</span>
+              </v-col>
+              <v-col cols="6" class="d-flex">
+                <span class="account-small-value">${{ billing.totalFormatted }} {{ billing.currency.toUpperCase() }} /{{ billing.period }} plan<br></span>
+              </v-col>
+            </v-row>
+          </div>
+        </v-col>
+
+        <v-col v-if="userCards.length > 0" cols="12" class="mb-4">
+          <span class="account-field-label">Payment method</span>
+          <p class="account-field-value ma-0">
+            {{ cardMaskedNumber }}
+          </p>
+        </v-col>
       </v-row>
     </v-col>
 
@@ -35,7 +155,8 @@
 import dayjs from 'dayjs'
 import { get } from 'lodash'
 import { TypedStore } from '@/models'
-import { defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
+import { computed, defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
+import { useBilling } from '@/composables'
 
 export default defineComponent({
   name: 'MembershipCard',
@@ -43,16 +164,40 @@ export default defineComponent({
     const membershipColor = ref('255, 160, 200')
 
     const loading = ref(false)
-    const billing = ref<any>()
+    const billing = ref<any>(null)
+    const plan = ref<any>(null)
     const userCards = ref<any>([])
+
+    const { billings, getBillingHistory } = useBilling()
 
     const store = useStore<TypedStore>()
     const router = useRouter()
+
+    const membershipInterval = computed(() => {
+      switch (billing.value?.membershipInterval) {
+        case 'month':
+          return 'monthly'
+        case 'year':
+          return 'yearly'
+      }
+      return null
+    })
+
+    const cardMaskedNumber = computed(() => {
+      const card = userCards.value[0]
+
+      if (card) {
+        return `${card.details.brand} •••• •••• •••• ${card.details.last4}`
+      }
+
+      return ''
+    })
 
     const getBillingDetails = async () => {
       try {
         loading.value = true
         const data = await store.dispatch('payment/fetchBillingDetails')
+        billing.value = {}
         billing.value.billingType = data.billingType
         billing.value.subscriptionId = data.subscriptionId
         billing.value.planAmount = data.planAmount || null
@@ -91,6 +236,17 @@ export default defineComponent({
       }
     }
 
+    const getPlan = async () => {
+      try {
+        store.dispatch('disableAxiosGlobal')
+        const response = await store.dispatch('payment/getSelectedSubscriptionPlan')
+        plan.value = response.plan
+      } catch (e) {
+      } finally {
+        store.dispatch('enableAxiosGlobal')
+      }
+    }
+
     const getBillingCards = async () => {
       try {
         loading.value = true
@@ -107,10 +263,18 @@ export default defineComponent({
     onMounted(async () => {
       await getBillingDetails()
       await getBillingCards()
+      await getPlan()
+      await getBillingHistory()
     })
 
     return {
       membershipColor,
+      billing,
+      billings,
+      userCards,
+      cardMaskedNumber,
+      plan,
+      membershipInterval,
       goToPage
     }
   }
@@ -119,4 +283,42 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '~/assets/scss/account.scss';
+
+.strikethrough {
+  position: relative;
+}
+
+.strikethrough:before {
+  position: absolute;
+  color: var(--v-accent-base) !important;
+  content: '';
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 1px solid;
+  border-color: inherit;
+
+  -webkit-transform: rotate(-10deg);
+  -moz-transform: rotate(-10deg);
+  -ms-transform: rotate(-10deg);
+  -o-transform: rotate(-10deg);
+  transform: rotate(-10deg);
+}
+
+.strikethrough:after {
+  position: absolute;
+  color: var(--v-accent-base) !important;
+  content: '';
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 1px solid;
+  border-color: inherit;
+
+  -webkit-transform: rotate(10deg);
+  -moz-transform: rotate(10deg);
+  -ms-transform: rotate(10deg);
+  -o-transform: rotate(10deg);
+  transform: rotate(10deg);
+}
 </style>
