@@ -203,8 +203,9 @@ import { ref, computed, useStore } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import { TAG_MANAGER_EVENTS } from '@/models'
 import { useChild, usePlaydates, useSnotifyHelper } from '@/composables'
-import { getNumberOrder, hours24ToHours12 } from '@/utils/dateTools'
+import { getNumberOrder, formatTimezone } from '@/utils/dateTools'
 import ChildSelect from '@/components/app/ChildSelect.vue'
+import moment from 'moment'
 
 export default {
   name: 'EntryDialog',
@@ -369,19 +370,22 @@ export default {
 
     date() {
       if (this.entry) {
-        const date = new Date(this.entry.dateStart)
-        const endDate = new Date(this.entry.dateEnd)
-        const monthAndDay = `${this.months[date.getMonth()]} ${getNumberOrder(
-          date.getDate()
+        const { timezone } = this.getUserInfo
+        const date = moment(this.entry.dateStart)
+        const endDate = moment(this.entry.dateEnd)
+        const monthAndDay = `${this.months[date.month()]} ${getNumberOrder(
+          date.date()
         )}`
-        const startTime = `${hours24ToHours12(
-          date.getHours(),
-          date.getMinutes()
-        )}`
-        const endTime = `${hours24ToHours12(
-          endDate.getHours(),
-          endDate.getMinutes()
-        )}`
+        const startTime = formatTimezone(date, {
+          format: 'hh:mma',
+          timezone,
+          returnObject: false
+        })
+        const endTime = formatTimezone(endDate, {
+          format: 'hh:mma',
+          timezone,
+          returnObject: false
+        })
         return `${monthAndDay},  ${startTime} - ${endTime}`
       }
       return ''
