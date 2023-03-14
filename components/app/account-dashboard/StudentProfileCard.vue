@@ -12,58 +12,56 @@
 
     <div class="account-orange-dashed-line"></div>
 
-    <v-col cols="12">
-      <v-row no-gutters>
-        <v-col
-          v-for="(item, indexD) in items"
-          :key="indexD"
-          cols="12"
-          class="mb-2"
-        >
-          <!-- Readonly child info -->
-          <v-row no-gutters>
-            <v-col cols="3">
-              <img
-                v-if="firstBackpack"
-                :alt="childBackpack(item.backpackId).name"
-                class="backpack-active"
-                :src="childBackpack(item.backpackId).image"
-              >
-            </v-col>
-
-            <v-col cols="9" class="d-flex flex-column pl-3">
-              <div class="d-flex justify-space-between">
-                <h1 class="child-name mb-3">
-                  {{ item.firstName }} {{ (item.lastName) ? item.lastName : '' }}
-                </h1>
-
-                <v-btn
-                  text
-                  class="account-child-btn"
-                  small
-                  color="#FFAB37"
-                  @click="goToPage"
+    <v-row no-gutters class="pt-4">
+      <v-col cols="12">
+        <v-row no-gutters>
+          <v-col
+            v-for="(item, indexD) in items"
+            :key="indexD"
+            cols="12"
+            class="mb-2"
+          >
+            <!-- Readonly child info -->
+            <v-row no-gutters>
+              <v-col cols="3">
+                <img
+                  v-if="firstBackpack"
+                  :alt="childBackpack(item.backpackId).name"
+                  class="backpack-active"
+                  :src="childBackpack(item.backpackId).image"
                 >
-                  View more
-                </v-btn>
-              </div>
-
-              <div>
-                <span class="child-base-text pg-text-[#707070]">Date of birth:  </span>
-                <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">{{ getChildBirthday(item.birthday) }}</span>
-              </div>
-
-              <div>
-                <span class="child-base-text pg-text-[#707070]">Gender:  </span>
-                <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">
-                  {{ item.gender === 'FEMALE' ? 'Girl' : item.gender === 'MALE' ? 'Boy' : '' }}
-                </span>
-              </div>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-col>
+              </v-col>
+              <v-col cols="9" class="d-flex flex-column pl-3">
+                <div class="d-flex justify-space-between">
+                  <h1 class="child-name mb-3">
+                    {{ item.firstName }} {{ (item.lastName) ? item.lastName : '' }}
+                  </h1>
+                  <v-btn
+                    text
+                    class="account-child-btn"
+                    small
+                    color="#FFAB37"
+                    @click="goToPage"
+                  >
+                    View more
+                  </v-btn>
+                </div>
+                <div>
+                  <span class="child-base-text pg-text-[#707070]">Date of birth:  </span>
+                  <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">{{ getChildBirthday(item.birthday) }}</span>
+                </div>
+                <div>
+                  <span class="child-base-text pg-text-[#707070]">Gender:  </span>
+                  <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">
+                    {{ item.gender === 'FEMALE' ? 'Girl' : item.gender === 'MALE' ? 'Boy' : '' }}
+                  </span>
+                </div>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
 
     <v-col cols="12">
       <v-btn
@@ -181,9 +179,13 @@ export default defineComponent({
 .child-name {
   font-style: normal;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 16px;
   line-height: 36px;
   color: #707070;
+
+  @media screen and (min-width: $breakpoint-md) {
+    font-size: 24px;
+  }
 }
 
 .child-base-text {
@@ -202,10 +204,15 @@ export default defineComponent({
     border-radius: 50%;
     padding: 5px;
   }
+
 }
 
 .backpack-active {
-  height: 100px;
+  height: 70px;
+
+  @media screen and (min-width: $breakpoint-md) {
+    height: 100px;
+  }
 }
 
 </style>

@@ -32,13 +32,20 @@
             :value="selectedRouteName"
             :items="filteredSections"
             solo
-            class="px-2"
+            background-color="#FFAF60"
+            append-icon="mdi-chevron-down"
+            class="px-2 white--text"
             item-value="routeName"
             data-test-id="mobile-account-page-select"
             @input="navigateToPage($event)"
           >
+            <template v-slot:append>
+              <v-icon color="white">
+                mdi-chevron-down
+              </v-icon>
+            </template>
             <template #selection="{ item }">
-              <div :class="mobileDrowpdownClasses(item.routeName)">
+              <div class="w-100 d-flex justify-center account-mobile-select pg-text-[#FFFFFF]">
                 {{ item.text }}
               </div>
             </template>
@@ -139,9 +146,9 @@ export default {
       const isLogoutBtn = routeName === 'auth-logout'
 
       return {
-        'font-weight-bold text-uppercase': true,
-        'grey--text text--darken-2': !isLogoutBtn,
-        'orange--text': isLogoutBtn
+        'w-100 d-flex justify-center account-mobile-select': true,
+        'pg-text-[#6c6c6c]': !isLogoutBtn,
+        'pg-text-[#68C453]': isLogoutBtn
       }
     }
   }

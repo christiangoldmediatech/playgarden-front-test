@@ -1,13 +1,13 @@
 <template>
   <v-container fluid>
     <v-row no-gutters>
-      <v-col cols="6" class="pr-4">
+      <v-col cols="12" md="6" class="pr-0 pr-md-4 mb-8">
         <general-info-card />
         <shipping-address-card class="mt-8" />
         <student-profile-card class="mt-8" />
         <caregivers-card class="mt-8" />
       </v-col>
-      <v-col cols="6" class="pl-4">
+      <v-col cols="12" md="6" class="pl-0 pl-md-4">
         <membership-card />
         <notifications-card class="mt-8" />
       </v-col>
