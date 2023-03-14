@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="d-flex flex-column align-center w-100">
     <v-row no-gutters>
       <v-col cols="12">
         <v-row no-gutters>
-          <v-col cols="6" class="pr-4">
+          <v-col cols="12" md="6" class="pr-0 pr-md-4">
             <span class="d-inline-block account-field-label mb-2">First name</span>
             <pg-text-field
               v-model="form.firstName"
@@ -16,7 +16,7 @@
             />
           </v-col>
 
-          <v-col cols="6" class="pl-4">
+          <v-col cols="12" md="6" class="pl-0 pl-md-4">
             <span class="d-inline-block account-field-label mb-2">Last name</span>
             <v-text-field
               v-model="form.lastName"
@@ -45,7 +45,7 @@
 
         <v-row no-gutters>
           <!-- This is just for showing a password field -->
-          <v-col cols="6" class="pr-4">
+          <v-col cols="12" md="6" class="pr-0 pr-md-4">
             <span class="d-inline-block account-field-label mb-2">Password</span>
             <v-text-field
               value="*********"
@@ -57,7 +57,7 @@
             />
           </v-col>
 
-          <v-col cols="6" class="pl-4">
+          <v-col cols="12" md="6" class="pl-0 pl-md-4">
             <span class="d-inline-block account-field-label mb-2">Phone number</span>
             <v-text-field
               v-model="form.phoneNumber"

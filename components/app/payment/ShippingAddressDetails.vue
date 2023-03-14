@@ -17,13 +17,13 @@
             <v-row no-gutters>
               <v-col cols="12">
                 <v-row no-gutters>
-                  <v-col cols="6" class="pr-4">
+                  <v-col cols="12" md="6" class="pr-0 pr-md-4">
                     <!-- Street 2 -->
                     <span class="d-inline-block account-field-label mb-2">
                       Apt, Suite, PO BOX (optional)
                     </span>
                   </v-col>
-                  <v-col cols="6" class="pl-4">
+                  <v-col v-if="!isMobile" cols="12" md="6" class="pl-0 pl-md-4">
                     <!-- City -->
                     <span class="d-inline-block account-field-label mb-2">City</span>
                   </v-col>
@@ -32,7 +32,7 @@
 
               <v-col cols="12">
                 <v-row no-gutters>
-                  <v-col cols="6" class="pr-4">
+                  <v-col cols="12" md="6" class="pr-0 pr-md-4">
                     <!-- Street 2 -->
                     <pg-text-field
                       v-model="draft.address2"
@@ -44,9 +44,10 @@
                       dense
                     />
                   </v-col>
-                  <v-col cols="6" class="pl-4">
+                  <v-col cols="12" md="6" class="pl-0 pl-md-4">
                     <!-- City -->
                     <validation-provider v-slot="{ errors }" name="City" rules="required">
+                      <span v-if="isMobile" class="d-inline-block account-field-label mb-2">City</span>
                       <pg-text-field
                         v-model="draft.city"
                         clearable
@@ -65,8 +66,9 @@
           </v-col>
 
           <v-col
-            cols="6"
-            class="pr-4"
+            cols="12"
+            md="6"
+            class="pr-0 pr-md-4"
           >
             <!-- State -->
             <span class="d-inline-block account-field-label mb-2">State</span>
@@ -89,8 +91,9 @@
           </v-col>
 
           <v-col
-            cols="6"
-            class="pl-4"
+            cols="12"
+            md="6"
+            class="pl-0 pl-md-4"
           >
             <!-- Country -->
             <span class="d-inline-block account-field-label mb-2">Country</span>
@@ -127,8 +130,9 @@
           </v-col>
 
           <v-col
-            cols="6"
-            class="pr-4"
+            cols="12"
+            md="6"
+            class="pr-0 pr-md-4"
           >
             <!-- Zipcode -->
             <span class="d-inline-block account-field-label mb-2">Zip Code</span>
@@ -202,7 +206,7 @@
 
     <!-- Readonly user shipping address -->
     <v-row v-else no-gutters>
-      <v-col cols="6" class="pr-4">
+      <v-col cols="12" md="6" class="pr-0 pr-md-4">
         <span class="d-inline-block account-field-label mb-2">Street</span>
         <pg-text-field
           :value="formattedAddress"
@@ -214,7 +218,7 @@
         />
       </v-col>
 
-      <v-col cols="6" class="pl-4">
+      <v-col cols="12" md="6" class="pl-0 pl-md-4">
         <span class="d-inline-block account-field-label mb-2">City</span>
         <pg-text-field
           :value="draft.city"
@@ -226,7 +230,7 @@
         />
       </v-col>
 
-      <v-col cols="6" class="pr-4">
+      <v-col cols="12" md="6" class="pr-0 pr-md-4">
         <span class="d-inline-block account-field-label mb-2">State</span>
         <pg-text-field
           :value="draft.state"
@@ -238,7 +242,7 @@
         />
       </v-col>
 
-      <v-col cols="6" class="pl-4">
+      <v-col cols="12" md="6" class="pl-0 pl-md-4">
         <span class="d-inline-block account-field-label mb-2">Country</span>
         <pg-text-field
           :value="formattedCountry"
@@ -250,7 +254,7 @@
         />
       </v-col>
 
-      <v-col cols="6" class="pr-4">
+      <v-col cols="12" md="6" class="pr-0 pr-md-4">
         <span class="d-inline-block account-field-label mb-2">Zip Code</span>
         <pg-text-field
           :value="draft.zipCode"
