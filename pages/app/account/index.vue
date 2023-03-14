@@ -8,8 +8,13 @@
           color="#FFF5E7"
         >
           <div class="pt-md-12 d-flex flex-column align-center">
+            <v-btn v-if="isMobile" text color="#F89838" class="mr-auto mt-4" @click="goToPrevPage">
+              <v-icon>mdi-chevron-left</v-icon>
+              Back
+            </v-btn>
+
             <img
-              class="d-none d-sm-inline"
+              class="d-inline"
               height="100px"
               src="@/assets/svg/account-profile-v2.svg"
             >
@@ -138,6 +143,9 @@ export default {
   },
 
   methods: {
+    goToPrevPage() {
+      this.$router.go(-1)
+    },
     navigateToPage (routeName) {
       this.selectedRouteName = routeName
       this.$router.push({ name: routeName })
