@@ -96,8 +96,7 @@ export default {
               title: 'Community',
               dataTestId: 'app-community',
               external: true,
-              // link: `https://community.playgardenprep.com?atoken=${this.getAccessToken}`,
-              link: `http://pgcommunity.local/login?atoken=${this.getAccessToken}`,
+              link: `https://community.playgardenprep.com/login?atoken=${this.getAccessToken}`,
               openInNewTab: true
             }
             // {
