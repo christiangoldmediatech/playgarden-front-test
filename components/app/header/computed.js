@@ -7,7 +7,8 @@ export default {
       'isUserInSignupProcess',
       'isUserLoggedIn',
       'getUserInfo',
-      'hasPlayAndLearnPlan'
+      'hasPlayAndLearnPlan',
+      'getAccessToken'
     ]),
     ...mapGetters({
       currentChildId: 'getCurrentChild'
@@ -22,7 +23,9 @@ export default {
       }
 
       if (this.getUserInfo.flow === UserFlow.NOCREDITCARD) {
-        return (this.getUserInfo.registerStep === 9) ? days > 0 : this.getUserInfo.registerStep === 6
+        return this.getUserInfo.registerStep === 9
+          ? days > 0
+          : this.getUserInfo.registerStep === 6
       } else if (this.getUserInfo.flow === UserFlow.CREDITCARD) {
         return true
       }
@@ -57,8 +60,18 @@ export default {
               to: { name: 'app-live-classes' },
               exact: false
             },
-            { title: 'Video Library', to: { name: 'app-library' }, exact: false, dataTestId: 'app-library' },
-            { title: 'Music', to: { name: 'app-music' }, exact: false, dataTestId: 'app-music' },
+            {
+              title: 'Video Library',
+              to: { name: 'app-library' },
+              exact: false,
+              dataTestId: 'app-library'
+            },
+            {
+              title: 'Music',
+              to: { name: 'app-music' },
+              exact: false,
+              dataTestId: 'app-music'
+            },
             {
               title: 'Kids Corner',
               dataTestId: 'app-kids-corner',
@@ -72,7 +85,9 @@ export default {
               to: {
                 name: 'app-student-cubby-puzzle',
                 query: {
-                  id: `${this.currentChildId ? this.currentChildId[0].id : null}`
+                  id: `${
+                    this.currentChildId ? this.currentChildId[0].id : null
+                  }`
                 }
               },
               exact: false
@@ -81,7 +96,7 @@ export default {
               title: 'Community',
               dataTestId: 'app-community',
               external: true,
-              link: 'https://community.playgardenprep.com/',
+              link: `https://community.playgardenprep.com/login/?atoken=${this.getAccessToken}`,
               openInNewTab: true
             }
             // {
@@ -107,8 +122,18 @@ export default {
               to: { name: 'app-virtual-preschool' },
               exact: true
             },
-            { title: 'Well-being', to: { name: 'app-learn-play' }, exact: false, dataTestId: 'app-learn-play' },
-            { title: 'Watch and Learn', to: { name: 'app-library' }, exact: false, dataTestId: 'app-library' },
+            {
+              title: 'Well-being',
+              to: { name: 'app-learn-play' },
+              exact: false,
+              dataTestId: 'app-learn-play'
+            },
+            {
+              title: 'Watch and Learn',
+              to: { name: 'app-library' },
+              exact: false,
+              dataTestId: 'app-library'
+            },
             {
               title: 'Live Classes',
               dataTestId: 'app-live-classes',
@@ -121,7 +146,9 @@ export default {
               to: {
                 name: 'app-student-cubby-puzzle',
                 query: {
-                  id: `${this.currentChildId ? this.currentChildId[0].id : null}`
+                  id: `${
+                    this.currentChildId ? this.currentChildId[0].id : null
+                  }`
                 }
               },
               exact: false
