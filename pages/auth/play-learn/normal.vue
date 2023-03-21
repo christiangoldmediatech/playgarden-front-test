@@ -175,6 +175,11 @@ export default defineComponent({
 
     onMounted(() => {
       UtmHandler.setUtmSource()
+      const options = ['CREDITACARD', 'NOCREDITCARD']
+      const randomOption = options[Math.floor(Math.random() * options.length)]
+      if (randomOption === 'NOCREDITCARD') {
+        router.push({ name: 'auth-play-learn-promo' })
+      }
     })
 
     return {
