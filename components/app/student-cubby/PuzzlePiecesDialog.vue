@@ -81,6 +81,7 @@ export default {
   created () {
     this.$nuxt.$on('open-lesson-puzzle-dialog', (toShow) => {
       this.localToShow = toShow
+      this.toShow = toShow
       this.localValue = true
     })
 
