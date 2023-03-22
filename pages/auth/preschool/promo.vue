@@ -4,10 +4,6 @@
   </div>
 </template>
 
-<!-- Start of HubSpot Embed Code -->
-<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/23189711.js"></script>
-<!-- End of HubSpot Embed Code -->
-
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import StepOne from '@/components/app/register/StepOne.vue'
