@@ -83,7 +83,13 @@ export default {
             ? `${baseRouteProd}js/ics.min.js`
             : '/js/ics.min.js'
       },
-      { src: 'https://js.stripe.com/v3/', async: true }
+      { src: 'https://js.stripe.com/v3/', async: true },
+      {
+        hid: 'hubspot-script',
+        src: '//js.hs-scripts.com/23189711.js',
+        async: true,
+        defer: true
+      }
     ],
     __dangerouslyDisableSanitizers: ['noscript']
   },
