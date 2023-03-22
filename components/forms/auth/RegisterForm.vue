@@ -298,6 +298,7 @@
 </template>
 
 <script>
+
 import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
 import { jsonCopy } from '@/utils/objectTools'
