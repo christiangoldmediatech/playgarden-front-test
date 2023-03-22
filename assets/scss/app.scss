@@ -267,3 +267,8 @@
   left: 0;
   z-index: 2500;
 }
+
+.border-well-being {
+  outline: 3px solid var(--v-accent-base);
+  border-radius: 7px;
+}
