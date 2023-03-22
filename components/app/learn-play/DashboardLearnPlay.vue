@@ -196,17 +196,10 @@ export default defineComponent({
         window.scrollTo(0, top)
 
         element.classList.add('border-well-being')
-        const interval = setInterval(() => {
-          if (element.classList.contains('border-well-being')) {
-            element.classList.remove('border-well-being')
-          } else {
-            element.classList.add('border-well-being')
-          }
-        }, 400)
 
         setTimeout(() => {
-          clearTimeout(interval)
-        }, 3000)
+          element.classList.remove('border-well-being')
+        }, 1500)
       }
     }
 
