@@ -6,13 +6,13 @@
         <menu-mobile />
       </v-col>
 
-      <v-col cols="2" md="auto">
+      <v-col cols="12" md="auto">
         <div class="my-3 my-md-0">
-          <span class="title-dashboard">Letter</span>
+          <span class="title-dashboard pg-ml-4 md:pg-ml-0">Letter</span>
         </div>
       </v-col>
 
-      <v-col cols="10">
+      <v-col cols="12" md="10">
         <carousel-letter
           id="CarouselLetter"
           :value="curriculumTypeId"

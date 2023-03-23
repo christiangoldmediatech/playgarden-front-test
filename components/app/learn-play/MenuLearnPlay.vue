@@ -10,27 +10,27 @@
         Videos
       </span>
     </v-col>
-    <v-col cols="12">
+    <v-col v-if="getPrintables.length > 0" cols="12">
       <span class="color-menu clickable" @click="sendSection('worksheets')">
         Printables
       </span>
     </v-col>
-    <v-col v-if="getDiyProject.length" cols="12">
+    <v-col v-if="getDiyProject.length > 0" cols="12">
       <span class="color-menu clickable" @click="sendSection('diy')">
         Do-It-Together
       </span>
     </v-col>
-    <v-col v-if="getArtProjects.length" cols="12">
+    <v-col v-if="getArtProjects.length > 0" cols="12">
       <span class="color-menu clickable" @click="sendSection('art-project')">
         Sensory Play
       </span>
     </v-col>
-    <v-col v-if="getSnacks.length" cols="12">
+    <v-col v-if="getSnacks.length > 0" cols="12">
       <span class="color-menu clickable" @click="sendSection('snack')">
         Snack of the Week
       </span>
     </v-col>
-    <v-col cols="12">
+    <v-col v-if="getBook.length > 0" cols="12">
       <span class="color-menu clickable" @click="sendSection('book')">
         Book
       </span>
@@ -61,6 +61,8 @@ export default defineComponent({
     }
 
     return {
+      getPrintables: learnPlayV2.computedProps.getOfflineWorksheet,
+      getBook: learnPlayV2.computedProps.getRelatedBooks,
       getArtProjects: learnPlayV2.computedProps.getArtProjects,
       getSnacks: learnPlayV2.computedProps.getSnacks,
       getDiyProject: learnPlayV2.computedProps.getDiyProject,
