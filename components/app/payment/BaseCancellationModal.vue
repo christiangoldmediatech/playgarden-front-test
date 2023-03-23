@@ -145,21 +145,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '~/assets/scss/cancellation-flow.scss';
 
-.subtitle {
-  font-family: 'Quicksand';
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 21px;
-  text-align: center;
-  text-transform: capitalize;
-  color: #707070;
-
-  &-header {
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-}
-
 ::v-deep .v-text-field .v-input__control .v-input__slot textarea::placeholder {
   font-family: 'Quicksand';
   font-style: normal;

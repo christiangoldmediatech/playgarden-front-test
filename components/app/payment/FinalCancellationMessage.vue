@@ -75,14 +75,4 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '~/assets/scss/cancellation-flow.scss';
-
-.final-message {
-  font-family: 'Quicksand';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 25px;
-  text-align: center;
-  color: #707070;
-}
 </style>

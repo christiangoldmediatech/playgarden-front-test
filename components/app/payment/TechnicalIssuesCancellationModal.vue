@@ -6,6 +6,7 @@
     :confirmation-btn-text="confirmationBtnText"
     :plan="plan"
     :plan-info="planInfo"
+    :is-in-technical-issues="true"
     :reason-message="reasonMessage"
     :billing-type="billingType"
     @reloadInformation="$emit('reloadInformation', $event)"

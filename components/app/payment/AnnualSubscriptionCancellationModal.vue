@@ -130,16 +130,7 @@ export default defineComponent({
       loading.value = true
 
       try {
-        await store.dispatch(
-          'plans/recordCancelPlanReason',
-          {
-            reason: props.reasonMessage,
-            explanation,
-            planId: props.planId
-          }
-        )
-
-        await cancelSubscription(props.reasonMessage)
+        await cancelSubscription(props.reasonMessage, explanation)
         emit('reloadInformation')
       } catch {
         snotify.error('Could not cancel subscription')
