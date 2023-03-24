@@ -1,41 +1,42 @@
 <template>
-  <v-card class="pa-3">
+  <div>
     <div v-if="loading || songs.length > 0" class="mb-4">
       <span class="title-dashboard">
         Playlist
       </span>
     </div>
+    <v-card class="pa-3">
+      <songs-card
+        v-if="songs && songs.length > 0"
+        :preview-mode="previewMode"
+        class="song-card"
+      />
+      <div v-if="loading">
+        <v-skeleton-loader class="mx-auto" type="card" />
+      </div>
 
-    <songs-card
-      v-if="songs && songs.length > 0"
-      :preview-mode="previewMode"
-      class="song-card"
-    />
-    <div v-if="loading">
-      <v-skeleton-loader class="mx-auto" type="card" />
-    </div>
-
-    <v-row class="my-0">
-      <v-col cols="12">
-        <div id="topFive" class="ml-3">
-          <div class="subtitle-dashboard mb-3">
-            Top five
+      <v-row class="my-0">
+        <v-col cols="12">
+          <div id="topFive" class="ml-3">
+            <div class="subtitle-dashboard mb-3">
+              Top five
+            </div>
+            <top-five v-if="songs && songs.length > 0" :songs="songs" />
+            <div v-if="loading">
+              <v-card
+                v-for="n in 5"
+                :key="`song-load-item-${n}`"
+                class="my-3"
+                cols="4"
+              >
+                <v-skeleton-loader type="list-item-avatar" />
+              </v-card>
+            </div>
           </div>
-          <top-five v-if="songs && songs.length > 0" :songs="songs" />
-          <div v-if="loading">
-            <v-card
-              v-for="n in 5"
-              :key="`song-load-item-${n}`"
-              class="my-3"
-              cols="4"
-            >
-              <v-skeleton-loader type="list-item-avatar" />
-            </v-card>
-          </div>
-        </div>
-      </v-col>
-    </v-row>
-  </v-card>
+        </v-col>
+      </v-row>
+    </v-card>
+  </div>
 </template>
 
 <script lang="ts">

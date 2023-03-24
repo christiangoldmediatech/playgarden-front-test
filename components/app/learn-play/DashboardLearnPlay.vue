@@ -6,13 +6,13 @@
         <menu-mobile />
       </v-col>
 
-      <v-col cols="2" md="auto">
+      <v-col cols="12" md="auto">
         <div class="my-3 my-md-0">
-          <span class="title-dashboard">Letter</span>
+          <span class="title-dashboard pg-ml-4 md:pg-ml-0">Letter</span>
         </div>
       </v-col>
 
-      <v-col cols="10">
+      <v-col cols="12" md="10">
         <carousel-letter
           id="CarouselLetter"
           :value="curriculumTypeId"
@@ -80,11 +80,16 @@
     <v-row v-else class="mx-md-1 pa-5" justify="center" align="center">
       <v-col cols="12">
         <v-row justify="center" align="center">
-          <v-img :max-width="noContentImgWidth" aspect-ratio="1" :src="require('@/assets/svg/no-content.svg')" />
+          <v-img
+            :max-width="noContentImgWidth"
+            aspect-ratio="1"
+            :src="require('@/assets/svg/no-content.svg')"
+          />
         </v-row>
         <v-row justify="center" align="center" class="px-0 px-md-16 my-5">
           <p class="no-content-text px-0 px-md-16">
-            Our teachers are constantly developing new lessons and we will keep uploading them to the well-being plan as they become available.
+            Our teachers are constantly developing new lessons and we will keep
+            uploading them to the well-being plan as they become available.
           </p>
         </v-row>
       </v-col>
@@ -113,10 +118,23 @@ import SnackSectionLearnPlay from '@/components/app/learn-play/SnackSectionLearn
 import PlaylistLearnPlay from '@/components/app/learn-play/PlaylistLearnPlay.vue'
 
 // Composables
-import { useChild, useNuxtHelper, useLearnPlayV2, useVuetifyHelper } from '@/composables'
+import {
+  useChild,
+  useNuxtHelper,
+  useLearnPlayV2,
+  useVuetifyHelper
+} from '@/composables'
 
 // Models
-import { Book, MusicLibrary, OfflineWorksheet, PlayAndLearn, PlayAndLearnFile, PlayAndLearnVideo, TypedStore } from '@/models'
+import {
+  Book,
+  MusicLibrary,
+  OfflineWorksheet,
+  PlayAndLearn,
+  PlayAndLearnFile,
+  PlayAndLearnVideo,
+  TypedStore
+} from '@/models'
 
 export default defineComponent({
   name: 'DashboardLearnPlay',
@@ -157,7 +175,9 @@ export default defineComponent({
     // Data variables
     const section = ref('')
     const hasPlayAndLearnContent = ref(true)
-    const noContentImgWidth = computed(() => vuetify.breakpoint.mdAndDown ? '90%' : '30%')
+    const noContentImgWidth = computed(() =>
+      vuetify.breakpoint.mdAndDown ? '90%' : '30%'
+    )
 
     // Watcher
     watch(section, () => {
@@ -174,10 +194,18 @@ export default defineComponent({
       if (element && window) {
         const top = element.offsetTop
         window.scrollTo(0, top)
+
+        element.classList.add('border-well-being')
+
+        setTimeout(() => {
+          element.classList.remove('border-well-being')
+        }, 1500)
       }
     }
 
-    const loadPlayAndLearnByCurriculumTypeId = async (curriculumTypeId: number) => {
+    const loadPlayAndLearnByCurriculumTypeId = async (
+      curriculumTypeId: number
+    ) => {
       await learnPlayV2.getInfoByCurriculumTypeId(curriculumTypeId)
       $nuxt.$emit('send-learn-play', learnPlayV2.playAndLearnInfo.value)
       await learnPlayV2.getVideosByCurriculumTypeId(curriculumTypeId)
@@ -209,7 +237,13 @@ export default defineComponent({
       worksheets: OfflineWorksheet[],
       books: Book[]
     ) => {
-      hasPlayAndLearnContent.value = !(songs.length === 0 && worksheets.length === 0 && files.length === 0 && books.length === 0 && videos.length === 0)
+      hasPlayAndLearnContent.value = !(
+        songs.length === 0 &&
+        worksheets.length === 0 &&
+        files.length === 0 &&
+        books.length === 0 &&
+        videos.length === 0
+      )
     }
 
     // Life cycle hooks
