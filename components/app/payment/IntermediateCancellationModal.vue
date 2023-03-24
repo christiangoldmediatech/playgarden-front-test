@@ -4,16 +4,34 @@
       <slot />
     </v-row>
 
+    <v-col v-if="showTextField" cols="12">
+      <p class="subtitle mb-0">
+        <span class="subtitle-header">Tell us more: </span>
+        We are sad to see you go, Before you go, can you share some feedback about your time with us?
+      </p>
+
+      <v-row no-gutters class="mt-4">
+        <v-textarea
+          v-model="explanation"
+          placeholder="(required field)"
+          required
+          solo
+          no-resize
+        ></v-textarea>
+      </v-row>
+    </v-col>
+
     <v-row no-gutters>
       <v-col cols="12" class="text-center mb-4">
         <v-btn
           class="px-16 elevation-0 btn-text white--text"
           color="#B2E68D"
           large
+          :disabled="disabledBtn"
           :loading="loading"
-          @click="handleClick(true)"
+          @click="handleClick(true, explanation)"
         >
-          YES, SIGN ME UP
+          {{ btnConfirmedText }}
         </v-btn>
       </v-col>
 
@@ -22,8 +40,9 @@
           class="px-16 btn-text"
           text
           color="accent"
+          :disabled="disabledBtn"
           :loading="loading"
-          @click="handleClick(false)"
+          @click="handleClick(false, explanation)"
         >
           NO, I JUST WANT TO CANCEL
         </v-btn>
@@ -33,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'IntermediateCancellationModal',
@@ -41,15 +60,34 @@ export default defineComponent({
     loading: {
       type: Boolean,
       default: false
+    },
+    showTextField: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['intermediateResponse'],
-  setup(_, { emit }) {
-    const handleClick = (accepted: boolean) => {
-      emit('intermediateResponse', accepted)
+  setup(props, { emit }) {
+    const explanation = ref('')
+
+    const handleClick = (confirmation: boolean, explanation: string) => {
+      emit('intermediateResponse', { confirmation, explanation })
     }
 
-    return { handleClick }
+    const disabledBtn = computed(() => {
+      return props.showTextField && !explanation.value
+    })
+
+    const btnConfirmedText = computed(() => {
+      return props.showTextField ? 'YES, I WANT THIS DEAL' : 'YES, SIGN ME UP'
+    })
+
+    return {
+      handleClick,
+      disabledBtn,
+      btnConfirmedText,
+      explanation
+    }
   }
 })
 </script>
