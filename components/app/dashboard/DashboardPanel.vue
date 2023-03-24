@@ -126,6 +126,7 @@
         :day="lesson ? lesson.day : null"
         :letter="lesson ? lesson.curriculumType.letter : null"
         :light-theme="useLightTheme"
+        :active="lesson.doing"
         @click.native="openCourseProgress"
       />
 
@@ -256,7 +257,7 @@
                             'dashboard-item-activity-type',
                           ]"
                         >
-                        DOWNLOAD WORKSHEET OF THE DAY! 
+                        DOWNLOAD WORKSHEET OF THE DAY!
                         </span>
                       </div>
                       <div class="d-flex flex-nowrap pa-2 mt-n4 align-center text-body-2">
@@ -604,7 +605,7 @@ export default defineComponent({
     }
   },
 
-  setup() { 
+  setup() {
     const store = useStore ()
     const {
       getUploaded,
@@ -620,8 +621,8 @@ export default defineComponent({
   },
 
   watch: {
-    lesson(val) { 
-      if (val) { 
+    lesson(val) {
+      if (val) {
         this.getLessonsList()
       }
     }
@@ -633,7 +634,7 @@ export default defineComponent({
       previousLessonId: 'getPreviousLessonId'
     }),
 
-    getLetter () { 
+    getLetter () {
       return (this.lesson && this.lesson.curriculumType && this.lesson.curriculumType.letter) ? (this.lesson.curriculumType.id !== 28)? this.lesson.curriculumType.letter[0] : this.lesson.curriculumType.letter : ''
     },
 
@@ -758,7 +759,7 @@ export default defineComponent({
       window.open(routerData.href, '_blank')
     },
 
-    async getLessonsList() { 
+    async getLessonsList() {
       this.dataLessons = await this.getLessonsByLetterId({ curriculumTypeId: this.getSelectedLetterId, page: 1, limit: 10})
     },
 
@@ -809,6 +810,15 @@ export default defineComponent({
           'show-curriculum-progress',
           this.lesson.curriculumType.id
         )
+      }else if (this.lesson.doing) {
+        this.$router.push({
+          name: 'app-dashboard-lesson-videos',
+          query: {
+            childId: this.childId,
+            lessonId: this.lesson.id,
+            id: this.lesson.videos[0].id
+          }
+        })
       }
     },
 

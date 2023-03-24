@@ -2,7 +2,8 @@
   <div
     :class="{
       'pg-letter-day-size': noAutoPosition,
-      'pg-letter-day-row': !noAutoPosition
+      'pg-letter-day-row': !noAutoPosition,
+      'pg-cursor-pointer': active,
     }"
     :style="{
       '--pg-letter-day-size': `${size}px`
@@ -15,7 +16,7 @@
       class="pg-letter-day-outer"
       :class="{ 'pg-letter-day-size': !noAutoPosition, 'pg-letter-day-outer-light': lightTheme }"
     >
-      <div class="pg-letter-day-inner" :class="{ 'pg-letter-day-inner-background': lightTheme }">
+      <div class="pg-letter-day-inner" :class="{ 'pg-letter-day-inner-background': lightTheme, 'pg-opacity-50': !active }">
         <div class="pg-letter-day-circle">
           <span
             class="pg-letter-day-letter"
@@ -68,6 +69,11 @@ export default {
     lightTheme: {
       type: Boolean,
       default: false
+    },
+
+    active: {
+      type: Boolean,
+      default: true
     }
   }
 }
