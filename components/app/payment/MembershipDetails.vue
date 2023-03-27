@@ -757,8 +757,8 @@ export default {
       }
     }
   },
-  created() {
-    this.loadData()
+  async created() {
+    await this.loadData()
   },
   mounted() {
     this.handleRouteAction()
@@ -770,6 +770,7 @@ export default {
   methods: {
     ...mapActions('coupons', ['getCoupons', 'updateSubcriptionCoupon']),
     ...mapActions(['disableAxiosGlobal', 'enableAxiosGlobal']),
+    ...mapActions('plans', ['fetchLatestCancellationReason']),
 
     ...mapActions('auth', {
       fetchUserInfoIntoStore: 'fetchUserInfo'
@@ -779,7 +780,8 @@ export default {
       'fetchSubscriptionPlanById',
       'cancelSubscription',
       'fetchBillingCards',
-      'fetchBillingDetails'
+      'fetchBillingDetails',
+      'removeBillingCard'
     ]),
 
     handleCancelMembershipClick() {
@@ -788,12 +790,33 @@ export default {
       this.removeSubscriptionModal = true
     },
 
-    loadData() {
-      this.getBillingDetails()
-      this.getBillingCards()
-      this.getPlan()
+    async loadData() {
+      await this.getBillingDetails()
+      await this.getBillingCards()
+      await this.fetchLatestCancellationReason()
+      await this.getPlan()
       this.$nuxt.$on('children-changed', this.getBillingDetails)
       this.$nuxt.$on('plan-membership-changed', this.getPlan)
+    },
+
+    async savePromotion() {
+      try {
+        this.loading = true
+        await this.updateSubcriptionCoupon({ promotion_id: this.promotion_id })
+        await this.loadData()
+      } catch (err) {
+      } finally {
+        this.promotion_id = null
+        this.promotionCode = null
+        this.loading = false
+        this.addCoupon = false
+      }
+    },
+
+    closeCouponModal() {
+      this.promotion_id = null
+      this.promotionCode = null
+      this.addCoupon = false
     },
 
     handleRouteAction() {
@@ -857,6 +880,18 @@ export default {
         this.loading = false
       }
     },
+    onUpdateCard(card) {
+      this.stripeCardModal = true
+      this.cardToUpate = card
+    },
+
+    async removePaymentMethod(card) {
+      if (card && card.id) {
+        await this.removeBillingCard(card.id)
+        this.getBillingCards()
+        this.getBillingDetails()
+      }
+    },
     async removeLearnAndPlaySubscription() {
       this.learnAndPlayWasCanceled = true
       await this.removeSubscription(false)
@@ -867,6 +902,7 @@ export default {
         // update auser info on store
         await this.fetchUserInfoIntoStore()
         await this.getBillingDetails()
+        await this.fetchLatestCancellationReason()
 
         if (reloadPlan) {
           await this.getPlan()

@@ -87,7 +87,9 @@ export default {
 
   async fetchBillingDetails({ commit }) {
     try {
-      return await this.$axios.$get('/billing')
+      const response = await this.$axios.$get('/billing')
+      commit('SET_BILLING', response)
+      return response
     } catch (error) {
       snotifyError(commit, {
         body: 'Sorry! There was an error while getting your Subscription cost!'

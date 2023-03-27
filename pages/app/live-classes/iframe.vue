@@ -24,7 +24,7 @@
               >
                 Week
               </v-btn>
-              <v-btn
+              <!-- <v-btn
                 :color="viewMode === 'DAY' ? 'accent' : 'white'"
                 class="lsess-switcher-btn text-none font-weight-light"
                 :class="{
@@ -32,7 +32,7 @@
                 }"
               >
                 Day
-              </v-btn>
+              </v-btn> -->
             </v-btn-toggle>
 
             <v-col class="hidden-sm-and-down" cols="12">

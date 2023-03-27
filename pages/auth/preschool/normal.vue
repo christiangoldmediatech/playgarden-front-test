@@ -9,7 +9,8 @@ import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import StepOne from '@/components/app/register/StepOne.vue'
 import { useGtm } from '@/composables/web/gtm'
 import { useAccessorHelper } from '@/composables'
-import { AuthFlow } from '@/composables/users/enums'
+import { AuthFlow, Flow } from '@/composables/users/enums'
+import { switchCase } from '@babel/types'
 
 export default defineComponent({
   name: 'Parent',
@@ -30,7 +31,14 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      store.SET_AUTH_FLOW(AuthFlow.PRESCHOOL)
+      const options = ['CREDITACARD', 'NOCREDITCARD']
+      const randomOption = options[Math.floor(Math.random() * options.length)]
+      switch (randomOption) {
+        case 'CREDITACARD':
+          return store.SET_AUTH_FLOW(AuthFlow.PRESCHOOL)
+        case 'NOCREDITCARD':
+          store.SET_AB_FLOW(Flow.NOCREDITCARD)
+      }
     })
 
     function goToBack() {

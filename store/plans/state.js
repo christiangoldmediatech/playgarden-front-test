@@ -1,3 +1,4 @@
 export default () => ({
-  isAnnualSubscriptionEnabled: false
+  isAnnualSubscriptionEnabled: false,
+  latestCancellationReason: null
 })

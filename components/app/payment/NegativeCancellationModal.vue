@@ -18,7 +18,7 @@
       </v-btn>
     </v-col>
 
-    <v-col cols="12" class="pa-0">
+    <v-col v-if="!hideIconAndTitle" cols="12" class="pa-0">
       <v-row no-gutters justify="center">
         <img
           class="cancellation-icon"
@@ -57,6 +57,10 @@ export default defineComponent({
     title: {
       type: String,
       default: ''
+    },
+    hideIconAndTitle: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['input'],
