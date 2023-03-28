@@ -6,7 +6,7 @@
     @click="$emit('click')"
   >
     <v-col cols="11" class="pa-5">
-      <h1 class="title mb-2" :style="{ 'color': textColor }">
+      <h1 class="title" :class="{ 'mb-2': subtitle }" :style="{ 'color': textColor }">
         {{ title }}
       </h1>
       <h2 class="subtitle" :style="{ 'color': textColor }">

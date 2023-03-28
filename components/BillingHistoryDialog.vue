@@ -2,7 +2,7 @@
   <pg-dialog
     v-model="viewModal"
     max-width="600"
-    content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl v2-font"
+    content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl v2-font pa-0 pa-md-unset"
     @click:outside="closeDialog"
   >
     <div class="billing-history-dialog">
@@ -31,10 +31,10 @@
         <v-col cols="12" class="billing-history-card-style">
           <v-card class="billing-history-dialog-card elevation-0 pt-5 px-5" color="transparent">
             <v-row class="billing-history-dialog-header mb-0">
-              <v-col cols="6">
+              <v-col cols="6" class="px-2 px-md-unset">
                 <span class="header">Date</span>
               </v-col>
-              <v-col cols="6" class="d-flex">
+              <v-col cols="6" class="d-flex px-2 px-md-unset">
                 <span class="header ml-auto">Plan and price</span>
               </v-col>
             </v-row>
@@ -43,13 +43,18 @@
                 <v-progress-circular class="mx-auto py-10" color="accent" indeterminate></v-progress-circular>
               </v-col>
             </v-row>
+            <v-row v-else-if="billings.length === 0" no-gutters>
+              <v-col cols="12" class="d-flex justify-center py-4">
+                <span class="row-data">No billings</span>
+              </v-col>
+            </v-row>
             <div v-else>
               <div v-for="(billing, billingIndex) in billings" :key="`billing-${billing.id}`">
                 <v-row class="my-0" align="center">
-                  <v-col cols="6">
+                  <v-col cols="6" class="px-2 px-md-unset">
                     <span class="row-data">{{ billing.dateFormatted }}</span>
                   </v-col>
-                  <v-col cols="6" class="d-flex">
+                  <v-col cols="6" class="d-flex px-2 px-md-unset">
                     <div class="d-flex flex-column ml-auto">
                       <span class="row-data">${{ billing.totalFormatted }} {{ billing.currency.toUpperCase() }} /{{ billing.period }} plan<br></span>
                       <a class="accent--text text-caption text-decoration-underline ml-auto" :href="billing.invoiceUrl" target="_blank">
@@ -122,13 +127,19 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .billing-history-dialog {
-  width: 95vw;
+  width: 100%;
   max-width: 600px;
   max-height: 95vh;
 
   .billing-history-dialog-card {
     max-height: calc(95vh - 36px);
     overflow-y: auto;
+  }
+
+  @media screen and (min-width: $breakpoint-xs) {
+    width: 95vw;
+    max-width: 600px;
+    max-height: 95vh;
   }
 }
 

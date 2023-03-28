@@ -1,12 +1,12 @@
 <template>
   <pg-loading :loading="loading">
-    <v-row no-gutters data-test-id="membership-content">
+    <v-row no-gutters data-test-id="membership-content" class="pa-4 pa-md-0">
       <!-- Membership Billing Information -->
       <v-col cols="12" md="6" class="mb-6 pr-md-8 mb-md-0">
         <v-card class="mb-6 pa-4 px-md-10 py-md-6 account-card-border" :style="{ '--card-custom-color': membershipColor }">
           <!-- Desktop Title -->
           <v-row no-gutters>
-            <v-col cols="12" class="d-none d-md-block">
+            <v-col cols="12">
               <div
                 class="account-card-title"
               >
@@ -122,16 +122,16 @@
                       Coupon applied:
                     </span>
                   </v-col>
-                  <v-col cols="4">
+                  <v-col cols="12" lg="4">
                     <span
                       class="account-field-label font-weight-bold pg-uppercase"
                     >
                       {{ billing.discountCode }}
                     </span>
                   </v-col>
-                  <v-col cols="8">
+                  <v-col cols="12" lg="8">
                     <div class="d-flex align-center">
-                      <div class="account-line-separator mx-auto"></div>
+                      <div v-if="!isMobile" class="account-line-separator mx-auto"></div>
                       <span
                         v-if="billing.percentOff"
                         class="account-field-label-small"
@@ -272,6 +272,20 @@
                 @click="handleChangePlan"
               />
             </v-col>
+            <!-- Create Subscription -->
+            <v-col
+              v-else
+              cols="12"
+              class="justify-center d-flex"
+            >
+              <membership-btn
+                v-if="!isCaregiver"
+                title="Create membership"
+                color="#F89838"
+                text-color="#FFFFFF"
+                @click="selectPlan"
+              />
+            </v-col>
           </v-row>
         </v-card>
 
@@ -289,9 +303,9 @@
             CANCEL MEMBERSHIP
           </v-btn>
           <!-- Create Subscription -->
-          <v-btn v-else block color="primary" x-large @click="selectPlan">
+          <!-- <v-btn v-else block color="primary" x-large @click="selectPlan">
             CREATE MEMBERSHIP
-          </v-btn>
+          </v-btn> -->
         </v-col>
 
         <!-- Learning Kits -->
