@@ -1,6 +1,6 @@
 <template>
   <pg-loading :loading="isLoading">
-    <v-row no-gutters data-test-id="account-content">
+    <v-row no-gutters data-test-id="account-content" class="pa-4 pa-md-0">
       <v-col cols="12" md="6" class="mb-10 pr-md-8 mb-md-0">
         <v-card class="pa-4 pa-sm-8 d-flex flex-column align-start account-card-border" :style="{ '--card-custom-color': generalInfoColor }">
           <!-- Desktop Title -->

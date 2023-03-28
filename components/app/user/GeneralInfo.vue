@@ -1,76 +1,74 @@
 <template>
   <div class="d-flex flex-column align-center w-100">
-    <v-row no-gutters>
-      <v-col cols="12">
-        <v-row no-gutters>
-          <v-col cols="12" md="6" class="pr-0 pr-md-4">
-            <span class="d-inline-block account-field-label mb-2">First name</span>
-            <pg-text-field
-              v-model="form.firstName"
-              background-color="#F7F7F7"
-              color="#AAAAAA"
-              solo
-              dense
-              flat
-              :disabled="!isEditing"
-            />
-          </v-col>
-
-          <v-col cols="12" md="6" class="pl-0 pl-md-4">
-            <span class="d-inline-block account-field-label mb-2">Last name</span>
-            <v-text-field
-              v-model="form.lastName"
-              background-color="#F7F7F7"
-              color="#AAAAAA"
-              solo
-              flat
-              :disabled="!isEditing"
-            />
-          </v-col>
-        </v-row>
-
-        <v-row no-gutters>
-          <v-col cols="12">
-            <span class="d-inline-block account-field-label mb-2">Email address</span>
-            <v-text-field
-              v-model="form.email"
-              background-color="#F7F7F7"
-              color="#AAAAAA"
-              solo
-              flat
-              :disabled="!isEditing"
-            />
-          </v-col>
-        </v-row>
-
-        <v-row no-gutters>
-          <!-- This is just for showing a password field -->
-          <v-col cols="12" md="6" class="pr-0 pr-md-4">
-            <span class="d-inline-block account-field-label mb-2">Password</span>
-            <v-text-field
-              value="*********"
-              background-color="#F7F7F7"
-              color="#AAAAAA"
-              solo
-              flat
-              :disabled="true"
-            />
-          </v-col>
-
-          <v-col cols="12" md="6" class="pl-0 pl-md-4">
-            <span class="d-inline-block account-field-label mb-2">Phone number</span>
-            <v-text-field
-              v-model="form.phoneNumber"
-              background-color="#F7F7F7"
-              color="#AAAAAA"
-              solo
-              flat
-              :disabled="!isEditing"
-            />
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+    <v-col cols="12" class="pa-0">
+      <v-row no-gutters>
+        <v-col cols="12">
+          <v-row no-gutters>
+            <v-col cols="12" md="6" class="pr-0 pr-md-4">
+              <span class="d-inline-block account-field-label mb-2">First name</span>
+              <pg-text-field
+                v-model="form.firstName"
+                background-color="#F7F7F7"
+                color="#AAAAAA"
+                solo
+                dense
+                flat
+                :disabled="!isEditing"
+              />
+            </v-col>
+            <v-col cols="12" md="6" class="pl-0 pl-md-4">
+              <span class="d-inline-block account-field-label mb-2">Last name</span>
+              <v-text-field
+                v-model="form.lastName"
+                background-color="#F7F7F7"
+                color="#AAAAAA"
+                solo
+                flat
+                :disabled="!isEditing"
+              />
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col cols="12">
+              <span class="d-inline-block account-field-label mb-2">Email address</span>
+              <v-text-field
+                v-model="form.email"
+                background-color="#F7F7F7"
+                color="#AAAAAA"
+                solo
+                flat
+                :disabled="!isEditing"
+              />
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <!-- This is just for showing a password field -->
+            <v-col cols="12" md="6" class="pr-0 pr-md-4">
+              <span class="d-inline-block account-field-label mb-2">Password</span>
+              <v-text-field
+                value="*********"
+                background-color="#F7F7F7"
+                color="#AAAAAA"
+                solo
+                flat
+                :disabled="true"
+              />
+            </v-col>
+            <v-col cols="12" md="6" class="pl-0 pl-md-4">
+              <span class="d-inline-block account-field-label mb-2">Phone number</span>
+              <v-text-field
+                v-model="form.phoneNumber"
+                background-color="#F7F7F7"
+                color="#AAAAAA"
+                solo
+                flat
+                :disabled="!isEditing"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-col>
 
     <template v-if="isEditing">
       <v-btn
