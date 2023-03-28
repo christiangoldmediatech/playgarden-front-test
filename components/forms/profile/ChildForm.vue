@@ -1,10 +1,10 @@
 <template>
   <pg-loading :loading="loading">
-    <v-row no-gutters data-test-id="child-form-content">
+    <v-row no-gutters data-test-id="child-form-content" class="pa-4 pa-md-0">
       <v-col cols="12" class="mb-4">
         <v-row no-gutters>
           <!-- Desktop Title -->
-          <v-col cols="12" sm="6" class="d-none d-sm-block">
+          <v-col cols="12" md="6" class="d-none d-sm-block">
             <div class="account-page-title">
               Student Profile
             </div>
@@ -15,7 +15,7 @@
               <div class="account-orange-dashed-line"></div>
             </div>
           </v-col>
-          <v-col cols="12" sm="6" class="d-sm-flex justify-sm-end pb-12 pb-sm-0">
+          <v-col cols="12" md="6" class="d-sm-flex justify-sm-end pb-12 pb-sm-0">
             <!-- Add New Child Profile Button -->
             <v-btn
               color="primary"
@@ -41,14 +41,14 @@
             v-for="(item, indexD) in items"
             :key="indexD"
             cols="12"
-            sm="6"
+            lg="6"
           >
             <v-card
               :class="[
                 '!pg-relative account-card-border',
                 'pa-4 pa-sm-8 mb-16',
-                { 'mr-sm-8': indexD % 2 === 0 },
-                { 'ml-sm-8': indexD % 2 === 1 }
+                { 'mr-lg-8': indexD % 2 === 0 },
+                { 'ml-lg-8': indexD % 2 === 1 }
               ]"
               :style="{ '--card-custom-color': childCardColor }"
             >
@@ -131,10 +131,11 @@
                       </v-col>
                     </v-row>
                   </validation-provider>
-                  <v-row>
+                  <v-row no-gutters>
                     <v-col
-                      class="pr-2"
-                      cols="6"
+                      class="pr-unset pr-md-2"
+                      cols="12"
+                      md="6"
                     >
                       <!-- First name -->
                       <span class="d-inline-block account-field-label mb-2">First name</span>
@@ -159,8 +160,9 @@
                       </validation-provider>
                     </v-col>
                     <v-col
-                      class="pl-2"
-                      cols="6"
+                      class="pl-unset pl-md-2"
+                      cols="12"
+                      md="6"
                     >
                       <!-- Last name -->
                       <span class="d-inline-block account-field-label mb-2">Last name</span>
@@ -186,7 +188,7 @@
                     </v-col>
                   </v-row>
                   <v-row class="mb-2" no-gutters>
-                    <v-col cols="6" class="pr-2">
+                    <v-col cols="12" md="6" class="pr-unset pr-md-2">
                       <!-- Birthday date -->
                       <span class="d-inline-block account-field-label mb-2">Date of birth</span>
                       <v-menu
@@ -230,7 +232,7 @@
                         />
                       </v-menu>
                     </v-col>
-                    <v-col cols="6" class="pl-2">
+                    <v-col cols="12" md="6" class="pl-unset pl-md-2">
                       <!-- Gender -->
                       <span class="d-inline-block account-field-label mb-2">Gender </span>
                       <validation-provider
@@ -253,26 +255,33 @@
                         />
                       </validation-provider>
                     </v-col>
-                    <v-col cols="6 d-flex flex-column justify-center" class="pr-2">
-                      <div>
-                        <span class="child-base-text pg-text-[#78C383]">Current letter: </span>
-                        <span class="child-base-text">
-                          {{ item.progress.curriculumType.letter ? `Letter ${item.progress.curriculumType.letter}` : undefined }}
-                        </span>
-                      </div>
-                      <div>
-                        <span class="child-base-text pg-text-[#78C383]">Current day: </span>
-                        <span class="child-base-text">
-                          {{ item.progress.day ? `Day ${item.progress.day}` : undefined }}
-                        </span>
-                      </div>
+                    <v-col cols="12" class="pr-2">
+                      <v-row no-gutters>
+                        <v-col cols="12" md="6">
+                          <div>
+                            <span class="child-base-text pg-text-[#78C383]">Current letter: </span>
+                            <span class="child-base-text">
+                              {{ item.progress.curriculumType.letter ? `Letter ${item.progress.curriculumType.letter}` : undefined }}
+                            </span>
+                          </div>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                          <div>
+                            <span class="child-base-text pg-text-[#78C383]">Current day: </span>
+                            <span class="child-base-text">
+                              {{ item.progress.day ? `Day ${item.progress.day}` : undefined }}
+                            </span>
+                          </div>
+                        </v-col>
+                      </v-row>
                     </v-col>
                   </v-row>
 
                   <v-btn
                     v-if="isChildChanged(item)"
                     block
-                    color="warning"
+                    class="mt-4 mt-md-0 white--text"
+                    color="#AAD579"
                     :loading="loading"
                     type="submit"
                     x-large
@@ -292,8 +301,8 @@
                 </v-form>
               </validation-observer>
               <!-- Readonly child info -->
-              <v-row v-if="!isEditing[indexD]" no-gutters>
-                <v-col cols="3" class="pb-3">
+              <v-row v-if="!isEditing[indexD]" class="mt-5 mt-md-0" no-gutters>
+                <v-col cols="4" md="3" class="pb-3">
                   <img
                     v-if="firstBackpack"
                     :alt="childBackpack(item.backpackId).name"
@@ -302,8 +311,8 @@
                   >
                 </v-col>
 
-                <v-col cols="9" class="d-flex flex-column justify-end pl-3">
-                  <h1 class="child-name mb-3">
+                <v-col cols="8" md="9" class="d-flex flex-column justify-start justify-md-end pl-3">
+                  <h1 class="child-name mb-0 mb-md-3">
                     {{ item.firstName }} {{ (item.lastName) ? item.lastName : '' }}
                   </h1>
 
@@ -322,7 +331,7 @@
 
                 <v-col cols="12" class="mt-4 mb-2">
                   <v-row class="d-flex space-between" no-gutters>
-                    <v-col cols="6">
+                    <v-col cols="12" md="6">
                       <div>
                         <span class="child-base-text pg-text-[#78C383]">Current letter: </span>
                         <span class="child-base-text">
@@ -331,8 +340,8 @@
                       </div>
                     </v-col>
 
-                    <v-col cols="6" class="d-flex">
-                      <div class="ml-auto">
+                    <v-col cols="12" md="6" class="d-flex">
+                      <div class="ml-md-auto mr-auto">
                         <span class="child-base-text pg-text-[#78C383]">Current day: </span>
                         <span class="child-base-text">
                           {{ item.progress.day ? `Day ${item.progress.day}` : undefined }}
@@ -696,15 +705,25 @@ export default {
 .child-name {
   font-style: normal;
   font-weight: 700;
-  font-size: 24px;
-  line-height: 36px;
+  font-size: 16px;
+  line-height: 24px;
   color: #707070;
+
+  @media screen and (min-width: $breakpoint-xs) {
+    font-size: 24px;
+    line-height: 36px;
+  }
 }
 
 .child-base-text {
   font-style: normal;
-  font-size: 15px;
-  line-height: 22px;
+  font-size: 14px;
+  line-height: 21px;
+
+  @media screen and (min-width: $breakpoint-xs) {
+    font-size: 15px;
+    line-height: 22px;
+  }
 }
 
 .image {
