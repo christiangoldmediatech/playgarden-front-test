@@ -19,7 +19,7 @@
     "cy:run": "cypress run"
   },
   "resolutions": {
-    "prosemirror-model": "1.8.2",
+    "prosemirror-model": "1.19.0",
     "deasync": "0.1.16"
   },
   "dependencies": {
