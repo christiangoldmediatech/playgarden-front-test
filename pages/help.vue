@@ -427,7 +427,11 @@ export default defineComponent({
     }
   },
 
-  head: {}
+  head() {
+    return {
+      title: 'Online Preschool FAQs'
+    }
+  }
 })
 </script>
 
