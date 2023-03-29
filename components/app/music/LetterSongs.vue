@@ -19,14 +19,14 @@
       >
         <v-card :id="`song-card-${song.id}`" class="song-card ma-6 pb-4" data-test-id="song-card">
           <div class="song-wrapper">
-            <v-icon
-              size="120"
+            <img
+              v-if="!isCurrentSong(song.id)"
+              :src="require('~/assets/svg/music-play.svg')"
               class="play-btn"
-              color="white"
+              alt="Play Button"
               @click.stop="createPlayListFromIndex(index)"
-            >
-              mdi-play-circle-outline
-            </v-icon>
+            />
+
             <figure class="song-image" :style="{ 'background-image': `url(${song.thumbnail})` }" />
             <v-icon
               class="favorite-btn"
@@ -171,12 +171,16 @@ export default defineComponent({
     position: relative;
     & .play-btn {
       position: absolute;
-      top: 52.5px;
-      left: 52.5px;
-      color: transparent !important;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 150px;
+      color: white !important;
       &:hover {
         cursor: pointer;
-        color: white !important;
+        opacity: 0.8;
       }
     }
     & .favorite-btn {
