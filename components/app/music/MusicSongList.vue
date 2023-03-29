@@ -2,13 +2,17 @@
   <div class="pa-4" v-bind="$attrs">
     <!-- Filters -->
     <v-row no-gutters>
-      <v-col>
-        <underlined-title
-          v-if="!showOnlyFavorites"
-          font-size="48px"
-          font-size-mobile="32px"
-          text="Song List"
-        />
+      <v-col v-if="$vuetify.breakpoint.mdAndUp" class="pg-mb-5">
+        <div v-if="!showOnlyFavorites" class="pg-flex pg-items-center pg-gap-7">
+          <img
+            class="pg-w-10 pg-h-auto pg-object-contain"
+            :src="require('@/assets/svg/music-library-icon.svg')"
+            alt="Music Library Icon"
+          />
+          <h2 class="pg-text-primary pg-text-4xl pg-font-bold pg-font-quick">
+            Song List
+          </h2>
+        </div>
 
         <v-btn v-else class="accent--text text-none" x-large text @click="$emit('showFavorites')">
           <v-icon size="32" left>
@@ -37,14 +41,51 @@
           class="favorite-button white my-4 mt-md-2 mb-md-0"
           data-test-id="favorite-toggle"
           :class="{ 'selected': showOnlyFavorites }"
-          :width="isMobile ? 250 : undefined"
+          :width="isMobile ? 350 : undefined"
           :ripple="false"
           @click="$emit('showFavorites')"
         >
-          <v-icon left class="pink--text text--lighten-2">
-            mdi-heart
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 42 42"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="mr-2"
+          >
+            <circle
+              cx="21"
+              cy="21"
+              r="20"
+              fill="#FFF7E7"
+              stroke="#F6B7D2"
+              stroke-width="2"
+            />
+            <path d="M26.5914 12.121C30.2679 12.1396 33.2439 15.2315 33.2618 19.0513C33.2618 26.0495 21.0001 32.9799 21.0001 32.9799C21.0001 32.9799 8.73828 25.9476 8.73828 19.0513C8.73828 15.2238 11.7247 12.121 15.4087 12.121C17.6638 12.1027 19.7721 13.2812 21.0001 15.2464C22.2364 13.2907 24.3393 12.1153 26.5914 12.121H26.5914Z" fill="#F5737F" />
+          </svg>
+          <span class="pg-font-quick pg-text-pg-grey">
+            Favorites
+          </span>
+        </v-btn>
+      </v-col>
+
+      <v-col v-if="$vuetify.breakpoint.mdAndDown" class="pg-mb-5 pg-mt-10 !pg-px-5">
+        <div v-if="!showOnlyFavorites" class="pg-flex pg-items-center pg-gap-7">
+          <img
+            class="pg-w-8 pg-h-auto pg-object-contain"
+            :src="require('@/assets/svg/music-library-icon.svg')"
+            alt="Music Library Icon"
+          />
+          <h2 class="pg-text-primary pg-text-3xl pg-font-bold pg-font-quick">
+            Song List
+          </h2>
+        </div>
+
+        <v-btn v-else class="accent--text text-none" x-large text @click="$emit('showFavorites')">
+          <v-icon size="32" left>
+            mdi-chevron-left
           </v-icon>
-          Favorites
+          Back
         </v-btn>
       </v-col>
     </v-row>
@@ -265,7 +306,7 @@ export default {
   }
 }
 .music-letter-select {
-  width: 250px;
+  width: 350px;
 }
 
 .favorite-button {

@@ -163,7 +163,7 @@ export default {
 
 <style lang="scss" scoped>
 .letter-selector {
-  max-width: 300px;
+  max-width: 350px;
 }
 .slide-group-wrapper {
   width: 100%;

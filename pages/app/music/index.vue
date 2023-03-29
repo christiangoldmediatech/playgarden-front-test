@@ -44,9 +44,11 @@
           <new-music-player
             ref="musicPlayer"
             v-intersect="onIntersect"
+            class="!pg-hidden"
             @favorite="handleFavorite"
           />
         </v-expand-transition>
+        <div class="pg-h-[21rem] md:pg-h-80" />
         <music-song-list
           id="music-song-list"
           :show-only-favorites="showOnlyFavorites"
@@ -311,6 +313,7 @@ export default defineComponent({
     const selectLetter = (letterId: number) => {
       selectedLetterId.value =
         selectedLetterId.value === letterId ? null : letterId
+      window.scrollTo(0, 0)
     }
 
     const letters = computed(() => store.getters['admin/curriculum/types'])
@@ -333,7 +336,7 @@ export default defineComponent({
       return filteredLetters
     })
 
-    const isTopRibbonMinimized = ref(true)
+    const isTopRibbonMinimized = ref(false)
 
     /**
      * The music player is always visible, so here we want to show a default
