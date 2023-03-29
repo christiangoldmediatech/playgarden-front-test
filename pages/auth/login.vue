@@ -384,7 +384,7 @@ export default {
     }
   },
   head: {
-    title: 'Login - Playgarden Online',
+    title: 'Playgarden Online Login',
     meta: [
       { charset: 'utf-8' },
       {

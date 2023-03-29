@@ -917,6 +917,7 @@ export default {
         await this.fetchUserInfoIntoStore()
         await this.getBillingDetails()
         await this.fetchLatestCancellationReason()
+        await this.getBillingCards()
 
         if (reloadPlan) {
           await this.getPlan()

@@ -4,6 +4,10 @@
   </div>
 </template>
 
+<head>
+  <title>Online Preschool Signup</title>
+</head>
+
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import StepOne from '@/components/app/register/StepOne.vue'
@@ -14,6 +18,11 @@ import { switchCase } from '@babel/types'
 
 export default defineComponent({
   name: 'Parent',
+  head() {
+    return {
+      title: 'Online Preschool Signup'
+    }
+  },
 
   layout: 'signup',
 
