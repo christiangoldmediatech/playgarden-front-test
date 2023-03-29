@@ -1,8 +1,14 @@
 <template>
   <pg-loading :loading="loading">
-    <v-row no-gutters data-test-id="caregivers-content">
+    <v-row
+      no-gutters
+      data-test-id="caregivers-content"
+      class="pa-6 pa-md-0"
+      :class="{ 'account-card-border': $vuetify.breakpoint.smAndDown }"
+      :style="{ '--card-custom-color': caregiversColor }"
+    >
       <!-- Desktop Title -->
-      <v-col cols="12" sm="6" class="d-none d-sm-block">
+      <v-col cols="12" md="6">
         <div class="account-page-title !pg-text-[#78C383]">
           Caregivers
         </div>
@@ -13,7 +19,7 @@
           <div class="account-green-dashed-line"></div>
         </div>
       </v-col>
-      <v-col cols="12" sm="6" class="d-sm-flex justify-sm-end pb-12 pb-sm-0">
+      <v-col cols="12" md="6" class="d-flex justify-center mb-4 mb-md-0">
         <add-caregiver />
       </v-col>
 
@@ -21,10 +27,10 @@
       <v-col cols="12" md="6" class="pr-md-8 mb-6 mb-md-0">
         <v-card v-if="caregivers.length === 0" class="account-caregiver-card px-6 py-6">
           <v-row no-gutters align="center">
-            <v-col cols="3">
-              <img src="@/assets/svg/caregiver.svg" height="80px" />
+            <v-col cols="4" lg="3">
+              <img src="@/assets/svg/caregiver.svg" :height="iconSize" />
             </v-col>
-            <v-col cols="9">
+            <v-col cols="8" lg="9">
               <p class="account-caregiver-placeholder ma-0">
                 Give access to your child’s caregiver!
               </p>
@@ -75,7 +81,7 @@
 
               <v-row class="mt-8" no-gutters>
                 <v-row no-gutters>
-                  <v-col cols="6" class="pr-4">
+                  <v-col cols="12" md="6" class="pr-unset pr-sm-4">
                     <span class="d-inline-block account-field-label mb-2">First name</span>
                     <pg-text-field
                       v-model="form.firstName"
@@ -88,7 +94,7 @@
                     />
                   </v-col>
 
-                  <v-col cols="6" class="pl-4">
+                  <v-col cols="12" md="6" class="pl-unset pl-sm-4">
                     <span class="d-inline-block account-field-label mb-2">Last name</span>
                     <v-text-field
                       v-model="form.lastName"
@@ -135,10 +141,10 @@
         <!-- Pending Invites List -->
         <v-card class="account-caregiver-card px-6 py-6">
           <v-row no-gutters align="center">
-            <v-col cols="3">
-              <img src="@/assets/svg/pending-invite.svg" height="80px" />
+            <v-col cols="4" lg="3">
+              <img src="@/assets/svg/pending-invite.svg" :height="iconSize" />
             </v-col>
-            <v-col cols="9">
+            <v-col cols="8" lg="9">
               <p class="account-caregiver-title mb-2">
                 Pending invites sent
               </p>
@@ -170,6 +176,16 @@ export default {
       form: {},
       caregivers: [],
       loading: false
+    }
+  },
+
+  computed: {
+    caregiversColor() {
+      return '53, 152, 70'
+    },
+
+    iconSize() {
+      return this.$vuetify.breakpoint.smAndDown ? '60px' : '80px'
     }
   },
 

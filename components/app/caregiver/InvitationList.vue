@@ -13,7 +13,7 @@
         class="my-1"
         no-gutters
       >
-        <v-col class="text-truncate grey--text">
+        <v-col class="account-caregiver-email text-truncate grey--text">
           {{ email || phone }}
         </v-col>
 
@@ -139,7 +139,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '~/assets/scss/account.scss';
+
 .shrink > div {
   width: 77px;
 }

@@ -150,27 +150,54 @@
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 25px;
   color: #C6C6C6;
+
+  @media screen and (min-width: $breakpoint-xs) {
+    font-size: 20px;
+  }
 }
 
 .account-caregiver-title {
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 25px;
   color: #606060;
+
+  @media screen and (min-width: $breakpoint-xs) {
+    font-size: 20px;
+  }
 }
 
 .account-caregiver-subtitle {
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 13px;
+  line-height: 16px;
   color: #606060;
+
+  @media screen and (min-width: $breakpoint-xs) {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+
+.account-caregiver-email {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #606060;
+
+  @media screen and (min-width: $breakpoint-xs) {
+    font-size: 16px;
+    line-height: 20px;
+  }
 }
 
 .account-caregiver-circle {
@@ -200,11 +227,11 @@
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 36px;
   color: #707070;
 
-  @media screen and (min-width: $breakpoint-md) {
+  @media screen and (min-width: $breakpoint-xs) {
     font-size: 24px;
   }
 }

@@ -35,7 +35,7 @@
     </v-col>
 
     <v-row no-gutters>
-      <v-col cols="12" class="px-16 mb-4">
+      <v-col cols="12" class="px-8 px-sm-16 mb-4">
         <p
           class="text-left pg-text-[25px] pg-text-[#707070] pg-font-[500]"
         >
@@ -45,7 +45,7 @@
     </v-row>
 
     <v-row no-gutters>
-      <v-col cols="12" class="px-16">
+      <v-col cols="12" class="px-8 px-sm-16">
         <v-row v-if="modal" class="flex-column-reverse flex-md-row">
           <v-col cols="12">
             <send-invitation-form
