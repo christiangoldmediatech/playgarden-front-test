@@ -178,9 +178,10 @@ export default defineComponent({
       margin: auto;
       width: 150px;
       color: white !important;
+      opacity: 0;
       &:hover {
         cursor: pointer;
-        opacity: 0.8;
+        opacity: 1;
       }
     }
     & .favorite-btn {
