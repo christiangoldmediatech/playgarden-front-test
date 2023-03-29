@@ -3,7 +3,7 @@
     <v-row
       no-gutters
       data-test-id="caregivers-content"
-      class="pa-6 pa-md-0"
+      class="pa-4 pa-md-0"
       :class="{ 'account-card-border': $vuetify.breakpoint.smAndDown }"
       :style="{ '--card-custom-color': caregiversColor }"
     >
