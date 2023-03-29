@@ -1,9 +1,8 @@
 <template>
   <div class="letter-song-wrapper">
-    <div class="letter-song-title-border" :class="{ vowel: isVowel }" />
     <div class="letter-song-title">
       <v-row no-gutters justify="center" align="center">
-        <span class="letter-text">LETTER</span>
+        <span class="letter-text pg-font-quick">Letter</span>
         <carousel-letter
           :name="letter.name"
           :picture="letter.picture"
@@ -42,7 +41,7 @@
               PLAYING
             </span>
           </div>
-          <p class="song-description mb-0 pa-2 d-flex align-center">
+          <p class="song-description mb-0 pa-2 d-flex align-center !pg-font-quick">
             {{ song.description }}
           </p>
           <div class="d-flex justify-space-between song-name pa-2">
@@ -51,7 +50,7 @@
               <template #activator="{ on, attrs }">
                 <v-icon
                   size="36"
-                  class="mt-n2"
+                  class="mt-n2 pg-opacity-60"
                   v-bind="attrs"
                   v-on="on"
                   @click.stop="handleSongAddition($event, song)"
@@ -144,8 +143,8 @@ export default defineComponent({
     top: 0px;
     left: 20px;
     & .letter-text {
-      color: #606060 !important;
-      font-size: 32px;
+      color: #969696 !important;
+      font-size: 38px;
       letter-spacing: 6px;
       font-weight: 700;
     }

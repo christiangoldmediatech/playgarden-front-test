@@ -26,12 +26,16 @@ module.exports = {
       green2: '#B2E68D',
       black: '#606060',
       white: '#FFFFFF',
-      'pg-grey': '#606060'
+      'pg-grey': '#606060',
+      'pg-grey-2': '#969696'
     },
     extend: {
       boxShadow: {
         toolbar: '0px 3px 46px rgba(0, 0, 0, 0.160784)',
         button: '0px 3px 6px rgba(0, 0, 0, 0.160784)'
+      },
+      fontFamily: {
+        quick: 'QuickSand, sans-serif'
       }
     }
   },

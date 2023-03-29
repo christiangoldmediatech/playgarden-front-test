@@ -58,17 +58,26 @@ export default defineComponent({
   methods: {
     toggleHorizontalCard() {
       const horizontalCard: any = document.getElementById('horizontal-card-ribbon')
-      if (this.$vuetify.breakpoint.mdAndDown && horizontalCard) {
-        const scroll = window.scrollY
-        if (scroll > this.currentScroll) {
-          horizontalCard.style.top = '0rem'
+      const scroll = window.scrollY
+
+      if (horizontalCard) {
+        if (this.$vuetify.breakpoint.mdAndDown) {
+          if (scroll > this.currentScroll) {
+            horizontalCard.style.top = '0rem'
+            this.currentScroll = scroll
+          } else if (scroll < this.currentScroll) {
+            horizontalCard.style.top = null
+            this.currentScroll = scroll
+          }
+        }
+
+        if (scroll > 80 && scroll > this.currentScroll) {
+          this.$emit('update:isMinimized', true)
           this.currentScroll = scroll
         } else if (scroll < this.currentScroll) {
-          horizontalCard.style.top = null
+          this.$emit('update:isMinimized', false)
           this.currentScroll = scroll
         }
-      } else {
-        horizontalCard.style.top = null
       }
     }
   }
