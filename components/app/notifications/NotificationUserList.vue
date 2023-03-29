@@ -1,6 +1,6 @@
 <template>
   <pg-loading :loading="loading">
-    <v-row no-gutters data-test-id="notifications-content">
+    <v-row no-gutters data-test-id="notifications-content" class="pa-4 pa-md-0">
       <!-- Caregivers List Information -->
       <v-col cols="12" class="mb-12 mb-md-0">
         <v-card class="pa-4 px-md-10 py-md-3 account-card-border" :style="{ '--card-custom-color': notificationsColor }">
@@ -22,7 +22,8 @@
             <v-col
               v-for="notification in notifications"
               :key="notification.id"
-              cols="6"
+              cols="12"
+              sm="6"
               no-gutters
             >
               <v-checkbox
