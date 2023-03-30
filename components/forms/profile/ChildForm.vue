@@ -207,21 +207,22 @@
                             "
                             rules="required"
                           >
-                            <pg-text-field
-                              v-bind="attrs"
-                              :disabled="loading"
-                              :error-messages="errors"
-                              readonly
-                              background-color="#F7F7F7"
-                              color="#AAAAAA"
-                              solo
-                              dense
-                              flat
-                              :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
-                              validate-on-blur
-                              :value="item._birthdayFormatted"
-                              v-on="on"
-                            />
+                            <div v-on="on">
+                              <pg-text-field
+                                v-bind="attrs"
+                                :disabled="loading"
+                                :error-messages="errors"
+                                readonly
+                                background-color="#F7F7F7"
+                                color="#AAAAAA"
+                                solo
+                                dense
+                                flat
+                                :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
+                                validate-on-blur
+                                :value="item._birthdayFormatted"
+                              />
+                            </div>
                           </validation-provider>
                         </template>
                         <v-date-picker
