@@ -1,77 +1,57 @@
 <template>
   <pg-loading :loading="loading">
-    <v-row no-gutters data-test-id="membership-content">
-      <!-- Desktop Title -->
-      <v-col cols="12" class="d-none d-md-block">
-        <div
-          class="pb-6 text-uppercase font-weight-bold text-h4 grey--text text--darken-2"
-        >
-          Membership
-        </div>
-      </v-col>
-
+    <v-row no-gutters data-test-id="membership-content" class="pa-4 pa-md-0">
       <!-- Membership Billing Information -->
       <v-col cols="12" md="6" class="mb-6 pr-md-8 mb-md-0">
-        <v-card class="mb-6 pa-4 px-md-10 py-md-6 card-custom-border">
-          <!-- Desktop SVG -->
-          <div class="justify-center pb-4 d-none d-md-flex">
-            <img height="100px" src="@/assets/svg/membership.svg" />
-          </div>
-
-          <!-- Mobile SVG and Title= -->
-          <div class="justify-center py-2 d-flex d-md-none">
-            <img height="45px" src="@/assets/svg/membership.svg" />
-            <span
-              class="mt-1 ml-2 text-uppercase font-weight-bold text-h5 grey--text text--darken-2"
-            >
-              Membership
-            </span>
-          </div>
-
-          <div
-            class="my-2 text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2"
-          >
-            <small class="font-weight-bold">
-              Information about your membership
-            </small>
-          </div>
+        <v-card class="mb-6 pa-4 px-md-10 py-md-6 account-card-border" :style="{ '--card-custom-color': membershipColor }">
+          <!-- Desktop Title -->
+          <v-row no-gutters>
+            <v-col cols="12">
+              <div
+                class="account-card-title"
+              >
+                Membership
+              </div>
+              <div class="py-2 account-card-subtitle">
+                Information about your membership
+              </div>
+              <div class="account-pink-dashed-line my-4 mx-auto"></div>
+            </v-col>
+          </v-row>
 
           <div v-if="hasMembership">
             <!-- Trial Period Description -->
             <v-row v-if="billing.status === 'trialing'" no-gutters>
-              <v-col cols="12" class="mb-1 text-h6 grey--text">
-                <small>Free trial period ends:</small>
+              <v-col cols="12">
+                <span class="account-field-label">Free trial period ends:</span>
               </v-col>
 
-              <v-col
-                cols="12"
-                class="mb-1 text-h6 black--text font-weight-bold"
-              >
-                {{ billing.trialEndDate }}
+              <v-col cols="12">
+                <span class="account-field-label font-weight-bold">{{ billing.trialEndDate }}</span>
               </v-col>
             </v-row>
 
             <!-- Next Billing Date -->
             <v-row v-else no-gutters class="mb-3">
-              <v-col cols="12" class="mb-1 text-h6 grey--text">
-                <small>Your next billing date is:</small>
+              <v-col cols="12">
+                <span class="account-field-label">Your next billing date is:</span>
               </v-col>
 
-              <v-col cols="12" class="mb-1 text-h6 grey--text font-weight-bold">
-                {{ billing.nextBillingDate }}
+              <v-col cols="12">
+                <span class="account-field-label font-weight-bold">{{ billing.nextBillingDate }}</span>
               </v-col>
             </v-row>
 
             <!-- Monthly Membership Fee -->
             <v-row no-gutters class="mb-3">
-              <v-col cols="12" class="mb-1 text-h6 grey--text">
-                <small>Your {{ membershipInterval }} membership fee is:</small>
+              <v-col cols="12">
+                <span class="account-field-label">Your {{ membershipInterval }} membership fee is:</span>
               </v-col>
 
               <v-col
                 v-if="billing.planAmountDiscount"
                 cols="12"
-                class="mb-1 text-h6 black--text font-weight-bold"
+                class="account-field-label font-weight-bold"
               >
                 <div>
                   <span>{{
@@ -93,7 +73,7 @@
               <v-col
                 v-else-if="billing.percentOff"
                 cols="12"
-                class="mb-1 text-h6 black--text font-weight-bold"
+                class="account-field-label font-weight-bold"
               >
                 <div>
                   <span>{{
@@ -115,7 +95,7 @@
               <v-col
                 v-else
                 cols="12"
-                class="mb-1 text-h6 black--text font-weight-bold"
+                class="account-field-label font-weight-bold"
               >
                 <div>
                   <span>
@@ -131,157 +111,107 @@
             </v-row>
 
             <!-- Discount -->
-            <v-row>
-              <v-col
-                cols="5"
-                class="mb-1 pg-text-base pg-font-medium grey--text pg-py-0"
-              >
-                <span v-if="billing.planAmountDiscount || billing.percentOff">
-                  Coupon applied:
-                </span>
-              </v-col>
-              <v-col cols="7" class="justify-end mb-1 pg-py-0">
-                <div
-                  class="text-right md:pg-text-base"
-                  @click="addCoupon = !addCoupon"
-                >
-                  <span class="text-decoration-underline add-coupon">
-                    <span>Add coupon code</span>
-                  </span>
-                  <v-icon
-                    small
-                    color="accent"
-                    class="text-h7 hidden-md-and-down"
+            <v-row no-gutters>
+              <template v-if="billing.planAmountDiscount || billing.percentOff">
+                <v-row no-gutters>
+                  <v-col
+                    cols="12"
+                    class="account-field-label pg-py-0"
                   >
-                    mdi-plus
-                  </v-icon>
-                </div>
-              </v-col>
-
-              <template
-                v-if="billing.planAmountDiscount || billing.percentOff"
-              >
-                <v-col class="mt-1" cols="12" md="5">
-                  <span
-                    class="mb-3 text-h7 black--text font-weight-bold pg-uppercase"
-                  >
-                    {{ billing.discountCode }}
-                  </span>
-                </v-col>
-
-                <v-col cols="12" md="7" class="mt-1 mb-3">
-                  <div class="text-right">
-                    <span
-                      v-if="billing.percentOff"
-                      class="mb-3 discount grey--text font-weight-bold"
-                    >
-                      {{ billing.percentOff }} %
+                    <span v-if="billing.planAmountDiscount || billing.percentOff">
+                      Coupon applied:
                     </span>
+                  </v-col>
+                  <v-col cols="12" lg="4">
                     <span
-                      v-if="billing.amountOff"
-                      class="mb-3 discount grey--text font-weight-bold"
+                      class="account-field-label font-weight-bold pg-uppercase"
                     >
-                      $
-                      {{
-                        getAmountOff.toLocaleString('en-US', {
-                          style: 'currency',
-                          currency: 'USD'
-                        })
-                      }}
+                      {{ billing.discountCode }}
                     </span>
-                    <small class="grey--text font-weight-bold discount">
-                      discount on your membership
-                    </small>
-                  </div>
-                </v-col>
+                  </v-col>
+                  <v-col cols="12" lg="8">
+                    <div class="d-flex align-center">
+                      <div v-if="!isMobile" class="account-line-separator mx-auto"></div>
+                      <span
+                        v-if="billing.percentOff"
+                        class="account-field-label-small"
+                      >
+                        {{ billing.percentOff }} %
+                      </span>
+                      <span
+                        v-if="billing.amountOff"
+                        class="account-field-label-small"
+                      >
+                        $
+                        {{
+                          getAmountOff.toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'USD'
+                          })
+                        }}
+                      </span>
+                      <span class="account-field-label-small">
+                        discount on your membership
+                      </span>
+                      <v-icon color="#68C453" class="ml-2">
+                        mdi-check-circle
+                      </v-icon>
+                    </div>
+                  </v-col>
+                </v-row>
               </template>
 
-              <v-col v-if="addCoupon" class="mt-2" cols="12">
-                <v-row no-gutters>
-                  <pg-text-field
-                    v-model="promotionCode"
-                    label="Promotion Code"
-                    :color="isValidCoupon ? '' : 'error'"
-                    :suffix="getTextValidateCoupon"
-                    :loading="isValidatingCoupon"
-                    solo
-                  />
-                  <small class="note-text mt-n4 mb-5">
-                    *Note that you may only use one promotion code at a time;
-                    adding a new promo code will remove any currently-active
-                    coupons that were previously applied.
-                  </small>
-                  <v-btn
-                    :disabled="!isValidCoupon"
-                    color="primary"
-                    class="mb-3"
-                    x-large
-                    block
-                    @click="savePromotion"
+              <v-col cols="12" class="d-flex justify-center">
+                <v-btn
+                  class="rounded-0 elevation-0 my-4"
+                  color="#F89838"
+                  @click="viewAddCouponModal = true"
+                >
+                  <v-icon
+                    color="white"
+                    class="mr-2"
                   >
-                    APPLY COUPON
-                  </v-btn>
-                </v-row>
+                    mdi-plus-circle
+                  </v-icon>
+                  <span class="white--text">
+                    Add coupon code
+                  </span>
+                </v-btn>
               </v-col>
             </v-row>
           </div>
         </v-card>
-        <!-- Payment Method -->
-        <v-card class="mb-6 pa-4 px-md-10 py-md-6 card-custom-border">
-          <v-row
-            no-gutters
-            class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2"
-            justify="center"
-          >
-            Payment Method
-          </v-row>
-          <v-row
-            v-for="(card, indexUC) in userCards"
-            :key="indexUC"
-            align="center"
-            no-gutters
-          >
-            <v-col
-              cols="4"
-              class="mt-8 text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold"
-            >
-              {{ card.details.brand }}
-            </v-col>
-            <v-col
-              cols="7"
-              class="mt-8 text-center text-subtitle-2 text-sm-h6 grey--text font-weight-bold"
-            >
-              •••• •••• •••• {{ card.details.last4 }}
-            </v-col>
-            <v-col v-if="userCards && userCards.length > 1" cols="1" class="mt-7">
-              <v-icon right color="error" @click="removePaymentMethod(card)">
-                mdi-trash-can-outline
-              </v-icon>
-            </v-col>
-            <v-col cols="12" class="justify-center mt-2 d-flex">
-              <v-btn color="primary" text x-large @click="onUpdateCard(card)">
-                Change Payment Method
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-row v-if="userCards.length === 0">
-            <v-col cols="12" class="mb-1 grey--text">
-              <span>To add a Payment Method, select a Payment Plan below.</span>
-            </v-col>
-            <v-col cols="12">
-              <v-btn
-                color="primary mb-3"
-                x-large
-                block
-                @click="handleChangePlan"
-              >
-                CHOOSE PLAN
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-card>
 
-        <billing-history-card />
+        <add-coupon-modal
+          v-model="viewAddCouponModal"
+          @loadData="loadData"
+        />
+
+        <!-- Payment Method -->
+        <membership-btn
+          class="mb-4"
+          title="Billing history"
+          subtitle="View your billing history"
+          color="#FAC3D9"
+          text-color="#606060"
+          @click="viewBillingHistory = true"
+        />
+
+        <billing-history-dialog v-model="viewBillingHistory" />
+
+        <membership-btn
+          title="Payment Method"
+          :subtitle="cardMaskedNumber"
+          color="#CFBCE3"
+          text-color="#606060"
+          @click="viewCardsModal = true"
+        />
+
+        <cards-modal
+          v-model="viewCardsModal"
+          :user-cards="userCards"
+          @reloadBilling="onSuccessUpdateBilling"
+        />
       </v-col>
 
       <!-- Plan Information -->
@@ -299,20 +229,18 @@
           :is-compare-plans-button-visible="false"
         />
 
-        <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
+        <v-card class="account-plan-details">
           <v-row no-gutters>
             <!-- Plan Name-->
             <v-col cols="12" class="text-center">
-              <div
-                class="mb-6 text-uppercase font-weight-bold text-h5 grey--text text--darken-2"
-              >
-                Your Plan
+              <div class="pg-rounded-[9px] py-3" :style="{ 'background': plan.color }">
+                <div class="account-plan-text">
+                  Your Plan is:
+                </div>
+                <div class="account-plan-name">
+                  {{ plan.name }}
+                </div>
               </div>
-            </v-col>
-
-            <!-- Plan Name -->
-            <v-col v-if="plan.name" cols="12" class="mb-4 text-center">
-              <underlined-title :text="plan.name" font-size="32px" />
             </v-col>
 
             <!-- Plan Description -->
@@ -321,11 +249,13 @@
                returns an equivalent number, but we should update this component to accept
                maybe an id instead.[ch1440]
           -->
-            <plan-description
-              v-if="Object.keys(plan).length"
-              :plan="plan"
-              class="pg-mb-4"
-            />
+            <v-col cols="12" class="pa-4 px-md-10 py-md-6 ">
+              <plan-description
+                v-if="Object.keys(plan).length"
+                :plan="plan"
+                class="pg-mb-4"
+              />
+            </v-col>
 
             <!-- Change Plan Button -->
             <v-col
@@ -333,35 +263,50 @@
               cols="12"
               class="justify-center d-flex"
             >
-              <v-btn
+              <membership-btn
                 v-if="!isCaregiver"
-                color="primary mb-3"
-                x-large
-                block
+                title="Change plan"
+                subtitle="Change your plan whenever you want"
+                color="#F89838"
+                text-color="#FFFFFF"
                 @click="handleChangePlan"
-              >
-                CHANGE PLAN
-              </v-btn>
+              />
             </v-col>
-
-            <v-col v-if="!isCaregiver" cols="12" class="justify-center d-flex">
-              <!-- Cancel Subscription -->
-              <v-btn
-                v-if="hasMembership"
-                block
-                color="error"
-                x-large
-                @click="handleCancelMembershipClick"
-              >
-                CANCEL MEMBERSHIP
-              </v-btn>
-              <!-- Create Subscription -->
-              <v-btn v-else block color="primary" x-large @click="selectPlan">
-                CREATE MEMBERSHIP
-              </v-btn>
+            <!-- Create Subscription -->
+            <v-col
+              v-else
+              cols="12"
+              class="justify-center d-flex"
+            >
+              <membership-btn
+                v-if="!isCaregiver"
+                title="Create membership"
+                color="#F89838"
+                text-color="#FFFFFF"
+                @click="selectPlan"
+              />
             </v-col>
           </v-row>
         </v-card>
+
+        <v-col v-if="!isCaregiver" cols="12" class="justify-center d-flex">
+          <!-- Cancel Subscription -->
+          <v-btn
+            v-if="hasMembership"
+            block
+            class="text-decoration-underline"
+            color="#EA0000"
+            x-large
+            text
+            @click="removeSubscriptionModal = true"
+          >
+            CANCEL MEMBERSHIP
+          </v-btn>
+          <!-- Create Subscription -->
+          <!-- <v-btn v-else block color="primary" x-large @click="selectPlan">
+            CREATE MEMBERSHIP
+          </v-btn> -->
+        </v-col>
 
         <!-- Learning Kits -->
         <div class="pg-mt-6 card-custom-border">
@@ -543,35 +488,6 @@
         :is-mobile="isMobile"
         @closeCancelAnywayModal="viewCancelAnywayModal = false"
       />
-
-      <pg-dialog
-        v-model="stripeCardModal"
-        content-class="white"
-        :fullscreen="isMobile"
-        max-width="1000"
-        persistent
-      >
-        <v-col cols="12">
-          <v-row class="pr-3" justify="end">
-            <v-btn icon @click.stop="stripeCardModal = false">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-row>
-
-          <v-row class="px-6">
-            <v-col>
-              <update-billing-method
-                v-if="stripeCardModal"
-                :card-id="cardToUpate.id"
-                no-terms
-                no-trial
-                @update:success="onSuccessUpdateBilling"
-                @click:cancel="stripeCardModal = false"
-              />
-            </v-col>
-          </v-row>
-        </v-col>
-      </pg-dialog>
     </v-row>
   </pg-loading>
 </template>
@@ -580,11 +496,12 @@
 import dayjs from 'dayjs'
 import { get } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
-import debounce from 'lodash/debounce'
-import UpdateBillingMethod from '@/components/app/payment/UpdateBillingMethod'
+import AddCouponModal from '@/components/app/payment/AddCouponModal'
+import CardsModal from '@/components/app/payment/CardsModal.vue'
+import BillingHistoryDialog from '@/components/BillingHistoryDialog.vue'
 import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/PlanDescription'
+import MembershipBtn from '@/components/app/payment/MembershipBtn.vue'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
-import BillingHistoryCard from '@/components/BillingHistoryCard.vue'
 import TechnicalIssuesCancellationModal from '@/components/app/payment/TechnicalIssuesCancellationModal.vue'
 import TooMuchTimeModal from '@/components/app/payment/TooMuchTimeModal.vue'
 import UsingOtherPlatformModal from '@/components/app/payment/UsingOtherPlatformModal.vue'
@@ -608,10 +525,12 @@ import AppliedCouponModal from './CancelSuscriptionFlow/DiscountFlow/AppliedCoup
 export default {
   name: 'MembershipDetails',
   components: {
-    UpdateBillingMethod,
+    AddCouponModal,
+    CardsModal,
+    BillingHistoryDialog,
     PlanDescription,
+    MembershipBtn,
     TrialIsExpiring,
-    BillingHistoryCard,
     // CancelTrial: () => import('@/components/app/payment/CancelTrial.vue')
     CancelSuscriptionModal,
     CancelAnyway,
@@ -634,14 +553,15 @@ export default {
     AnnualSubscriptionCancellationModal
   },
 
-  data: (vm) => ({
+  data: () => ({
     loading: false,
-    addCoupon: false,
+    viewAddCouponModal: false,
+    viewCardsModal: false,
+    viewBillingHistory: false,
     isValidCoupon: false,
     isValidatingCoupon: false,
     promotionCode: null,
     promotion_id: null,
-    checkValid: debounce(vm._checkValid, 1050),
     billing: {
       billingType: '',
       membershipInterval: 0,
@@ -657,8 +577,6 @@ export default {
       discountCode: null,
       stripeStatus: ''
     },
-    cardToUpate: null,
-    stripeCardModal: false,
     removeSubscriptionModal: false,
     userCards: [],
     plan: {},
@@ -736,6 +654,10 @@ export default {
 
     ...mapGetters('auth', ['hasPlayAndLearnPlan']),
 
+    membershipColor() {
+      return '255, 160, 200'
+    },
+
     leaveMotivesText() {
       return this.leaveMotives.map((motives) => motives.motive)
     },
@@ -747,16 +669,18 @@ export default {
       )
     },
 
-    isCaregiver() {
-      return this.getUserInfo.role.id === 4
+    cardMaskedNumber() {
+      const card = this.userCards[0]
+
+      if (card) {
+        return `${card.details.brand} •••• •••• •••• ${card.details.last4}`
+      }
+
+      return ''
     },
 
-    getTextValidateCoupon() {
-      if (this.promotionCode) {
-        return this.isValidCoupon ? 'VALID COUPON' : 'INVALID COUPON'
-      } else {
-        return ''
-      }
+    isCaregiver() {
+      return this.getUserInfo.role.id === 4
     },
 
     isValidateMotive() {
@@ -921,31 +845,6 @@ export default {
       }
     },
 
-    async _checkValid() {
-      try {
-        this.isValidatingCoupon = true
-        if (this.promotionCode) {
-          const coupons = await this.getCoupons({
-            active: true,
-            code: this.promotionCode
-          })
-          if (coupons.length > 0) {
-            this.promotion_id = coupons[0].promotion_id
-            this.isValidCoupon = true
-            this.lockButton = false
-          } else {
-            this.isValidCoupon = false
-            this.promotion_id = null
-          }
-        }
-      } catch (error) {
-        this.isValidCoupon = false
-        this.lockButton = true
-      } finally {
-        this.isValidatingCoupon = false
-      }
-    },
-
     async getBillingDetails() {
       try {
         this.loading = true
@@ -1076,7 +975,6 @@ export default {
       this.removeSubscriptionModal = false
     },
     onSuccessUpdateBilling() {
-      this.stripeCardModal = false
       this.getBillingCards()
       this.getBillingDetails()
     },
@@ -1108,10 +1006,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card-custom-border {
-  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25) !important;
-  border-radius: 8px !important;
-}
+@import '~/assets/scss/account.scss';
 
 .v-btn:not(.v-btn--text) {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;

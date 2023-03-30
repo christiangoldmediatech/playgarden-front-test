@@ -1,14 +1,19 @@
 <template>
-  <v-row>
-    <v-col cols="12">
+  <v-row no-gutters>
+    <v-col v-if="invitationSent.length === 0" cols="12">
+      <p class="account-caregiver-subtitle ma-0">
+        You don´t have any pending invites
+      </p>
+    </v-col>
+    <v-col v-else cols="12">
       <v-row
         v-for="({ id, email, phone }, indexIS) in invitationSent"
         :key="indexIS"
         align="center"
-        class="my-1 px-md-6"
+        class="my-1"
         no-gutters
       >
-        <v-col class="text-truncate grey--text">
+        <v-col class="account-caregiver-email text-truncate grey--text">
           {{ email || phone }}
         </v-col>
 
@@ -134,7 +139,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '~/assets/scss/account.scss';
+
 .shrink > div {
   width: 77px;
 }

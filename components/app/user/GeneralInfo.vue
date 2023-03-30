@@ -1,72 +1,83 @@
 <template>
-  <div>
-    <!-- Editable user info -->
-    <div v-if="isEditing">
-      <pg-text-field
-        v-model="form.firstName"
-        label="First Name"
-        solo-labeled
-      />
-
-      <pg-text-field
-        v-model="form.lastName"
-        label="Last Name"
-        solo-labeled
-      />
-
-      <pg-text-field
-        v-model="form.email"
-        label="Email"
-        solo-labeled
-      />
-
-      <pg-text-field
-        v-model="form.phoneNumber"
-        label="Phone number"
-        solo-labeled
-      />
-    </div>
-
-    <!-- Readonly user info -->
-    <v-row v-else class="grey--text pb-8">
-      <v-col cols="4">
-        Name
-      </v-col>
-      <v-col cols="8" class="text-right">
-        <b>{{ fullName }}</b>
-      </v-col>
-
-      <v-col cols="4">
-        Email
-      </v-col>
-      <v-col cols="8" class="text-right">
-        <b>{{ userInfo.email }}</b>
-      </v-col>
-
-      <v-col cols="4">
-        Password
-      </v-col>
-      <v-col cols="8" class="text-right">
-        <b>••••••••••</b>
-      </v-col>
-
-      <v-col cols="4">
-        Phone
-      </v-col>
-      <v-col v-if="userInfo.phoneNumber" cols="8" class="text-right">
-        <b>{{ userInfo.phoneNumber }}</b>
-      </v-col>
-      <v-col v-else cols="8" class="text-right">
-        <small>Add your phone number to opt-in to text messages and calls from us.</small>
-      </v-col>
-    </v-row>
+  <div class="d-flex flex-column align-center w-100">
+    <v-col cols="12" class="pa-0">
+      <v-row no-gutters>
+        <v-col cols="12">
+          <v-row no-gutters>
+            <v-col cols="12" md="6" class="pr-0 pr-md-4">
+              <span class="d-inline-block account-field-label mb-2">First name</span>
+              <pg-text-field
+                v-model="form.firstName"
+                background-color="#F7F7F7"
+                color="#AAAAAA"
+                solo
+                dense
+                flat
+                :disabled="!isEditing"
+              />
+            </v-col>
+            <v-col cols="12" md="6" class="pl-0 pl-md-4">
+              <span class="d-inline-block account-field-label mb-2">Last name</span>
+              <v-text-field
+                v-model="form.lastName"
+                background-color="#F7F7F7"
+                color="#AAAAAA"
+                solo
+                flat
+                :disabled="!isEditing"
+              />
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col cols="12">
+              <span class="d-inline-block account-field-label mb-2">Email address</span>
+              <v-text-field
+                v-model="form.email"
+                background-color="#F7F7F7"
+                color="#AAAAAA"
+                solo
+                flat
+                :disabled="!isEditing"
+              />
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <!-- This is just for showing a password field -->
+            <v-col cols="12" md="6" class="pr-0 pr-md-4">
+              <span class="d-inline-block account-field-label mb-2">Password</span>
+              <v-text-field
+                value="*********"
+                background-color="#F7F7F7"
+                color="#AAAAAA"
+                solo
+                flat
+                :disabled="true"
+              />
+            </v-col>
+            <v-col cols="12" md="6" class="pl-0 pl-md-4">
+              <span class="d-inline-block account-field-label mb-2">Phone number</span>
+              <v-text-field
+                v-model="form.phoneNumber"
+                background-color="#F7F7F7"
+                color="#AAAAAA"
+                solo
+                flat
+                :disabled="!isEditing"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-col>
 
     <template v-if="isEditing">
       <v-btn
         v-if="isEditing"
         x-large
         block
-        color="warning"
+        class="white--text rounded-0"
+        color="#AAD579"
+        elevation="0"
         :loading="loading"
         @click="saveUserInfo"
       >
@@ -77,16 +88,13 @@
         x-large
         block
         text
-        color="grey"
+        class="text-decoration-underline"
+        color="#F89838"
         @click="isEditing = false"
       >
-        Cancel
+        CANCEL
       </v-btn>
     </template>
-
-    <v-btn v-else x-large block class="primary" @click="isEditing = true">
-      Edit
-    </v-btn>
 
     <pg-dialog
       v-if="isEditing"
@@ -101,8 +109,9 @@
           v-bind="attrs"
           x-large
           block
-          color="primary"
-          text
+          class="white--text rounded-0"
+          color="#AAD579"
+          elevation="0"
           v-on="on"
         >
           Change Password
@@ -192,9 +201,15 @@ export default {
     UpdatePassword
   },
 
+  props: {
+    value: {
+      type: Boolean,
+      default: false
+    }
+  },
+
   data: () => ({
     form: {},
-    isEditing: false,
     passwordModal: false,
     loading: false
   }),
@@ -204,6 +219,16 @@ export default {
       userInfo: 'getUserInfo',
       isUserCaregiver: 'isUserCaregiver'
     }),
+
+    isEditing: {
+      get() {
+        return this.value
+      },
+      set(val) {
+        this.$emit('input', val)
+      }
+    },
+
     fullName () {
       return this.userInfo.fullName // `${this.userInfo.firstName ?? ''} ${this.userInfo.lastName ?? ''}`.trim()
     }
@@ -325,7 +350,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/account.scss';
+
 .text-caption {
   color: var(--v-black-base);
+}
+
+::v-deep .v-text-field .v-input__control .v-input__slot input {
+  color: #AAAAAA !important;
+}
+
+::v-deep .v-text-field .v-input__control .v-input__slot {
+  box-shadow: none !important;
 }
 </style>

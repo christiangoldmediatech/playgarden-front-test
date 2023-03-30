@@ -1,47 +1,66 @@
 <template>
   <pg-dialog
     v-model="modal"
-    content-class="white"
-    :fullscreen="isMobile"
     max-width="600"
-    persistent
+    content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl v2-font"
+    @click:outside="closeDialog"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         v-bind="attrs"
-        block
-        class="mb-6"
-        color="primary"
-        x-large
+        color="#F89838"
+        large
+        class="rounded-0 white--text"
+        elevation="0"
         v-on="on"
       >
+        <v-icon color="white" left>
+          mdi-plus-circle
+        </v-icon>
         Add Caregiver
       </v-btn>
     </template>
 
-    <v-col cols="12">
-      <v-row class="pr-3" justify="end">
-        <v-btn icon @click.stop="modal = false">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-row>
-
-      <v-row justify="center">
-        <div class="text-uppercase font-weight-bold text-h5 text-md-h4 grey--text text--darken-2">
-          Add Caregiver
-        </div>
-      </v-row>
-
-      <v-row v-if="modal" class="flex-column-reverse flex-md-row">
-        <v-col class="pt-5 px-6" cols="12">
-          <send-invitation-form
-            :loading="loading"
-            @click:cancel="onCancel"
-            @click:submit="onSubmit"
-          />
-        </v-col>
-      </v-row>
+    <v-col class="text-right pg-pr-3" cols="12">
+      <v-btn
+        icon
+        color="white"
+        class="pg-bg-[#F6B7D2]"
+        @click="closeDialog"
+      >
+        <v-icon>
+          mdi-close
+        </v-icon>
+      </v-btn>
     </v-col>
+
+    <v-row no-gutters>
+      <v-col cols="12" class="px-8 px-sm-16 mb-4">
+        <p
+          class="text-left pg-text-[25px] pg-text-[#707070] pg-font-[500]"
+        >
+          Add Caregiver
+        </p>
+      </v-col>
+    </v-row>
+
+    <v-row no-gutters>
+      <v-col cols="12" class="px-8 px-sm-16">
+        <v-row v-if="modal" class="flex-column-reverse flex-md-row">
+          <v-col cols="12">
+            <send-invitation-form
+              :loading="loading"
+              @click:cancel="onCancel"
+              @click:submit="onSubmit"
+            />
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+    <img
+      src="@/assets/svg/color-dashes.svg"
+      class="pg-w-full pg-mb-[-12px] px-4"
+    />
   </pg-dialog>
 </template>
 
@@ -80,6 +99,10 @@ export default {
 
     onCancel () {
       this.loading = false
+      this.modal = false
+    },
+
+    closeDialog() {
       this.modal = false
     },
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pa-4 pa-md-0">
     <caregiver-list manageable />
   </div>
 </template>

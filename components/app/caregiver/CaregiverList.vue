@@ -1,110 +1,157 @@
 <template>
   <pg-loading :loading="loading">
-    <v-row no-gutters data-test-id="caregivers-content">
+    <v-row
+      no-gutters
+      data-test-id="caregivers-content"
+      class="pa-4 pa-md-0"
+      :class="{ 'account-card-border': $vuetify.breakpoint.smAndDown }"
+      :style="{ '--card-custom-color': caregiversColor }"
+    >
       <!-- Desktop Title -->
-      <v-col cols="12" class="d-none d-md-block">
-        <div class="text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-12">
+      <v-col cols="12" md="6">
+        <div class="account-page-title !pg-text-[#78C383]">
           Caregivers
         </div>
+        <div class="account-page-subtitle">
+          Give access to your child’s caregiver!
+        </div>
+        <div class="my-4 pr-10 pl-2">
+          <div class="account-green-dashed-line"></div>
+        </div>
+      </v-col>
+      <v-col cols="12" md="6" class="d-flex justify-center mb-4 mb-md-0">
+        <add-caregiver />
       </v-col>
 
       <!-- Caregivers List Information -->
       <v-col cols="12" md="6" class="pr-md-8 mb-6 mb-md-0">
-        <v-card class="pa-4 px-md-10 py-md-6 card-custom-border">
-          <!-- Desktop SVG -->
-          <div class="justify-center pb-4 d-none d-md-flex">
-            <img
-              height="100px"
-              src="@/assets/svg/caregivers.svg"
-            >
-          </div>
+        <v-card v-if="caregivers.length === 0" class="account-caregiver-card px-6 py-6">
+          <v-row no-gutters align="center">
+            <v-col cols="4" lg="3">
+              <img src="@/assets/svg/caregiver.svg" :height="iconSize" />
+            </v-col>
+            <v-col cols="8" lg="9">
+              <p class="account-caregiver-placeholder ma-0">
+                Give access to your child’s caregiver!
+              </p>
+            </v-col>
+          </v-row>
+        </v-card>
 
-          <!-- Mobile SVG and Title= -->
-          <div class="d-flex d-md-none justify-center py-2">
-            <img
-              height="45px"
-              src="@/assets/svg/caregivers.svg"
-            >
-            <span class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2">
-              Caregivers
-            </span>
-          </div>
-
-          <div class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2">
-            <small>Give access to your child's caregiver!</small>
-          </div>
-
+        <v-card v-else class="pa-4 px-md-10 py-md-6 account-caregiver-card">
           <!-- List -->
           <v-row
             v-for="(caregiver, caregiverIndex) in caregivers"
             :key="caregiver.id"
             no-gutters
           >
-            <v-col cols="12" class="text-h6 text-md-h5 grey--text mb-3">
-              <small>Caregiver {{ caregiverIndex + 1 }}</small>
+            <v-col v-if="caregivers.length > 0 && !isEditing" class="!pg-relative" cols="12">
+              <v-row no-gutters align="center">
+                <v-btn
+                  text
+                  class="!pg-absolute pg-top-[-10px] pg-right-[-20px]"
+                  color="#F89838"
+                  @click="setEditing(caregiver)"
+                >
+                  <span class="text-decoration-underline">Edit</span>
+                  <v-icon right>
+                    mdi-pencil
+                  </v-icon>
+                </v-btn>
+
+                <div class="account-caregiver-circle mr-4">
+                  C{{ caregiverIndex + 1 }}
+                </div>
+                <p class="account-caregiver-name ma-0">
+                  {{ caregiver.fullName }}
+                </p>
+              </v-row>
             </v-col>
 
-            <v-col cols="11" class="text-h6 text-md-h5 grey--text font-weight-bold text-truncate">
-              {{ caregiver.fullName }}
-            </v-col>
+            <v-col v-if="isEditing" class="!pg-relative" cols="12">
+              <v-btn
+                v-if="isEditing"
+                class="text-decoration-underline !pg-absolute pg-top-[-10px] pg-right-[-20px]"
+                color="#F83838"
+                text
+                @click="remove(caregiver)"
+              >
+                DELETE CAREGIVER
+              </v-btn>
 
-            <v-col v-if="isEditing" cols="1" class="d-flex justify-end">
-              <v-btn color="accent" icon text @click="remove(caregiver)">
-                <v-icon>
-                  mdi-close-circle-outline
-                </v-icon>
+              <v-row class="mt-8" no-gutters>
+                <v-row no-gutters>
+                  <v-col cols="12" md="6" class="pr-unset pr-sm-4">
+                    <span class="d-inline-block account-field-label mb-2">First name</span>
+                    <pg-text-field
+                      v-model="form.firstName"
+                      background-color="#F7F7F7"
+                      color="#AAAAAA"
+                      solo
+                      dense
+                      flat
+                      :disabled="!isEditing"
+                    />
+                  </v-col>
+
+                  <v-col cols="12" md="6" class="pl-unset pl-sm-4">
+                    <span class="d-inline-block account-field-label mb-2">Last name</span>
+                    <v-text-field
+                      v-model="form.lastName"
+                      background-color="#F7F7F7"
+                      color="#AAAAAA"
+                      solo
+                      flat
+                      :disabled="!isEditing"
+                    />
+                  </v-col>
+                </v-row>
+              </v-row>
+
+              <v-btn
+                x-large
+                block
+                :loading="loading"
+                :disabled="loading"
+                class="rounded-0 white--text"
+                elevation="0"
+                color="#AAD579"
+                @click="saveCaregivers(form)"
+              >
+                SAVE
+              </v-btn>
+              <v-btn
+                x-large
+                block
+                :loading="loading"
+                :disabled="loading"
+                text
+                class="text-decoration-underline"
+                color="#F89838"
+                @click="isEditing = false"
+              >
+                CANCEL
               </v-btn>
             </v-col>
           </v-row>
-
-          <v-btn
-            v-if="caregivers.length > 0 && !isEditing"
-            x-large
-            block
-            class="mt-6"
-            color="primary"
-            @click="isEditing = true"
-          >
-            Edit
-          </v-btn>
-
-          <v-btn
-            v-if="isEditing"
-            x-large
-            block
-            text
-            class="mt-6"
-            color="grey"
-            @click="isEditing = false"
-          >
-            Cancel
-          </v-btn>
         </v-card>
       </v-col>
 
       <v-col cols="12" md="6" class="pl-md-8 mb-12 mb-md-0">
         <!-- Pending Invites List -->
-        <v-card class="pa-4 px-md-10 py-md-6 mb-12 card-custom-border">
-          <v-row no-gutters>
-            <!-- Plan Name-->
-            <v-col cols="12" class="text-center">
-              <div class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mb-6">
-                Pending Invites Sent
-              </div>
+        <v-card class="account-caregiver-card px-6 py-6">
+          <v-row no-gutters align="center">
+            <v-col cols="4" lg="3">
+              <img src="@/assets/svg/pending-invite.svg" :height="iconSize" />
             </v-col>
-
-            <v-col cols="12">
+            <v-col cols="8" lg="9">
+              <p class="account-caregiver-title mb-2">
+                Pending invites sent
+              </p>
               <invitation-list />
             </v-col>
           </v-row>
         </v-card>
-
-        <!-- Add Caregiver Button -->
-        <v-row no-gutters justify="center">
-          <v-col cols="12" class="max-width-400">
-            <add-caregiver />
-          </v-col>
-        </v-row>
       </v-col>
     </v-row>
   </pg-loading>
@@ -126,8 +173,19 @@ export default {
   data () {
     return {
       isEditing: false,
+      form: {},
       caregivers: [],
       loading: false
+    }
+  },
+
+  computed: {
+    caregiversColor() {
+      return '53, 152, 70'
+    },
+
+    iconSize() {
+      return this.$vuetify.breakpoint.smAndDown ? '60px' : '80px'
     }
   },
 
@@ -136,7 +194,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('caregiver', ['fetchCaregiversList', 'deleteCaregiver']),
+    ...mapActions('caregiver', ['fetchCaregiversList', 'deleteCaregiver', 'editCaregiver']),
 
     async getCaregiversData () {
       try {
@@ -147,6 +205,26 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    async saveCaregivers(item) {
+      try {
+        this.loading = true
+        const caregiver = await this.editCaregiver({ id: item.id, body: { firstName: item.firstName, lastName: item.lastName } })
+
+        if (caregiver) {
+          await this.getCaregiversData()
+        }
+      } catch (e) {
+      } finally {
+        this.isEditing = false
+        this.loading = false
+      }
+    },
+
+    setEditing(item) {
+      this.isEditing = true
+      this.form = { ...item }
     },
 
     remove ({ id, firstName }) {
@@ -161,6 +239,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/account.scss';
+
 .card-custom-border {
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25) !important;
   border-radius: 8px !important;

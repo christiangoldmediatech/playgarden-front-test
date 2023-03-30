@@ -8,6 +8,7 @@ export default () => ({
   fullWidthPages: {
     'app-account-index': 1,
     'app-account-index-caregiver': 1,
+    'app-account-index-personal': 1,
     'app-account-index-student-profile': 1,
     'app-account-index-membership': 1,
     'app-account-index-notification': 1,

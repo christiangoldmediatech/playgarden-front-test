@@ -1,6 +1,6 @@
 <template>
   <validation-observer v-slot="{ invalid, passes }">
-    <p class="font-weight-bold">
+    <p class="title">
       ADD NEW CAREGIVERS
     </p>
 
@@ -21,7 +21,10 @@
           :error-messages="errors"
           label="Email"
           :loading="loading"
+          background-color="#F7F7F7"
+          color="#AAAAAA"
           solo
+          flat
           type="email"
         />
       </validation-provider>
@@ -67,12 +70,13 @@
 
       <v-btn
         block
-        class="mb-6"
+        class="mb-6 rounded-0"
         color="primary"
+        elevation="0"
         :disabled="invalid"
         :loading="loading"
         type="submit"
-        x-large
+        large
       >
         SEND INVITES
       </v-btn>
@@ -104,9 +108,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.title {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 30px;
+  color: #707070;
+}
+
 .hr-line {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+::v-deep .v-text-field .v-input__control .v-input__slot input {
+  color: #AAAAAA !important;
+}
+
+::v-deep .v-text-field .v-input__control .v-input__slot label {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  color: #707070;
 }
 </style>

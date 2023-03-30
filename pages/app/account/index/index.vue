@@ -1,207 +1,45 @@
 <template>
-  <pg-loading :loading="isLoading">
-    <v-row no-gutters data-test-id="account-content">
-      <v-col cols="12" md="6" class="mb-10 pr-md-8 mb-md-0">
-        <!-- Desktop Title -->
-        <div class="pb-6 d-none d-md-block text-uppercase font-weight-bold text-h4 grey--text text--darken-2">
-          General Info
-        </div>
-        <v-card class="pa-4 pa-sm-8 card-custom-border">
-          <!-- Desktop SVG -->
-          <div class="justify-center pb-4 d-none d-sm-flex">
-            <img
-              height="100px"
-              src="@/assets/svg/general-info.svg"
-            >
-          </div>
-
-          <!-- Mobile SVG and Title= -->
-          <div class="justify-center py-2 d-flex d-sm-none">
-            <img
-              height="45px"
-              src="@/assets/svg/general-info.svg"
-            >
-            <span class="mt-1 ml-2 text-uppercase font-weight-bold text-h5 grey--text text--darken-2">
-              General Info
-            </span>
-          </div>
-
-          <div class="py-2 text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2">
-            <small>Manage your personal information.</small>
-          </div>
-
-          <general-info />
-        </v-card>
+  <v-container fluid>
+    <v-row no-gutters>
+      <v-col cols="12" md="6" class="pr-0 pr-md-4 mb-8">
+        <general-info-card />
+        <shipping-address-card class="mt-8" />
+        <student-profile-card class="mt-8" />
+        <caregivers-card class="mt-8" />
       </v-col>
-
-      <v-col v-if="!isUserCaregiver" cols="12" md="6" class="mb-12 pl-md-8 mb-sm-0">
-        <!-- Desktop Title -->
-        <div class="pb-6 d-none d-md-block text-uppercase font-weight-bold text-h4 grey--text text--darken-2">
-          Shipping Address
-        </div>
-        <v-card class="pa-4 pa-sm-8 card-custom-border">
-          <!-- SVG AND TITLE -->
-          <!-- DESKTOP -->
-          <div class="justify-center pb-4 d-none d-sm-flex">
-            <img
-              height="100px"
-              src="@/assets/svg/shipping-address.svg"
-            >
-          </div>
-
-          <!-- MOBILE -->
-          <div class="justify-center py-2 d-flex d-sm-none">
-            <img
-              height="45px"
-              src="@/assets/svg/shipping-address.svg"
-            >
-            <span class="mt-1 ml-2 text-uppercase font-weight-bold text-h5 grey--text text--darken-2">
-              Shipping Address
-            </span>
-          </div>
-
-          <v-fade-transition mode="out-in">
-            <!-- LOADING -->
-            <div v-if="isLoading" class="text-center">
-              <v-progress-circular
-                indeterminate
-                color="primary"
-              />
-            </div>
-
-            <!-- SHIPPING ADDRESS IS PRESENT -->
-            <div v-else-if="isShippingAddressFormVisible" key="shipping-address-present">
-              <div class="my-2 text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2">
-                <small>We use this information to send Playgarden Prep educational materials to users who subscribe to our $99.99/monthly plan.
-                  <span
-                    class="text-decoration-underline font-weight-bold timezone"
-                    @click="$router.push({
-                      name: 'app-payment-plan',
-                    })"
-                  > Learn more</span></small>
-              </div>
-
-              <shipping-address-details
-                :edit-by-default="isEditingShippingAddress"
-                @shipping-address-cancel="checkShippingAddress"
-                @shipping-address-saved="checkShippingAddress"
-              />
-            </div>
-
-            <!-- SHIPPING ADDRESS IS REQUIRED TO SEND WELCOME KIT -->
-            <div v-else key="shipping-address-required">
-              <p v-if="isUserInTrial" class="text-center pg-text-[20px] mt-4">
-                We use this information to send Playgarden Prep educational materials to users who
-                subscribe to our $ 99.99/monthly plan. <br>
-                <span
-                  class="text-decoration-underline font-weight-bold timezone"
-                  @click="$router.push({
-                    name: 'app-payment-plan',
-                  })"
-                > Learn more</span>
-              </p>
-
-              <p v-else class="text-center pg-text-[20px] mt-4">
-                Please enter your shipping address.
-              </p>
-              <p v-if="isUserTrial" class="mt-7 pg-text-[14px]">
-                *In the territorial US and Canada only.
-              </p>
-
-              <v-btn x-large block color="primary" class="mt-7" @click="showShippingAddressForm">
-                ADD ADDRESS
-              </v-btn>
-            </div>
-          </v-fade-transition>
-        </v-card>
+      <v-col cols="12" md="6" class="pl-0 pl-md-4">
+        <membership-card />
+        <notifications-card class="mt-8" />
       </v-col>
     </v-row>
-  </pg-loading>
+  </v-container>
 </template>
 
-<script lang="ts">
-import { mapGetters } from 'vuex'
-
-import GeneralInfo from '@/components/app/user/GeneralInfo.vue'
-import ShippingAddressDetails from '@/components/app/payment/ShippingAddressDetails.vue'
-import { defineComponent, onMounted, ref, useRoute } from '@nuxtjs/composition-api'
-import { useShippingAddress, useSnotifyHelper } from '@/composables'
+<script>
+import { defineComponent } from '@nuxtjs/composition-api'
+import GeneralInfoCard from '@/components/app/account-dashboard/GeneralInfoCard.vue'
+import ShippingAddressCard from '@/components/app/account-dashboard/ShippingAddressCard.vue'
+import StudentProfileCard from '@/components/app/account-dashboard/StudentProfileCard.vue'
+import CaregiversCard from '@/components/app/account-dashboard/CaregiversCard.vue'
+import MembershipCard from '@/components/app/account-dashboard/MembershipCard.vue'
+import NotificationsCard from '@/components/app/account-dashboard/NotificationsCard.vue'
 
 export default defineComponent({
   name: 'Index',
-
   components: {
-    GeneralInfo,
-    ShippingAddressDetails
+    GeneralInfoCard,
+    ShippingAddressCard,
+    StudentProfileCard,
+    CaregiversCard,
+    MembershipCard,
+    NotificationsCard
   },
+  setup() {
 
-  setup () {
-    const route = useRoute()
-    const ShippingAddress = useShippingAddress()
-    const isEditingShippingAddress = ref(false)
-    const isShippingAddressFormVisible = ref(false)
-    const isLoading = ref(true)
-    const snotify = useSnotifyHelper()
-
-    onMounted(() => {
-      handleRouteAction()
-      checkShippingAddress()
-    })
-
-    async function checkShippingAddress () {
-      try {
-        isLoading.value = true
-        isShippingAddressFormVisible.value = Boolean(await ShippingAddress.getShippingAdress())
-      } catch (error) {
-        snotify.error('Error checking shipping address')
-      } finally {
-        isLoading.value = false
-      }
-    }
-
-    function showShippingAddressForm () {
-      isEditingShippingAddress.value = true
-      isShippingAddressFormVisible.value = true
-    }
-
-    function handleRouteAction () {
-      const action = route.value.query.action
-
-      switch (action) {
-        case 'edit-shipping':
-          isEditingShippingAddress.value = true
-          break
-        default:
-          break
-      }
-    }
-
-    return {
-      isLoading,
-      isEditingShippingAddress,
-      isShippingAddressFormVisible,
-      showShippingAddressForm,
-      checkShippingAddress
-    }
-  },
-
-  computed: {
-    ...mapGetters('auth', ['isUserCaregiver', 'isUserInTrial'])
   }
 })
 </script>
 
 <style lang="scss" scoped>
-.card-custom-border {
-  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25) !important;
-  border-radius: 8px !important;
-}
-
-.pg-text-\[20px\] {
-  font-size: 20px;
-}
-
-.pg-text-\[14px\] {
-  font-size: 14px;
-}
+@import '~/assets/scss/account.scss';
 </style>

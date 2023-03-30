@@ -5,19 +5,31 @@
         <v-card
           :flat="isMobile"
           :class="['text-center fill-height', { 'mobile-card': isMobile }]"
+          color="#FFF5E7"
         >
-          <div class="py-md-12 py-2 mx-2">
+          <div class="pt-md-12 d-flex flex-column align-center">
+            <v-btn v-if="isMobile" text color="#F89838" class="mr-auto mt-4" @click="goToPrevPage">
+              <v-icon>mdi-chevron-left</v-icon>
+              Back
+            </v-btn>
+
             <img
-              class="d-none d-sm-inline"
+              class="d-inline"
               height="100px"
-              src="@/assets/svg/account-profile.svg"
+              src="@/assets/svg/account-profile-v2.svg"
             >
 
-            <div class="text-h6 grey--text py-2">
+            <div class="account-section-title py-2">
               Account page
             </div>
 
-            <underlined-title :text="fullName" font-size="32px" />
+            <div class="account-owner-name w-100 mt-5 py-3 mr-4">
+              <h1>{{ fullName }}</h1>
+            </div>
+
+            <div class="w-100 px-4">
+              <div class="account-green-dashed-line my-4"></div>
+            </div>
           </div>
 
           <pg-select
@@ -25,13 +37,20 @@
             :value="selectedRouteName"
             :items="filteredSections"
             solo
-            class="px-2"
+            background-color="#FFAF60"
+            append-icon="mdi-chevron-down"
+            class="px-2 white--text"
             item-value="routeName"
             data-test-id="mobile-account-page-select"
             @input="navigateToPage($event)"
           >
+            <template v-slot:append>
+              <v-icon color="white">
+                mdi-chevron-down
+              </v-icon>
+            </template>
             <template #selection="{ item }">
-              <div :class="mobileDrowpdownClasses(item.routeName)">
+              <div class="w-100 d-flex justify-center account-mobile-select pg-text-[#FFFFFF]">
                 {{ item.text }}
               </div>
             </template>
@@ -47,9 +66,11 @@
             v-for="section in filteredSections"
             v-else
             :key="section.text"
-            :class="btnClasses(section.routeName)"
             :data-test-id="`account-left-panel-${section.text}`"
-            elevation="2"
+            elevation="0"
+            color="transparent"
+            class="clickable account-item py-5 rounded-0"
+            :class="{ 'account-item-selected': selectedRouteName === section.routeName, 'account-item-logout': section.routeName === 'auth-logout' }"
             @click="navigateToPage(section.routeName)"
           >
             {{ section.text }}
@@ -86,6 +107,10 @@ export default {
       return this.userInfo.fullName // `${this.userInfo.firstName ?? ''} ${this.userInfo.lastName ?? ''}`.trim()
     },
 
+    routeName () {
+      return this.$route.name
+    },
+
     isMobile () {
       return this.$vuetify.breakpoint.smAndDown
     },
@@ -93,6 +118,7 @@ export default {
     sections () {
       return [
         { text: 'General', routeName: 'app-account-index', show: true },
+        { text: 'Personal Information', routeName: 'app-account-index-personal', show: true },
         { text: 'Student Profile', routeName: 'app-account-index-student-profile', show: true },
         { text: 'Membership', routeName: 'app-account-index-membership', show: !this.isUserCaregiver },
         { text: 'Caregivers', routeName: 'app-account-index-caregiver', show: !this.isUserCaregiver },
@@ -106,33 +132,31 @@ export default {
     }
   },
 
-  mounted () {
-    this.selectedRouteName = this.$route.name
+  watch: {
+    routeName() {
+      this.selectedRouteName = this.routeName
+    }
+  },
+
+  mounted() {
+    this.selectedRouteName = this.routeName
   },
 
   methods: {
+    goToPrevPage() {
+      this.$router.go(-1)
+    },
     navigateToPage (routeName) {
       this.selectedRouteName = routeName
       this.$router.push({ name: routeName })
-    },
-    btnClasses (routeName) {
-      const isSelectedRoute = this.selectedRouteName === routeName
-      const isLogoutBtn = routeName === 'auth-logout'
-
-      return {
-        'py-7 mb-3 text-uppercase font-weight-bold text-letter-spacing-1': true,
-        'grey--text text--darken-2': !isSelectedRoute && !isLogoutBtn,
-        'primary white--text': isSelectedRoute,
-        'orange--text': isLogoutBtn
-      }
     },
     mobileDrowpdownClasses (routeName) {
       const isLogoutBtn = routeName === 'auth-logout'
 
       return {
-        'font-weight-bold text-uppercase': true,
-        'grey--text text--darken-2': !isLogoutBtn,
-        'orange--text': isLogoutBtn
+        'w-100 d-flex justify-center account-mobile-select': true,
+        'pg-text-[#6c6c6c]': !isLogoutBtn,
+        'pg-text-[#68C453]': isLogoutBtn
       }
     }
   }
@@ -140,10 +164,50 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-sheet.v-card:not(.mobile-card) {
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16) !important;
-}
+@import '~/assets/scss/account.scss';
+
 .text-letter-spacing-1 {
   letter-spacing: 1px;
+}
+
+.account-section-title {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 22px;
+  color: #F89838;
+}
+
+.account-owner-name {
+  background-color: #A1DC85;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+
+  h1 {
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    color: #FFFFFF;
+  }
+}
+
+.account-item {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  color: #565454;
+}
+
+.account-item-selected {
+  background-color: #FFAF60 !important;
+  color: white;
+}
+
+.account-item-logout {
+  text-decoration-line: underline;
+  color: #68C453;
 }
 </style>

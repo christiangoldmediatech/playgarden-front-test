@@ -1,112 +1,46 @@
 <template>
   <pg-loading :loading="loading">
-    <v-row no-gutters data-test-id="notifications-content">
-      <!-- Desktop Title -->
-      <v-col cols="12" class="d-none d-md-block">
-        <div
-          class="text-uppercase font-weight-bold text-h4 grey--text text--darken-2 pb-6"
-        >
-          Notifications
-        </div>
-      </v-col>
-
+    <v-row no-gutters data-test-id="notifications-content" class="pa-4 pa-md-0">
       <!-- Caregivers List Information -->
       <v-col cols="12" class="mb-12 mb-md-0">
-        <v-card class="pa-4 px-md-10 py-md-3 card-custom-border">
-          <!-- Desktop SVG -->
-          <div class="justify-center pb-4 d-none d-md-flex">
-            <img height="100px" src="@/assets/svg/notifications.svg">
-          </div>
-
-          <!-- Mobile SVG and Title= -->
-          <div class="d-flex d-md-none justify-center py-2">
-            <img height="45px" src="@/assets/svg/notifications.svg">
-            <span
-              class="text-uppercase font-weight-bold text-h5 grey--text text--darken-2 mt-1 ml-2"
-            >
+        <v-card class="pa-4 px-md-10 py-md-3 account-card-border" :style="{ '--card-custom-color': notificationsColor }">
+          <!-- Desktop Title -->
+          <v-col cols="12" sm="6" class="d-no  d-sm-block">
+            <div class="account-page-title !pg-text-[#C399ED]">
               Notifications
-            </span>
-          </div>
-
-          <div
-            class="text-center body-1 text-md-h6 font-weight-medium grey--text text--darken-2 my-2"
-          >
-            <small>Manage the notifications you want to receive!</small>
-          </div>
-
-          <!-- Notification Preference Header -->
-          <v-row class="mb-3" no-gutters>
-            <v-col
-              cols="10"
-              lg="11"
-              class="font-weight-bold grey--text text--darken-2 body-1 text-md-h5"
-            >
-              Send to:
-            </v-col>
-
-            <v-col
-              cols="2"
-              lg="1"
-              class="font-weight-bold grey--text text--darken-2 text-caption text-sm-body-1 text-sm-right pr-sm-3"
-            >
-              Email
-            </v-col>
-
-          <!-- <v-col
-            cols="2"
-            lg="1"
-            class="font-weight-bold grey--text text--darken-2 text-caption text-sm-body-1 text-sm-right pl-1 pr-sm-5"
-          >
-            SMS
-          </v-col> -->
-          </v-row>
+            </div>
+            <div class="account-page-subtitle">
+              Manage the notifications you want to receive
+            </div>
+            <div class="my-4 pr-10 pl-2">
+              <div class="account-purple-dashed-line"></div>
+            </div>
+          </v-col>
 
           <!-- Notification Preference Toggles -->
-          <v-row
-            v-for="(notification, notificationIndex) in notifications"
-            :key="notification.id"
-            class="mb-6"
-            no-gutters
-          >
+          <v-row no-gutters>
             <v-col
-              cols="10"
-              lg="11"
-              :class="[
-                'grey--text text--darken-2 body-1 text-md-h5',
-                {
-                  'text--disabled':
-                    !notification.enabled.sms && !notification.enabled.email
-                }
-              ]"
+              v-for="notification in notifications"
+              :key="notification.id"
+              cols="12"
+              sm="6"
+              no-gutters
             >
-              {{ notification.name }}
-            </v-col>
-
-            <v-col cols="2" lg="1" class="d-flex justify-sm-end">
-              <v-switch
+              <v-checkbox
                 v-model="notification.enabled.email"
-                class="ma-0 pa-0 mt-n4"
-                dense
-                hide-details
-                inset
+                color="#C399ED"
                 :loading="loading"
                 :readonly="loading"
+                dense
+                hide-details
+                class="ma-0 pa-0"
                 @change="toggleNotificationEmail(notification, notificationIndex)"
-              />
+              >
+                <template #label>
+                  <span class="account-checkbox-label">{{ notification.name }}</span>
+                </template>
+              </v-checkbox>
             </v-col>
-
-          <!-- <v-col cols="2" lg="1" class="d-flex justify-sm-end">
-            <v-switch
-              v-model="notification.enabled.sms"
-              class="ma-0 pa-0 mt-n4"
-              dense
-              hide-details
-              inset
-              :loading="loading"
-              :readonly="loading"
-              @change="toggleNotificationSMS(notification, notificationIndex)"
-            />
-          </v-col> -->
           </v-row>
         </v-card>
       </v-col>
@@ -124,6 +58,12 @@ export default {
     return {
       notifications: [],
       loading: false
+    }
+  },
+
+  computed: {
+    notificationsColor() {
+      return '195, 153, 237'
     }
   },
 
@@ -219,10 +159,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card-custom-border {
-  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25) !important;
-  border-radius: 8px !important;
-}
+@import '~/assets/scss/account.scss';
 
 .v-btn:not(.v-btn--text) {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
