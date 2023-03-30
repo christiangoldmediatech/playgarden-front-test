@@ -761,4 +761,8 @@ export default {
 ::v-deep .v-text-field .v-input__control .v-input__slot input {
   color: #AAAAAA !important;
 }
+
+::v-deep .v-text-field .v-input__control .v-input__slot .v-text-field__suffix {
+    color: #AAAAAA !important;
+}
 </style>
