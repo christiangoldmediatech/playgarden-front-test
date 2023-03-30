@@ -2,15 +2,15 @@
   <v-list class="entry-card-calendar-links" dense :disabled="isEmpty" mandatory>
     <v-list-group no-action>
       <template v-slot:prependIcon>
-        <v-list-item-avatar size="25" tile>
+        <v-list-item-avatar size="45" tile>
           <v-img contain :src="require('@/assets/svg/sessions-camera.svg')" />
         </v-list-item-avatar>
       </template>
 
       <template v-slot:activator>
         <v-list-item-content>
-          <v-list-item-title>
-            ADD TO CALENDAR
+          <v-list-item-title class="!pg-text-lg pg-text-black">
+            Add to calendar
           </v-list-item-title>
         </v-list-item-content>
       </template>
