@@ -193,6 +193,15 @@ export default defineComponent({
       return ''
     })
 
+    const getTotalPay = computed(() => {
+      if (!billing.value) { return 0 }
+
+      return (
+        (billing.value.percentOff * billing.value.planAmount) / 100 -
+        billing.value.planAmount
+      ).toFixed(2)
+    })
+
     const getBillingDetails = async () => {
       try {
         loading.value = true
@@ -271,6 +280,7 @@ export default defineComponent({
       membershipColor,
       billing,
       billings,
+      getTotalPay,
       userCards,
       cardMaskedNumber,
       plan,

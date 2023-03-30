@@ -74,7 +74,6 @@ export default defineComponent({
         const notifications = await store.dispatch('notifications/users/getNotificationUsers')
 
         notificationsList.value = parseNotifications(notifications)
-        console.log(notificationsList.value)
       } catch (e) {
       }
     }
