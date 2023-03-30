@@ -6,7 +6,10 @@
     light
     z-index="2000"
   >
-    <div class="entry-container">
+    <div
+      v-click-outside="closeDialog"
+      class="entry-container"
+    >
       <v-btn icon class="pg-bg-[#FFA0C8] !pg-p-0 md:!pg-p-5 !pg-absolute !pg-right-5 md:!pg-right-10 !pg-top-[6rem] md:!pg-top-10 !pg-z-50" @click="dialog = false">
         <v-icon :size="$vuetify.breakpoint.mdAndUp ? 35 : 20" color="white">
           mdi-close
@@ -581,6 +584,12 @@ export default {
         topicDescription: this.entry.title,
         itemDateTime: this.entry.dateStart
       })
+    },
+
+    closeDialog() {
+      if (this.dialog) {
+        this.dialog = false
+      }
     }
   }
 }
