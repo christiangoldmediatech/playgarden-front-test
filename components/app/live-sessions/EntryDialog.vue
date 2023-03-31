@@ -1,13 +1,10 @@
 <template>
-  <v-overlay
+  <v-dialog
     v-model="dialog"
-    class="entry-overlay"
-    :dark="false"
-    light
-    z-index="2000"
+    class="entry-overlay !pg-z-[10000] !pg-w-fit"
+    @click:outside="dialog = false"
   >
     <div
-      v-click-outside="closeDialog"
       class="entry-container"
     >
       <v-btn icon class="pg-bg-[#FFA0C8] !pg-p-0 md:!pg-p-5 !pg-absolute !pg-right-5 md:!pg-right-10 !pg-top-[6rem] md:!pg-top-10 !pg-z-50" @click="dialog = false">
@@ -308,7 +305,7 @@
         </v-card>
       </template>
     </div>
-  </v-overlay>
+  </v-dialog>
 </template>
 
 <script>
@@ -596,6 +593,11 @@ export default {
 </script>
 
 <style lang="scss">
+.v-dialog{
+  width: fit-content !important;
+  height: fit-content !important;
+  box-shadow: none !important;
+}
 .entry {
   &-overlay .v-overlay__content {
     min-width: 100vw;
