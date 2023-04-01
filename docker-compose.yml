@@ -1,5 +1,5 @@
 ui:
-  image: "node:16.3.0"
+  image: "node:12"
   volumes:
     - "/home/node/app/node_modules/"
     - ".:/home/node/app"
@@ -10,5 +10,4 @@ ui:
   ports:
     - "8080:8080"
   working_dir: "/home/node/app"
-  command: 
-    bash -c "yarn && yarn dev"
+  command: bash -c "yarn && yarn dev"
