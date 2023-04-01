@@ -29,7 +29,7 @@
       <perfect-scrollbar id="scrollArea">
         <!-- Day mode rendering logic -->
         <template v-if="dayMode">
-          <template v-if="noEntries(advancedSchedule.days[activeDay])">
+          <template v-if="noEntries(getAdvancedSchedule.days[activeDay])">
             <!-- No entries found for this day -->
             <v-card>
               <v-card-text class="text-h6 text-center">
@@ -64,12 +64,12 @@
                     <template
                       v-if="
                         activeDay >= 0 &&
-                          advancedSchedule.days[activeDay] &&
-                          advancedSchedule.days[activeDay][hour - 1].length
+                          getAdvancedSchedule.days[activeDay] &&
+                          getAdvancedSchedule.days[activeDay][hour - 1].length
                       "
                     >
                       <table-entry
-                        v-for="(entry, entryIndex) in advancedSchedule.days[
+                        v-for="(entry, entryIndex) in getAdvancedSchedule.days[
                           activeDay
                         ][hour - 1]"
                         :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"
@@ -91,9 +91,9 @@
           <template v-for="hour in totalHours">
             <div
               v-if="
-                advancedSchedule &&
-                  advancedSchedule.days &&
-                  advancedSchedule.days.length > 0
+                getAdvancedSchedule &&
+                  getAdvancedSchedule.days &&
+                  getAdvancedSchedule.days.length > 0
               "
               :key="`hour-${hour}`"
               class="lsess-table-hour-row"
@@ -114,17 +114,17 @@
                     class="lsess-table-col"
                     :style="{
                       '--entriesLength':
-                        advancedSchedule.days[dayIndex][hour - 1].length || 1
+                        getAdvancedSchedule.days[dayIndex][hour - 1].length || 1
                     }"
                   >
                     <template
                       v-if="
-                        advancedSchedule.days[dayIndex] &&
-                          advancedSchedule.days[dayIndex][hour - 1].length
+                        getAdvancedSchedule.days[dayIndex] &&
+                          getAdvancedSchedule.days[dayIndex][hour - 1].length
                       "
                     >
                       <table-entry
-                        v-for="(entry, entryIndex) in advancedSchedule.days[
+                        v-for="(entry, entryIndex) in getAdvancedSchedule.days[
                           dayIndex
                         ][hour - 1]"
                         :id="`entry-${activeDay}-${hour - 1}-${entryIndex}`"

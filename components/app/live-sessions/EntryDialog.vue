@@ -1,59 +1,118 @@
 <template>
-  <v-overlay
+  <v-dialog
     v-model="dialog"
-    class="entry-overlay"
-    :dark="false"
-    light
-    z-index="2000"
+    class="entry-overlay !pg-z-[10000] !pg-w-fit"
+    @click:outside="dialog = false"
   >
-    <div class="entry-container">
+    <div
+      class="entry-container"
+    >
+      <v-btn icon class="pg-bg-[#FFA0C8] !pg-p-0 md:!pg-p-5 !pg-absolute !pg-right-5 md:!pg-right-10 !pg-top-[6rem] md:!pg-top-10 !pg-z-50" @click="dialog = false">
+        <v-icon :size="$vuetify.breakpoint.mdAndUp ? 35 : 20" color="white">
+          mdi-close
+        </v-icon>
+      </v-btn>
       <template v-if="entry">
-        <v-card class="entry-card" :style="{'--borderColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}">
-          <div v-if="$vuetify.breakpoint.smAndDown && entry.type === 'LiveClass'" class="entry-card-elipse">
-            <img class="entry-card-elipse-img" :src="entry.activityType.icon" />
-          </div>
-
+        <v-card
+          class="entry-card"
+          :style="{
+            '--borderColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'
+          }"
+        >
           <v-container class="entry-card-content">
             <v-row>
-              <div v-if="$vuetify.breakpoint.mdAndUp" class="entry-card-elipse">
-                <div v-if="entry.teacher" class="pg-relative">
-                  <img
-                    class="entry-card-elipse-img ml-1 mt-1 pg-object-cover"
-                    :src="entry.teacher.img"
-                  />
-                  <img
-                    v-if="entry.type === 'LiveClass'"
-                    class="pg-w-[50px] pg-h-[50px] pg-bg-white pg-rounded-full pg-p-1 pg-shadow-sm pg-absolute pg-bottom-0 pg-right-[-5px]"
-                    :src="entry.activityType.icon"
-                  />
+              <v-col cols="12" md="5">
+                <div
+                  v-if="$vuetify.breakpoint.mdAndUp"
+                  class="entry-card-elipse"
+                >
+                  <div v-if="entry.teacher" class="pg-relative">
+                    <img
+                      class="entry-card-elipse-img ml-1 mt-1 pg-object-cover"
+                      :src="entry.teacher.img"
+                    />
+                    <img
+                      v-if="entry.type === 'LiveClass'"
+                      class="pg-w-[50px] pg-h-[50px] pg-bg-white pg-rounded-full pg-p-1 pg-shadow-sm pg-absolute pg-bottom-0 pg-right-[-5px]"
+                      :src="entry.activityType.icon"
+                    />
+                  </div>
+                  <div v-else>
+                    <img
+                      v-if="entry.type === 'LiveClass'"
+                      class="lsess-table-entry-type ml-1 mt-1"
+                      :src="entry.activityType.icon"
+                    />
+                  </div>
                 </div>
-                <div v-else>
-                  <img
-                    v-if="entry.type === 'LiveClass'"
-                    class="lsess-table-entry-type ml-1 mt-1"
-                    :src="entry.activityType.icon"
-                  />
-                </div>
-              </div>
-              <v-col>
-                <div class="entry-card-title">
-                  {{ entry.title }}
-                </div>
-                <div class="entry-card-date">
-                  {{ date }}
-                </div>
-                <div v-if="entry.teacher" class="entry-card-teacher pb-10">
-                  With {{ entry.teacher.name }}
-                </div>
-                <div v-else class="entry-card-teacher pb-10">
-                  With {{ entry.teacherName }}
+              </v-col>
+              <v-col cols="12" md="7">
+                <div
+                  class="pg-flex pg-gap-3"
+                  :class="{ 'pg-mb-5 pg-mt-4 md:pg-mt-0': entry.type !== 'LiveClass' }"
+                >
+                  <div v-if="$vuetify.breakpoint.mdAndDown" class="pg-w-5/12 ">
+                    <div v-if="entry.teacher">
+                      <img class="pg-w-full" :src="entry.teacher.img" />
+                      <img
+                        v-if="entry.type === 'LiveClass'"
+                        class="pg-w-[50px] pg-h-[50px] pg-bg-white pg-rounded-full pg-p-1 pg-shadow-sm pg-absolute pg-bottom-0 pg-right-[-5px]"
+                        :src="entry.activityType.icon"
+                      />
+                    </div>
+                    <div v-else>
+                      <img
+                        v-if="entry.type === 'LiveClass'"
+                        class="lsess-table-entry-type ml-1 mt-1"
+                        :src="entry.activityType.icon"
+                      />
+                    </div>
+                  </div>
+                  <div class="pg-w-7/12 md:pg-w-full">
+                    <div
+                      class="entry-card-title pg-text-center md:pg-text-left pg-text-pg-grey pg-font-quick"
+                    >
+                      {{ entry.title }}
+                    </div>
+                    <div
+                      v-if="$vuetify.breakpoint.mdAndUp"
+                      class="entry-card-date pg-text-center md:pg-text-left pg-text-pg-grey-2 "
+                    >
+                      {{ date[0] }}, {{ date[1] }}
+                    </div>
+                    <div
+                      v-else
+                      class="entry-card-date pg-text-center md:pg-text-left pg-text-pg-grey-2"
+                    >
+                      {{ date[0] }} <br />
+                      {{ date[1] }}
+                    </div>
+                    <div
+                      v-if="entry.teacher && entry.type === 'LiveClass'"
+                      class="entry-card-teacher pb-10 pg-text-center md:pg-text-left pg-text-pg-grey-2"
+                    >
+                      With {{ entry.teacher.name }}
+                    </div>
+                    <div
+                      v-else-if="!entry.teacher && entry.type === 'LiveClass'"
+                      class="entry-card-teacher pb-10 pg-text-center md:pg-text-left pg-text-pg-grey-2"
+                    >
+                      With {{ entry.teacherName }}
+                    </div>
+                  </div>
                 </div>
 
                 <div class="entry-card-description pb-3">
-                  <p class="entry-card-description-title" :style="{'--textColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}">
+                  <p
+                    class="entry-card-description-title"
+                    :style="{
+                      '--textColor':
+                        entry.type === 'LiveClass' ? '#F89838' : '#68C453'
+                    }"
+                  >
                     Description
                   </p>
-                  {{ entry.description }}
+                  <span class="pg-text-lg pg-font-normal pg-text-black">{{ entry.description }}</span>
                 </div>
 
                 <div class="pb-6">
@@ -77,28 +136,79 @@
                     </template>
                   </v-btn>
                 </div>
-                <div v-if="entry.type === 'LiveClass'" class="entry-card-description pb-6">
-                  <p class="entry-card-description-title" :style="{'--textColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}">
+                <div
+                  v-if="entry.type === 'LiveClass'"
+                  class="entry-card-description pb-6"
+                >
+                  <p
+                    class="entry-card-description-title"
+                    :style="{
+                      '--textColor':
+                        entry.type === 'LiveClass' ? '#F89838' : '#68C453'
+                    }"
+                  >
                     Recommended ages
                   </p>
                   {{ entry.ages }}
                 </div>
-                <div v-if="entry.type === 'Playdate'" class="entry-card-description pb-6 pg-flex pg-items-center pg-gap-4">
-                  <p class="entry-card-description-title mb-0" :style="{'--textColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}">
-                    Spots
+                <div
+                  v-if="entry.type === 'Playdate'"
+                  class="entry-card-description pg-flex pg-items-center pg-gap-4"
+                  :class="[entry.backpackImages.length < entry.spots ? 'pb-6' : ' pb-3']"
+                >
+                  <p
+                    class="entry-card-description-title mb-0"
+                    :style="{
+                      '--textColor':
+                        entry.type === 'LiveClass' ? '#F89838' : '#68C453'
+                    }"
+                  >
+                    Spots:
                   </p>
-                  <span>
-                    {{ entry.backpackImages.length }} / {{ entry.spots }}
-                  </span>
+                  <div class="pg-w-8/12">
+                    <v-progress-linear
+                      height="30"
+                      rounded
+                      background-color="#EDEDED"
+                      :color="entry.backpackImages.length < entry.spots ? '#68C453' : '#FF9B3C'"
+                      :value="(entry.backpackImages.length / entry.spots) * 100"
+                    >
+                      <template v-slot:default="{ value }">
+                        <strong :class="[entry.backpackImages.length < entry.spots ? 'pg-text-black' : 'pg-text-white']">{{ Math.ceil(value) / 10 }} / {{ entry.spots }}</strong>
+                      </template>
+                    </v-progress-linear>
+                  </div>
                 </div>
 
-                <div v-if="entry.type === 'Playdate'" class="entry-card-description pb-6">
-                  <p class="entry-card-description-title mb-0" :style="{'--textColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'}">
+                <p v-if="entry.type === 'Playdate' && entry.backpackImages.length >= entry.spots" class="pg-text-accent">
+                  Oops! This class is full. We hope to see you next time!
+                </p>
+
+                <div
+                  v-if="entry.type === 'Playdate'"
+                  class="entry-card-description pb-6"
+                >
+                  <p
+                    class="entry-card-description-title mb-0"
+                    :style="{
+                      '--textColor':
+                        entry.type === 'LiveClass' ? '#F89838' : '#68C453'
+                    }"
+                  >
                     Who is going?
                   </p>
                   <div class="mr-0 mr-sm-8 mt-3">
-                    <child-select v-if="!hasSpotInThisPlaydate" v-model="childId" hide-details />
-                    <child-select v-else-if="child" :value="child.id" disabled hide-details />
+                    <child-select
+                      v-if="!hasSpotInThisPlaydate"
+                      v-model="childId"
+                      hide-details
+                    />
+                    <child-select
+                      v-else-if="child"
+                      :value="child.id"
+                      disabled
+                      hide-details
+                    />
                   </div>
                 </div>
 
@@ -127,75 +237,75 @@
               </v-btn>
             </div>
 
-            <v-btn
-              v-if="entry.type ==='Playdate' && !hasSpotInThisPlaydate"
-              :disabled="!childId || entry.cancelled"
-              :loading="isLoadingSpotAction"
-              class="!pg-shadow-button !pg-text-[18px] text-none white--text pg-mb-5"
-              color="#FD82AC"
-              target="_blank"
-              block
-              large
-              data-test-id="card-playdate-join-button"
-              @click="handleReserveSpot"
-            >
-              Reserve Spot
-            </v-btn>
-
-            <v-btn
-              v-if="hasSpotInThisPlaydate"
-              :loading="isLoadingSpotAction"
-              class="!pg-shadow-button !pg-text-[18px] red lighten-4 grey--text text--darken-2 text-transform-none pg-mb-5"
-              block
-              large
-              data-test-id="card-playdate-cancel-button"
-              @click="handleCancelSpot"
-            >
-              <v-icon class="red--text">
-                mdi-delete
-              </v-icon>
-              Cancel Spot
-            </v-btn>
-
-            <div v-if="!past" class="pb-3 mb-3">
+            <div class="pg-w-full md:pg-w-8/12 pg-mx-auto pg-mt-10">
               <v-btn
-                v-if="entry.type ==='LiveClass'"
-                class="white--text"
-                color="accent"
-                x-large
-                :href="entry.link"
-                :disabled="!isLive || entry.cancelled"
+                v-if="entry.type === 'Playdate' && !hasSpotInThisPlaydate"
+                :disabled="!childId || entry.cancelled || entry.backpackImages.length >= entry.spots"
+                :loading="isLoadingSpotAction"
+                class="!pg-shadow-button !pg-text-[18px] text-none white--text"
+                color="#FD82AC"
                 target="_blank"
                 block
-                @click="doSaveAttendance"
+                large
+                data-test-id="card-playdate-join-button"
+                @click="handleReserveSpot"
               >
-                OPEN ZOOM LINK
+                RESERVE SPOT
               </v-btn>
+
               <v-btn
-                v-else-if="child"
-                class="white--text"
-                color="accent"
-                x-large
-                :href="entry.link"
-                target="_blank"
-                :disabled="entry.cancelled"
+                v-if="hasSpotInThisPlaydate"
+                :loading="isLoadingSpotAction"
+                class="!pg-shadow-button !pg-text-[18px] red lighten-4 grey--text text--darken-2 text-transform-none pg-mb-5"
                 block
-                @click="doSaveAttendance"
+                large
+                data-test-id="card-playdate-cancel-button"
+                @click="handleCancelSpot"
               >
-                OPEN ZOOM LINK
+                <v-icon class="red--text">
+                  mdi-delete
+                </v-icon>
+                Cancel Spot
               </v-btn>
+
+              <div v-if="!past" class="pb-3 mb-3">
+                <v-btn
+                  v-if="entry.type === 'LiveClass'"
+                  class="white--text"
+                  color="accent"
+                  x-large
+                  :href="entry.link"
+                  :disabled="!isLive || entry.cancelled"
+                  target="_blank"
+                  block
+                  @click="doSaveAttendance"
+                >
+                  OPEN ZOOM LINK
+                </v-btn>
+                <v-btn
+                  v-else-if="child"
+                  class="white--text"
+                  color="accent"
+                  x-large
+                  :href="entry.link"
+                  target="_blank"
+                  :disabled="entry.cancelled"
+                  block
+                  @click="doSaveAttendance"
+                >
+                  OPEN ZOOM LINK
+                </v-btn>
+              </div>
+
+              <div v-if="!past" class="pg-calendar-border">
+                <pg-ics-calendar :entry="entry" />
+              </div>
             </div>
-
-            <pg-ics-calendar v-if="!past" :entry="entry" />
-
-            <v-btn block text @click.stop="dialog = false">
-              Close
-            </v-btn>
           </v-container>
         </v-card>
       </template>
     </div>
-  </v-overlay>
+  </v-dialog>
 </template>
 
 <script>
@@ -249,17 +359,23 @@ export default {
     })
 
     const hasSpotInThisPlaydate = computed(() => {
-      return Boolean(playdate.value?.backpackImages?.find(({ childrenId }) => {
-        return children.value.find(({ id }) => {
-          return id === childrenId
+      return Boolean(
+        playdate.value?.backpackImages?.find(({ childrenId }) => {
+          return children.value.find(({ id }) => {
+            return id === childrenId
+          })
         })
-      }))
+      )
     })
 
     const handleReserveSpot = async () => {
       try {
         isLoadingSpotAction.value = true
-        await reserveASpot({ playdateId: playdate.value.id, childId: childId.value, date: playdate.value.dateStart })
+        await reserveASpot({
+          playdateId: playdate.value.id,
+          childId: childId.value,
+          date: playdate.value.dateStart
+        })
 
         childId.value = null
         snotify.success('Spot reserved!')
@@ -275,7 +391,11 @@ export default {
     const handleCancelSpot = async () => {
       try {
         isLoadingSpotAction.value = true
-        await cancelSpotReservation({ playdateId: playdate.value.id, childId: child.value.id, date: playdate.value.dateStart })
+        await cancelSpotReservation({
+          playdateId: playdate.value.id,
+          childId: child.value.id,
+          date: playdate.value.dateStart
+        })
         childId.value = null
         snotify.success('Spot cancelled!')
         dialog.value = false
@@ -386,7 +506,7 @@ export default {
           timezone,
           returnObject: false
         })
-        return `${monthAndDay},  ${startTime} - ${endTime}`
+        return [monthAndDay, `${startTime} - ${endTime}`]
       }
       return ''
     }
@@ -461,23 +581,35 @@ export default {
         topicDescription: this.entry.title,
         itemDateTime: this.entry.dateStart
       })
+    },
+
+    closeDialog() {
+      if (this.dialog) {
+        this.dialog = false
+      }
     }
   }
 }
 </script>
 
 <style lang="scss">
+.v-dialog{
+  width: fit-content !important;
+  height: fit-content !important;
+  box-shadow: none !important;
+}
 .entry {
   &-overlay .v-overlay__content {
     min-width: 100vw;
     padding: 12px;
   }
   &-container {
-    max-width: 800px;
+    max-width: 1100px;
     max-height: 95vh;
     padding-top: 80px;
     overflow-y: hidden;
     margin: 0 auto;
+    position: relative;
     @media screen and (min-width: 960px) {
       padding-top: 0px;
     }
@@ -489,8 +621,8 @@ export default {
     border-radius: 40px !important;
     border: 10px solid var(--borderColor) !important;
     &-elipse {
-      width: 156px;
-      height: 156px;
+      width: 400px;
+      height: 400px;
       margin: 0 auto;
       top: calc(0px - 78px);
       left: calc(50% - 78px);
@@ -503,8 +635,8 @@ export default {
       justify-content: center;
       z-index: 300;
       @media screen and (min-width: 960px) {
-        width: 156px;
-        height: 156px;
+        width: 300px;
+        height: 300px;
         position: static;
         top: auto;
         left: auto;
@@ -513,16 +645,15 @@ export default {
         border: solid 5px #68c453;
       }
       &-img {
-        width: 120px;
-        height: 120px;
+        width: 400px;
+        height: 400px;
         object-fit: contain;
         object-position: center;
         @media screen and (min-width: 960px) {
-          width: 156px;
-          height: 156px;
+          width: 300px;
+          height: 300px;
         }
       }
-
     }
     &-content {
       max-height: calc(99vh - 200px);
@@ -568,5 +699,11 @@ export default {
       max-width: 142px;
     }
   }
+}
+.pg-calendar-border {
+  border: 1px solid #E2E2E2 !important;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05) !important;
+  border-radius: 16px !important;
+  padding: 3px;
 }
 </style>

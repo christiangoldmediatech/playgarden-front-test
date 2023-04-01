@@ -1,12 +1,19 @@
-<svg width="36" height="37" viewBox="0 0 36 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_58_1389)">
-<circle cx="18" cy="18.042" r="18" fill="#8CD2FF"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M8.82745 11.792H20.3193C21.7668 11.792 22.9402 12.9654 22.9402 14.4129V22.679C22.9402 23.1244 22.5791 23.4854 22.1338 23.4854H10.6419C9.19444 23.4854 8.021 22.312 8.021 20.8645V12.5984C8.021 12.1531 8.38206 11.792 8.82745 11.792Z" fill="white"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M26.3288 15.184L30.7642 12.2123C30.9492 12.0884 31.1997 12.1379 31.3237 12.3229C31.3681 12.3893 31.3919 12.4674 31.3919 12.5473V23.0856C31.3919 23.3083 31.2113 23.4888 30.9886 23.4888C30.9019 23.4888 30.8175 23.4609 30.7479 23.409L26.3124 20.1072C26.2102 20.0312 26.15 19.9112 26.15 19.7838V15.5189C26.15 15.3844 26.2171 15.2588 26.3288 15.184L26.3288 15.184Z" fill="white"/>
-</g>
-<defs>
-<clipPath id="clip0_58_1389">
-<rect width="36" height="36" fill="white" transform="translate(0 0.0419922)"/>
-</clipPath>
-</defs>
+<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g filter="url(#filter0_d_90_2465)">
+    <circle cx="16.9594" cy="17.0893" r="13.1801" fill="white"/>
+  </g>
+  <circle cx="16.9595" cy="17.0889" r="10.9834" fill="#68C453"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M10.2244 12.7402H18.2224C19.2298 12.7402 20.0465 13.5569 20.0465 14.5644V20.3174C20.0465 20.6273 19.7952 20.8786 19.4853 20.8786H11.4872C10.4798 20.8786 9.66309 20.0619 9.66309 19.0545V13.3015C9.66309 12.9915 9.91438 12.7402 10.2243 12.7402L10.2244 12.7402Z" fill="white"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M21.0126 15.1001L24.0996 13.0319C24.2283 12.9456 24.4027 12.9801 24.4889 13.1088C24.5199 13.155 24.5364 13.2094 24.5364 13.265V20.5995C24.5364 20.7545 24.4108 20.8801 24.2558 20.8801C24.1954 20.8801 24.1367 20.8606 24.0882 20.8246L21.0013 18.5266C20.9301 18.4736 20.8882 18.3902 20.8882 18.3015V15.3332C20.8882 15.2396 20.9349 15.1522 21.0126 15.1001L21.0126 15.1001Z" fill="white"/>
+  <defs>
+    <filter id="filter0_d_90_2465" x="0.184727" y="0.31461" width="33.5495" height="33.5495" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset/>
+      <feGaussianBlur stdDeviation="1.79729"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.184314 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_90_2465"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_90_2465" result="shape"/>
+    </filter>
+  </defs>
 </svg>
