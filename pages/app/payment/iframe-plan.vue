@@ -139,7 +139,13 @@ export default defineComponent({
     },
 
     redirectPlaygarden(){
-      window.open('https://playgardenonline.com/school/app/payment/plan', "_parent")
+      const isLoggedIn = this.$route.query.isLogged
+
+      if (isLoggedIn) {
+        window.open('https://playgardenonline.com/school/app/payment/plan', "_parent")
+      } else {
+        window.open('https://playgardenonline.com/school/auth/preschool/normal', "_parent")
+      }
     }
   },
 
