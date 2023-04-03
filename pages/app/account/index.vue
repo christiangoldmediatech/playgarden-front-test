@@ -4,6 +4,7 @@
       <v-col cols="12" md="2" :class="{ 'fill-height': !isMobile }">
         <v-card
           :flat="isMobile"
+          class="d-flex flex-column"
           :class="['text-center fill-height', { 'mobile-card': isMobile }]"
           color="#FFF5E7"
         >
@@ -75,6 +76,8 @@
           >
             {{ section.text }}
           </v-card>
+
+          <div v-if="!hidePatch" class="background-patch pg-relative"></div>
         </v-card>
       </v-col>
       <v-col cols="12" md="10">
@@ -102,6 +105,10 @@ export default {
     }),
 
     ...mapGetters('auth', ['isUserCaregiver']),
+
+    hidePatch() {
+      return this.$vuetify.breakpoint.mdAndDown
+    },
 
     fullName () {
       return this.userInfo.fullName // `${this.userInfo.firstName ?? ''} ${this.userInfo.lastName ?? ''}`.trim()
@@ -165,6 +172,15 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/assets/scss/account.scss';
+
+.background-patch {
+  width: 100%;
+  background: #FFF5E7;
+  height: 435px;
+  margin-top: auto;
+  bottom: -430px;
+  box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.2), 0px 3px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 5px 0px rgba(0, 0, 0, 0.12);
+}
 
 .text-letter-spacing-1 {
   letter-spacing: 1px;

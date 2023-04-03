@@ -83,6 +83,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
+
 .hr-line {
   display: flex;
   justify-content: center;

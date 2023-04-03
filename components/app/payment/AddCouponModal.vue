@@ -32,6 +32,7 @@
           <pg-text-field
             v-model="promotionCode"
             label="Promotion Code"
+            class="custom-text-field"
             :color="isValidCoupon ? '' : 'error'"
             :suffix="getTextValidateCoupon"
             :loading="isValidatingCoupon"
@@ -277,6 +278,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
 @import '~/assets/scss/account.scss';
 
 .applied-coupon-icon {

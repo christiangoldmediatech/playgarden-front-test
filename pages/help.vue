@@ -203,6 +203,7 @@
                         >
                           <pg-text-field
                             v-model="help.name"
+                            class="custom-text-field"
                             clearable
                             :disabled="sending"
                             :error-messages="errors"
@@ -223,6 +224,7 @@
                         >
                           <pg-text-field
                             v-model="help.email"
+                            class="custom-text-field"
                             clearable
                             :disabled="sending"
                             :error-messages="errors"
@@ -243,6 +245,7 @@
                     >
                       <pg-text-field
                         v-model="help.subject"
+                        class="custom-text-field"
                         clearable
                         :disabled="sending"
                         :error-messages="errors"
@@ -262,6 +265,7 @@
                     >
                       <pg-textarea
                         v-model="help.description"
+                        class="custom-text-field"
                         clearable
                         :disabled="sending"
                         :error-messages="errors"
@@ -436,6 +440,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
+
 .links-container {
   background-image: url("~@/assets/png/faq-paper.png");
   background-position: center center;

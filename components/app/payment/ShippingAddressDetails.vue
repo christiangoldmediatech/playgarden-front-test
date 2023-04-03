@@ -9,6 +9,7 @@
             <search-address-autocomplete
               v-model="draft.address1"
               :use-new-style="true"
+              class="custom-field-text"
               @address-components="configureAddress"
             />
           </v-col>
@@ -38,9 +39,11 @@
                       v-model="draft.address2"
                       clearable
                       :loading="loading"
+                      class="custom-text-field"
                       background-color="#F7F7F7"
                       color="#AAAAAA"
                       solo
+                      flat
                       dense
                     />
                   </v-col>
@@ -53,9 +56,11 @@
                         clearable
                         :error-messages="errors"
                         :loading="loading"
+                        class="custom-text-field"
                         background-color="#F7F7F7"
                         color="#AAAAAA"
                         solo
+                        flat
                         dense
                       />
                     </validation-provider>
@@ -82,9 +87,11 @@
                 clearable
                 :error-messages="errors"
                 :loading="loading"
+                class="custom-text-field"
                 background-color="#F7F7F7"
                 color="#AAAAAA"
                 solo
+                flat
                 dense
               />
             </validation-provider>
@@ -121,9 +128,11 @@
                 clearable
                 :error-messages="errors"
                 :loading="loading"
+                class="custom-text-field"
                 background-color="#F7F7F7"
                 color="#AAAAAA"
                 solo
+                flat
                 dense
               />
             </validation-provider>
@@ -146,9 +155,11 @@
                 clearable
                 :error-messages="errors"
                 :loading="loading"
+                class="custom-text-field"
                 background-color="#F7F7F7"
                 color="#AAAAAA"
                 solo
+                flat
                 dense
               />
             </validation-provider>
@@ -170,9 +181,11 @@
                 clearable
                 :error-messages="errors"
                 :loading="loading"
+                class="custom-text-field"
                 background-color="#F7F7F7"
                 color="#AAAAAA"
                 solo
+                flat
                 dense
               />
             </validation-provider>
@@ -214,6 +227,7 @@
           color="#AAAAAA"
           solo
           dense
+          flat
           disabled
         />
       </v-col>
@@ -226,6 +240,7 @@
           color="#AAAAAA"
           solo
           dense
+          flat
           disabled
         />
       </v-col>
@@ -238,6 +253,7 @@
           color="#AAAAAA"
           solo
           dense
+          flat
           disabled
         />
       </v-col>
@@ -250,6 +266,7 @@
           color="#AAAAAA"
           solo
           dense
+          flat
           disabled
         />
       </v-col>
@@ -262,6 +279,7 @@
           color="#AAAAAA"
           solo
           dense
+          flat
           disabled
         />
       </v-col>
@@ -490,6 +508,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
 @import '~/assets/scss/account.scss';
 
 .shipping-info-text {

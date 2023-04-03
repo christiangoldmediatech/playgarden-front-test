@@ -28,6 +28,7 @@
           v-model="draft.promotion_code"
           :error-messages="errors"
           label="Promotion Code"
+          class="custom-text-field"
           :color="isValidCoupon ? '' : 'error'"
           :suffix="getTextValidateCoupon"
           :loading="isValidatingCoupon"
@@ -254,6 +255,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
+
 .accept-terms ::v-deep .v-label {
   color: var(--v-black-base) !important;
   opacity: 2.49 !important;

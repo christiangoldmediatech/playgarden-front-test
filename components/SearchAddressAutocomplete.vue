@@ -17,6 +17,7 @@
     :solo-labeled="!useNewStyle"
     :solo="useNewStyle"
     :dense="useNewStyle"
+    :class="{ 'custom-text-field': useNewStyle }"
     :background-color="useNewStyle ? '#F7F7F7' : '#FFFFFF'"
     :color="useNewStyle ? '#AAAAAA' : '#606060'"
     type="search"
@@ -343,3 +344,7 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
+</style>

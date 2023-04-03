@@ -105,7 +105,7 @@
 
         <v-col v-if="billings.length > 0" class="mb-4">
           <span class="account-field-label">Billing history:</span>
-          <v-btn class="text-decoration-underline text-transform-none" color="#FFAB37" text x-small @click="goToPage">
+          <v-btn class="text-decoration-underline text-transform-none" color="#FFAB37" text x-small @click="viewBillingHistory = true">
             View all
           </v-btn>
           <v-row no-gutters class="mb-2">
@@ -148,6 +148,8 @@
         VIEW MORE
       </v-btn>
     </v-col>
+
+    <billing-history-dialog v-model="viewBillingHistory" />
   </v-card>
 </template>
 
@@ -157,12 +159,15 @@ import { get } from 'lodash'
 import { TypedStore } from '@/models'
 import { computed, defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
 import { useBilling } from '@/composables'
+import BillingHistoryDialog from '@/components/BillingHistoryDialog.vue'
 
 export default defineComponent({
+  components: { BillingHistoryDialog },
   name: 'MembershipCard',
   setup() {
     const membershipColor = ref('255, 160, 200')
 
+    const viewBillingHistory = ref(false)
     const loading = ref(false)
     const billing = ref<any>(null)
     const plan = ref<any>(null)
@@ -277,6 +282,7 @@ export default defineComponent({
     })
 
     return {
+      viewBillingHistory,
       membershipColor,
       billing,
       billings,

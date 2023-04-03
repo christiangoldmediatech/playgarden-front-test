@@ -225,6 +225,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
+
 .image {
   height: 100px;
   width: 100px;

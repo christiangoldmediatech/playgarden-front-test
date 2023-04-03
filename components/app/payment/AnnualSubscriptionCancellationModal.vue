@@ -59,6 +59,7 @@
           v-model="explanation"
           placeholder="(required field)"
           solo
+          class="custom-text-field"
           no-resize
         ></v-textarea>
       </v-row>
@@ -156,6 +157,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
 @import '~/assets/scss/cancellation-flow.scss';
 
 .subtitle {

@@ -36,6 +36,7 @@
                   v-model="wordConfirm"
                   :error-messages="errors"
                   label="Confirmation Word"
+                  class="custom-text-field"
                   solo-labeled
                 />
               </validation-provider>
@@ -217,3 +218,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
+</style>

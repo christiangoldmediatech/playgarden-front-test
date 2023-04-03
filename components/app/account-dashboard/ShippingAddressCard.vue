@@ -47,6 +47,14 @@
       </v-row>
     </v-col>
 
+    <v-col v-else cols="12">
+      <v-row no-gutters justify="center">
+        <p class="account-placeholder-text">
+          Please enter your shipping address.
+        </p>
+      </v-row>
+    </v-col>
+
     <v-col cols="12">
       <v-btn
         class="white--text rounded-0"

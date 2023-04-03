@@ -5,14 +5,14 @@
     content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl v2-font"
     @click:outside="closeDialog"
   >
-    <template v-slot:activator="{ on, attrs }">
+    <template v-slot:activator="{ attrs }">
       <v-btn
         v-bind="attrs"
         color="#F89838"
         large
         class="rounded-0 white--text"
         elevation="0"
-        v-on="on"
+        @click="modal = true"
       >
         <v-icon color="white" left>
           mdi-plus-circle

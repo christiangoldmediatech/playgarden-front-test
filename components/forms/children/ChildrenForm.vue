@@ -272,6 +272,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
+
 .grey {
   color: var(--v-black-base);
 }

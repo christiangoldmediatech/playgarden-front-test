@@ -13,6 +13,7 @@
                 solo
                 dense
                 flat
+                :class="{ 'custom-text-field': isEditing }"
                 :disabled="!isEditing"
               />
             </v-col>
@@ -24,6 +25,7 @@
                 color="#AAAAAA"
                 solo
                 flat
+                :class="{ 'custom-text-field': isEditing }"
                 :disabled="!isEditing"
               />
             </v-col>
@@ -37,6 +39,7 @@
                 color="#AAAAAA"
                 solo
                 flat
+                :class="{ 'custom-text-field': isEditing }"
                 :disabled="!isEditing"
               />
             </v-col>
@@ -51,6 +54,7 @@
                 color="#AAAAAA"
                 solo
                 flat
+                :class="{ 'custom-text-field': isEditing }"
                 :disabled="true"
               />
             </v-col>
@@ -62,6 +66,7 @@
                 color="#AAAAAA"
                 solo
                 flat
+                :class="{ 'custom-text-field': isEditing }"
                 :disabled="!isEditing"
               />
             </v-col>
@@ -350,6 +355,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
 @import '~/assets/scss/account.scss';
 
 .text-caption {
@@ -358,9 +364,5 @@ export default {
 
 ::v-deep .v-text-field .v-input__control .v-input__slot input {
   color: #AAAAAA !important;
-}
-
-::v-deep .v-text-field .v-input__control .v-input__slot {
-  box-shadow: none !important;
 }
 </style>

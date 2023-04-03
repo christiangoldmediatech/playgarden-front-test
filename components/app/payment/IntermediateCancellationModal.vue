@@ -14,6 +14,7 @@
         <v-textarea
           v-model="explanation"
           placeholder="(required field)"
+          class="custom-text-field"
           required
           solo
           no-resize
@@ -93,5 +94,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
 @import '~/assets/scss/cancellation-flow.scss';
 </style>

@@ -19,6 +19,7 @@
                 :disabled="loading"
                 :error-messages="errors"
                 label="Name"
+                class="custom-text-field"
                 :loading="loading"
                 solo
               />
@@ -40,6 +41,7 @@
                 :disabled="loading"
                 :error-messages="errors"
                 label="Last name"
+                class="custom-text-field"
                 :loading="loading"
                 solo
               />
@@ -61,6 +63,7 @@
                     :disabled="loading || hasInvitationPhone"
                     :error-messages="errors"
                     label="Phone number"
+                    class="custom-text-field"
                     :loading="loading"
                     maxlength="20"
                     solo
@@ -81,6 +84,7 @@
                     "
                     :error-messages="errors"
                     label="Email"
+                    class="custom-text-field"
                     :loading="loading"
                     solo
                     type="email"
@@ -271,3 +275,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
+</style>
