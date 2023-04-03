@@ -20,7 +20,7 @@
           <!-- Notification Preference Toggles -->
           <v-row no-gutters>
             <v-col
-              v-for="notification in notifications"
+              v-for="(notification, notificationIndex) in notifications"
               :key="notification.id"
               cols="12"
               sm="6"

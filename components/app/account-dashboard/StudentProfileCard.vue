@@ -23,7 +23,7 @@
           >
             <!-- Readonly child info -->
             <v-row no-gutters>
-              <v-col cols="3">
+              <v-col cols="4" md="3">
                 <img
                   v-if="firstBackpack"
                   :alt="childBackpack(item.backpackId).name"
@@ -31,7 +31,7 @@
                   :src="childBackpack(item.backpackId).image"
                 >
               </v-col>
-              <v-col cols="9" class="d-flex flex-column pl-3">
+              <v-col cols="8" md="9" class="d-flex flex-column pl-3">
                 <div class="d-flex justify-space-between">
                   <h1 class="child-name mb-3">
                     {{ item.firstName }} {{ (item.lastName) ? item.lastName : '' }}
@@ -41,7 +41,7 @@
                     class="account-child-btn"
                     small
                     color="#FFAB37"
-                    @click="goToPage"
+                    @click="selectChildToEdit(item)"
                   >
                     View more
                   </v-btn>
@@ -74,23 +74,41 @@
         VIEW MORE
       </v-btn>
     </v-col>
+
+    <child-form-dialog
+      v-model="viewModal"
+      :item="childToEdit"
+      :backpacks="backpacks"
+      :first-backpack="firstBackpack"
+    />
   </v-card>
 </template>
 
 <script lang="ts">
 import { TypedStore } from '@/models'
-import { defineComponent, onMounted, ref, computed, useRouter, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, computed, useRouter, useStore, onUnmounted } from '@nuxtjs/composition-api'
+import ChildFormDialog from '@/components/forms/profile/ChildFormDialog.vue'
 import dayjs from 'dayjs'
+import { useNuxtHelper } from '@/composables'
 
 export default defineComponent({
   name: 'StudentProfileCard',
+  components: {
+    ChildFormDialog
+  },
   setup() {
+    const nuxt = useNuxtHelper()
+
     const studentProfileColor = ref('248, 152, 56')
     const items = ref<any>([])
     const backpacks = ref<any>([])
+    const childrenProgress = ref<any[]>([])
 
     const store = useStore<TypedStore>()
     const router = useRouter()
+
+    const viewModal = ref(false)
+    const childToEdit = ref({})
 
     const firstBackpack = computed(() => {
       if (backpacks.value.length) {
@@ -104,7 +122,10 @@ export default defineComponent({
     }
 
     const fetchChildren = async () => {
+      items.value = []
       const rows = await store.dispatch('children/get')
+
+      childrenProgress.value = await store.dispatch('children/progress/getUserChildrenProgress')
 
       rows.forEach((row: any) => {
         loadChild(row)
@@ -115,18 +136,34 @@ export default defineComponent({
       { _original, id, backpack, birthday, firstName, lastName, gender, level }: any
     ) => {
       const _birthdayPicker = (birthday) ? new Date(birthday).toISOString().substr(0, 10) : dayjs(`${new Date().getFullYear() - 2}-01-01`).format('YYYY-MM-DD')
+      const _birthdayFormatted = dayjs(birthday).format(
+        'MM/DD/YYYY'
+      )
+
+      const progress = childrenProgress.value.find((progress) => {
+        if (progress && progress.children && progress.children.id) {
+          return progress.children.id === id
+        }
+        return false
+      })
 
       const item = {
         _birthdayPicker,
-        _birthdayFormatted: '',
+        _birthdayFormatted,
         _original,
         id,
         backpackId: backpack.id,
-        birthday,
+        birthday: `${_birthdayPicker}T00:00:00.000`,
         firstName,
         lastName,
         gender,
-        level
+        level,
+        progress: {
+          curriculumType: {
+            letter: progress && progress.curriculumType ? progress.curriculumType.letter : undefined
+          },
+          day: progress ? progress.day : undefined
+        }
       }
 
       addRow(item)
@@ -156,18 +193,33 @@ export default defineComponent({
       return dayjs(date).format('MM/DD/YYYY')
     }
 
+    const selectChildToEdit = (item: any) => {
+      childToEdit.value = item
+      viewModal.value = true
+    }
+
     onMounted(async () => {
       await fetchBackpacks()
       await fetchChildren()
+      nuxt.$on('children-changed', fetchChildren)
+    })
+
+    onUnmounted(() => {
+      nuxt.$off('children-changed')
     })
 
     return {
+      viewModal,
       items,
+      childToEdit,
       firstBackpack,
+      backpacks,
       studentProfileColor,
       childBackpack,
       getChildBirthday,
-      goToPage
+      selectChildToEdit,
+      goToPage,
+      fetchChildren
     }
   }
 })
@@ -211,6 +263,10 @@ export default defineComponent({
   height: 70px;
 
   @media screen and (min-width: $breakpoint-md) {
+    height: 85px;
+  }
+
+  @media screen and (min-width: $breakpoint-lg) {
     height: 100px;
   }
 }

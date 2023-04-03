@@ -14,10 +14,10 @@
 
     <v-col cols="12">
       <v-row v-if="caregivers.length === 0" no-gutters align="center">
-        <v-col cols="3">
-          <img src="@/assets/svg/caregiver.svg" height="80px" />
+        <v-col cols="4" lg="3">
+          <img src="@/assets/svg/caregiver.svg" :height="iconSize" />
         </v-col>
-        <v-col cols="9">
+        <v-col cols="8" lg="9">
           <p class="account-caregiver-placeholder ma-0">
             Give access to your child’s caregiver!
           </p>
@@ -56,18 +56,24 @@
 </template>
 
 <script lang="ts">
+import { useVuetifyHelper } from '@/composables'
 import { TypedStore } from '@/models'
-import { defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, computed, useRouter, useStore } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'CaregiversCard',
   setup() {
+    const vuetify = useVuetifyHelper()
     const caregiverColor = ref('53, 152, 70')
 
     const store = useStore<TypedStore>()
     const router = useRouter()
 
     const caregivers = ref<any>([])
+
+    const iconSize = computed(() => {
+      return vuetify.breakpoint.smAndDown ? '60px' : '80px'
+    })
 
     const fetchCaregivers = async () => {
       const { users } = await store.dispatch('caregiver/fetchCaregiversList')
@@ -85,6 +91,7 @@ export default defineComponent({
     return {
       caregiverColor,
       caregivers,
+      iconSize,
       goToPage
     }
   }

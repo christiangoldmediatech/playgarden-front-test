@@ -155,6 +155,7 @@
                           color="#AAAAAA"
                           solo
                           dense
+                          class="custom-text-field"
                           flat
                         />
                       </validation-provider>
@@ -182,6 +183,7 @@
                           color="#AAAAAA"
                           solo
                           dense
+                          class="custom-text-field"
                           flat
                         />
                       </validation-provider>
@@ -213,6 +215,7 @@
                                 :disabled="loading"
                                 :error-messages="errors"
                                 readonly
+                                class="custom-text-field"
                                 background-color="#F7F7F7"
                                 color="#AAAAAA"
                                 solo
@@ -252,6 +255,7 @@
                           background-color="#F7F7F7"
                           color="#AAAAAA"
                           solo
+                          class="custom-text-field"
                           dense
                         />
                       </validation-provider>
@@ -701,6 +705,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
 @import '~/assets/scss/account.scss';
 
 .child-name {

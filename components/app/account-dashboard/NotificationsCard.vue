@@ -13,28 +13,30 @@
     <div class="account-purple-dashed-line"></div>
 
     <v-col cols="12">
-      <v-row no-gutters>
-        <span></span>
-        <v-col
-          v-for="notification in notificationsList"
-          :key="notification.id"
-          cols="12"
-          no-gutters
-        >
-          <v-checkbox
-            v-model="notification.enabled.email"
-            color="#C399ED"
-            readonly
-            dense
-            hide-details
-            class="ma-0 pa-0"
+      <pg-loading :loading="loading">
+        <v-row no-gutters>
+          <v-col
+            v-for="(notification, notificationIndex) in notificationsList"
+            :key="notification.id"
+            cols="12"
+            no-gutters
           >
-            <template #label>
-              <span class="account-checkbox-label">{{ notification.name }}</span>
-            </template>
-          </v-checkbox>
-        </v-col>
-      </v-row>
+            <v-checkbox
+              v-model="notification.enabled.email"
+              :loading="loading"
+              color="#C399ED"
+              dense
+              hide-details
+              class="ma-0 pa-0"
+              @change="toggleNotificationEmail(notification, notificationIndex)"
+            >
+              <template #label>
+                <span class="account-checkbox-label">{{ notification.name }}</span>
+              </template>
+            </v-checkbox>
+          </v-col>
+        </v-row>
+      </pg-loading>
     </v-col>
 
     <v-col cols="12">
@@ -62,6 +64,7 @@ export default defineComponent({
 
     const store = useStore<TypedStore>()
     const router = useRouter()
+    const loading = ref(false)
 
     const notificationsList = ref<any>([])
 
@@ -92,13 +95,35 @@ export default defineComponent({
       }))
     }
 
+    const toggleNotificationEmail = async (notification: any, index: number) => {
+      try {
+        loading.value = true
+
+        await store.dispatch('notifications/users/updateNotificationEmail', notification.id)
+      } catch (e) {
+        const notificationsCopy = [...notificationsList.value]
+
+        notificationsCopy[index] = {
+          ...notification,
+          enabled: {
+            ...notification.enabled,
+            email: !notification.enabled.email
+          }
+        }
+      } finally {
+        loading.value = false
+      }
+    }
+
     onMounted(async () => {
       await getNotificationsUsersData()
     })
 
     return {
+      loading,
       notificationsColor,
       notificationsList,
+      toggleNotificationEmail,
       goToPage
     }
   }

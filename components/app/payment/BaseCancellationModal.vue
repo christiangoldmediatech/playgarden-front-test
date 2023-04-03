@@ -33,6 +33,7 @@
       <v-row no-gutters class="px-8">
         <v-textarea
           v-model="explanation"
+          class="custom-text-field"
           :required="explanationRequired"
           :placeholder="placeholder"
           solo
@@ -143,6 +144,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
 @import '~/assets/scss/cancellation-flow.scss';
 
 ::v-deep .v-text-field .v-input__control .v-input__slot textarea::placeholder {

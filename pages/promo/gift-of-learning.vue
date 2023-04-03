@@ -75,7 +75,7 @@
                     :disabled="loading"
                     :error-messages="errors"
                     clearable
-                    class="pr-md-3"
+                    class="pr-md-3 custom-text-field"
                     dense
                     label="First Name"
                     solo-labeled
@@ -94,7 +94,7 @@
                     v-model="form.lastName"
                     :disabled="loading"
                     :error-messages="errors"
-                    class="pl-md-3"
+                    class="pl-md-3 custom-text-field"
                     clearable
                     dense
                     label="Last Name"
@@ -112,6 +112,7 @@
             >
               <pg-text-field
                 v-model="form.email"
+                class="custom-text-field"
                 :disabled="loading"
                 :error-messages="errors"
                 clearable
@@ -131,6 +132,7 @@
                 :value="form.phoneNumber"
                 :disabled="loading"
                 :error-messages="errors"
+                class="custom-text-field"
                 clearable
                 dense
                 label="Phone number"
@@ -169,7 +171,7 @@
                       :disabled="loading"
                       :error-messages="errors"
                       clearable
-                      class="pr-md-3"
+                      class="pr-md-3 custom-text-field"
                       dense
                       label="First Name"
                       solo-labeled
@@ -188,7 +190,7 @@
                       v-model="form.lastNameGift"
                       :disabled="loading"
                       :error-messages="errors"
-                      class="pl-md-3"
+                      class="pl-md-3 custom-text-field"
                       clearable
                       dense
                       label="Last Name"
@@ -206,6 +208,7 @@
               >
                 <pg-text-field
                   v-model="form.emailGift"
+                  class="custom-text-field"
                   :disabled="loading"
                   :error-messages="errors"
                   clearable
@@ -225,6 +228,7 @@
                   :value="form.phoneNumberGift"
                   :disabled="loading"
                   :error-messages="errors"
+                  class="custom-text-field"
                   clearable
                   dense
                   label="Phone number"
@@ -243,6 +247,7 @@
             >
               <pg-text-field
                 v-model="form.childName"
+                class="custom-text-field"
                 :disabled="loading"
                 :error-messages="errors"
                 clearable
@@ -278,6 +283,7 @@
             <validation-provider v-slot="{ errors }" name="Street">
               <pg-text-field
                 v-model="form.street2"
+                class="custom-text-field"
                 :error-messages="errors"
                 :disabled="loading"
                 clearable
@@ -296,6 +302,7 @@
             >
               <pg-text-field
                 v-model="form.city"
+                class="custom-text-field"
                 :disabled="loading"
                 :error-messages="errors"
                 clearable
@@ -318,7 +325,7 @@
                     :disabled="loading"
                     :error-messages="errors"
                     clearable
-                    class="pr-md-3"
+                    class="pr-md-3 custom-text-field"
                     dense
                     label="State"
                     solo-labeled
@@ -337,7 +344,7 @@
                     v-model="form.zipCode"
                     :disabled="loading"
                     :error-messages="errors"
-                    class="pl-md-3"
+                    class="pl-md-3 custom-text-field"
                     clearable
                     dense
                     label="Zip code"
@@ -567,6 +574,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
+
 .pg-text-\[18px\] {
   font-size: 18px;
 }

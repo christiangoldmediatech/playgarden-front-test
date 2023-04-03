@@ -13,6 +13,7 @@
       >
         <pg-text-field
           v-model="draft.firstName"
+          class="custom-text-field"
           clearable
           :disabled="!editing || loading"
           :error-messages="errors"
@@ -30,6 +31,7 @@
       >
         <pg-text-field
           v-model="draft.lastName"
+          class="custom-text-field"
           clearable
           :disabled="!editing || loading"
           :error-messages="errors"
@@ -47,6 +49,7 @@
       >
         <pg-text-field
           v-model="draft.phoneNumber"
+          class="custom-text-field"
           clearable
           :disabled="!editing || loading"
           :error-messages="errors"
@@ -112,3 +115,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
+</style>

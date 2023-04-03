@@ -477,10 +477,11 @@ export default {
 }
 
 .paper-bg-logged {
-  background-image: url('~@/assets/png/paper-header.png');
-
-  @media screen and (max-width: 1201px) {
-    background-image: url('~@/assets/png/paper-header-mobile.png');
+  background-image: url('~@/assets/png/paper.png');
+  background-position: center 89%;
+  background-size: unset;
+  @media screen and (min-width: $breakpoint-lg) {
+    background-size: cover;
   }
 }
 </style>

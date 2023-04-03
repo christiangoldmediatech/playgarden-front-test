@@ -122,6 +122,7 @@
               <v-col cols="12">
                 <pg-text-field
                   v-model="feedback.title"
+                  class="custom-text-field"
                   label="Title"
                   solo-labeled
                 />
@@ -129,6 +130,7 @@
               <v-col cols="12">
                 <pg-textarea
                   v-model="feedback.feedback"
+                  class="custom-text-field"
                   label="Feedback"
                   solo-labeled
                 />
@@ -304,6 +306,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
+
 .portfolio-card {
   transition: transform 250ms;
 }

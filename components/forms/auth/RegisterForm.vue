@@ -17,6 +17,7 @@
                 :disabled="loading"
                 :error-messages="errors"
                 label="Name"
+                class="custom-text-field"
                 :loading="loading"
                 solo
               />
@@ -35,6 +36,7 @@
                 :disabled="loading"
                 :error-messages="errors"
                 label="Last name"
+                class="custom-text-field"
                 :loading="loading"
                 solo
               />
@@ -56,6 +58,7 @@
                     :error-messages="errors"
                     label="Phone Number (optional)"
                     :loading="loading"
+                    class="custom-text-field"
                     solo
                   />
                 </validation-provider>
@@ -78,6 +81,7 @@
                     label="Email"
                     :loading="loading"
                     solo
+                    class="custom-text-field"
                     type="email"
                   />
                 </validation-provider>
@@ -88,6 +92,7 @@
                     <validation-provider name="Address" rules="required">
                       <search-address-autocomplete
                         v-model="addressDraft.address1"
+                        class="custom-text-field"
                         @address-components="configureAddress"
                       />
                     </validation-provider>
@@ -105,6 +110,7 @@
                         :disabled="loading"
                         :error-messages="errors"
                         label="Phone Number (optional)"
+                        class="custom-text-field"
                         :loading="loading"
                         solo
                       />
@@ -139,6 +145,7 @@
                           :loading="loading"
                           maxlength="20"
                           solo
+                          class="custom-text-field"
                           v-bind="attrs"
                           v-on="on"
                         />
@@ -178,6 +185,7 @@
                       clearable
                       label="Coupon"
                       solo
+                      class="custom-text-field"
                       @change="checkCoupon"
                     />
                   </validation-provider>
@@ -622,6 +630,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
+
 .green2 {
   color: var(--v-black-base);
   &:hover {

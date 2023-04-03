@@ -24,6 +24,7 @@
             v-model="form.firstName"
             label="First Name"
             solo-labeled
+            class="custom-text-field"
             :error-messages="errors"
           />
         </validation-provider>
@@ -37,6 +38,7 @@
             v-model="form.lastName"
             label="Last Name"
             solo-labeled
+            class="custom-text-field"
             :error-messages="errors"
           />
         </validation-provider>
@@ -50,6 +52,7 @@
             v-model="form.email"
             label="Email"
             solo-labeled
+            class="custom-text-field"
             :error-messages="errors"
           />
         </validation-provider>
@@ -63,6 +66,7 @@
             v-model="form.help"
             label="How can we help you?"
             solo-labeled
+            class="custom-text-field"
             :error-messages="errors"
           />
         </validation-provider>
@@ -159,6 +163,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
 .v-btn:not(.v-btn--text) {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16) !important;
 }

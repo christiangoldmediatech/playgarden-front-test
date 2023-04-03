@@ -350,9 +350,9 @@ export default defineComponent({
   .container:not(.container--fluid) {
     max-width: 1200px;
   }
-  .v-text-field .v-input__control .v-input__slot {
-    box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
-  }
+  // .v-text-field .v-input__control .v-input__slot {
+  //   box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.16) !important;
+  // }
   .pg-letter-spacing {
     letter-spacing: 6.75px !important;
   }

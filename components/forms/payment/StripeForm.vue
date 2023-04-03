@@ -27,6 +27,7 @@
           :error-messages="errors"
           label="Promotion Code"
           solo
+          class="custom-text-field"
           @blur="checkValid"
         />
       </validation-provider>
@@ -168,6 +169,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
+
 .accept-terms ::v-deep .v-label {
   color: var(--v-black-base) !important;
   opacity: 2.49 !important;

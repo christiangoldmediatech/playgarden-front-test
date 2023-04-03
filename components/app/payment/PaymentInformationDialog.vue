@@ -50,6 +50,7 @@
                 v-model="promotionCode"
                 :error-messages="errors"
                 label="Promotion Code"
+                class="custom-text-field"
                 :color="isValidCoupon ? '' : 'error'"
                 :suffix="getTextValidateCoupon"
                 :loading="isValidatingCoupon"
@@ -255,6 +256,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/app.scss';
+
 .payment-info-dialog {
   z-index: 1000;
 }
