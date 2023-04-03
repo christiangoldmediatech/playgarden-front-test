@@ -104,7 +104,7 @@
 import {
   defineComponent
 } from '@nuxtjs/composition-api'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 import { Plan } from '@/models'
@@ -120,6 +120,10 @@ export default defineComponent({
     PlanDescription
   },
 
+  computed: {
+    ...mapGetters('auth', ['getUserInfo']),
+  },
+
   data: () => ({
     /** @type {import('@/models').Plan[]} */
     plans: [],
@@ -133,13 +137,20 @@ export default defineComponent({
     ]),
 
     async fetchPlans() {
+
       try {
         this.plans = await this.fetchSubscriptionPlan()
       } catch (e) {}
     },
 
     redirectPlaygarden(){
-      window.open('https://playgardenonline.com/school/app/payment/plan', "_parent")
+      const isLoggedIn = this.$route.query.isLogged
+
+      if (isLoggedIn) {
+        window.open('https://playgardenonline.com/school/app/payment/plan', "_parent")
+      } else {
+        window.open('https://playgardenonline.com/school/auth/preschool/normal', "_parent")
+      }
     }
   },
 
