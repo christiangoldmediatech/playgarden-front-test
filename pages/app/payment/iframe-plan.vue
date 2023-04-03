@@ -104,7 +104,7 @@
 import {
   defineComponent
 } from '@nuxtjs/composition-api'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 import { Plan } from '@/models'
@@ -120,10 +120,6 @@ export default defineComponent({
     PlanDescription
   },
 
-  computed: {
-    ...mapGetters('auth', ['getUserInfo']),
-  },
-
   data: () => ({
     /** @type {import('@/models').Plan[]} */
     plans: [],
@@ -137,7 +133,6 @@ export default defineComponent({
     ]),
 
     async fetchPlans() {
-
       try {
         this.plans = await this.fetchSubscriptionPlan()
       } catch (e) {}
