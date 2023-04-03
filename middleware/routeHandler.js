@@ -49,8 +49,7 @@ export default async function ({ redirect, route, store, app, req }) {
   isLoggedIn = await store.dispatch('auth/checkAuth', undefined, { root: true })
 
   if (route.name === 'app-payment-iframe-plan' && !route.query.isLogged && isLoggedIn) {
-    redirect({ name: 'app-payment-iframe-plan', query: { isLogged: true } })
-    return
+    return redirect({ name: 'app-payment-iframe-plan', query: { isLogged: true } })
   } else if (route.name === 'app-payment-iframe-plan') {
     return
   }
