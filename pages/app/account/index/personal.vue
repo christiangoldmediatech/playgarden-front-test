@@ -41,7 +41,7 @@
             </span>
 
             <v-btn
-              v-if="!isEditingShippingAddress"
+              v-if="!isEditingShippingAddress && isShippingAddressFormVisible"
               text
               color="#F89838"
               @click="setEditingShippingAddress"
@@ -80,22 +80,8 @@
 
             <!-- SHIPPING ADDRESS IS REQUIRED TO SEND WELCOME KIT -->
             <div v-else key="shipping-address-required">
-              <p v-if="isUserInTrial" class="text-center pg-text-[20px] mt-4">
-                We use this information to send Playgarden Prep educational materials to users who
-                subscribe to our $ 99.99/monthly plan. <br>
-                <span
-                  class="text-decoration-underline font-weight-bold timezone"
-                  @click="$router.push({
-                    name: 'app-payment-plan',
-                  })"
-                > Learn more</span>
-              </p>
-
-              <p v-else class="text-center pg-text-[20px] mt-4">
+              <p class="mt-2 account-placeholder-text text-center">
                 Please enter your shipping address.
-              </p>
-              <p v-if="isUserTrial" class="mt-7 pg-text-[14px]">
-                *In the territorial US and Canada only.
               </p>
 
               <v-btn x-large block color="primary" class="mt-7" @click="showShippingAddressForm">
