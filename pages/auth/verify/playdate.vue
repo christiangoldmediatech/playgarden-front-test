@@ -39,7 +39,7 @@ export default {
           return this.$router.push({ name: 'auth-login' })
         }
 
-        await this.$snotify.success(
+        await this.$toast.success(
           'Invitation has been verified successfully!'
         )
 

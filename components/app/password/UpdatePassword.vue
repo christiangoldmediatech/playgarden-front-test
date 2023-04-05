@@ -63,7 +63,7 @@ export default {
       try {
         await this.updateUserPassword(draft)
         await this.fetchUserInfo()
-        this.$snotify.success('Password has been updated successfully!')
+        this.$toast.success('Password has been updated successfully!')
         this.$emit('update:success')
       } finally {
         this.loading = false

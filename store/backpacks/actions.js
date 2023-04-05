@@ -1,4 +1,4 @@
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 
 export default {
   createBackpack (_, data) {
@@ -15,7 +15,7 @@ export default {
         .$get('/backpacks', { params })
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting backpacks.'
           })
           // TO DO async away

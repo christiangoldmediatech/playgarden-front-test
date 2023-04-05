@@ -114,7 +114,7 @@ export default {
       try {
         await this.deleteCaregiverInvitation({ id })
 
-        this.$snotify.success('Invitation has been deleted successfully!')
+        this.$toast.success('Invitation has been deleted successfully!')
 
         this.getInvitationList()
       } catch (e) {
@@ -129,7 +129,7 @@ export default {
       try {
         await this.resendCaregiverInvitation(data)
 
-        this.$snotify.success('Invitation has been resent successfully!')
+        this.$toast.success('Invitation has been resent successfully!')
       } catch (e) {
       } finally {
         this.loading = false

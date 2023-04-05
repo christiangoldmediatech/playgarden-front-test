@@ -88,7 +88,7 @@ import {
   useAuth,
   useNotification,
   useNuxtHelper,
-  useSnotifyHelper
+  useToastHelper
 } from '@/composables'
 
 export default defineComponent({
@@ -122,7 +122,7 @@ export default defineComponent({
 
     const store = useStore<TypedStore>()
     const nuxt = useNuxtHelper()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
 
     const Auth = useAuth({ store })
     const Notifications = useNotification({ store })
@@ -143,7 +143,7 @@ export default defineComponent({
         Notifications.setIsTrialEndingPlanSelectedModalVisible(true)
         nuxt.$emit('plan-membership-changed')
       } catch (e) {
-        snotify.error('Could not select plan. Please try again later.')
+        toast.error('Could not select plan. Please try again later.')
       } finally {
         loading.value = false
       }

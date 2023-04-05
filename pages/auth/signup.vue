@@ -244,7 +244,7 @@ export default {
         }
 
         if (!this.emailValidated) {
-          this.$snotify.success('Welcome to Playgarden Prep!')
+          this.$toast.success('Welcome to Playgarden Prep!')
         }
       } catch (e) {
       } finally {

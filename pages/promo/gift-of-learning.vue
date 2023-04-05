@@ -432,7 +432,7 @@
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import StripeCard from '@/components/forms/payment/StripeCard.vue'
 import SearchAddressAutocomplete from '@/components/SearchAddressAutocomplete.vue'
-import { useSnotifyHelper } from '@/composables'
+import { useToastHelper } from '@/composables'
 import { axios } from '@/utils'
 
 export default defineComponent({
@@ -450,7 +450,7 @@ export default defineComponent({
   },
 
   setup() {
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const loading = ref(false)
     const giftTarget = ref<'someone-else' | 'me'>('someone-else')
 
@@ -475,19 +475,19 @@ export default defineComponent({
     const buyNow = async (validate: () => Promise<boolean>) => {
       try {
         if (!(await validate())) {
-          snotify.error('Please, verify the required fields')
+          toast.error('Please, verify the required fields')
           return
         }
         handleFieldsWhenGiftIsForMyself()
         loading.value = true
         await axios.$post('/promotions', { ...form.value })
-        snotify.success('Thank you for your order!')
+        toast.success('Thank you for your order!')
         window.open(
           'https://playgardenonline.com/gift-of-leaning/thank-you',
           '_self'
         )
       } catch (error) {
-        snotify.error('Could not buy now')
+        toast.error('Could not buy now')
       } finally {
         loading.value = false
       }

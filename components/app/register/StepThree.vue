@@ -85,7 +85,7 @@ export default defineComponent({
 
         await this.fetchUserInfo()
 
-        this.$snotify.success('Child information has been saved!')
+        this.$toast.success('Child information has been saved!')
         this.goToLessons()
       } catch (e) {
       } finally {

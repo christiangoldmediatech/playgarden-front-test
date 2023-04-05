@@ -101,10 +101,6 @@ export default {
       src: 'tiptap-vuetify/dist/main.css',
       lang: 'css'
     },
-    {
-      src: 'vue-snotify/styles/material.css',
-      lang: 'css'
-    },
     './assets/scss/pg-components/index.scss',
     './assets/scss/app.scss',
     './assets/scss/pg-icons.scss',
@@ -120,7 +116,6 @@ export default {
     '@/plugins/directives',
     '@/plugins/filters',
     '@/plugins/globalPartials',
-    '@/plugins/snotify',
     '@/plugins/validate',
     '@/plugins/vueCtkDateTimePicker',
     { src: '@/plugins/echarts', mode: 'client' },
@@ -134,7 +129,8 @@ export default {
     },
     {
       src: '~/plugins/events/eventBus'
-    }
+    },
+    '@/plugins/toast'
   ],
   /*
    ** Auto import components

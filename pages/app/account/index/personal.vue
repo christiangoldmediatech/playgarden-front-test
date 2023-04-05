@@ -115,7 +115,7 @@ import { mapGetters } from 'vuex'
 import GeneralInfo from '@/components/app/user/GeneralInfo.vue'
 import ShippingAddressDetails from '@/components/app/payment/ShippingAddressDetails.vue'
 import { defineComponent, onMounted, ref, useRoute } from '@nuxtjs/composition-api'
-import { useShippingAddress, useSnotifyHelper } from '@/composables'
+import { useShippingAddress, useToastHelper } from '@/composables'
 
 export default defineComponent({
   name: 'Personal',
@@ -134,7 +134,7 @@ export default defineComponent({
     const isLoading = ref(true)
     const generalInfoColor = ref('120, 195, 131')
     const shippingAddressColor = ref('106, 199, 249')
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
 
     onMounted(() => {
       handleRouteAction()
@@ -154,7 +154,7 @@ export default defineComponent({
         isLoading.value = true
         isShippingAddressFormVisible.value = Boolean(await ShippingAddress.getShippingAdress())
       } catch (error) {
-        snotify.error('Error checking shipping address')
+        toast.error('Error checking shipping address')
       } finally {
         isLoading.value = false
       }

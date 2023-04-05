@@ -65,7 +65,7 @@
 
 <script>
 import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
-import { useAuth, useBilling, useSnotifyHelper } from '@/composables'
+import { useAuth, useBilling, useToastHelper } from '@/composables'
 import CreditCardModal from '@/components/app/payment/CreditCardModal.vue'
 import { UserFlow } from '@/models'
 
@@ -81,7 +81,7 @@ export default defineComponent({
     const store = useStore()
     const Auth = useAuth({ store })
     const Billing = useBilling()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
 
     const isCreditCardModalVisible = ref(false)
     const loadingBtn = ref(false)
@@ -107,7 +107,7 @@ export default defineComponent({
         await Auth.fetchUserInfo()
         emit('plan-membership-changed')
       } catch (error) {
-        snotify.error('Could not select plan. Please, try again later.')
+        toast.error('Could not select plan. Please, try again later.')
       } finally {
         loadingBtn.value = false
         emit('viewWelcomePlayAndLearn')

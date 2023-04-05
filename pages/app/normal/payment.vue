@@ -82,7 +82,7 @@ import {
 } from '@nuxtjs/composition-api'
 import { useGtm } from '@/composables/web/gtm'
 import { useUTM } from '@/composables/web/utm'
-import { usePayment, useSnotifyHelper } from '@/composables'
+import { usePayment, useToastHelper } from '@/composables'
 import { useUser } from '@/composables/users'
 import StripePayForm from '@/components/forms/payment/StripePayForm.vue'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
@@ -107,7 +107,7 @@ export default defineComponent({
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
 
     const Gtm = useGtm()
     const Utm = useUTM({ route: route.value })
@@ -168,7 +168,7 @@ export default defineComponent({
 
         goToNextStep()
       } catch {
-        snotify.error('Something went wrong. Please try again.')
+        toast.error('Something went wrong. Please try again.')
       } finally {
         loading.value = false
       }

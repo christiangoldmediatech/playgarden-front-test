@@ -36,7 +36,7 @@
 import { defineComponent, useStore, computed, ref } from '@nuxtjs/composition-api'
 import StripePayForm from '@/components/forms/payment/StripePayForm.vue'
 import { TypedStore } from '@/models'
-import { useNotification, useSnotifyHelper } from '@/composables'
+import { useNotification, useToastHelper } from '@/composables'
 
 export default defineComponent({
   components: {
@@ -46,7 +46,7 @@ export default defineComponent({
   setup () {
     const store = useStore<TypedStore>()
     const notification = useNotification({ store })
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const isPaymentMethodModalLoading = ref(false)
 
     const isModalVisible = computed({
@@ -77,11 +77,11 @@ export default defineComponent({
         }
 
         await store.dispatch('fetchBillingCards/addBillingCard', dataSubscrition)
-        snotify.success('Payment method added!')
+        toast.success('Payment method added!')
         closeModal()
         notification.setIsTrialEndingPlanSelectedModalVisible(true)
       } catch (error) {
-        snotify.error('There was an error adding your payment method.')
+        toast.error('There was an error adding your payment method.')
       } finally {
         isPaymentMethodModalLoading.value = false
       }

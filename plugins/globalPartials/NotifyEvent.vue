@@ -1,5 +1,5 @@
 <template>
-  <vue-snotify />
+  <div></div>
 </template>
 
 <script>
@@ -7,9 +7,9 @@ import { mapGetters } from 'vuex'
 
 export default {
   /**
-   * This is just a simple wrapper for snotify,
+   * This is just a simple wrapper for toast,
    * it just handles vuex events in a easy way,
-   * you can still use this.$snotify trough system components.
+   * you can still use this.$toast trough system components.
    * Remember import it into any layout you want to use it :).
    */
   name: 'NotifyEvent',
@@ -28,7 +28,7 @@ export default {
       type
     } = {}) {
       if (body && type) {
-        this.$snotify[type](body, title, config)
+        this.$toast[type](body, title, config)
       }
     }
   }

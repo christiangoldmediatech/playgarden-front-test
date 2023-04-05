@@ -41,7 +41,7 @@ export default () => ({
     'shared-slug': 1
   },
 
-  // For more options please see the doc for vue-snotify
+  // For more options please see the doc for vue-toast
   globalNotificationMessage: {
     body: null,
     config: { timeout: 2000 },

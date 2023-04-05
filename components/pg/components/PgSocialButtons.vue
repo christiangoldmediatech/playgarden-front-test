@@ -274,7 +274,7 @@ export default {
 
         this.apiData = { link, imageUrl, text, description }
       } catch (e) {
-        this.$snotify.error(
+        this.$toast.error(
           'There was an error generating your social sharing link.'
         )
       }

@@ -100,7 +100,7 @@ import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import StepTwoCardSummary from '@/components/app/learn-play/StepTwoCardSummary/StepTwoCardSummary.vue'
 import StepTwoCardDetail from '@/components/app/learn-play/StepTwoCardDetail/StepTwoCardDetail.vue'
 import StripePayForm from '@/components/forms/payment/StripePayForm.vue'
-import { usePayment, useSnotifyHelper } from '@/composables'
+import { usePayment, useToastHelper } from '@/composables'
 import { CardData, DataSubscription } from '@/models'
 import { usePromoCodeDialog } from '@/composables/web/signup'
 import PromoCodeDialog from '@/components/app/register/PromoCodeDialog.vue'
@@ -120,7 +120,7 @@ export default defineComponent({
 
   setup() {
     const store = useStore()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const route = useRoute()
     const router = useRouter()
     const Payment = usePayment()
@@ -152,7 +152,7 @@ export default defineComponent({
 
         goToNextStep()
       } catch {
-        snotify.error('Something went wrong. Please try again.')
+        toast.error('Something went wrong. Please try again.')
       } finally {
         isLoading.value = false
       }

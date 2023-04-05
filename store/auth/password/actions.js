@@ -1,4 +1,4 @@
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 
 export default {
   forgotUserPassword ({ commit }, { email, phone }) {
@@ -13,7 +13,7 @@ export default {
     try {
       await this.$axios.patch('/auth/password/change', draft)
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while updating your password!'
       })
     }

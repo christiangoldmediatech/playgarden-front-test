@@ -104,7 +104,7 @@ import IntermediateCancellationModal from '@/components/app/payment/Intermediate
 import FinalCancellationMessage from '@/components/app/payment/FinalCancellationMessage.vue'
 import CreditCardModal from '@/components/app/payment/CreditCardModal.vue'
 import { PlanTier, TypedStore, UserFlow } from '@/models'
-import { useAuth, useBilling, useCancellation, useSnotifyHelper } from '@/composables'
+import { useAuth, useBilling, useCancellation, useToastHelper } from '@/composables'
 
 export default defineComponent({
   name: 'CancellationSteps',
@@ -162,7 +162,7 @@ export default defineComponent({
   emits: ['input', 'closeModal', 'reloadInformation'],
   setup(props, { emit }) {
     const store = useStore<TypedStore>()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const auth = useAuth({ store })
     const billing = useBilling()
     const {
@@ -170,7 +170,7 @@ export default defineComponent({
       applyDiscountCode,
       cancelSubscription,
       changeSubscription
-    } = useCancellation({ store, snotify })
+    } = useCancellation({ store, toast })
 
     const loading = ref(false)
     const hasDiscountBeenApplied = ref(false)
@@ -325,7 +325,7 @@ export default defineComponent({
           viewFirstNegativeModal.value = true
         }
       } catch {
-        snotify.error('Could not process plan cancellation')
+        toast.error('Could not process plan cancellation')
       } finally {
         loading.value = false
         viewBaseModal.value = false
@@ -343,7 +343,7 @@ export default defineComponent({
 
         await applySubscriptionCancelLogic(false)
       } catch {
-        snotify.error('Could not process plan cancellation')
+        toast.error('Could not process plan cancellation')
       } finally {
         loading.value = false
         viewLastModal.value = false
@@ -376,7 +376,7 @@ export default defineComponent({
           await applySubscriptionCancelLogic()
         }
       } catch {
-        snotify.error('Something went wrong')
+        toast.error('Something went wrong')
       } finally {
         loading.value = false
         viewFirstNegativeModal.value = false
@@ -399,7 +399,7 @@ export default defineComponent({
           await applySubscriptionCancelLogic()
         }
       } catch {
-        snotify.error('Something went wrong')
+        toast.error('Something went wrong')
       } finally {
         loading.value = false
         viewSecondNegativeModal.value = false
@@ -448,7 +448,7 @@ export default defineComponent({
 
         return true
       } catch {
-        snotify.error('Could not change subscription plan')
+        toast.error('Could not change subscription plan')
         return false
       }
     }

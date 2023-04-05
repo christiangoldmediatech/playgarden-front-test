@@ -86,7 +86,7 @@ import {
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
-import { useSnotifyHelper } from '@/composables'
+import { useToastHelper } from '@/composables'
 import { useUTM } from '@/composables/web/utm'
 import { useModal } from '@/composables/web/modal'
 import {
@@ -122,7 +122,7 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const route = useRoute()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
 
     const Auth = useAuth()
     const Modal = useModal()
@@ -165,7 +165,7 @@ export default defineComponent({
       try {
         loading.value = true
         await ParentSignup.signup(data, signupType)
-        snotify.success('Welcome to Playgarden Prep!')
+        toast.success('Welcome to Playgarden Prep!')
         goToNextStep()
       } catch (e) {
         const error = e as any

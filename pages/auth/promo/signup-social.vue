@@ -58,7 +58,7 @@ export default {
           }
         })
         .catch((e) => {
-          this.$snotify.error(e.message)
+          this.$toast.error(e.message)
         })
         .finally(() => fireAuthObj.signOut())
     },
@@ -102,7 +102,7 @@ export default {
           query: { process: 'social-signup', _u: btoa(JSON.stringify(user)) }
         })
       } catch (e) {
-        this.$snotify.error('This email is already in use!')
+        this.$toast.error('This email is already in use!')
       } finally {
         this.enableAxiosGlobal()
       }

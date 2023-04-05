@@ -1,5 +1,5 @@
 import { actionTree } from 'typed-vuex'
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 import { Flow } from '@/composables/users/enums/flow.enum'
 import { ParentSignupPayload } from '@/composables/web/signup/types/parent-signup-payload.type'
 import { state, getters, mutations } from './'
@@ -48,7 +48,7 @@ export default actionTree(
 
         return dispatch('auth/fetchUserInfo', null, { root: true })
       } catch (error) {
-        snotifyError(commit, {
+        toastError(commit, {
           body: 'Sorry! There was an error while signing you up.'
         })
 

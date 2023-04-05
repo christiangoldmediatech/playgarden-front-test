@@ -292,7 +292,7 @@ export default {
           }
         })
         .catch((e) => {
-          this.$snotify.error(e.message)
+          this.$toast.error(e.message)
         })
         .finally(() => fireAuthObj.signOut())
     },
@@ -328,10 +328,10 @@ export default {
         this.enableAxiosGlobal()
         if (this.userInfo.email === user.email) {
           await this.fetchUserInfo()
-          this.$snotify.success('The account has been successfully synchronized with the social network.')
+          this.$toast.success('The account has been successfully synchronized with the social network.')
         }
       } catch (e) {
-        this.$snotify.error(e.message)
+        this.$toast.error(e.message)
       }
     },
 

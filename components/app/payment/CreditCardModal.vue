@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { useAuth, useBilling, useSnotifyHelper, useVuetifyHelper } from '@/composables'
+import { useAuth, useBilling, useToastHelper, useVuetifyHelper } from '@/composables'
 import { TypedStore } from '@/models'
 import { defineComponent, computed, ref, useStore } from '@nuxtjs/composition-api'
 
@@ -89,7 +89,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const vuetify = useVuetifyHelper()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const store = useStore<TypedStore>()
     const Auth = useAuth({ store })
     const Billing = useBilling()
@@ -127,10 +127,10 @@ export default defineComponent({
         // cleanup
         await Auth.fetchUserInfo()
 
-        snotify.success('Payment method added!')
+        toast.success('Payment method added!')
         emit('card-added')
       } catch (e) {
-        snotify.error('Could not add payment method! Please try again.')
+        toast.error('Could not add payment method! Please try again.')
       } finally {
         isPaymentMethodModalLoading.value = false
       }

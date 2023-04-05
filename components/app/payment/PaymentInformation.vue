@@ -73,7 +73,7 @@
 
 <script lang="ts">
 import StripeCard from '@/components/forms/payment/StripeCard.vue'
-import { useSnotifyHelper } from '@/composables'
+import { useToastHelper } from '@/composables'
 import { defineComponent, useStore, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
@@ -94,7 +94,7 @@ export default defineComponent({
     const token = ref<string>('')
     const showCardForm = ref(false)
     const loading = ref(false)
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
 
     const formatCardNumber = (lastNumbers: string) => {
       return `************${lastNumbers}`
@@ -114,10 +114,10 @@ export default defineComponent({
         } else {
           await store.dispatch('payment/addBillingCard', { ...data, sendEmail: true })
         }
-        snotify.success('Card has been updated successfully!')
+        toast.success('Card has been updated successfully!')
         emit('update:cards')
       } catch (e: any) {
-        snotify.error(e.message)
+        toast.error(e.message)
       } finally {
         token.value = ''
         showCardForm.value = false

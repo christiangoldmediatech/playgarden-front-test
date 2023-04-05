@@ -55,7 +55,7 @@ export default {
         const { sent } = await this.forgotUserPassword(draft)
 
         if (sent) {
-          this.$snotify.success('Instructions Sent!')
+          this.$toast.success('Instructions Sent!')
           setTimeout(() => {
             const from = this.$route.query.from
 
@@ -70,7 +70,7 @@ export default {
           throw new Error('error')
         }
       } catch (e) {
-        this.$snotify.error(
+        this.$toast.error(
           'Sorry! There was an error sending the reset password instructions'
         )
       } finally {

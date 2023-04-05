@@ -1,6 +1,6 @@
 import { actionTree } from 'typed-vuex'
 import jwtDecode from 'jwt-decode'
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 import { hasLocalStorage } from '@/utils/window'
 import { User } from '@/composables/users/types'
 import { state, mutations, getters } from './'
@@ -112,7 +112,7 @@ export default actionTree(
         return data
       } catch (error) {
         if (!rootGetters.isDisabledAxiosGlobalErrorHandler) {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while fetching user info!'
           })
         }
@@ -128,7 +128,7 @@ export default actionTree(
         }
         return data.user
       } catch (error) {
-        snotifyError(commit, {
+        toastError(commit, {
           body: 'Sorry! There was an error while updating user info!'
         })
       }
