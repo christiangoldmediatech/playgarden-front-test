@@ -90,7 +90,9 @@ export default defineComponent({
     })
 
     const fetchAddress = async () => {
+      store.commit('account/SET_LOADING_SHIPPING_ADDRESS_INFO', true)
       address.value = await store.dispatch('shipping-address/getShippingAddress')
+      store.commit('account/SET_LOADING_SHIPPING_ADDRESS_INFO', false)
     }
 
     const goToPage = () => {

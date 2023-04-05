@@ -76,8 +76,10 @@ export default defineComponent({
     })
 
     const fetchCaregivers = async () => {
+      store.commit('account/SET_LOADING_CAREGIVER_INFO', true)
       const { users } = await store.dispatch('caregiver/fetchCaregiversList')
       caregivers.value = users
+      store.commit('account/SET_LOADING_CAREGIVER_INFO', false)
     }
 
     const goToPage = () => {
