@@ -3,7 +3,7 @@
     <v-col>
       <v-row justify="center">
         <v-card width="80vh" max-width="90%" elevation="0" color="transparent">
-          <v-row justify="end">
+          <v-row justify="end" class="py-3">
             <v-btn
               class="timeline-close-btn"
               color="white"

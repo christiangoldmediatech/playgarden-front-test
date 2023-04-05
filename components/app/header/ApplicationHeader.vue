@@ -480,7 +480,7 @@ export default {
   background-image: url('~@/assets/png/paper.png');
   background-position: center 89%;
   background-size: unset;
-  @media screen and (min-width: $breakpoint-lg) {
+  @media screen and (min-width: $breakpoint-md) {
     background-size: cover;
   }
 }

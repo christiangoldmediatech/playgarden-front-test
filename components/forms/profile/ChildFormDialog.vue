@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="viewModal" max-width="600px">
+  <v-dialog v-model="viewModal" max-width="600px" :style="{ 'z-index': zIndex }">
     <v-card
       v-if="draft.id"
       class="!pg-relative pa-4 pa-sm-8 !pg-rounded-3xl"
@@ -243,8 +243,8 @@
         </v-form>
       </validation-observer>
       <!-- Readonly child info -->
-      <v-row v-if="!isEditing" class="mt-5 mt-md-0" no-gutters>
-        <v-col cols="4" md="3" class="pb-3">
+      <v-row v-if="!isEditing" class="mt-8 mt-md-0" no-gutters>
+        <v-col cols="4" class="pb-3 d-flex justify-center">
           <img
             v-if="firstBackpack"
             :alt="childBackpack(draft.backpackId).name"
@@ -253,7 +253,7 @@
           >
         </v-col>
 
-        <v-col cols="8" md="9" class="d-flex flex-column justify-start justify-md-end pl-3">
+        <v-col cols="8" class="d-flex flex-column justify-start justify-md-end pl-3">
           <h1 class="child-name mb-0 mb-md-3">
             {{ draft.firstName }} {{ (draft.lastName) ? draft.lastName : '' }}
           </h1>
@@ -381,6 +381,8 @@ export default defineComponent({
     const loading = ref(false)
     const router = useRouter()
 
+    const zIndex = ref('1000')
+
     const draft = ref<any>({})
 
     const genders = ref([
@@ -483,6 +485,7 @@ export default defineComponent({
     return {
       viewModal,
       draft,
+      zIndex,
       loading,
       isEditing,
       genders,
@@ -512,6 +515,34 @@ export default defineComponent({
     background-color: var(--v-secondary-base);
     border-radius: 50%;
     padding: 5px;
+  }
+}
+
+.backpack-active {
+  height: 100px;
+}
+
+.child-name {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: #707070;
+
+  @media screen and (min-width: $breakpoint-xs) {
+    font-size: 24px;
+    line-height: 36px;
+  }
+}
+
+.child-base-text {
+  font-style: normal;
+  font-size: 14px;
+  line-height: 21px;
+
+  @media screen and (min-width: $breakpoint-xs) {
+    font-size: 15px;
+    line-height: 22px;
   }
 }
 </style>

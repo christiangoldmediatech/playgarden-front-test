@@ -307,7 +307,7 @@
               </validation-observer>
               <!-- Readonly child info -->
               <v-row v-if="!isEditing[indexD]" class="mt-5 mt-md-0" no-gutters>
-                <v-col cols="4" md="3" class="pb-3">
+                <v-col cols="4" class="pb-3 d-flex justify-center">
                   <img
                     v-if="firstBackpack"
                     :alt="childBackpack(item.backpackId).name"
@@ -316,7 +316,7 @@
                   >
                 </v-col>
 
-                <v-col cols="8" md="9" class="d-flex flex-column justify-start justify-md-end pl-3">
+                <v-col cols="8" class="d-flex flex-column justify-start pl-3">
                   <h1 class="child-name mb-0 mb-md-3">
                     {{ item.firstName }} {{ (item.lastName) ? item.lastName : '' }}
                   </h1>
@@ -336,8 +336,8 @@
 
                 <v-col cols="12" class="mt-4 mb-2">
                   <v-row class="d-flex space-between" no-gutters>
-                    <v-col cols="12" md="6">
-                      <div>
+                    <v-col cols="12" md="6" class="d-flex">
+                      <div class="ml-md-auto mr-auto">
                         <span class="child-base-text pg-text-[#78C383]">Current letter: </span>
                         <span class="child-base-text">
                           {{ item.progress.curriculumType.letter ? `Letter ${item.progress.curriculumType.letter}` : undefined }}

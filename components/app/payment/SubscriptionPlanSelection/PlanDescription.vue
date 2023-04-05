@@ -31,7 +31,7 @@
       :style="{ '--plan-color': plan.color }"
       class="plus-benefits"
     >
-      <div class="accent--text pg-mb-1 pg-mt-6 pg-text-lg pg-font-semibold">
+      <div class="!pg-relative accent--text pg-mb-1 pg-mt-6 pg-text-lg pg-font-semibold">
         AND
       </div>
 
@@ -40,6 +40,7 @@
         :key="benefit"
         :benefit="benefit"
         :color="plan.color"
+        class="!pg-relative"
         large
       />
     </div>
