@@ -208,45 +208,40 @@ export default defineComponent({
     })
 
     const getBillingDetails = async () => {
-      try {
-        loading.value = true
-        const data = await store.dispatch('payment/fetchBillingDetails')
-        billing.value = {}
-        billing.value.billingType = data.billingType
-        billing.value.subscriptionId = data.subscriptionId
-        billing.value.planAmount = data.planAmount || null
-        billing.value.planName = data.planName || null
-        billing.value.planAmountDiscount = data.planAmountDiscount || null
-        billing.value.amountOff = data.amountOff || null
-        billing.value.percentOff = data.percentOff || null
-        billing.value.stripeStatus = data.stripeStatus || ''
+      const data = await store.dispatch('payment/fetchBillingDetails')
+      billing.value = {}
+      billing.value.billingType = data.billingType
+      billing.value.subscriptionId = data.subscriptionId
+      billing.value.planAmount = data.planAmount || null
+      billing.value.planName = data.planName || null
+      billing.value.planAmountDiscount = data.planAmountDiscount || null
+      billing.value.amountOff = data.amountOff || null
+      billing.value.percentOff = data.percentOff || null
+      billing.value.stripeStatus = data.stripeStatus || ''
 
-        if (data.subscriptionData) {
-          billing.value.membershipInterval = get(
-            data,
-            'subscriptionData.plan.interval',
-            null
-          )
-          billing.value.status = get(data, 'subscriptionData.status', null)
-          billing.value.trialEndDate = get(
-            data,
-            'subscriptionData.trial_end',
-            null
-          )
-          billing.value.trialEndDate = billing.value.trialEndDate
-            ? dayjs(billing.value.trialEndDate * 1000).format('MMMM D, YYYY')
-            : null
-          billing.value.nextBillingDate = dayjs(
-            data.subscriptionData.current_period_end * 1000
-          ).format('MMMM D, YYYY')
-          billing.value.discountCode = get(
-            data,
-            'subscriptionData.discount.coupon.name',
-            null
-          )
-        }
-      } finally {
-        loading.value = false
+      if (data.subscriptionData) {
+        billing.value.membershipInterval = get(
+          data,
+          'subscriptionData.plan.interval',
+          null
+        )
+        billing.value.status = get(data, 'subscriptionData.status', null)
+        billing.value.trialEndDate = get(
+          data,
+          'subscriptionData.trial_end',
+          null
+        )
+        billing.value.trialEndDate = billing.value.trialEndDate
+          ? dayjs(billing.value.trialEndDate * 1000).format('MMMM D, YYYY')
+          : null
+        billing.value.nextBillingDate = dayjs(
+          data.subscriptionData.current_period_end * 1000
+        ).format('MMMM D, YYYY')
+        billing.value.discountCode = get(
+          data,
+          'subscriptionData.discount.coupon.name',
+          null
+        )
       }
     }
 
@@ -262,23 +257,30 @@ export default defineComponent({
     }
 
     const getBillingCards = async () => {
-      try {
-        loading.value = true
-        userCards.value = await store.dispatch('payment/fetchBillingCards')
-      } finally {
-        loading.value = false
-      }
+      userCards.value = await store.dispatch('payment/fetchBillingCards')
     }
 
     const goToPage = () => {
       router.push({ name: 'app-account-index-membership' })
     }
 
+    const init = async () => {
+      loading.value = true
+      store.commit('account/SET_LOADING_MEMBERSHIP_INFO', loading.value)
+      try {
+        await getBillingDetails()
+        await getBillingCards()
+        await getPlan()
+        await getBillingHistory()
+      } catch (e) {
+      } finally {
+        loading.value = false
+        store.commit('account/SET_LOADING_MEMBERSHIP_INFO', loading.value)
+      }
+    }
+
     onMounted(async () => {
-      await getBillingDetails()
-      await getBillingCards()
-      await getPlan()
-      await getBillingHistory()
+      await init()
     })
 
     return {

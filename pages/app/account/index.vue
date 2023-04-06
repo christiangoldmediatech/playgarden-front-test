@@ -71,7 +71,11 @@
             elevation="0"
             color="transparent"
             class="clickable account-item py-5 rounded-0"
-            :class="{ 'account-item-selected': selectedRouteName === section.routeName, 'account-item-logout': section.routeName === 'auth-logout' }"
+            :class="{
+              'account-item-selected': selectedRouteName === section.routeName,
+              'account-item-logout': section.routeName === 'auth-logout',
+              'disabled-link': disableLogout && section.routeName === 'auth-logout'
+            }"
             @click="navigateToPage(section.routeName)"
           >
             {{ section.text }}
@@ -105,6 +109,30 @@ export default {
     }),
 
     ...mapGetters('auth', ['isUserCaregiver']),
+
+    isLoadingMembershipInfo () {
+      return this.$store.getters['account/getLoadingMembershipInfo']
+    },
+
+    isLoadingCaregiverInfo() {
+      return this.$store.getters['account/getLoadingCaregiverInfo']
+    },
+
+    isLoadingNotifications() {
+      return this.$store.getters['account/getLoadingNotifications']
+    },
+
+    isLoadingShippingAddressInfo() {
+      return this.$store.getters['account/getLoadingShippingAddressInfo']
+    },
+
+    isLoadingStudentProfileInfo() {
+      return this.$store.getters['account/getLoadingStudentProfileInfo']
+    },
+
+    disableLogout() {
+      return this.isLoadingMembershipInfo || this.isLoadingCaregiverInfo || this.isLoadingNotifications || this.isLoadingShippingAddressInfo || this.isLoadingStudentProfileInfo
+    },
 
     hidePatch() {
       return this.$vuetify.breakpoint.mdAndDown
@@ -225,5 +253,10 @@ export default {
 .account-item-logout {
   text-decoration-line: underline;
   color: #68C453;
+}
+
+.disabled-link {
+  pointer-events: none;
+  opacity: 0.5;
 }
 </style>

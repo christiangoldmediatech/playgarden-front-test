@@ -200,9 +200,15 @@ export default defineComponent({
       viewModal.value = true
     }
 
-    onMounted(async () => {
+    const init = async () => {
+      store.commit('account/SET_LOADING_STUDENT_PROFILE_INFO', true)
       await fetchBackpacks()
       await fetchChildren()
+      store.commit('account/SET_LOADING_STUDENT_PROFILE_INFO', false)
+    }
+
+    onMounted(async () => {
+      await init()
       nuxt.$on('children-changed', fetchChildren)
     })
 
