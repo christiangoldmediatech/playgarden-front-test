@@ -25,6 +25,8 @@ export interface ActivityType extends Entity {
    * UI custom property that includes both `activities` and `videos`
    */
   playlist?: Playlist[] | MediaObject[]
+
+  unlocked?: number
 }
 
 export interface ExtendedActivity extends Activity {
