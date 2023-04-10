@@ -12,6 +12,15 @@
     @mouseenter="scaleUp"
     @mouseleave="scaleDown"
   >
+    <img
+      v-if="!pathItem.patch && activeViewing"
+      id="redStartArrow"
+      class="pg-absolute pg-top-0"
+      :class="orientation"
+      src="@/assets/svg/library/video-path-arrow.svg"
+      alt="Video arrow indicator"
+    >
+
     <template v-if="pathItem.video">
       <img v-lazyload :data-url="pathItem.video.thumbnail" @click="handleBubblePlay">
       <letter-video-card
@@ -78,6 +87,27 @@ export default defineComponent({
       type: Number,
       required: false,
       default: undefined
+    },
+
+    activeViewing: {
+      type: Boolean,
+      required: true
+    },
+
+    unlocked: {
+      type: Number,
+      required: true
+    }
+  },
+
+  computed: {
+    orientation(): string {
+      const allowedPosition = [2, 3, 7, 8, 9, 14, 15, 19, 20, 26, 27, 31, 31, 33]
+      if (allowedPosition.includes(this.unlocked)) {
+        return 'pg-right-[-75px] rotate'
+      }
+
+      return 'pg-left-[-75px]'
     }
   },
 
@@ -184,5 +214,9 @@ export default defineComponent({
       z-index: 1300;
     }
   }
+}
+
+.rotate {
+  transform: rotate(180deg);
 }
 </style>

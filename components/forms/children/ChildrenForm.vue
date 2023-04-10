@@ -73,7 +73,7 @@
           ref="picker"
           v-model="itemCurrent._birthdayPicker"
           :max="new Date().toISOString().substr(0, 10)"
-          min="1950-01-01"
+          min="2015-01-01"
           @input="onInputBirthday(itemCurrent)"
           @change="save"
         />
