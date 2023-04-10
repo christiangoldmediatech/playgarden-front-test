@@ -54,6 +54,9 @@
               :item="item"
               :backpacks="backpacks"
               :child-card-color="childCardColor"
+              @openTimeline="openTimeline(item)"
+              @loadChild="loadChild($event, indexD)"
+              @removeChild="removeChild(indexD)"
             />
           </v-col>
         </v-row>
@@ -83,25 +86,10 @@ export default {
     loading: false,
     backpacks: [],
     childrenProgress: [],
-    items: [],
-    isEditing: [],
-    genders: [
-      {
-        text: 'Boy',
-        value: 'MALE'
-      },
-      {
-        text: 'Girl',
-        value: 'FEMALE'
-      }
-    ]
+    items: []
   }),
 
   computed: {
-    isChildChanged () {
-      return child => child._original !== this.getOriginalChild(child)
-    },
-
     removable () {
       return (item) => {
         if (!item.id) {
@@ -141,8 +129,6 @@ export default {
   methods: {
     ...mapActions('backpacks', ['getBackpacks']),
 
-    ...mapActions(['setChild']),
-
     ...mapActions('children', {
       createChild: 'store',
       getChildren: 'get',
@@ -155,16 +141,6 @@ export default {
 
     updateBackpackId(item, id) {
       item.backpackId = id
-    },
-
-    goToProgressReport (child) {
-      if (child.id) {
-        this.setChild({ value: [child], save: true })
-        this.$router.push({
-          name: 'app-student-cubby-progress-report',
-          query: { id: child.id }
-        })
-      }
     },
 
     getOriginalChild ({ backpackId, birthday, firstName, level, gender, lastName } = {}) {
@@ -187,7 +163,6 @@ export default {
         rows.forEach((row) => {
           this.loadChild(row)
         })
-        this.setIsEditingList()
       } catch (error) {
         return Promise.reject(error)
       } finally {
@@ -231,7 +206,6 @@ export default {
 
       if (typeof index === 'number' && index >= 0) {
         this.$set(this.items, index, { ...this.items[index], ...item })
-        this.editChild(index, false)
       } else {
         this.addRow(item)
       }
@@ -263,8 +237,6 @@ export default {
       _data._original = this.getOriginalChild(_data)
 
       this.items.unshift(_data)
-
-      this.isEditing.unshift(true)
     },
 
     fetchBackpacks () {
@@ -280,76 +252,9 @@ export default {
       }
     },
 
-    removeChild (item, index) {
-      this.$nuxt.$emit('open-prompt', {
-        message: `Are you sure you want to delete <b>${item.firstName}</b>?`,
-        action: async () => {
-          this.loading = true
-          try {
-            if (item.id) {
-              await this.deleteChild(item.id)
-            }
-            this.items.splice(index, 1)
-
-            this.$nuxt.$emit('children-changed')
-            this.setIsEditingList()
-          } catch (e) {
-          } finally {
-            this.loading = false
-          }
-        }
-      })
-      return false
-    },
-
-    async onSubmit (item, index) {
-      try {
-        this.loading = true
-
-        if (item.id) {
-          const params = {
-            backpackId: item.backpackId,
-            firstName: item.firstName,
-            lastName: item.lastName,
-            birthday: item.birthday,
-            gender: item.gender,
-            level: item.level
-          }
-
-          await this.updateChild({ id: item.id, params })
-          item._original = this.getOriginalChild(item)
-
-          this.editChild(index, false)
-        } else {
-          const data = await this.createChild(item)
-
-          data._original = this.getOriginalChild(item)
-
-          this.loadChild(data, index)
-
-          this.$nuxt.$emit('children-changed')
-        }
-      } catch (error) {
-        return Promise.reject(error)
-      } finally {
-        this.loading = false
-      }
-    },
-
-    editChild (index, shouldEdit = true) {
-      const child = this.items[index]
-
-      // remove the child if the user is clicking Cancel (shouldEdit = false)
-      // and the child has not been saved yet
-      if (!shouldEdit && !child.id) {
-        this.items.splice(index, 1)
-        this.isEditing.splice(index, 1)
-        this.$nuxt.$emit('children-changed')
-
-        return
-      }
-
-      this.$set(this.isEditing, index, shouldEdit)
+    removeChild (index) {
+      this.items.splice(index, 1)
+      this.$nuxt.$emit('children-changed')
     },
 
     openTimeline (child) {
@@ -362,10 +267,6 @@ export default {
       }
 
       return dayjs(date).format('MM/DD/YYYY')
-    },
-
-    setIsEditingList () {
-      this.isEditing = this.items.map(_ => false)
     }
   }
 }

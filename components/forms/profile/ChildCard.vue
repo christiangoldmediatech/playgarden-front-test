@@ -7,7 +7,7 @@
     <validation-observer v-if="isEditing" v-slot="{ passes }">
       <v-form
         :readonly="loading"
-        @submit.prevent="passes().then(onSubmit(item, index))"
+        @submit.prevent="passes().then(onSubmit(draft))"
       >
         <!-- Backpack -->
         <validation-provider
@@ -18,13 +18,13 @@
         >
           <!-- Delete Child Profile Button -->
           <v-row no-gutters class="mb-6">
-            <v-col v-if="item.id" cols="12" class="d-flex justify-end">
+            <v-col v-if="draft.id" cols="12" class="d-flex justify-end">
               <v-btn
                 v-if="isRemovable"
                 text
                 color="#F83838"
                 class="text-decoration-underline"
-                @click.stop="removeChild(item, index)"
+                @click.stop="removeChild(draft)"
               >
                 DELETE CHILD
               </v-btn>
@@ -46,7 +46,7 @@
                       width="100%"
                     >
                       <v-slide-group
-                        v-model="item.backpackId"
+                        v-model="draft.backpackId"
                         show-arrows="always"
                       >
                         <v-slide-item
@@ -79,7 +79,7 @@
                   </v-row>
                 </v-col>
               </v-row>
-              <input v-model="item.backpackId" type="hidden">
+              <input v-model="draft.backpackId" type="hidden">
             </v-col>
           </v-row>
         </validation-provider>
@@ -99,7 +99,7 @@
               rules="required"
             >
               <pg-text-field
-                v-model="item.firstName"
+                v-model="draft.firstName"
                 clearable
                 :disabled="loading"
                 :error-messages="errors"
@@ -127,7 +127,7 @@
               rules="required"
             >
               <pg-text-field
-                v-model="item.lastName"
+                v-model="draft.lastName"
                 clearable
                 :disabled="loading"
                 :error-messages="errors"
@@ -146,7 +146,7 @@
             <!-- Birthday date -->
             <span class="d-inline-block account-field-label mb-2">Date of birth</span>
             <v-menu
-              v-model="item._menu"
+              v-model="draft._menu"
               :close-on-content-click="false"
               min-width="290px"
               solo
@@ -173,18 +173,18 @@
                       solo
                       dense
                       flat
-                      :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
+                      :suffix="draft._birthdayFormatted ? '' : 'MM/DD/YYYY'"
                       validate-on-blur
-                      :value="item._birthdayFormatted"
+                      :value="draft._birthdayFormatted"
                     />
                   </div>
                 </validation-provider>
               </template>
               <v-date-picker
-                v-model="item._birthdayPicker"
+                v-model="draft._birthdayPicker"
                 :max="new Date().toISOString().substr(0, 10)"
                 min="1990-01-01"
-                @input="onInputBirthday(item)"
+                @input="onInputBirthday(draft)"
               />
             </v-menu>
           </v-col>
@@ -199,7 +199,7 @@
               rules="required"
             >
               <pg-select
-                v-model="item.gender"
+                v-model="draft.gender"
                 :items="genders"
                 clearable
                 :error-messages="errors"
@@ -212,13 +212,13 @@
               />
             </validation-provider>
           </v-col>
-          <v-col cols="12" class="pr-2">
+          <v-col v-if="draft.progress.curriculumType && draft.id" cols="12" class="pr-2">
             <v-row no-gutters>
               <v-col cols="12" md="6">
                 <div>
                   <span class="child-base-text pg-text-[#78C383]">Current letter: </span>
                   <span class="child-base-text">
-                    {{ item.progress.curriculumType.letter ? `Letter ${item.progress.curriculumType.letter}` : undefined }}
+                    {{ draft.progress.curriculumType.letter ? `Letter ${draft.progress.curriculumType.letter}` : undefined }}
                   </span>
                 </div>
               </v-col>
@@ -226,7 +226,7 @@
                 <div>
                   <span class="child-base-text pg-text-[#78C383]">Current day: </span>
                   <span class="child-base-text">
-                    {{ item.progress.day ? `Day ${item.progress.day}` : undefined }}
+                    {{ draft.progress.day ? `Day ${draft.progress.day}` : undefined }}
                   </span>
                 </div>
               </v-col>
@@ -235,7 +235,7 @@
         </v-row>
 
         <v-btn
-          v-if="isChildChanged(item)"
+          v-if="isChildChanged"
           block
           class="mt-4 mt-md-0 white--text"
           color="#AAD579"
@@ -251,7 +251,7 @@
           color="grey"
           :disabled="loading"
           x-large
-          @click="editChild(index, false)"
+          @click="editChild"
         >
           Cancel
         </v-btn>
@@ -270,7 +270,7 @@
 
       <v-col cols="8" class="d-flex flex-column justify-start pl-3">
         <h1 class="child-name mb-0 mb-md-3">
-          {{ item.firstName }} {{ (item.lastName) ? item.lastName : '' }}
+          {{ draft.firstName }} {{ (draft.lastName) ? draft.lastName : '' }}
         </h1>
 
         <div>
@@ -281,18 +281,18 @@
         <div>
           <span class="child-base-text pg-text-[#707070]">Gender:  </span>
           <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">
-            {{ item.gender === 'FEMALE' ? 'Girl' : item.gender === 'MALE' ? 'Boy' : '' }}
+            {{ draft.gender === 'FEMALE' ? 'Girl' : draft.gender === 'MALE' ? 'Boy' : '' }}
           </span>
         </div>
       </v-col>
 
-      <v-col cols="12" class="mt-4 mb-2">
+      <v-col v-if="draft.progress" cols="12" class="mt-4 mb-2">
         <v-row class="d-flex space-between" no-gutters>
           <v-col cols="12" md="6" class="d-flex">
             <div class="ml-md-auto mr-auto">
               <span class="child-base-text pg-text-[#78C383]">Current letter: </span>
               <span class="child-base-text">
-                {{ item.progress.curriculumType.letter ? `Letter ${item.progress.curriculumType.letter}` : undefined }}
+                {{ draft.progress.curriculumType.letter ? `Letter ${draft.progress.curriculumType.letter}` : undefined }}
               </span>
             </div>
           </v-col>
@@ -301,19 +301,19 @@
             <div class="ml-md-auto mr-auto">
               <span class="child-base-text pg-text-[#78C383]">Current day: </span>
               <span class="child-base-text">
-                {{ item.progress.day ? `Day ${item.progress.day}` : undefined }}
+                {{ draft.progress.day ? `Day ${draft.progress.day}` : undefined }}
               </span>
             </div>
           </v-col>
         </v-row>
       </v-col>
 
-      <v-col v-if="item.id" cols="12" class="d-flex justify-center">
+      <v-col v-if="draft.id" cols="12" class="d-flex justify-center">
         <v-btn
           color="#A7CFFC"
           text
           class="text-decoration-underline"
-          @click="openTimeline(item)"
+          @click="$emit('openTimeline')"
         >
           View letter progress
         </v-btn>
@@ -323,7 +323,7 @@
           color="#FFA0C8"
           text
           class="text-decoration-underline"
-          @click="goToProgressReport(item)"
+          @click="goToProgressReport"
         >
           View progress report
         </v-btn>
@@ -333,7 +333,7 @@
         class="!pg-absolute pg-top-[10px] pg-right-[10px]"
         text
         color="#F89838"
-        @click="editChild(index)"
+        @click="editChild"
       >
         <span class="text-decoration-underline">Edit</span>
         <v-icon right>
@@ -345,7 +345,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from '@nuxtjs/composition-api'
+import { useNuxtHelper } from '@/composables'
+import { TypedStore } from '@/models'
+import { defineComponent, ref, computed, watch, onMounted, useStore, useRouter } from '@nuxtjs/composition-api'
 import dayjs from 'dayjs'
 
 export default defineComponent({
@@ -372,13 +374,31 @@ export default defineComponent({
       default: () => []
     }
   },
-  setup(props) {
+  emits: ['removeChild', 'openTimeline', 'loadChild', 'removeChild'],
+  setup(props, { emit }) {
+    const nuxt = useNuxtHelper()
+    const store = useStore<TypedStore>()
+    const router = useRouter()
+
     const isEditing = ref(false)
+    const loading = ref(false)
     const draft = ref<any>({})
+    const genders = ref([
+      {
+        text: 'Boy',
+        value: 'MALE'
+      },
+      {
+        text: 'Girl',
+        value: 'FEMALE'
+      }
+    ])
 
     const childBackpack = computed(() => {
       return props.backpacks.find((backpack: any) => backpack.id === props.item.backpackId)
     })
+
+    const isChildChanged = computed(() => props.item._original !== getOriginalChild(draft.value))
 
     const getChildBirthday = computed(() => {
       if (!props.item.birthday) {
@@ -388,23 +408,128 @@ export default defineComponent({
       return dayjs(props.item.birthday).format('MM/DD/YYYY')
     })
 
+    const onInputBirthday = () => {
+      if (draft.value._birthdayPicker) {
+        draft.value._birthdayFormatted = dayjs(draft.value._birthdayPicker).format(
+          'MM/DD/YYYY'
+        )
+        draft.value.birthday = (draft.value._birthdayPicker) ? `${draft.value._birthdayPicker}T00:00:00.000` : null
+      }
+    }
+
+    const getOriginalChild = ({ backpackId, birthday, firstName, level, gender, lastName }: any) => {
+      return JSON.stringify({
+        backpackId,
+        birthday,
+        firstName,
+        lastName,
+        level,
+        gender
+      })
+    }
+
     const editChild = () => {
       isEditing.value = !isEditing.value
 
       if (!isEditing.value) {
+        if (!draft.value.id) {
+          emit('removeChild')
+        }
+
         draft.value = { ...props.item }
       }
     }
 
-    watch(() => props.item, () => {
+    const goToProgressReport = () => {
+      if (props.item.id) {
+        store.dispatch('setChild', { value: [props.item], save: true })
+        router.push({
+          name: 'app-student-cubby-progress-report',
+          query: { id: props.item.id }
+        })
+      }
+    }
+
+    const onSubmit = async (item: any) => {
+      try {
+        loading.value = true
+
+        if (item.id) {
+          const params = {
+            backpackId: item.backpackId,
+            firstName: item.firstName,
+            lastName: item.lastName,
+            birthday: item.birthday,
+            gender: item.gender,
+            level: item.level
+          }
+
+          const data = await store.dispatch('children/update', { id: item.id, params })
+          item._original = getOriginalChild(item)
+          emit('loadChild', data)
+          editChild()
+        } else {
+          const data = await store.dispatch('children/store', item)
+
+          data._original = getOriginalChild(item)
+
+          emit('loadChild', data)
+
+          nuxt.$emit('children-changed')
+        }
+      } catch (error) {
+        return Promise.reject(error)
+      } finally {
+        loading.value = false
+      }
+    }
+
+    const removeChild = (item: any) => {
+      nuxt.$emit('open-prompt', {
+        message: `Are you sure you want to delete <b>${item.firstName}</b>?`,
+        action: async () => {
+          loading.value = true
+          try {
+            if (item.id) {
+              await store.dispatch('children/delete', item.id)
+            }
+            emit('removeChild')
+            nuxt.$emit('children-changed')
+          } catch (e) {
+          } finally {
+            loading.value = false
+          }
+        }
+      })
+      return false
+    }
+
+    const init = () => {
       draft.value = { ...props.item }
+      isEditing.value = !props.item.id
+    }
+
+    watch(() => props.item, () => {
+      init()
     }, { deep: true })
+
+    onMounted(() => {
+      init()
+    })
 
     return {
       isEditing,
+      loading,
+      draft,
+      genders,
       childBackpack,
+      isChildChanged,
       editChild,
-      getChildBirthday
+      onInputBirthday,
+      getChildBirthday,
+      goToProgressReport,
+      onSubmit,
+      removeChild
     }
   }
 })
