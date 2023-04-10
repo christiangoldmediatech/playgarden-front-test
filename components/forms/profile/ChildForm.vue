@@ -231,7 +231,7 @@
                         <v-date-picker
                           v-model="item._birthdayPicker"
                           :max="new Date().toISOString().substr(0, 10)"
-                          min="1990-01-01"
+                          min="2015-01-01"
                           @input="onInputBirthday(item)"
                         />
                       </v-menu>
