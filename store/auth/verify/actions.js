@@ -1,4 +1,4 @@
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 
 export default {
   async resendEmail ({ commit }) {
@@ -7,7 +7,7 @@ export default {
 
       return response.data
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while sending your Verification email!'
       })
 
@@ -21,7 +21,7 @@ export default {
 
       return response.data
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while verifying your email!'
       })
 
@@ -35,7 +35,7 @@ export default {
 
       return response.data
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while going to Lessons!'
       })
 

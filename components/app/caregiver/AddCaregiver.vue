@@ -113,7 +113,7 @@ export default {
         await this.sendCaregiverInvitation(draft)
         this.modal = false
 
-        this.$snotify.success('Invitation has been sent successfully!')
+        this.$toast.success('Invitation has been sent successfully!')
         this.$nuxt.$emit('caregiver-added')
         this.$gtm.push({
           event: TAG_MANAGER_EVENTS.ACCOUNT_ADD_CAREGIVER,

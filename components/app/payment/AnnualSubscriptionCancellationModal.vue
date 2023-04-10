@@ -85,7 +85,7 @@
 </template>
 
 <script lang="ts">
-import { useCancellation, useSnotifyHelper } from '@/composables'
+import { useCancellation, useToastHelper } from '@/composables'
 import { TypedStore } from '@/models'
 import { computed, defineComponent, ref, useStore } from '@nuxtjs/composition-api'
 
@@ -112,8 +112,8 @@ export default defineComponent({
   emits: ['input', 'reloadInformation'],
   setup(props, { emit }) {
     const store = useStore<TypedStore>()
-    const snotify = useSnotifyHelper()
-    const { cancelSubscription } = useCancellation({ store, snotify })
+    const toast = useToastHelper()
+    const { cancelSubscription } = useCancellation({ store, toast })
 
     const loading = ref(false)
     const explanation = ref('')
@@ -134,7 +134,7 @@ export default defineComponent({
         await cancelSubscription(props.reasonMessage, explanation)
         emit('reloadInformation')
       } catch {
-        snotify.error('Could not cancel subscription')
+        toast.error('Could not cancel subscription')
       } finally {
         loading.value = false
         viewModal.value = false

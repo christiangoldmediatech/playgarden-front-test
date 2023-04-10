@@ -1,4 +1,4 @@
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 
 export default {
   createGrade (_, data) {
@@ -19,7 +19,7 @@ export default {
         .$get('/grades', { params })
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting Grades.'
           })
           // TO DO async away

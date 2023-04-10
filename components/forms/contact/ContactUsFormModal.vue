@@ -133,14 +133,14 @@ export default defineComponent({
         })
 
         // @ts-ignore
-        ctx.root.$snotify.success(
+        ctx.root.$toast.success(
           'Information sent!'
         )
 
         hideContactUsModal()
       } catch {
         // @ts-ignore
-        ctx.root.$snotify.error(
+        ctx.root.$toast.error(
           'Could not sent form information. Please, try again later.'
         )
       } finally {

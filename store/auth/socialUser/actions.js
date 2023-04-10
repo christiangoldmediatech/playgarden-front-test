@@ -1,4 +1,4 @@
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 export default {
   async authLoginSocial ({ dispatch }, data) {
     // eslint-disable-next-line no-useless-catch
@@ -23,7 +23,7 @@ export default {
       const response = await this.$axios.post('/auth/sync/social', data)
       return response
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'The synchronization with the social network cannot be completed because the emails do not match.',
         config: { timeout: 8000 }
       })

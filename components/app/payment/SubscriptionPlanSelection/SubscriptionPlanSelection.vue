@@ -314,7 +314,7 @@ export default defineComponent({
           })
         }
       } catch (e) {
-        this.$snotify.error('Could not select plan. Please, try again later.')
+        this.$toast.error('Could not select plan. Please, try again later.')
       } finally {
         this.loading = false
       }

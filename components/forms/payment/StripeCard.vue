@@ -112,7 +112,7 @@ export default {
           this.$emit('input', res.token.id)
         }
       } catch (error) {
-        this.$snotify.error('Error on your card information.')
+        this.$toast.error('Error on your card information.')
       }
     }
   }

@@ -1,4 +1,4 @@
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 
 export default {
   createRecurringLiveSession (_, data) {
@@ -27,7 +27,7 @@ export default {
         .$get('recurring-meetings', { params })
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting Live Sessions.'
           })
           // TO DO async away

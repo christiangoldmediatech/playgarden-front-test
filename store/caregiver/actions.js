@@ -1,4 +1,4 @@
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 
 export default {
   async signup ({ commit, dispatch }, { data, token }) {
@@ -10,7 +10,7 @@ export default {
 
       dispatch('auth/setToken', response.data.accessToken, { root: true })
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while signing you up.'
       })
 
@@ -32,7 +32,7 @@ export default {
 
       return data
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while getting your Caregivers data!'
       })
     }
@@ -44,7 +44,7 @@ export default {
 
       return data
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while getting your Caregivers data!'
       })
     }
@@ -56,7 +56,7 @@ export default {
 
       return response.data
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while sending your Invitation!'
       })
     }
@@ -82,7 +82,7 @@ export default {
 
       return response.data
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while resending your Invitation!'
       })
     }
@@ -92,7 +92,7 @@ export default {
     try {
       return await this.$axios.$get(`/caregivers/validate/${token}`)
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while verifying your invitation!'
       })
 

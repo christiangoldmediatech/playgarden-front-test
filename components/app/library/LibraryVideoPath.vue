@@ -7,15 +7,14 @@
         :background-color="lighterColor"
         :darker-color="color"
         :coordinates="findPathItemCoordinates(index)"
+        :active-viewing="index > 0 && pathItems[index - 1].patch && unlocked === index || index + 1 === unlocked || unlocked === 0 && index === 0"
+        :unlocked="unlocked"
         v-bind="{ pathItem, index }"
       >
         <template #playicon>
           <img :src="playIcon">
         </template>
       </library-path-item>
-
-      <!-- Red start arrow -->
-      <img id="redStartArrow" src="@/assets/svg/library/video-path-arrow.svg">
 
       <!-- Library category icon for mobile -->
       <library-category-icon
@@ -60,6 +59,11 @@ export default defineComponent({
 
     icon: {
       type: String,
+      required: true
+    },
+
+    unlocked: {
+      type: Number,
       required: true
     }
   },

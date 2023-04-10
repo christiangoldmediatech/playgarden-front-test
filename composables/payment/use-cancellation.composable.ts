@@ -1,13 +1,12 @@
 import { TypedStore } from '@/models'
 import { get } from 'lodash'
-import { Snotify } from '@/types/snotify'
 import { Store } from 'vuex/types'
 import { computed } from '@nuxtjs/composition-api'
 import { CancellationFlowEnum } from '../../enums/cancellation-flow.enum'
 
 interface UseCancellationParams {
   store: Store<TypedStore>,
-  snotify: Snotify
+  toast: any
 }
 
 interface PlanCancellationDto {
@@ -19,7 +18,7 @@ interface PlanCancellationDto {
   couponCode?: string
 }
 
-export const useCancellation = ({ store, snotify }: UseCancellationParams) => {
+export const useCancellation = ({ store, toast }: UseCancellationParams) => {
   const hasDiscountFlowBeenUsed = computed(() => {
     const billing = store.getters['payment/getBilling']
     const latestCancellationReason = store.getters['plans/getLatestCancellationReason']
@@ -46,7 +45,7 @@ export const useCancellation = ({ store, snotify }: UseCancellationParams) => {
         payload
       )
     } catch {
-      snotify.error('Could not record cancel reason')
+      toast('Could not record cancel reason')
     }
   }
 
@@ -78,7 +77,7 @@ export const useCancellation = ({ store, snotify }: UseCancellationParams) => {
         promotion_id: coupon.promotion_id
       })
     } catch {
-      snotify.error('Could not apply discount. Please, try again later.')
+      toast.error('Could not apply discount. Please, try again later.')
     }
   }
 
@@ -101,7 +100,7 @@ export const useCancellation = ({ store, snotify }: UseCancellationParams) => {
 
       await store.dispatch('payment/selectSubscriptionPlan', plan)
     } catch (e) {
-      snotify.error('Could not select plan. Please, try again later.')
+      toast.error('Could not select plan. Please, try again later.')
     }
   }
 

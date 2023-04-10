@@ -1,4 +1,4 @@
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 
 export default {
   getFirstLearnPlay ({ commit, rootGetters }, params) {
@@ -8,7 +8,7 @@ export default {
         .$get(`/play-and-learn/by-child/${childId}`, { params })
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting learn-play.'
           })
           // TO DO async away
@@ -22,7 +22,7 @@ export default {
         .$get(`/play-and-learn/curriculum-type/${params.curriculumTypeId}`)
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting learn-play.'
           })
           // TO DO async away
@@ -36,7 +36,7 @@ export default {
         .$get(`/play-and-learn/curriculum-type/${params.curriculumTypeId}/info`)
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting learn-play.'
           })
           // TO DO async away
@@ -50,7 +50,7 @@ export default {
         .$get(`/play-and-learn/curriculum-type/${params.curriculumTypeId}/videos`)
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting learn-play videos.'
           })
           // TO DO async away
@@ -64,7 +64,7 @@ export default {
         .$get(`/play-and-learn/curriculum-type/${params.curriculumTypeId}/songs`)
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting learn-play songs.'
           })
           // TO DO async away
@@ -78,7 +78,7 @@ export default {
         .$get(`/play-and-learn/curriculum-type/${params.curriculumTypeId}/files`)
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting learn-play files.'
           })
           // TO DO async away
@@ -92,7 +92,7 @@ export default {
         .$get(`/play-and-learn/curriculum-type/${params.curriculumTypeId}/worksheets`)
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting learn-play worksheets.'
           })
           // TO DO async away
@@ -106,7 +106,7 @@ export default {
         .$get(`/play-and-learn/curriculum-type/${params.curriculumTypeId}/books`)
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting learn-play books.'
           })
           // TO DO async away

@@ -1,4 +1,4 @@
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 
 export default {
   getChildrenInfo ({ commit }, params) {
@@ -7,7 +7,7 @@ export default {
         .$get('/playdates/children/', { params })
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting info.'
           })
           reject(error)

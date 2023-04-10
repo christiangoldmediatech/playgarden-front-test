@@ -158,7 +158,7 @@ import dayjs from 'dayjs'
 import { defineComponent, ref, useRoute, computed, onMounted } from '@nuxtjs/composition-api'
 import { useWorksheetsCategories } from '@/composables/worksheets'
 import { Child } from '@/models'
-import { useSnotifyHelper } from '@/composables'
+import { useToastHelper } from '@/composables'
 import { useFeedback } from '@/composables/feedback'
 
 export default defineComponent({
@@ -226,7 +226,7 @@ export default defineComponent({
   },
   setup (props: any) {
     const route = useRoute()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const dataChild = ref<Child>()
     const { getChild } = useWorksheetsCategories()
     const { feedback, getFeedbackByUploadedWorksheetsId, saveFeedback, updateFeedback } = useFeedback()
@@ -240,7 +240,7 @@ export default defineComponent({
       try {
         dataChild.value = await getChild(props.child.id)
       } catch (error) {
-        snotify.error('Sorry! There was an error loading the page.')
+        toast.error('Sorry! There was an error loading the page.')
       }
     }
 
@@ -284,17 +284,17 @@ export default defineComponent({
       try {
         if (this.isCreatingFeedback) {
           await this.saveFeedback({ data: this.feedback })
-          this.$snotify.success(
+          this.$toast.success(
             'Feedback saved.'
           )
         } else if (this.feedback.id) {
           await this.updateFeedback(this.feedback.id, { data: this.feedback })
-          this.$snotify.success(
+          this.$toast.success(
             'Feedback updated.'
           )
         }
       } catch (error) {
-        this.$snotify.error(
+        this.$toast.error(
           'Sorry! There was an error saving the feedback.'
         )
       } finally {

@@ -137,7 +137,7 @@ export default defineComponent({
       try {
         await this.resendEmail()
 
-        await this.$snotify.success('Email has been sent successfully!')
+        await this.$toast.success('Email has been sent successfully!')
       } catch (e) {
       } finally {
         this.loading = false
@@ -153,7 +153,7 @@ export default defineComponent({
           await this.fetchUserInfo()
         }
 
-        await this.$snotify.success('Email has been verified successfully!')
+        await this.$toast.success('Email has been verified successfully!')
 
         await this.$router.push({ name: 'index' })
       } catch (e) {

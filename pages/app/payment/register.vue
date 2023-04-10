@@ -232,10 +232,10 @@ export default {
 
         if (this.inSignUpProcess) {
           await this.fetchUserInfo()
-          this.$snotify.success('Registration has been completed successfully!')
+          this.$toast.success('Registration has been completed successfully!')
           await this.$router.push({ name: 'auth-verify-email' })
         } else {
-          this.$snotify.success('Plan change has been processed successfully!')
+          this.$toast.success('Plan change has been processed successfully!')
           await this.$router.push({ name: 'app-account-index' })
         }
       } catch (e) {

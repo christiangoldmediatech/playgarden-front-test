@@ -34,7 +34,7 @@ export default {
         await this.addBillingCard(draft)
         this.editing = false
 
-        this.$snotify.success('Card has been added successfully!')
+        this.$toast.success('Card has been added successfully!')
 
         this.$emit('add:success')
       } catch (e) {

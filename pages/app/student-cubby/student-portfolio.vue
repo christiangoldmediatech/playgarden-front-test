@@ -106,10 +106,10 @@
                 </div>
                 <upload-worksheet-carousel
                   v-else-if="!isMobile"
-                  :worksheets-data="lesson.worksheets" 
+                  :worksheets-data="lesson.worksheets"
                   :child="child"
                   :loading="loadingCurrentLesson"
-                  @click:upload="uploadDialog = !loading" 
+                  @click:upload="uploadDialog = !loading"
                 />
                 <v-row v-else class="py-1" no-gutters>
                   <v-col
@@ -227,7 +227,7 @@ import {
   useLessonApi,
   useChildLesson,
   useVuetifyHelper,
-  useSnotifyHelper
+  useToastHelper
 } from '@/composables'
 import { Lesson, LessonWorksheet, TypedStore } from '@/models'
 import { axios } from '@/utils'
@@ -255,7 +255,7 @@ export default defineComponent({
   },
   setup() {
     const vuetify = useVuetifyHelper()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const route = useRoute()
     const router = useRouter()
     const store = useStore<TypedStore>()
@@ -290,7 +290,7 @@ export default defineComponent({
         return
       }
       loadingWorksheets.value = true
-      
+
       let data: any[] = []
       try {
         data = await getUploaded(Number(studentId.value), lessonId)
@@ -306,7 +306,7 @@ export default defineComponent({
       try {
         await getCurrentLessonByChildrenId(lessonId, Number(studentId.value))
       } catch {
-        snotify.error('Could no fetch lesson')
+        toast.error('Could no fetch lesson')
       }
 
       loadingCurrentLesson.value = false
@@ -392,11 +392,11 @@ export default defineComponent({
     },
     formattedLetterName() {
       const letterName = (this.getCurrentLetter as any)?.name
-      
+
       if (!letterName) {
         return ''
       }
-      
+
       if (letterName === 'Intro' || letterName === 'Nature') {
         return letterName
       }
@@ -439,7 +439,7 @@ export default defineComponent({
         const { pdfUrl } = worksheetOffline[0]
         window.open(pdfUrl, '_blank')
       } else {
-        this.$snotify.error(
+        this.$toast.error(
           'this lesson does not have an offline type worksheet'
         )
       }

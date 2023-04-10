@@ -9,6 +9,7 @@
     v-bind="{ isFavoritesLoading }"
     @ready="onPlayerReady"
     @on-favorites-clicked="handleFavoritesClicked"
+    @on-close="updateList"
     v-on="playerEvents"
   >
     <template v-if="patchImg" #unlock-image>
@@ -31,12 +32,19 @@ import { useGtmHelper, useFavorites, useFavoritesApi, usePatch, useLibraryStanda
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import PatchEarnedDialogCompositionApi from '@/components/app/PatchEarnedDialogCompositionApi.vue'
-import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
+import { PLAYER_EVENTS, PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'LibraryVideoPathPlayer',
+  computed: {
+    PLAYER_EVENTS() {
+      return PLAYER_EVENTS
+    }
+  },
+
+  emits: ['update-library'],
 
   components: {
     PgVideoPlayer,
@@ -51,7 +59,7 @@ export default defineComponent({
     }
   },
 
-  setup(props) {
+  setup(props, { emit }) {
     // Player and favorites
     const store = useStore()
     const typedStore = useStore<TypedStore>()
@@ -156,6 +164,10 @@ export default defineComponent({
       }
     }
 
+    const updateList = () => {
+      emit('update-library')
+    }
+
     return {
       player,
       isFavoritesLoading,
@@ -168,7 +180,8 @@ export default defineComponent({
       toUnlock,
       playerEvents,
       goToNextVideo,
-      closeAll
+      closeAll,
+      updateList
     }
   }
 })

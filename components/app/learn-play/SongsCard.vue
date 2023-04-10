@@ -14,7 +14,7 @@ import debounce from 'lodash/debounce'
 import {
   useNuxtHelper,
   useMusic,
-  useSnotifyHelper,
+  useToastHelper,
   useVuetifyHelper,
   useAppEventBusHelper,
   useGtmHelper,
@@ -67,7 +67,7 @@ export default defineComponent({
   setup(props) {
     const nuxt = useNuxtHelper()
     const vuetify = useVuetifyHelper()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const route = useRoute()
     const router = useRouter()
     const store = useStore<TypedStore>()
@@ -240,7 +240,7 @@ export default defineComponent({
       try {
         if (song.isFavorite && song.favoriteId) {
           await removeFavoriteMusic(song.favoriteId)
-          snotify.success('Song removed from favorites')
+          toast.success('Song removed from favorites')
         } else if (childId.value) {
           await setFavoriteMusicForChild(childId.value, song.id)
           eventBus.$emit(APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES, {
@@ -248,14 +248,14 @@ export default defineComponent({
             userId: userInfo.value.id,
             topic: song.description
           })
-          snotify.success('Song added to favorites')
+          toast.success('Song added to favorites')
 
           // NOTIFY GTM : useGtmHelper()
         }
 
         await getAndSetFavorites()
       } catch (error: any) {
-        snotify.error(error.message)
+        toast.error(error.message)
       }
     }
 
