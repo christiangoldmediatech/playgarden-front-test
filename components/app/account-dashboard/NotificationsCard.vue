@@ -74,10 +74,13 @@ export default defineComponent({
 
     const getNotificationsUsersData = async () => {
       try {
+        store.commit('account/SET_LOADING_NOTIFICATIONS', true)
         const notifications = await store.dispatch('notifications/users/getNotificationUsers')
 
         notificationsList.value = parseNotifications(notifications)
       } catch (e) {
+      } finally {
+        store.commit('account/SET_LOADING_NOTIFICATIONS', false)
       }
     }
 

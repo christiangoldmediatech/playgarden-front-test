@@ -228,7 +228,7 @@
           solo
           dense
           flat
-          disabled
+          readonly
         />
       </v-col>
 
@@ -241,7 +241,7 @@
           solo
           dense
           flat
-          disabled
+          readonly
         />
       </v-col>
 
@@ -254,7 +254,7 @@
           solo
           dense
           flat
-          disabled
+          readonly
         />
       </v-col>
 
@@ -267,7 +267,7 @@
           solo
           dense
           flat
-          disabled
+          readonly
         />
       </v-col>
 
@@ -280,7 +280,7 @@
           solo
           dense
           flat
-          disabled
+          readonly
         />
       </v-col>
     </v-row>

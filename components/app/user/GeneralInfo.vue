@@ -14,7 +14,7 @@
                 dense
                 flat
                 :class="{ 'custom-text-field': isEditing }"
-                :disabled="!isEditing"
+                :readonly="!isEditing"
               />
             </v-col>
             <v-col cols="12" md="6" class="pl-0 pl-md-4">
@@ -26,7 +26,7 @@
                 solo
                 flat
                 :class="{ 'custom-text-field': isEditing }"
-                :disabled="!isEditing"
+                :readonly="!isEditing"
               />
             </v-col>
           </v-row>
@@ -40,7 +40,7 @@
                 solo
                 flat
                 :class="{ 'custom-text-field': isEditing }"
-                :disabled="!isEditing"
+                :readonly="!isEditing"
               />
             </v-col>
           </v-row>
@@ -55,7 +55,7 @@
                 solo
                 flat
                 :class="{ 'custom-text-field': isEditing }"
-                :disabled="true"
+                :readonly="true"
               />
             </v-col>
             <v-col cols="12" md="6" class="pl-0 pl-md-4">
@@ -67,7 +67,7 @@
                 solo
                 flat
                 :class="{ 'custom-text-field': isEditing }"
-                :disabled="!isEditing"
+                :readonly="!isEditing"
               />
             </v-col>
           </v-row>

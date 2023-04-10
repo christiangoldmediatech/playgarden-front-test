@@ -12,56 +12,58 @@
 
     <div class="account-orange-dashed-line"></div>
 
-    <v-row no-gutters class="pt-4">
-      <v-col cols="12">
-        <v-row no-gutters>
-          <v-col
-            v-for="(item, indexD) in items"
-            :key="indexD"
-            cols="12"
-            class="mb-2"
-          >
-            <!-- Readonly child info -->
-            <v-row no-gutters>
-              <v-col cols="4" md="3">
-                <img
-                  v-if="firstBackpack"
-                  :alt="childBackpack(item.backpackId).name"
-                  class="backpack-active"
-                  :src="childBackpack(item.backpackId).image"
-                >
-              </v-col>
-              <v-col cols="8" md="9" class="d-flex flex-column pl-3">
-                <div class="d-flex justify-space-between">
-                  <h1 class="child-name mb-3">
-                    {{ item.firstName }} {{ (item.lastName) ? item.lastName : '' }}
-                  </h1>
-                  <v-btn
-                    text
-                    class="account-child-btn"
-                    small
-                    color="#FFAB37"
-                    @click="selectChildToEdit(item)"
+    <v-col cols="12">
+      <v-row no-gutters class="pt-4">
+        <v-col cols="12">
+          <v-row no-gutters>
+            <v-col
+              v-for="(item, indexD) in items"
+              :key="indexD"
+              cols="12"
+              class="mb-2"
+            >
+              <!-- Readonly child info -->
+              <v-row no-gutters>
+                <v-col cols="4" class="pb-3 d-flex justify-center">
+                  <img
+                    v-if="firstBackpack"
+                    :alt="childBackpack(item.backpackId).name"
+                    class="backpack-active"
+                    :src="childBackpack(item.backpackId).image"
                   >
-                    View more
-                  </v-btn>
-                </div>
-                <div>
-                  <span class="child-base-text pg-text-[#707070]">Date of birth:  </span>
-                  <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">{{ getChildBirthday(item.birthday) }}</span>
-                </div>
-                <div>
-                  <span class="child-base-text pg-text-[#707070]">Gender:  </span>
-                  <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">
-                    {{ item.gender === 'FEMALE' ? 'Girl' : item.gender === 'MALE' ? 'Boy' : '' }}
-                  </span>
-                </div>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+                </v-col>
+                <v-col cols="8" class="d-flex flex-column pl-3">
+                  <div class="d-flex justify-space-between">
+                    <h1 class="child-name mb-3">
+                      {{ item.firstName }} {{ (item.lastName) ? item.lastName : '' }}
+                    </h1>
+                    <v-btn
+                      text
+                      class="account-child-btn"
+                      small
+                      color="#FFAB37"
+                      @click="selectChildToEdit(item)"
+                    >
+                      View more
+                    </v-btn>
+                  </div>
+                  <div>
+                    <span class="child-base-text pg-text-[#707070]">Date of birth:  </span>
+                    <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">{{ getChildBirthday(item.birthday) }}</span>
+                  </div>
+                  <div>
+                    <span class="child-base-text pg-text-[#707070]">Gender:  </span>
+                    <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">
+                      {{ item.gender === 'FEMALE' ? 'Girl' : item.gender === 'MALE' ? 'Boy' : '' }}
+                    </span>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-col>
 
     <v-col cols="12">
       <v-btn
@@ -198,9 +200,15 @@ export default defineComponent({
       viewModal.value = true
     }
 
-    onMounted(async () => {
+    const init = async () => {
+      store.commit('account/SET_LOADING_STUDENT_PROFILE_INFO', true)
       await fetchBackpacks()
       await fetchChildren()
+      store.commit('account/SET_LOADING_STUDENT_PROFILE_INFO', false)
+    }
+
+    onMounted(async () => {
+      await init()
       nuxt.$on('children-changed', fetchChildren)
     })
 

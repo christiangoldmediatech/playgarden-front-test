@@ -19,7 +19,7 @@
           <div class="account-green-dashed-line"></div>
         </div>
       </v-col>
-      <v-col cols="12" md="6" class="d-flex justify-center mb-4 mb-md-0">
+      <v-col cols="12" md="6" class="d-flex justify-center justify-md-end mb-4 mb-md-0">
         <add-caregiver />
       </v-col>
 
