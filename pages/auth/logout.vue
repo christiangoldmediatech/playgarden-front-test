@@ -13,7 +13,11 @@ export default {
   async mounted () {
     await this.logout()
 
-    this.$router.push({ name: 'index' })
+    if (!this.$route.query.returnUrl) {
+      await this.$router.push({ name: 'index' })
+    } else {
+      window.location.replace(this.$route.query.returnUrl)
+    }
   },
 
   methods: mapActions('auth', ['logout']),
