@@ -247,10 +247,7 @@ export default defineComponent({
 
     planIsSelected(plan) {
       const type = this.billAnnually ? 'year' : 'month'
-      if (this.getUserInfo.stripeStatus !== 'canceled') {
-        return this.getUserInfo.planSelected.name === plan.name && this.getUserInfo.subscription.plan.interval === type
-      }
-      return false
+      return this.getUserInfo.planSelected.name === plan.name && this.getUserInfo.subscription.plan.interval === type
     },
 
     doAction(plan) {
