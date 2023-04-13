@@ -105,4 +105,5 @@ export interface User extends Entity {
   utmSource?: string
   utmTerm?: string
   validatedDate: unknown
+  accountCancelled: boolean
 }
