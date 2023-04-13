@@ -79,7 +79,9 @@ import {
   defineComponent,
   useRoute,
   useStore,
-  useMeta
+  useMeta,
+  onUnmounted,
+  useRouter
 } from '@nuxtjs/composition-api'
 import { computed, onMounted, ref, watch } from '@vue/composition-api'
 
@@ -110,6 +112,7 @@ import {
   useVuetifyHelper
 } from '@/composables'
 import LearningKitsPopup from '@/components/app/payment/LearningKitsPopup.vue'
+import socket from '~/plugins/socket.io.js'
 
 export default defineComponent({
   middleware: ['utmHandler'],
@@ -258,6 +261,7 @@ export default defineComponent({
 
     const store = useStore()
     const route = useRoute()
+    const router = useRouter()
     const vuetify = useVuetifyHelper()
 
     const {
@@ -279,6 +283,7 @@ export default defineComponent({
     const { isUserLoggedIn, isUserEmailVerified } = useAuth({ store })
 
     const routeName = computed(() => route.value.name)
+    const userInfo = store.getters['auth/getUserInfo']
 
     watch(routeName, () => {
       if (
@@ -289,7 +294,26 @@ export default defineComponent({
       }
     })
 
+    const sendEmailToSocket = () => {
+      if (!isUserLoggedIn.value || !userInfo.email) {
+        return
+      }
+
+      socket.emit('identification', { email: userInfo.email })
+    }
+
+    const userInfoListener = (userInfo) => {
+      store.commit('auth/SET_USER_INFO', userInfo)
+      if (userInfo.accessCancelled) {
+        router.push({ name: 'app-inactive-subscription' })
+      }
+    }
+
     onMounted(() => {
+      socket.on('user-info', userInfoListener)
+
+      sendEmailToSocket()
+
       watch(
         isUserLoggedIn,
         async () => {
@@ -327,6 +351,10 @@ export default defineComponent({
         learningKitsPopup.value = true
         localStorage.setItem(LEARNING_KITS_POPUP_STORAGE_KEY, 'true')
       }
+    })
+
+    onUnmounted(() => {
+      socket.off('user-info', userInfoListener)
     })
 
     return {
