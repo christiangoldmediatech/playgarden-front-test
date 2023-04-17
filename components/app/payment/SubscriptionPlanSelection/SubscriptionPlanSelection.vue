@@ -208,8 +208,7 @@ export default defineComponent({
   }),
 
   computed: {
-    ...mapGetters('auth', ['isUserLoggedIn']),
-    ...mapGetters('auth', ['getUserInfo'])
+    ...mapGetters('auth', ['isUserLoggedIn', 'getUserInfo'])
   },
 
   async created() {
