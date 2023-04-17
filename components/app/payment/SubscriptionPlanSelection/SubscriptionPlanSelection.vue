@@ -86,9 +86,10 @@
               block
               :loading="loading"
               :color="plan.color"
+              :disabled="planIsSelected(plan)"
               @click="doAction(plan)"
             >
-              Choose plan
+              {{ !planIsSelected(plan) ? 'Choose plan' : 'Current Plan' }}
             </v-btn>
 
             <p class="pg-text-center pg-text-sm pg-mt-4">
@@ -114,7 +115,7 @@ import {
   defineComponent,
   useStore,
   computed,
-  useRoute
+  useRoute, reactive
 } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -129,6 +130,7 @@ import {
 
 import { UserFlow } from '@/models'
 import CreditCardModal from '@/components/app/payment/CreditCardModal.vue'
+import isCreditCard from 'validator/es/lib/isCreditCard'
 import PaymentInformationDialog from '../PaymentInformationDialog.vue'
 import PlanDescription from './PlanDescription.vue'
 
@@ -206,7 +208,7 @@ export default defineComponent({
   }),
 
   computed: {
-    ...mapGetters('auth', ['isUserLoggedIn'])
+    ...mapGetters('auth', ['isUserLoggedIn', 'getUserInfo'])
   },
 
   async created() {
@@ -217,6 +219,18 @@ export default defineComponent({
 
     if (this.isUserLoggedIn) {
       this.getPlan()
+    }
+
+    const planId = this.$route.query.planId
+    const annually = this.$route.query.annually
+    if (planId && annually) {
+      const plan = this.plans.find(plan => plan.id.toString() === planId)
+      if (plan) {
+        setTimeout(() => {
+          this.openDialog(plan)
+          this.billAnnually = annually === 'yes'
+        }, 1000)
+      }
     }
   },
 
@@ -229,6 +243,14 @@ export default defineComponent({
       'fetchSubscriptionPlan',
       'selectSubscriptionPlan'
     ]),
+
+    planIsSelected(plan) {
+      const type = this.billAnnually ? 'year' : 'month'
+      if (!this.getUserInfo.accountCancelled) {
+        return this.getUserInfo.planSelected.name === plan.name && this.getUserInfo.subscription.plan.interval === type
+      }
+      return false
+    },
 
     doAction(plan) {
       if (this.inSignUpProcess) {
