@@ -85,7 +85,7 @@ import {
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import PlayLearnPromoInfo from '@/components/app/register/PlayLearnPromoInfo.vue'
-import { useAccessorHelper, useSnotifyHelper, useUtmHandler } from '@/composables'
+import { useAccessorHelper, useToastHelper, useUtmHandler } from '@/composables'
 import { useAuth } from '@/composables/users'
 import { ParentSignupPayload } from '@/composables/web/signup/types'
 import { useParentSignup, useSignupFlow, useSignupStep } from '@/composables/web/signup'
@@ -109,7 +109,7 @@ export default defineComponent({
 
   setup() {
     const Gtm = useGtm()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const router = useRouter()
     const route = useRoute()
     const storeAccess = useAccessorHelper().auth.signup
@@ -139,7 +139,7 @@ export default defineComponent({
       try {
         isLoading.value = true
         await ParentSignup.signup(data, signupType)
-        snotify.success('Welcome to Playgarden Prep!')
+        toast.success('Welcome to Playgarden Prep!')
         goToNextStep()
       } catch (e) {
         const error = e as any

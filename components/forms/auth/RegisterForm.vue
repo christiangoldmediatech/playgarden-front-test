@@ -88,11 +88,12 @@
 
                 <v-row no-gutters>
                   <v-col v-if="isAddressRequired" class="pr-2" cols="12" md="6">
-                    <!-- Address -->
-                    <validation-provider name="Address" rules="required">
+                    <!-- Address component -->
+                    <validation-provider v-slot="{errors}" name="Address" rules="required">
                       <search-address-autocomplete
                         v-model="addressDraft.address1"
                         class="custom-text-field"
+                        :errors="errors"
                         @address-components="configureAddress"
                       />
                     </validation-provider>
@@ -500,7 +501,7 @@ export default {
           }
         })
         .catch((e) => {
-          this.$snotify.error(e.message)
+          this.$toast.error(e.message)
         })
         .finally(() => {
           fireAuthObj.signOut()
@@ -605,7 +606,7 @@ export default {
         this.userSocialData = { ...user }
         this.setDraft()
       } catch (e) {
-        this.$snotify.error('This email is already on used!')
+        this.$toast.error('This email is already on used!')
       } finally {
         this.enableAxiosGlobal()
         this.loadingDataSocial = false

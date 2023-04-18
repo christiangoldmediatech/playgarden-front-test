@@ -138,7 +138,7 @@ export default {
           result = await this.handleFileUpload()
         }
       } catch (error) {
-        this.$snotify.error('Error uploading your file! Please make sure file is correct.')
+        this.$toast.error('Error uploading your file! Please make sure file is correct.')
         return Promise.reject(error)
       }
 

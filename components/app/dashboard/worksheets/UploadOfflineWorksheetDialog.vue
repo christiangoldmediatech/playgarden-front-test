@@ -218,7 +218,7 @@ import {
   watch,
   useStore
 } from '@nuxtjs/composition-api'
-import { useChildren, useNuxtHelper, useSnotifyHelper, useOfflineWorksheet } from '@/composables'
+import { useChildren, useNuxtHelper, useToastHelper, useOfflineWorksheet } from '@/composables'
 import { APP_EVENTS, UploadedOfflineWorksheet } from '@/models'
 
 export default defineComponent({
@@ -236,7 +236,7 @@ export default defineComponent({
     // Globals and helpers
     const store = useStore()
     const $nuxt = useNuxtHelper()
-    const $snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const { currentChild } = useChildren({ store })
     const { uploadWorksheet, saveOfflineWorksheetProgress, getUploaded, removeUploadedOfflineWorksheet } = useOfflineWorksheet({ store })
 
@@ -455,7 +455,7 @@ export default defineComponent({
         resetFileList()
 
         $nuxt.$emit(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD, lessonId)
-        $snotify.success('Your worksheet has been uploaded!')
+        toast.success('Your worksheet has been uploaded!')
         $nuxt.$emit('dashboard-panel-update')
         $nuxt.$emit('student-portafolio-update-worksheets-lesson', lessonId, false)
 

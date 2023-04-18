@@ -46,7 +46,7 @@ export default {
       try {
         await this.updateBillingCard({ id: this.cardId, data })
         this.editing = false
-        this.$snotify.success('Card has been updated successfully!')
+        this.$toast.success('Card has been updated successfully!')
         this.$emit('update:success')
       } catch (e) {
       } finally {

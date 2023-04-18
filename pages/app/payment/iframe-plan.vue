@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-container fluid v-if="plans.length > 0">
+    <v-container v-if="plans.length > 0" fluid>
       <v-row class="mb-6" no-gutters>
         <v-col cols="12" class="mt-5">
           <!-- Bill monthly/anually switch -->
@@ -81,9 +81,10 @@
                     block
                     :loading="loading"
                     :color="plan.color"
-                    @click="redirectPlaygarden()"
+                    :disabled="planIsSelected(plan)"
+                    @click="redirectPlaygarden(plan)"
                   >
-                    Choose plan
+                    {{ !planIsSelected(plan) ? 'Choose plan' : 'Current Plan' }}
                   </v-btn>
 
                   <p class="pg-text-center pg-text-sm pg-mt-4">
@@ -104,7 +105,7 @@
 import {
   defineComponent
 } from '@nuxtjs/composition-api'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 import { Plan } from '@/models'
@@ -120,17 +121,32 @@ export default defineComponent({
     PlanDescription
   },
 
+  computed: {
+    ...mapGetters('auth', ['getUserInfo'])
+  },
+
   data: () => ({
     /** @type {import('@/models').Plan[]} */
     plans: [],
     loading: false,
-    billAnnually: false,
+    billAnnually: false
   }),
 
   methods: {
     ...mapActions('payment', [
       'fetchSubscriptionPlan'
     ]),
+    ...mapActions('auth', [
+      'fetchUserInfo'
+    ]),
+
+    planIsSelected(plan) {
+      const type = this.billAnnually ? 'year' : 'month'
+      if (this.getUserInfo && this.getUserInfo.planSelected && plan && plan.name) {
+        return this.getUserInfo.planSelected.name === plan.name && this.getUserInfo.subscription.plan.interval === type
+      }
+      return false
+    },
 
     async fetchPlans() {
       try {
@@ -138,19 +154,27 @@ export default defineComponent({
       } catch (e) {}
     },
 
-    redirectPlaygarden(){
+    async fetchUserData () {
+      const isLoggedIn = this.$route.query.isLogged
+      if (isLoggedIn) {
+        await this.fetchUserInfo()
+      }
+    },
+
+    redirectPlaygarden(plan) {
       const isLoggedIn = this.$route.query.isLogged
 
       if (isLoggedIn) {
-        window.open('https://playgardenonline.com/school/app/payment/plan', "_parent")
+        window.open(`https://playgardenonline.com/school/app/payment/plan?planId=${plan.id}&annually=${this.billAnnually ? 'yes' : 'no'}`, '_parent')
       } else {
-        window.open('https://playgardenonline.com/school/auth/preschool/normal', "_parent")
+        window.open('https://playgardenonline.com/school/auth/preschool/normal', '_parent')
       }
     }
   },
 
   async created() {
     await this.fetchPlans()
+    await this.fetchUserData()
   }
 
 })

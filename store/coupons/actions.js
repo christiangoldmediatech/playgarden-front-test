@@ -1,4 +1,4 @@
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 
 export default {
   getCouponById (_, { id }) {
@@ -9,7 +9,7 @@ export default {
     try {
       return await this.$axios.$get('/coupons', { params })
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while getting coupons'
       })
 
@@ -21,7 +21,7 @@ export default {
     try {
       return await this.$axios.$get(`/billing/coupons/${params.name}/users/`)
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while getting coupons'
       })
       throw error

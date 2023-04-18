@@ -1,4 +1,4 @@
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 
 export default {
   /*
@@ -8,7 +8,7 @@ export default {
     try {
       return await this.$axios.$post('/billing/card', data)
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while adding your Credit Card!'
       })
 
@@ -20,7 +20,7 @@ export default {
     try {
       return await this.$axios.$get('/billing/cards')
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while getting your Subscription data!'
       })
 
@@ -32,7 +32,7 @@ export default {
     try {
       return await this.$axios.$delete(`/billing/card/${id}`)
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while removing your Credit Card!'
       })
 
@@ -48,7 +48,7 @@ export default {
     try {
       return await this.$axios.$post('/billing/validate/card', data)
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while validating your Credit Card!'
       })
 
@@ -65,7 +65,7 @@ export default {
         `/billing/subscription/cancel?reason=${reason}`
       )
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while canceling your Subscription!'
       })
 
@@ -77,7 +77,7 @@ export default {
     try {
       return await this.$axios.$delete(`/billing/subscription/${id}/cancel`)
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while canceling the Subscription!'
       })
 
@@ -91,7 +91,7 @@ export default {
       commit('SET_BILLING', response)
       return response
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while getting your Subscription cost!'
       })
 
@@ -103,7 +103,7 @@ export default {
     try {
       return await this.$axios.$get('/billing/cost')
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while getting your Subscription cost!'
       })
 
@@ -115,7 +115,7 @@ export default {
     try {
       return await this.$axios.$post('/billing', data)
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while paying your Subscription!'
       })
 
@@ -127,7 +127,7 @@ export default {
     try {
       return await this.$axios.$post('/billing/payment', data)
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while paying your Subscription!'
       })
 
@@ -142,7 +142,7 @@ export default {
     try {
       return this.$axios.$get('/plans')
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while getting Subscription plans!'
       })
 
@@ -154,7 +154,7 @@ export default {
     try {
       return this.$axios.$get(`/plans/${id}`)
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while getting Subscription plans!'
       })
 
@@ -174,7 +174,7 @@ export default {
     try {
       return await this.$axios.$patch(`/auth/user/plan/${id}/${type}`, data)
     } catch (error) {
-      snotifyError(commit, {
+      toastError(commit, {
         body: 'Sorry! There was an error while setting your Subscription plan!'
       })
 

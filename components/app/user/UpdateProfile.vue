@@ -58,7 +58,7 @@ export default {
         await this.updateUserInfo(draft)
         this.editing = false
 
-        this.$snotify.success('Profile has been updated successfully!')
+        this.$toast.success('Profile has been updated successfully!')
 
         this.$emit('update:success')
       } finally {

@@ -23,11 +23,12 @@
           videos: result.activityVideos || [],
           icon,
           color,
+          unlocked: result.activityType.unlocked,
           lighterColor
         }"
       />
 
-      <library-video-path-player id="videoPathPlayer" v-bind="{ playlist }" />
+      <library-video-path-player id="videoPathPlayer" v-bind="{ playlist }" @update-library="retrieveVideos" />
     </template>
   </library-layout>
 </template>
@@ -133,8 +134,7 @@ export default defineComponent({
       return null
     })
 
-    const isLoading = ref(true)
-    onMounted(async () => {
+    const retrieveVideos = async () => {
       isLoading.value = true
       const activityTypeId = parseInt(route.value.params.activityTypeId)
 
@@ -146,6 +146,11 @@ export default defineComponent({
         result.value = response
       }
       isLoading.value = false
+    }
+
+    const isLoading = ref(true)
+    onMounted(() => {
+      retrieveVideos()
     })
 
     // go back to main page
@@ -164,7 +169,8 @@ export default defineComponent({
       icon,
       name,
       goBack,
-      isLoading
+      isLoading,
+      retrieveVideos
     }
   }
 })

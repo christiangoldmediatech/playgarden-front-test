@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { useAuth, useBilling, useSnotifyHelper, useNotification, useNuxtHelper } from '@/composables'
+import { useAuth, useBilling, useToastHelper, useNotification, useNuxtHelper } from '@/composables'
 import { TypedStore } from '@/models'
 import { defineComponent, computed, useStore, ref, onMounted, watch } from '@nuxtjs/composition-api'
 import { debounce } from 'lodash'
@@ -138,7 +138,7 @@ export default defineComponent({
       store
     })
     const Billing = useBilling()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const nuxt = useNuxtHelper()
     const loading = ref(false)
     const currentPlanName = computed(() => store.getters['auth/getUserInfo'].planSelected.planName)
@@ -167,7 +167,7 @@ export default defineComponent({
       plan.fromPlaydates = props.fromPlaydates
       try {
         if (userCards.value?.length === 0) {
-          snotify.error('A credit card must be provided')
+          toast.error('A credit card must be provided')
           loading.value = false
           return
         }
@@ -181,7 +181,7 @@ export default defineComponent({
         setIsTrialEndingPlanSelectedModalVisible(true)
         nuxt.$emit('plan-membership-changed')
       } catch (e) {
-        snotify.error('Could not select plan. Please, try again later.')
+        toast.error('Could not select plan. Please, try again later.')
       } finally {
         dialog.value = false
         promotionId.value = null

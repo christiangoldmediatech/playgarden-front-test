@@ -90,7 +90,7 @@ export default {
         await this.sendCaregiverInvitation(draft)
         this.modal = false
 
-        this.$snotify.success('Invitation has been sent successfully!')
+        this.$toast.success('Invitation has been sent successfully!')
       } catch (e) {
       } finally {
         this.loading = false

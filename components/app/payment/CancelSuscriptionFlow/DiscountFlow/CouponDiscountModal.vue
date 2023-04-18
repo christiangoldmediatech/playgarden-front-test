@@ -76,7 +76,7 @@ import {
   useStore,
   computed
 } from '@nuxtjs/composition-api'
-import { useAuth, useBilling, useSnotifyHelper } from '@/composables'
+import { useAuth, useBilling, useToastHelper } from '@/composables'
 import { UserFlow } from '@/models'
 import CreditCardModal from '@/components/app/payment/CreditCardModal.vue'
 
@@ -94,7 +94,7 @@ export default defineComponent({
     const store = useStore()
     const Auth = useAuth({ store })
     const Billing = useBilling()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const changingSubscriptionTimeInterval = ref(false)
     const hasPlayAndLearnPlan = computed(
       () => store.getters['auth/hasPlayAndLearnPlan']
@@ -149,7 +149,7 @@ export default defineComponent({
         })
         emit('appliedCouponModal')
       } catch {
-        snotify.error('Could not apply discount. Please, try again later.')
+        toast.error('Could not apply discount. Please, try again later.')
       } finally {
         loadingBtn.value = false
         emit('appliedCouponModal')

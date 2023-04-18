@@ -298,7 +298,7 @@ import utc from 'dayjs/plugin/utc'
 import { TAG_MANAGER_EVENTS } from '@/models'
 
 import ChildSelect from '@/components/app/ChildSelect.vue'
-import { useChild, usePlaydates, useSnotifyHelper } from '@/composables'
+import { useChild, usePlaydates, useToastHelper } from '@/composables'
 import { computed, ref } from '@vue/composition-api'
 
 dayjs.extend(customParseFormat)
@@ -346,7 +346,7 @@ export default defineComponent({
 
   setup (props, { emit }) {
     const router = useRouter()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const store = useStore()
     const { reserveASpot, cancelSpotReservation } = usePlaydates({ store })
     const { children } = useChild({ store })
@@ -392,7 +392,7 @@ export default defineComponent({
         await reserveASpot({ playdateId: props.playdate.id, childId: childId.value, date: props.playdate.date })
 
         childId.value = null
-        snotify.success('Spot reserved!')
+        toast.success('Spot reserved!')
         emit('spot-reserved')
       } catch (error) {
 
@@ -408,7 +408,7 @@ export default defineComponent({
         await cancelSpotReservation({ playdateId: props.playdate.id, childId: child.value.id, date: props.playdate.dateStart })
 
         childId.value = null
-        snotify.success('Spot cancelled!')
+        toast.success('Spot cancelled!')
         emit('spot-canceled')
       } catch (error) {
 

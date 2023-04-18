@@ -1,4 +1,4 @@
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 
 export default {
   getNotificationUsers ({ commit }) {
@@ -7,7 +7,7 @@ export default {
         .$get('/notifications/users/list')
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting notifications.'
           })
           // TO DO async away

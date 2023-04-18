@@ -306,7 +306,14 @@
 import { defineComponent, useMeta, useStore } from '@nuxtjs/composition-api'
 import { computed, onMounted, ref } from '@vue/composition-api'
 
-import { useAuth, useFAQ, useFAQCategories, useHelp, useSnotifyHelper, useVuetifyHelper } from '@/composables'
+import {
+  useAuth,
+  useFAQ,
+  useFAQCategories,
+  useHelp,
+  useToastHelper,
+  useVuetifyHelper
+} from '@/composables'
 import { FAQ, FAQCategory, TypedStore } from '@/models'
 
 export default defineComponent({
@@ -391,7 +398,7 @@ export default defineComponent({
     })
 
     const { sendHelpEmail } = useHelp()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
 
     const onSubmit = async (reset: () => void) => {
       try {
@@ -399,7 +406,7 @@ export default defineComponent({
           ...help.value
         })
 
-        snotify.success(
+        toast.success(
           'Email sent! We will reach out to you as soon as we can!'
         )
         help.value = {
@@ -409,7 +416,7 @@ export default defineComponent({
           description: null
         }
       } catch (error) {
-        snotify.error(
+        toast.error(
           'There was a problem sending the email, please try again.'
         )
       } finally {

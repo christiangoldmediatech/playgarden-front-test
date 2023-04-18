@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { useNotification, useBilling, useSnotifyHelper, useAuth } from '@/composables'
+import { useNotification, useBilling, useToastHelper, useAuth } from '@/composables'
 import { TypedStore } from '@/models'
 import { defineComponent, ref, useStore } from '@nuxtjs/composition-api'
 
@@ -40,7 +40,7 @@ export default defineComponent({
     const isCreditCardModalVisible = ref(false)
     const isLoading = ref(false)
     const store = useStore<TypedStore>()
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const Notification = useNotification({ store })
     const Auth = useAuth({ store })
     const Billing = useBilling()
@@ -63,7 +63,7 @@ export default defineComponent({
 
         Notification.setIsCanceledTrialModalVisible(true)
       } catch (err) {
-        snotify.error('Could not cancel trial. Please try again later.')
+        toast.error('Could not cancel trial. Please try again later.')
       } finally {
         isLoading.value = false
       }

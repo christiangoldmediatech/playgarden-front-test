@@ -453,7 +453,7 @@ export default {
         const draft = await this.getShippingAddress()
         this.draft = draft || { ...draftDefault }
       } catch (e) {
-        this.$snotify.warning('Could not fetch shipping address', 'Error', {
+        this.$toast.warning('Could not fetch shipping address', {
           closeOnClick: true,
           timeout: 6000
         })
@@ -482,7 +482,7 @@ export default {
       try {
         await this.submitMethod(this.getSubmittableData())
 
-        this.$snotify.success('Shipping address has been saved successfully!')
+        this.$toast.success('Shipping address has been saved successfully!')
         this.$emit('shipping-address-saved')
 
         this.isEditing = false

@@ -312,7 +312,7 @@
 import { ref, computed, useStore } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import { TAG_MANAGER_EVENTS } from '@/models'
-import { useChild, usePlaydates, useSnotifyHelper } from '@/composables'
+import { useChild, usePlaydates, useToastHelper } from '@/composables'
 import { getNumberOrder, formatTimezone } from '@/utils/dateTools'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import moment from 'moment'
@@ -325,7 +325,7 @@ export default {
   },
 
   setup(_, { emit }) {
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const store = useStore()
     const { reserveASpot, cancelSpotReservation } = usePlaydates({ store })
     const { children } = useChild({ store })
@@ -378,11 +378,11 @@ export default {
         })
 
         childId.value = null
-        snotify.success('Spot reserved!')
+        toast.success('Spot reserved!')
         dialog.value = false
         emit('refresh')
       } catch (error) {
-        snotify.error(error)
+        toast.error(error)
       } finally {
         isLoadingSpotAction.value = false
       }
@@ -397,11 +397,11 @@ export default {
           date: playdate.value.dateStart
         })
         childId.value = null
-        snotify.success('Spot cancelled!')
+        toast.success('Spot cancelled!')
         dialog.value = false
         emit('refresh')
       } catch (error) {
-        snotify.error('Sorry! Spot could not be cancelled')
+        toast.error('Sorry! Spot could not be cancelled')
       } finally {
         isLoadingSpotAction.value = false
       }

@@ -210,7 +210,7 @@ export default {
         await action()
         this.dialog = false
       } catch (e) {
-        this.$snotify.error('Something went wrong!')
+        this.$toast.error('Something went wrong!')
       } finally {
         this.loading = false
       }

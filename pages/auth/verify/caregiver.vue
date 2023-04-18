@@ -27,7 +27,7 @@ export default {
       try {
         const { email, phone } = await this.validateInvitation(this.token)
 
-        await this.$snotify.success(
+        await this.$toast.success(
           'Invitation has been verified successfully!'
         )
 

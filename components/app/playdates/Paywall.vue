@@ -69,12 +69,10 @@
 
 <script lang="ts">
 import {
-  useAuth,
   useBilling,
   useGlobalModal,
-  useNotification,
   usePlanAccessHelpers,
-  useSnotifyHelper
+  useToastHelper
 } from '@/composables'
 import { TypedStore } from '@/models'
 import {
@@ -98,7 +96,7 @@ export default defineComponent({
     const router = useRouter()
     const route = useRoute()
 
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const store = useStore<TypedStore>()
     const { showContactUsModal, canConfirmPlan } = useGlobalModal({ store })
     const Billing = useBilling()
@@ -131,7 +129,7 @@ export default defineComponent({
         // await Auth.fetchUserInfo()
         // Notification.setIsCanceledTrialModalVisible(true)
       } catch (error) {
-        snotify.error('Could not cancel trial. Please try again later.')
+        toast.error('Could not cancel trial. Please try again later.')
       } finally {
         isLoading.value = false
       }

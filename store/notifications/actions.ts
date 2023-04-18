@@ -1,6 +1,6 @@
 import { actionTree } from 'typed-vuex'
 import dayjs from 'dayjs'
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 import { hasLocalStorage } from '@/utils/window'
 import { UserFlow } from '@/models'
 import { state, mutations } from './'
@@ -24,7 +24,7 @@ export default actionTree({ state, mutations }, {
         .$get('/notifications', { params })
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting notifications.'
           })
           // TO DO async away

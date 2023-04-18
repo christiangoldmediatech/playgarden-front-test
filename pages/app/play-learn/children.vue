@@ -47,7 +47,7 @@
 import { defineComponent, ref, useRouter, useStore, computed } from '@nuxtjs/composition-api'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import ShortRegisterForm from '@/components/forms/children/ShortRegisterForm.vue'
-import { useAuth, useChild, useSnotifyHelper } from '@/composables'
+import { useAuth, useChild, useToastHelper } from '@/composables'
 import { Child, TypedStore } from '@/models'
 import { Flow } from '@/composables/users/enums'
 
@@ -62,7 +62,7 @@ export default defineComponent({
   },
 
   setup() {
-    const snotify = useSnotifyHelper()
+    const toast = useToastHelper()
     const store = useStore<TypedStore>()
     const router = useRouter()
     const Auth = useAuth({ store })
@@ -86,10 +86,10 @@ export default defineComponent({
         )
 
         await Auth.fetchUserInfo()
-        snotify.success('Child information has been saved!')
+        toast.success('Child information has been saved!')
         goToNextStep()
       } catch {
-        snotify.error('Something went wrong. Please try again.')
+        toast.error('Something went wrong. Please try again.')
       } finally {
         isLoading.value = false
       }

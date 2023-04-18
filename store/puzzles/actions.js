@@ -1,4 +1,4 @@
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 
 export default {
   createPuzzle (_, data) {
@@ -15,7 +15,7 @@ export default {
         .$get('/puzzle', { params })
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting puzzles.'
           })
           // TO DO async away

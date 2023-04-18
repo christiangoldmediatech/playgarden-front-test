@@ -1,4 +1,4 @@
-import { snotifyError } from '@/utils/vuex'
+import { toastError } from '@/utils/vuex'
 import { getTimezone } from '@/utils/dateTools'
 
 export default {
@@ -28,7 +28,7 @@ export default {
         .$get('/live-sessions', { params })
         .then(resolve)
         .catch((error) => {
-          snotifyError(commit, {
+          toastError(commit, {
             body: 'Sorry! There was an error while getting Live Sessions.'
           })
           // TO DO async away

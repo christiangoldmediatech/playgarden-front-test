@@ -135,7 +135,7 @@ export default {
 
         await this.fetchUserInfo()
 
-        this.$snotify.success('Child information has been saved!')
+        this.$toast.success('Child information has been saved!')
 
         if (this.inSignUpProcess) {
           await this.$router.push({

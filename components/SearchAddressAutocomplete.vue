@@ -23,6 +23,7 @@
     type="search"
     autocomplete="off"
     clearable
+    :error-messages="errors"
     @change="handlePlaceSelection"
     @keypress.enter="handleAddItem"
     @blur="handleAddItem"
@@ -88,6 +89,11 @@ export default Vue.extend({
     shouldError: {
       type: Boolean,
       default: false
+    },
+
+    errors: {
+      type: Array,
+      default: () => []
     }
   },
 

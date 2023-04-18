@@ -2,7 +2,7 @@ export const set = property => (state, payload) =>
   (state[property] = payload)
 export const get = property => state => state[property]
 
-export const snotifyError = (
+export const toastError = (
   commit,
   { body = 'Something went wrong.', config = {} } = {}
 ) =>
