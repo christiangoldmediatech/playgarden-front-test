@@ -89,10 +89,11 @@
                 <v-row no-gutters>
                   <v-col v-if="isAddressRequired" class="pr-2" cols="12" md="6">
                     <!-- Address -->
-                    <validation-provider name="Address" rules="required">
+                    <validation-provider v-slot="{errors}" name="Address" rules="required">
                       <search-address-autocomplete
                         v-model="addressDraft.address1"
                         class="custom-text-field"
+                        :errors="errors"
                         @address-components="configureAddress"
                       />
                     </validation-provider>
