@@ -88,7 +88,7 @@
 
                 <v-row no-gutters>
                   <v-col v-if="isAddressRequired" class="pr-2" cols="12" md="6">
-                    <!-- Address -->
+                    <!-- Address component -->
                     <validation-provider v-slot="{errors}" name="Address" rules="required">
                       <search-address-autocomplete
                         v-model="addressDraft.address1"
