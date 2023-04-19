@@ -217,7 +217,7 @@ export default {
     },
 
     async loadBackpacks () {
-      if (backpacks.length === 0) {
+      if (this.backpacks.length === 0) {
         await this.fetchBackpacks()
       }
     },

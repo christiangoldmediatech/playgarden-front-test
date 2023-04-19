@@ -69,7 +69,7 @@
 
 <script>
 import dayjs from 'dayjs'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import UserChildTimelineDialog from '@/components/forms/profile/UserChildTimelineDialog.vue'
 import ChildCard from './ChildCard.vue'
@@ -245,7 +245,7 @@ export default {
     },
 
     async loadBackpacks () {
-      if (backpacks.length === 0) {
+      if (this.backpacks.length === 0) {
         await this.fetchBackpacks()
       }
     },
