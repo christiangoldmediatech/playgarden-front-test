@@ -69,7 +69,7 @@ export default defineComponent({
     const store = useStore<TypedStore>()
     const router = useRouter()
 
-    const caregivers = ref<any>([])
+    const caregivers = computed(() => store.getters['caregiver/getCaregivers'])
 
     const iconSize = computed(() => {
       return vuetify.breakpoint.smAndDown ? '60px' : '80px'
@@ -77,8 +77,9 @@ export default defineComponent({
 
     const fetchCaregivers = async () => {
       store.commit('account/SET_LOADING_CAREGIVER_INFO', true)
-      const { users } = await store.dispatch('caregiver/fetchCaregiversList')
-      caregivers.value = users
+      if (caregivers.value.length === 0) {
+        await store.dispatch('caregiver/fetchCaregiversList')
+      }
       store.commit('account/SET_LOADING_CAREGIVER_INFO', false)
     }
 

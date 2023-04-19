@@ -158,7 +158,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import AddCaregiver from '@/components/app/caregiver/AddCaregiver'
 import InvitationList from '@/components/app/caregiver/InvitationList'
 
@@ -174,12 +174,17 @@ export default {
     return {
       isEditing: false,
       form: {},
-      caregivers: [],
       loading: false
     }
   },
 
   computed: {
+    ...mapGetters('caregiver', ['getCaregivers']),
+
+    caregivers() {
+      return this.getCaregivers
+    },
+
     caregiversColor() {
       return '53, 152, 70'
     },
@@ -199,8 +204,9 @@ export default {
     async getCaregiversData () {
       try {
         this.loading = true
-        const { users } = await this.fetchCaregiversList()
-        this.caregivers = users
+        if (this.caregivers.length === 0) {
+          await this.fetchCaregiversList()
+        }
       } catch (e) {
       } finally {
         this.loading = false
