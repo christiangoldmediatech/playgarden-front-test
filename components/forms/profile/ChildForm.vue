@@ -84,12 +84,13 @@ export default {
 
   data: () => ({
     loading: false,
-    childrenProgress: [],
     items: []
   }),
 
   computed: {
     ...mapGetters('backpacks', ['getBackpacks']),
+    ...mapGetters('children', ['rows']),
+    ...mapGetters('children/progress', ['childrenProgress']),
 
     backpacks() {
       return this.getBackpacks
@@ -163,9 +164,15 @@ export default {
       try {
         this.loading = true
         await this.loadBackpacks()
-        this.childrenProgress = await this.getUserChildrenProgress()
-        const rows = await this.getChildren()
-        rows.forEach((row) => {
+        if (this.childrenProgress.length === 0) {
+          await this.getUserChildrenProgress()
+        }
+
+        if (this.rows.length === 0) {
+          await this.getChildren()
+        }
+
+        this.rows.forEach((row) => {
           this.loadChild(row)
         })
       } catch (error) {

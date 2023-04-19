@@ -104,7 +104,7 @@ export default defineComponent({
     const studentProfileColor = ref('248, 152, 56')
     const items = ref<any>([])
     const backpacks = computed(() => store.getters['backpacks/getBackpacks'])
-    const childrenProgress = ref<any[]>([])
+    const childrenProgress = computed(() => store.getters['children/progress/childrenProgress'])
 
     const store = useStore<TypedStore>()
     const router = useRouter()
@@ -125,11 +125,17 @@ export default defineComponent({
       }
     }
 
-    const fetchChildren = async () => {
+    const fetchChildren = async (reload = true) => {
       items.value = []
-      const rows = await store.dispatch('children/get')
+      let rows = store.getters['children/rows']
 
-      childrenProgress.value = await store.dispatch('children/progress/getUserChildrenProgress')
+      if (reload || rows.length === 0) {
+        rows = await store.dispatch('children/get')
+      }
+
+      if (reload || childrenProgress.value.length === 0) {
+        await store.dispatch('children/progress/getUserChildrenProgress')
+      }
 
       rows.forEach((row: any) => {
         loadChild(row)
@@ -144,7 +150,7 @@ export default defineComponent({
         'MM/DD/YYYY'
       )
 
-      const progress = childrenProgress.value.find((progress) => {
+      const progress = childrenProgress.value.find((progress: any) => {
         if (progress && progress.children && progress.children.id) {
           return progress.children.id === id
         }
