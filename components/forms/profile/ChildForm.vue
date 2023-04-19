@@ -84,12 +84,17 @@ export default {
 
   data: () => ({
     loading: false,
-    backpacks: [],
     childrenProgress: [],
     items: []
   }),
 
   computed: {
+    ...mapGetters('backpacks', ['getBackpacks']),
+
+    backpacks() {
+      return this.getBackpacks
+    },
+
     removable () {
       return (item) => {
         if (!item.id) {
@@ -127,7 +132,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('backpacks', ['getBackpacks']),
+    ...mapActions('backpacks', ['fetchBackpacks']),
 
     ...mapActions('children', {
       createChild: 'store',
@@ -157,7 +162,7 @@ export default {
     async loadChildren () {
       try {
         this.loading = true
-        await this.fetchBackpacks()
+        await this.loadBackpacks()
         this.childrenProgress = await this.getUserChildrenProgress()
         const rows = await this.getChildren()
         rows.forEach((row) => {
@@ -239,8 +244,10 @@ export default {
       this.items.unshift(_data)
     },
 
-    fetchBackpacks () {
-      this.getBackpacks().then(data => (this.backpacks = data))
+    async loadBackpacks () {
+      if (backpacks.length === 0) {
+        await this.fetchBackpacks()
+      }
     },
 
     onInputBirthday (item) {

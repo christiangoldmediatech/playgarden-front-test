@@ -9,19 +9,18 @@ export default {
     return this.$axios.$delete(`/backpacks/${id}`)
   },
 
-  getBackpacks ({ commit }, params) {
-    return new Promise((resolve, reject) =>
-      this.$axios
-        .$get('/backpacks', { params })
-        .then(resolve)
-        .catch((error) => {
-          toastError(commit, {
-            body: 'Sorry! There was an error while getting backpacks.'
-          })
-          // TO DO async away
-          reject(error)
-        })
-    )
+  async fetchBackpacks ({ commit }, params) {
+    try {
+      const data = await this.$axios.$get('/backpacks', { params })
+
+      commit('SET_BACKPACKS', data)
+
+      return data
+    } catch (error) {
+      toastError(commit, {
+        body: 'Sorry! There was an error while getting backpacks.'
+      })
+    }
   },
 
   updateBackpack (_, { id, data }) {

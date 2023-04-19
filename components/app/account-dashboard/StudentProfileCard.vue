@@ -103,7 +103,7 @@ export default defineComponent({
 
     const studentProfileColor = ref('248, 152, 56')
     const items = ref<any>([])
-    const backpacks = ref<any>([])
+    const backpacks = computed(() => store.getters['backpacks/getBackpacks'])
     const childrenProgress = ref<any[]>([])
 
     const store = useStore<TypedStore>()
@@ -120,7 +120,9 @@ export default defineComponent({
     })
 
     const fetchBackpacks = async () => {
-      backpacks.value = await store.dispatch('backpacks/getBackpacks')
+      if (backpacks.value.length === 0) {
+        await store.dispatch('backpacks/fetchBackpacks')
+      }
     }
 
     const fetchChildren = async () => {

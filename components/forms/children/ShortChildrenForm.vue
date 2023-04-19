@@ -113,7 +113,6 @@ export default {
     loading: Boolean
   },
   data: () => ({
-    backpacks: [],
     menu: false,
     itemCurrent: null,
     indexCurrent: null,
@@ -123,6 +122,11 @@ export default {
   }),
   computed: {
     ...mapGetters('auth', ['isUserLoggedIn']),
+    ...mapGetters('backpacks', ['getBackpacks']),
+
+    backpacks() {
+      return this.getBackpacks
+    },
 
     removable () {
       return this.draft.length > 1
@@ -143,14 +147,14 @@ export default {
       }
     }
   },
-  created () {
+  async created () {
     this.index = this.position
     this.itemCurrent = this.item
     this.itemCurrent._birthdayFormatted = dayjs(this.itemCurrent._birthdayPicker).format(
       'MM/DD/YYYY'
     )
     this.itemCurrent.birthday = null // `${this.itemCurrent._birthdayPicker}T00:00:00.000`
-    this.fetchBackpacks()
+    await this.loadBackpacks()
     if (this.isUserLoggedIn) {
       this.loadChildren()
     } else {
@@ -158,15 +162,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions('backpacks', ['getBackpacks']),
+    ...mapActions('backpacks', ['fetchBackpacks']),
 
     ...mapActions('children', {
       getChildren: 'get',
       deleteChild: 'delete'
     }),
 
-    fetchBackpacks () {
-      this.getBackpacks().then(data => (this.backpacks = data))
+    async loadBackpacks () {
+      if (backpacks.length === 0) {
+        await this.fetchBackpacks()
+      }
     },
 
     onInputBirthday () {

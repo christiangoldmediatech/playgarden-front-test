@@ -159,7 +159,6 @@ export default {
     loading: Boolean
   },
   data: () => ({
-    backpacks: [],
     menu: false,
     itemCurrent: null,
     indexCurrent: null,
@@ -169,6 +168,11 @@ export default {
   }),
   computed: {
     ...mapGetters('auth', ['isUserLoggedIn']),
+    ...mapGetters('backpacks', ['getBackpacks']),
+
+    backpacks() {
+      return this.getBackpacks
+    },
 
     removable () {
       return this.draft.length > 1
@@ -187,13 +191,13 @@ export default {
       val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
     }
   },
-  created () {
+  async created () {
     this.index = this.position
     this.itemCurrent = this.item
     if (this.itemCurrent.id) {
       this.selectedDate = this.itemCurrent._birthdayFormatted
     }
-    this.fetchBackpacks()
+    await this.loadBackpacks()
     if (this.isUserLoggedIn) {
       this.loadChildren()
     } else {
@@ -201,7 +205,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('backpacks', ['getBackpacks']),
+    ...mapActions('backpacks', ['fetchBackpacks']),
 
     ...mapActions('children', {
       getChildren: 'get',
@@ -212,8 +216,10 @@ export default {
       this.itemCurrent.backpackId = val
     },
 
-    fetchBackpacks () {
-      this.getBackpacks().then(data => (this.backpacks = data))
+    async loadBackpacks () {
+      if (backpacks.length === 0) {
+        await this.fetchBackpacks()
+      }
     },
 
     onInputBirthday () {
