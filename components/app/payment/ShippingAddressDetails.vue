@@ -288,7 +288,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import submittable from '@/utils/mixins/submittable'
 import SearchAddressAutocomplete from '@/components/SearchAddressAutocomplete.vue'
@@ -354,6 +354,8 @@ export default {
   }),
 
   computed: {
+    ...mapGetters('shipping-address', ['shippingAddress']),
+
     isMobile () {
       return this.$vuetify.breakpoint.mobile
     },
@@ -450,7 +452,12 @@ export default {
       this.loading = true
       try {
         this.disableAxiosGlobal()
-        const draft = await this.getShippingAddress()
+
+        if (!this.shippingAddress) {
+          await this.getShippingAddress()
+        }
+
+        const draft = { ...this.shippingAddress }
         this.draft = draft || { ...draftDefault }
       } catch (e) {
         this.$toast.warning('Could not fetch shipping address', {
