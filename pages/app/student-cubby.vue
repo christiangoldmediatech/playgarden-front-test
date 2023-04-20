@@ -66,6 +66,7 @@
 <script lang="ts">
 import {
   defineComponent,
+  onMounted,
   useRoute,
   computed,
   useRouter,
@@ -131,6 +132,10 @@ export default defineComponent({
       }
     ]
 
+    const isRegistrationComplete = computed(() => {
+      return store.getters['auth/isRegistrationComplete']
+    })
+
     const selectedCubbyItem = computed(() => {
       return studentCubbyItems.find(item =>
         route.value.name?.includes(item.routeName)
@@ -138,6 +143,12 @@ export default defineComponent({
     })
 
     const isMobile = computed(() => vuetify.breakpoint.mobile)
+
+    onMounted(() => {
+      if (!isRegistrationComplete.value) {
+        router.push({ name: 'app-index' })
+      }
+    })
 
     return {
       ChildRoute,

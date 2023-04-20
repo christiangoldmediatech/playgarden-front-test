@@ -1,5 +1,5 @@
 <template>
-  <v-main class="pt-5 pt-md-16 mt-0 mt-md-5" data-test-id="music-content">
+  <v-main v-if="isRegistrationComplete" class="pt-5 pt-md-16 mt-0 mt-md-5" data-test-id="music-content">
     <unlock-prompt
       v-show="false"
       v-if="hasPlayAndLearnPlan && !loading"
@@ -176,6 +176,10 @@ export default defineComponent({
 
     const debouncedHandleScroll = debounce(handleScroll, 50)
 
+    const isRegistrationComplete = computed(() => {
+      return store.getters['auth/isRegistrationComplete']
+    })
+
     watch(childId, async (val) => {
       if (val) {
         await getAndSetFavorites()
@@ -191,28 +195,32 @@ export default defineComponent({
     })
 
     onMounted(async () => {
-      loading.value = true
-      await getMusicLibrariesByCurriculumType()
-      await getAndSetFavorites()
-      setTimeout(handleEmptyMusicPlayer)
+      if (!isRegistrationComplete.value) {
+        router.push({ name: 'app-index' })
+      } else {
+        loading.value = true
+        await getMusicLibrariesByCurriculumType()
+        await getAndSetFavorites()
+        setTimeout(handleEmptyMusicPlayer)
 
-      window.addEventListener('scroll', debouncedHandleScroll)
+        window.addEventListener('scroll', debouncedHandleScroll)
 
-      // GTM EVENTS
-      eventBus.$on(
-        APP_EVENTS.MUSIC_ITEM_CLICKED,
-        (data: { event: string; topic: string; userId: string }) => {
-          gtm.push(data)
-        }
-      )
-      eventBus.$on(
-        APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES,
-        (data: { event: string; topic: string; userId: string }) => {
-          gtm.push(data)
-        }
-      )
+        // GTM EVENTS
+        eventBus.$on(
+          APP_EVENTS.MUSIC_ITEM_CLICKED,
+          (data: { event: string; topic: string; userId: string }) => {
+            gtm.push(data)
+          }
+        )
+        eventBus.$on(
+          APP_EVENTS.MUSIC_ITEM_ADD_TO_FAVORITES,
+          (data: { event: string; topic: string; userId: string }) => {
+            gtm.push(data)
+          }
+        )
 
-      loading.value = false
+        loading.value = false
+      }
     })
 
     onUnmounted(() => {
@@ -380,7 +388,8 @@ export default defineComponent({
       isTopRibbonMinimized,
       disabledLetters,
       onIntersect,
-      hasPlayAndLearnPlan
+      hasPlayAndLearnPlan,
+      isRegistrationComplete
     }
   }
 })

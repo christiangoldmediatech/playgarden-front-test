@@ -18,12 +18,17 @@ export default async function ({ redirect, route, store, app, req }) {
   }
 
   let user = store.getters['auth/getUserInfo']
+  const isRegistrationComplete = store.getters['auth/isRegistrationComplete']
 
   const token = store.getters['auth/getAccessToken']
   const isUnauthenticatedRoute = !!unauthenticatedRoutes[route.name]
   const isUserInStore = store.getters['auth/isUserLoggedIn']
 
   let isLoggedIn = await store.dispatch('auth/checkAuth', undefined, { root: true })
+
+  if (!isRegistrationComplete) {
+    await store.dispatch('auth/cleanChildren')
+  }
 
   /**
    * FETCH AUTH AND PICK CHILD IF MISSING

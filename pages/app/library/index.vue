@@ -40,8 +40,11 @@ import {
   defineComponent,
   ref,
   onMounted,
+  computed,
   onBeforeUnmount,
-  nextTick
+  nextTick,
+  useStore,
+  useRouter
 } from '@nuxtjs/composition-api'
 import { useLibraryV2, useWindowDimensions } from '@/composables'
 import { isLastIndex } from '@/utils/array.util'
@@ -51,6 +54,10 @@ import LibraryContentSection from '@/components/app/library/LibraryContentSectio
 import LibraryInlinePlayer from '@/components/app/library/LibraryInlinePlayer.vue'
 import LibraryLetterVideoBrowser from '@/components/app/library/LibraryLetterVideoBrowser.vue'
 import CategoryVideoCard from '@/components/app/library/CategoryVideoCard.vue'
+
+import {
+  TypedStore
+} from '@/models'
 
 export default defineComponent({
   name: 'LibraryIndexPage',
@@ -64,6 +71,8 @@ export default defineComponent({
   },
 
   setup() {
+    const router = useRouter()
+    const store = useStore<TypedStore>()
     // Main important functions for library
     const {
       getInitialData,
@@ -90,16 +99,25 @@ export default defineComponent({
 
     // Get initial data to populate page
     const isLoadingInitialData = ref(true)
+
+    const isRegistrationComplete = computed(() => {
+      return store.getters['auth/isRegistrationComplete']
+    })
+
     onMounted(async () => {
-      addElementDimensionListeners(
-        updateLibLetterDimensions,
-        throttledUpdateLibLetterDimensions
-      )
-      await getInitialData()
-      isLoadingInitialData.value = false
-      nextTick(() => {
-        updateLibLetterDimensions()
-      })
+      if (!isRegistrationComplete.value) {
+        router.push({ name: 'app-index' })
+      } else {
+        addElementDimensionListeners(
+          updateLibLetterDimensions,
+          throttledUpdateLibLetterDimensions
+        )
+        await getInitialData()
+        isLoadingInitialData.value = false
+        nextTick(() => {
+          updateLibLetterDimensions()
+        })
+      }
     })
 
     onBeforeUnmount(() => {
