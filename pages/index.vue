@@ -1,4 +1,3 @@
-import { mapGetters } from 'vuex';
 <template>
   <span />
 </template>
@@ -9,14 +8,14 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'Index',
   computed: {
-    ...mapGetters('auth', ['isUserLoggedIn']),
+    ...mapGetters('auth', ['isUserLoggedIn', 'isRegistrationComplete']),
     ...mapGetters(['getCurrentChild'])
   },
   created () {
     if (this.isUserLoggedIn) {
       if (this.getCurrentChild?.length > 0) {
         this.$router.push({ name: 'app-virtual-preschool' })
-      } else {
+      } else if (this.isRegistrationComplete) {
         this.$router.push({ name: 'app-pick-child' })
       }
     } else if (this.$route.query.redirect) {

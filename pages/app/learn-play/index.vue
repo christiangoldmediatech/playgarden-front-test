@@ -21,6 +21,7 @@ import { defineComponent } from '@nuxtjs/composition-api'
 import DashboardLearnPlay from '@/components/app/learn-play/DashboardLearnPlay.vue'
 import MenuLearnPlay from '@/components/app/learn-play/MenuLearnPlay.vue'
 import PlayAndLearnMenuTop from '@/components/app/learn-play/PlayAndLearnMenuTop.vue'
+import { mapGetters } from 'vuex'
 
 export default defineComponent({
   name: 'LearnPlayIndex',
@@ -28,6 +29,17 @@ export default defineComponent({
     DashboardLearnPlay,
     MenuLearnPlay,
     PlayAndLearnMenuTop
+  },
+  computed: {
+
+    ...mapGetters('auth', ['isRegistrationComplete'])
+  },
+  created() {
+    if (!this.isRegistrationComplete) {
+      this.$router.push({
+        name: 'app-index'
+      })
+    }
   }
 })
 </script>
