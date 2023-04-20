@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'NotificationUserList',
@@ -62,6 +62,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters('notifications/users', { unformattedNotifications: 'notifications' }),
+
     notificationsColor() {
       return '195, 153, 237'
     }
@@ -82,10 +84,10 @@ export default {
     async getNotificationsUsersData() {
       try {
         this.loading = true
-
-        const notifications = await this.getNotificationUsers()
-
-        this.notifications = this.parseNotifications(notifications)
+        if (this.unformattedNotifications.length === 0) {
+          await this.getNotificationUsers()
+        }
+        this.notifications = this.parseNotifications(this.unformattedNotifications)
       } catch (e) {
       } finally {
         this.loading = false
@@ -97,13 +99,19 @@ export default {
         return []
       }
 
-      return notifications.map(notification => ({
-        ...notification,
-        enabled: notification.enabled || {
-          sms: false,
-          email: false
+      return notifications.map(notification => {
+        const enabled = notification.enabled
+          ? { ...notification.enabled }
+          : {
+              sms: false,
+              email: false
+            }
+
+        return {
+          ...notification,
+          enabled
         }
-      }))
+      })
     },
 
     async toggleNotification({ id }) {

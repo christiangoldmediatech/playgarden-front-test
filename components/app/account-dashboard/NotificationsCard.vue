@@ -55,7 +55,7 @@
 
 <script lang="ts">
 import { TypedStore } from '@/models'
-import { defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, computed, useRouter, useStore } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'NotificationsCard',
@@ -67,6 +67,7 @@ export default defineComponent({
     const loading = ref(false)
 
     const notificationsList = ref<any>([])
+    const unformattedNotificationsList = computed(() => store.getters['notifications/users/notifications'])
 
     const goToPage = () => {
       router.push({ name: 'app-account-index-notification' })
@@ -75,9 +76,10 @@ export default defineComponent({
     const getNotificationsUsersData = async () => {
       try {
         store.commit('account/SET_LOADING_NOTIFICATIONS', true)
-        const notifications = await store.dispatch('notifications/users/getNotificationUsers')
-
-        notificationsList.value = parseNotifications(notifications)
+        if (unformattedNotificationsList.value.length === 0) {
+          await store.dispatch('notifications/users/getNotificationUsers')
+        }
+        notificationsList.value = parseNotifications(unformattedNotificationsList.value)
       } catch (e) {
       } finally {
         store.commit('account/SET_LOADING_NOTIFICATIONS', false)
@@ -89,19 +91,24 @@ export default defineComponent({
         return []
       }
 
-      return notifications.map(notification => ({
-        ...notification,
-        enabled: notification.enabled || {
-          sms: false,
-          email: false
+      return notifications.map(notification => {
+        const enabled = notification.enabled
+          ? { ...notification.enabled }
+          : {
+              sms: false,
+              email: false
+            }
+
+        return {
+          ...notification,
+          enabled
         }
-      }))
+      })
     }
 
     const toggleNotificationEmail = async (notification: any, index: number) => {
       try {
         loading.value = true
-
         await store.dispatch('notifications/users/updateNotificationEmail', notification.id)
       } catch (e) {
         const notificationsCopy = [...notificationsList.value]
