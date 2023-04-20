@@ -18,7 +18,9 @@ export default {
 
   async fetchBillingCards({ commit }) {
     try {
-      return await this.$axios.$get('/billing/cards')
+      const data = await this.$axios.$get('/billing/cards')
+      commit('SET_CARDS', data)
+      return data
     } catch (error) {
       toastError(commit, {
         body: 'Sorry! There was an error while getting your Subscription data!'
@@ -162,8 +164,18 @@ export default {
     }
   },
 
-  getSelectedSubscriptionPlan() {
-    return this.$axios.$get('/auth/user/plan')
+  async getSelectedSubscriptionPlan ({ commit }) {
+    try {
+      const data = await this.$axios.$get('/auth/user/plan')
+      commit('SET_USER_PLAN', data)
+      return data
+    } catch (error) {
+      toastError(commit, {
+        body: 'Sorry! There was an error while getting Subscription plans!'
+      })
+
+      throw error
+    }
   },
 
   getSelectedSubscriptionPlanByUser(_, id) {

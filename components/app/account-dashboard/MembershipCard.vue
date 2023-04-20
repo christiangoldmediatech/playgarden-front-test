@@ -171,7 +171,7 @@ export default defineComponent({
     const loading = ref(false)
     const billing = ref<any>(null)
     const plan = ref<any>(null)
-    const userCards = ref<any>([])
+    const userCards = computed(() => store.getters['payment/getCards'])
 
     const { billings, getBillingHistory } = useBilling()
 
@@ -208,7 +208,12 @@ export default defineComponent({
     })
 
     const getBillingDetails = async () => {
-      const data = await store.dispatch('payment/fetchBillingDetails')
+      let storedBilling = store.getters['payment/getBilling']
+
+      if (!storedBilling) {
+        storedBilling = await store.dispatch('payment/fetchBillingDetails')
+      }
+      const data = { ...storedBilling }
       billing.value = {}
       billing.value.billingType = data.billingType
       billing.value.subscriptionId = data.subscriptionId
@@ -248,7 +253,12 @@ export default defineComponent({
     const getPlan = async () => {
       try {
         store.dispatch('disableAxiosGlobal')
-        const response = await store.dispatch('payment/getSelectedSubscriptionPlan')
+        let userPlan = store.getters['payment/getUserPlan']
+        if (!userPlan) {
+          userPlan = await store.dispatch('payment/getSelectedSubscriptionPlan')
+        }
+
+        const response = userPlan
         plan.value = response.plan
       } catch (e) {
       } finally {
@@ -257,7 +267,9 @@ export default defineComponent({
     }
 
     const getBillingCards = async () => {
-      userCards.value = await store.dispatch('payment/fetchBillingCards')
+      if (userCards.value.length === 0) {
+        await store.dispatch('payment/fetchBillingCards')
+      }
     }
 
     const goToPage = () => {

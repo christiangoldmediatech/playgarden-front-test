@@ -1,3 +1,5 @@
 export default () => ({
-  billing: null
+  billing: null,
+  cards: [],
+  userPlan: null
 })

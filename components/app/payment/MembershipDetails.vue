@@ -654,6 +654,8 @@ export default {
 
     ...mapGetters('auth', ['hasPlayAndLearnPlan']),
 
+    ...mapGetters('payment', ['getBilling', 'getCards', 'getUserPlan']),
+
     membershipColor() {
       return '255, 160, 200'
     },
@@ -848,7 +850,12 @@ export default {
     async getBillingDetails() {
       try {
         this.loading = true
-        const data = await this.fetchBillingDetails()
+
+        if (!this.getBilling) {
+          await this.fetchBillingDetails()
+        }
+
+        const data = { ...this.getBilling }
         this.billing.billingType = data.billingType
         this.billing.subscriptionId = data.subscriptionId
         this.billing.planAmount = data.planAmount || null
@@ -889,7 +896,12 @@ export default {
     async getBillingCards() {
       try {
         this.loading = true
-        this.userCards = await this.fetchBillingCards()
+
+        if (this.getCards.length === 0) {
+          await this.fetchBillingCards()
+        }
+
+        this.userCards = [...this.getCards]
       } finally {
         this.loading = false
       }
@@ -987,7 +999,10 @@ export default {
     async getPlan() {
       try {
         this.disableAxiosGlobal()
-        const response = await this.getSelectedSubscriptionPlan()
+        if (!this.getUserPlan) {
+          await this.getSelectedSubscriptionPlan()
+        }
+        const response = { ...this.getUserPlan }
         const planInfo = await this.fetchSubscriptionPlanById(response.plan.id)
         this.plan = response.plan
         this.planInfo = planInfo
