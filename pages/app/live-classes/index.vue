@@ -378,7 +378,7 @@ export default {
   computed: {
     ...mapState('live-sessions', ['sessions']),
     ...mapGetters('live-sessions', ['getHolidays']),
-    ...mapGetters('auth', ['getUserInfo', 'hasBasicPlayAndLearnPlan']),
+    ...mapGetters('auth', ['getUserInfo', 'hasBasicPlayAndLearnPlan', 'isRegistrationComplete']),
     ...mapGetters('auth', {
       hasTrialOrPlatinumPlan: 'hasTrialOrPlatinumPlan'
     }),
@@ -521,10 +521,16 @@ export default {
   },
 
   created() {
-    this.setToday(new Date())
-    this.getUserLiveSessions(this.days)
-    this.getFilteredHolidays()
-    this.setCurrentTimezone()
+    if (!this.isRegistrationComplete) {
+      this.$router.push({
+        name: 'app-index'
+      })
+    } else {
+      this.setToday(new Date())
+      this.getUserLiveSessions(this.days)
+      this.getFilteredHolidays()
+      this.setCurrentTimezone()
+    }
   },
 
   methods: {

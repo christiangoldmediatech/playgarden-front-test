@@ -19,6 +19,8 @@ export default getterTree(state, {
 
   isUserLoggedIn: (state): boolean => Boolean(state.userInfo?.id),
 
+  isRegistrationComplete: (state): boolean => Boolean(state.userInfo && state.userInfo.registerStep > 3),
+
   hasTrialOrPlatinumPlan: (state): boolean =>
     state.userInfo?.planSelected.id === PlanTier.ONLINE_PRESCHOOL ||
     state.userInfo?.trial ||

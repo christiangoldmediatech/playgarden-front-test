@@ -39,12 +39,19 @@ export const useChild = ({ store, cookies }: UseChild) => {
   }
 
   const create = (data: Partial<Child>) => {
+    localStorage.removeItem('children')
     return axios.$post('/children', data)
   }
 
   const get = async () => {
-    const children = await axios.$get('/children')
-    setChildren(children)
+    // @ts-ignore
+    let cache = JSON.parse(localStorage.getItem('children'))
+
+    if (!cache) {
+      cache = await axios.$get('/children')
+      localStorage.setItem('children', JSON.stringify(cache))
+    }
+    setChildren(cache)
   }
 
   const getById = (id: number) => {
@@ -56,6 +63,7 @@ export const useChild = ({ store, cookies }: UseChild) => {
   }
 
   const update = (id: number, data: Partial<Child>) => {
+    localStorage.removeItem('children')
     return axios.$patch(`/children/edit/${id}`, data)
   }
 
@@ -67,7 +75,7 @@ export const useChild = ({ store, cookies }: UseChild) => {
     if (currentChild) {
       resetCurrentChildren()
     }
-
+    localStorage.removeItem('children')
     return axios.$delete(`/children/${id}`)
   }
 

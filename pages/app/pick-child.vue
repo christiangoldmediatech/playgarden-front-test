@@ -117,7 +117,7 @@ export default {
 
   computed: {
     ...mapGetters('children', ['rows']),
-    ...mapGetters('auth', ['hasPlayAndLearnPlan']),
+    ...mapGetters('auth', ['hasPlayAndLearnPlan', 'isRegistrationComplete']),
 
     children() {
       const result = jsonCopy(this.rows)
@@ -145,6 +145,12 @@ export default {
     // NOTE: "everyone" count as one child here
     if (this.children.length === 1) {
       this.selectChild(this.children[0])
+    }
+
+    if (!this.isRegistrationComplete) {
+      this.$router.push({
+        name: 'app-index'
+      })
     }
   },
 

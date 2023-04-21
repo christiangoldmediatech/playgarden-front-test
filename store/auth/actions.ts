@@ -44,6 +44,12 @@ export default actionTree(
       commit('SET_PLAYDATE_INVITATION_TOKEN', token)
     },
 
+    cleanChildren(): void {
+      const store = this.app.$accessor
+      store.SET_CURRENT_CHILD(null)
+      store.SET_CURRENT_CHILD_EXPIRES(null)
+    },
+
     /**
      *
      * @param { Object }  - {redirect: Function, route: String}
