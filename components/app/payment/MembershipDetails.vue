@@ -847,11 +847,11 @@ export default {
       }
     },
 
-    async getBillingDetails() {
+    async getBillingDetails(reload = false) {
       try {
         this.loading = true
 
-        if (!this.getBilling) {
+        if (!this.getBilling || reload) {
           await this.fetchBillingDetails()
         }
 
@@ -893,11 +893,11 @@ export default {
         this.loading = false
       }
     },
-    async getBillingCards() {
+    async getBillingCards(reload = false) {
       try {
         this.loading = true
 
-        if (this.getCards.length === 0) {
+        if (this.getCards.length === 0 || reload) {
           await this.fetchBillingCards()
         }
 
@@ -922,18 +922,15 @@ export default {
       this.learnAndPlayWasCanceled = true
       await this.removeSubscription(false)
     },
-    async reloadInformation(reloadPlan = false) {
+    async reloadInformation() {
       try {
         this.loading = true
         // update auser info on store
         await this.fetchUserInfoIntoStore()
-        await this.getBillingDetails()
+        await this.getBillingDetails(true)
         await this.fetchLatestCancellationReason()
-        await this.getBillingCards()
-
-        if (reloadPlan) {
-          await this.getPlan()
-        }
+        await this.getBillingCards(true)
+        await this.getPlan()
       } catch (e) {
         // In the future we can handle the error
       } finally {
@@ -999,10 +996,8 @@ export default {
     async getPlan() {
       try {
         this.disableAxiosGlobal()
-        if (!this.getUserPlan) {
-          await this.getSelectedSubscriptionPlan()
-        }
-        const response = { ...this.getUserPlan }
+        const plan = await this.getSelectedSubscriptionPlan()
+        const response = { ...plan }
         const planInfo = await this.fetchSubscriptionPlanById(response.plan.id)
         this.plan = response.plan
         this.planInfo = planInfo
