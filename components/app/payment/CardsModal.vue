@@ -60,7 +60,7 @@
           </v-btn>
         </v-col>
       </v-row>
-      <v-row v-if="userCards.length === 0">
+      <v-row v-if="userCards.length === 0" no-gutters class="px-4">
         <v-col cols="12" class="mb-1 grey--text">
           <span>To add a Payment Method, select a Payment Plan below.</span>
         </v-col>

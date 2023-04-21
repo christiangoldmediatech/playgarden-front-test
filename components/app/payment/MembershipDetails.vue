@@ -200,6 +200,7 @@
         <billing-history-dialog v-model="viewBillingHistory" />
 
         <membership-btn
+          v-if="billing.stripeStatus !== 'canceled'"
           title="Payment Method"
           :subtitle="cardMaskedNumber"
           color="#CFBCE3"
@@ -654,6 +655,8 @@ export default {
 
     ...mapGetters('auth', ['hasPlayAndLearnPlan']),
 
+    ...mapGetters('payment', ['getBilling', 'getCards', 'getUserPlan']),
+
     membershipColor() {
       return '255, 160, 200'
     },
@@ -845,10 +848,15 @@ export default {
       }
     },
 
-    async getBillingDetails() {
+    async getBillingDetails(reload = false) {
       try {
         this.loading = true
-        const data = await this.fetchBillingDetails()
+
+        if (!this.getBilling || reload) {
+          await this.fetchBillingDetails()
+        }
+
+        const data = { ...this.getBilling }
         this.billing.billingType = data.billingType
         this.billing.subscriptionId = data.subscriptionId
         this.billing.planAmount = data.planAmount || null
@@ -886,10 +894,15 @@ export default {
         this.loading = false
       }
     },
-    async getBillingCards() {
+    async getBillingCards(reload = false) {
       try {
         this.loading = true
-        this.userCards = await this.fetchBillingCards()
+
+        if (this.getCards.length === 0 || reload) {
+          await this.fetchBillingCards()
+        }
+
+        this.userCards = [...this.getCards]
       } finally {
         this.loading = false
       }
@@ -910,18 +923,15 @@ export default {
       this.learnAndPlayWasCanceled = true
       await this.removeSubscription(false)
     },
-    async reloadInformation(reloadPlan = false) {
+    async reloadInformation() {
       try {
         this.loading = true
         // update auser info on store
         await this.fetchUserInfoIntoStore()
-        await this.getBillingDetails()
+        await this.getBillingDetails(true)
         await this.fetchLatestCancellationReason()
-        await this.getBillingCards()
-
-        if (reloadPlan) {
-          await this.getPlan()
-        }
+        await this.getBillingCards(true)
+        await this.getPlan()
       } catch (e) {
         // In the future we can handle the error
       } finally {
@@ -987,7 +997,8 @@ export default {
     async getPlan() {
       try {
         this.disableAxiosGlobal()
-        const response = await this.getSelectedSubscriptionPlan()
+        const plan = await this.getSelectedSubscriptionPlan()
+        const response = { ...plan }
         const planInfo = await this.fetchSubscriptionPlanById(response.plan.id)
         this.plan = response.plan
         this.planInfo = planInfo

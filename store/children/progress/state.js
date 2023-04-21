@@ -1,3 +1,4 @@
 export default () => ({
-  currentLessonVideo: null
+  currentLessonVideo: null,
+  childrenProgress: []
 })

@@ -30,6 +30,8 @@ export default {
     try {
       const { data } = await this.$axios.get('/caregivers')
 
+      commit('SET_CAREGIVERS', data.users)
+
       return data
     } catch (error) {
       toastError(commit, {

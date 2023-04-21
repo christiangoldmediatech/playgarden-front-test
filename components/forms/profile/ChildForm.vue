@@ -43,353 +43,21 @@
             cols="12"
             lg="6"
           >
-            <v-card
+            <child-card
               :class="[
-                '!pg-relative account-card-border',
-                'pa-4 pa-sm-8 mb-16',
+                'mb-16',
                 { 'mr-lg-8': indexD % 2 === 0 },
                 { 'ml-lg-8': indexD % 2 === 1 }
               ]"
-              :style="{ '--card-custom-color': childCardColor }"
-            >
-              <validation-observer v-if="isEditing[indexD]" v-slot="{ passes }">
-                <v-form
-                  :readonly="loading"
-                  @submit.prevent="passes().then(onSubmit(item, indexD))"
-                >
-                  <!-- Backpack -->
-                  <validation-provider
-                    :name="
-                      (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Backpack'
-                    "
-                    rules="required"
-                  >
-                    <!-- Delete Child Profile Button -->
-                    <v-row no-gutters class="mb-6">
-                      <v-col v-if="item.id" cols="12" class="d-flex justify-end">
-                        <v-btn
-                          v-if="removable(item)"
-                          text
-                          color="#F83838"
-                          class="text-decoration-underline"
-                          @click.stop="removeChild(item, indexD)"
-                        >
-                          DELETE CHILD
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                    <!-- Backpack Picker -->
-                    <v-row class="mb-6" no-gutters>
-                      <v-col cols="12">
-                        <v-row justify="center" no-gutters>
-                          <v-col cols="12" md="10" lg="12">
-                            <v-row no-gutters>
-                              <v-col cols="12">
-                                <span class="account-field-label">
-                                  Change icon:
-                                </span>
-                              </v-col>
-                              <v-sheet
-                                class="my-2"
-                                width="100%"
-                              >
-                                <v-slide-group
-                                  v-model="item.backpackId"
-                                  show-arrows="always"
-                                >
-                                  <v-slide-item
-                                    v-for="backpack in backpacks"
-                                    :key="backpack.id"
-                                    v-slot="{ active, toggle }"
-                                    :value="backpack.id"
-                                  >
-                                    <img
-                                      :alt="backpack.name"
-                                      class="clickable image mx-2"
-                                      :class="{ active }"
-                                      :src="backpack.image"
-                                      height="100px"
-                                      @click="toggle"
-                                    >
-                                  </v-slide-item>
-                                  <template v-slot:next>
-                                    <v-icon color="#F89838" x-large>
-                                      mdi-chevron-right
-                                    </v-icon>
-                                  </template>
-                                  <template v-slot:prev>
-                                    <v-icon color="#F89838" x-large>
-                                      mdi-chevron-left
-                                    </v-icon>
-                                  </template>
-                                </v-slide-group>
-                              </v-sheet>
-                            </v-row>
-                          </v-col>
-                        </v-row>
-                        <input v-model="item.backpackId" type="hidden">
-                      </v-col>
-                    </v-row>
-                  </validation-provider>
-                  <v-row no-gutters>
-                    <v-col
-                      class="pr-unset pr-md-2"
-                      cols="12"
-                      md="6"
-                    >
-                      <!-- First name -->
-                      <span class="d-inline-block account-field-label mb-2">First name</span>
-                      <validation-provider
-                        v-slot="{ errors }"
-                        :name="
-                          (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Name'
-                        "
-                        rules="required"
-                      >
-                        <pg-text-field
-                          v-model="item.firstName"
-                          clearable
-                          :disabled="loading"
-                          :error-messages="errors"
-                          background-color="#F7F7F7"
-                          color="#AAAAAA"
-                          solo
-                          dense
-                          class="custom-text-field"
-                          flat
-                        />
-                      </validation-provider>
-                    </v-col>
-                    <v-col
-                      class="pl-unset pl-md-2"
-                      cols="12"
-                      md="6"
-                    >
-                      <!-- Last name -->
-                      <span class="d-inline-block account-field-label mb-2">Last name</span>
-                      <validation-provider
-                        v-slot="{ errors }"
-                        :name="
-                          (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Name'
-                        "
-                        rules="required"
-                      >
-                        <pg-text-field
-                          v-model="item.lastName"
-                          clearable
-                          :disabled="loading"
-                          :error-messages="errors"
-                          background-color="#F7F7F7"
-                          color="#AAAAAA"
-                          solo
-                          dense
-                          class="custom-text-field"
-                          flat
-                        />
-                      </validation-provider>
-                    </v-col>
-                  </v-row>
-                  <v-row class="mb-2" no-gutters>
-                    <v-col cols="12" md="6" class="pr-unset pr-md-2">
-                      <!-- Birthday date -->
-                      <span class="d-inline-block account-field-label mb-2">Date of birth</span>
-                      <v-menu
-                        v-model="item._menu"
-                        :close-on-content-click="false"
-                        min-width="290px"
-                        solo
-                        transition="scale-transition"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <validation-provider
-                            v-slot="{ errors }"
-                            :name="
-                              (removable(item) ? `Child #${indexD + 1} - ` : '') +
-                                'Birthday date'
-                            "
-                            rules="required"
-                          >
-                            <div v-on="on">
-                              <pg-text-field
-                                v-bind="attrs"
-                                :disabled="loading"
-                                :error-messages="errors"
-                                readonly
-                                class="custom-text-field"
-                                background-color="#F7F7F7"
-                                color="#AAAAAA"
-                                solo
-                                dense
-                                flat
-                                :suffix="item._birthdayFormatted ? '' : 'MM/DD/YYYY'"
-                                validate-on-blur
-                                :value="item._birthdayFormatted"
-                              />
-                            </div>
-                          </validation-provider>
-                        </template>
-                        <v-date-picker
-                          v-model="item._birthdayPicker"
-                          :max="new Date().toISOString().substr(0, 10)"
-                          min="2015-01-01"
-                          @input="onInputBirthday(item)"
-                        />
-                      </v-menu>
-                    </v-col>
-                    <v-col cols="12" md="6" class="pl-unset pl-md-2">
-                      <!-- Gender -->
-                      <span class="d-inline-block account-field-label mb-2">Gender </span>
-                      <validation-provider
-                        v-slot="{ errors }"
-                        :name="
-                          (removable(item) ? `Child #${indexD + 1} - ` : '') + 'Gender'
-                        "
-                        rules="required"
-                      >
-                        <pg-select
-                          v-model="item.gender"
-                          :items="genders"
-                          clearable
-                          :error-messages="errors"
-                          :loading="loading"
-                          background-color="#F7F7F7"
-                          color="#AAAAAA"
-                          solo
-                          class="custom-text-field"
-                          dense
-                        />
-                      </validation-provider>
-                    </v-col>
-                    <v-col cols="12" class="pr-2">
-                      <v-row no-gutters>
-                        <v-col cols="12" md="6">
-                          <div>
-                            <span class="child-base-text pg-text-[#78C383]">Current letter: </span>
-                            <span class="child-base-text">
-                              {{ item.progress.curriculumType.letter ? `Letter ${item.progress.curriculumType.letter}` : undefined }}
-                            </span>
-                          </div>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                          <div>
-                            <span class="child-base-text pg-text-[#78C383]">Current day: </span>
-                            <span class="child-base-text">
-                              {{ item.progress.day ? `Day ${item.progress.day}` : undefined }}
-                            </span>
-                          </div>
-                        </v-col>
-                      </v-row>
-                    </v-col>
-                  </v-row>
-
-                  <v-btn
-                    v-if="isChildChanged(item)"
-                    block
-                    class="mt-4 mt-md-0 white--text"
-                    color="#AAD579"
-                    :loading="loading"
-                    type="submit"
-                    x-large
-                  >
-                    SAVE
-                  </v-btn>
-                  <v-btn
-                    block
-                    text
-                    color="grey"
-                    :disabled="loading"
-                    x-large
-                    @click="editChild(indexD, false)"
-                  >
-                    Cancel
-                  </v-btn>
-                </v-form>
-              </validation-observer>
-              <!-- Readonly child info -->
-              <v-row v-if="!isEditing[indexD]" class="mt-5 mt-md-0" no-gutters>
-                <v-col cols="4" class="pb-3 d-flex justify-center">
-                  <img
-                    v-if="firstBackpack"
-                    :alt="childBackpack(item.backpackId).name"
-                    class="backpack-active"
-                    :src="childBackpack(item.backpackId).image"
-                  >
-                </v-col>
-
-                <v-col cols="8" class="d-flex flex-column justify-start pl-3">
-                  <h1 class="child-name mb-0 mb-md-3">
-                    {{ item.firstName }} {{ (item.lastName) ? item.lastName : '' }}
-                  </h1>
-
-                  <div>
-                    <span class="child-base-text pg-text-[#707070]">Date of birth:  </span>
-                    <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">{{ getChildBirthday(item.birthday) }}</span>
-                  </div>
-
-                  <div>
-                    <span class="child-base-text pg-text-[#707070]">Gender:  </span>
-                    <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">
-                      {{ item.gender === 'FEMALE' ? 'Girl' : item.gender === 'MALE' ? 'Boy' : '' }}
-                    </span>
-                  </div>
-                </v-col>
-
-                <v-col cols="12" class="mt-4 mb-2">
-                  <v-row class="d-flex space-between" no-gutters>
-                    <v-col cols="12" md="6" class="d-flex">
-                      <div class="ml-md-auto mr-auto">
-                        <span class="child-base-text pg-text-[#78C383]">Current letter: </span>
-                        <span class="child-base-text">
-                          {{ item.progress.curriculumType.letter ? `Letter ${item.progress.curriculumType.letter}` : undefined }}
-                        </span>
-                      </div>
-                    </v-col>
-
-                    <v-col cols="12" md="6" class="d-flex">
-                      <div class="ml-md-auto mr-auto">
-                        <span class="child-base-text pg-text-[#78C383]">Current day: </span>
-                        <span class="child-base-text">
-                          {{ item.progress.day ? `Day ${item.progress.day}` : undefined }}
-                        </span>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-col>
-
-                <v-col v-if="item.id" cols="12" class="d-flex justify-center">
-                  <v-btn
-                    color="#A7CFFC"
-                    text
-                    class="text-decoration-underline"
-                    @click="openTimeline(item)"
-                  >
-                    View letter progress
-                  </v-btn>
-                </v-col>
-                <v-col cols="12" class="d-flex justify-center">
-                  <v-btn
-                    color="#FFA0C8"
-                    text
-                    class="text-decoration-underline"
-                    @click="goToProgressReport(item)"
-                  >
-                    View progress report
-                  </v-btn>
-                </v-col>
-
-                <v-btn
-                  class="!pg-absolute pg-top-[10px] pg-right-[10px]"
-                  text
-                  color="#F89838"
-                  @click="editChild(indexD)"
-                >
-                  <span class="text-decoration-underline">Edit</span>
-                  <v-icon right>
-                    mdi-pencil
-                  </v-icon>
-                </v-btn>
-              </v-row>
-            </v-card>
+              :index="indexD"
+              :is-removable="removable(item)"
+              :item="item"
+              :backpacks="backpacks"
+              :child-card-color="childCardColor"
+              @openTimeline="openTimeline(item)"
+              @loadChild="loadChild($event, indexD)"
+              @removeChild="removeChild(indexD)"
+            />
           </v-col>
         </v-row>
       </v-col>
@@ -401,38 +69,31 @@
 
 <script>
 import dayjs from 'dayjs'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import UserChildTimelineDialog from '@/components/forms/profile/UserChildTimelineDialog.vue'
+import ChildCard from './ChildCard.vue'
 
 export default {
   name: 'ChildForm',
 
   components: {
+    ChildCard,
     UserChildTimelineDialog
   },
 
   data: () => ({
     loading: false,
-    backpacks: [],
-    childrenProgress: [],
-    items: [],
-    isEditing: [],
-    genders: [
-      {
-        text: 'Boy',
-        value: 'MALE'
-      },
-      {
-        text: 'Girl',
-        value: 'FEMALE'
-      }
-    ]
+    items: []
   }),
 
   computed: {
-    isChildChanged () {
-      return child => child._original !== this.getOriginalChild(child)
+    ...mapGetters('backpacks', ['getBackpacks']),
+    ...mapGetters('children', ['rows']),
+    ...mapGetters('children/progress', ['childrenProgress']),
+
+    backpacks() {
+      return this.getBackpacks
     },
 
     removable () {
@@ -472,9 +133,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('backpacks', ['getBackpacks']),
-
-    ...mapActions(['setChild']),
+    ...mapActions('backpacks', ['fetchBackpacks']),
 
     ...mapActions('children', {
       createChild: 'store',
@@ -488,16 +147,6 @@ export default {
 
     updateBackpackId(item, id) {
       item.backpackId = id
-    },
-
-    goToProgressReport (child) {
-      if (child.id) {
-        this.setChild({ value: [child], save: true })
-        this.$router.push({
-          name: 'app-student-cubby-progress-report',
-          query: { id: child.id }
-        })
-      }
     },
 
     getOriginalChild ({ backpackId, birthday, firstName, level, gender, lastName } = {}) {
@@ -514,13 +163,18 @@ export default {
     async loadChildren () {
       try {
         this.loading = true
-        await this.fetchBackpacks()
-        this.childrenProgress = await this.getUserChildrenProgress()
-        const rows = await this.getChildren()
-        rows.forEach((row) => {
+        await this.loadBackpacks()
+        if (this.childrenProgress.length === 0) {
+          await this.getUserChildrenProgress()
+        }
+
+        if (this.rows.length === 0) {
+          await this.getChildren()
+        }
+
+        this.rows.forEach((row) => {
           this.loadChild(row)
         })
-        this.setIsEditingList()
       } catch (error) {
         return Promise.reject(error)
       } finally {
@@ -564,7 +218,6 @@ export default {
 
       if (typeof index === 'number' && index >= 0) {
         this.$set(this.items, index, { ...this.items[index], ...item })
-        this.editChild(index, false)
       } else {
         this.addRow(item)
       }
@@ -596,12 +249,12 @@ export default {
       _data._original = this.getOriginalChild(_data)
 
       this.items.unshift(_data)
-
-      this.isEditing.unshift(true)
     },
 
-    fetchBackpacks () {
-      this.getBackpacks().then(data => (this.backpacks = data))
+    async loadBackpacks () {
+      if (this.backpacks.length === 0) {
+        await this.fetchBackpacks()
+      }
     },
 
     onInputBirthday (item) {
@@ -613,76 +266,9 @@ export default {
       }
     },
 
-    removeChild (item, index) {
-      this.$nuxt.$emit('open-prompt', {
-        message: `Are you sure you want to delete <b>${item.firstName}</b>?`,
-        action: async () => {
-          this.loading = true
-          try {
-            if (item.id) {
-              await this.deleteChild(item.id)
-            }
-            this.items.splice(index, 1)
-
-            this.$nuxt.$emit('children-changed')
-            this.setIsEditingList()
-          } catch (e) {
-          } finally {
-            this.loading = false
-          }
-        }
-      })
-      return false
-    },
-
-    async onSubmit (item, index) {
-      try {
-        this.loading = true
-
-        if (item.id) {
-          const params = {
-            backpackId: item.backpackId,
-            firstName: item.firstName,
-            lastName: item.lastName,
-            birthday: item.birthday,
-            gender: item.gender,
-            level: item.level
-          }
-
-          await this.updateChild({ id: item.id, params })
-          item._original = this.getOriginalChild(item)
-
-          this.editChild(index, false)
-        } else {
-          const data = await this.createChild(item)
-
-          data._original = this.getOriginalChild(item)
-
-          this.loadChild(data, index)
-
-          this.$nuxt.$emit('children-changed')
-        }
-      } catch (error) {
-        return Promise.reject(error)
-      } finally {
-        this.loading = false
-      }
-    },
-
-    editChild (index, shouldEdit = true) {
-      const child = this.items[index]
-
-      // remove the child if the user is clicking Cancel (shouldEdit = false)
-      // and the child has not been saved yet
-      if (!shouldEdit && !child.id) {
-        this.items.splice(index, 1)
-        this.isEditing.splice(index, 1)
-        this.$nuxt.$emit('children-changed')
-
-        return
-      }
-
-      this.$set(this.isEditing, index, shouldEdit)
+    removeChild (index) {
+      this.items.splice(index, 1)
+      this.$nuxt.$emit('children-changed')
     },
 
     openTimeline (child) {
@@ -695,10 +281,6 @@ export default {
       }
 
       return dayjs(date).format('MM/DD/YYYY')
-    },
-
-    setIsEditingList () {
-      this.isEditing = this.items.map(_ => false)
     }
   }
 }
