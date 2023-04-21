@@ -200,6 +200,7 @@
         <billing-history-dialog v-model="viewBillingHistory" />
 
         <membership-btn
+          v-if="billing.stripeStatus !== 'canceled'"
           title="Payment Method"
           :subtitle="cardMaskedNumber"
           color="#CFBCE3"
