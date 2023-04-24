@@ -221,5 +221,15 @@ export default {
       })
       return true
     }
+  },
+
+  resetModules({ commit }) {
+    commit('payment/RESET')
+    commit('caregiver/RESET')
+    commit('backpacks/RESET')
+    commit('children/RESET')
+    commit('children/progress/RESET')
+    commit('shipping-address/RESET')
+    commit('notifications/users/RESET')
   }
 }

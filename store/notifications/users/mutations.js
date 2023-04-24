@@ -15,5 +15,8 @@ export default {
         }
 
     state.notifications[index] = notificationsCopy
+  },
+  RESET (state) {
+    state.notifications = []
   }
 }
