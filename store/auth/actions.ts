@@ -54,11 +54,17 @@ export default actionTree(
      *
      * @param { Object }  - {redirect: Function, route: String}
      */
-    logout({ commit }, redirectOptions): void {
+    logout({ commit, dispatch }, redirectOptions): void {
       const store = this.app.$accessor
 
       commit('LOGOUT')
       this.$axios.setToken('', 'Bearer')
+
+      // Reset module values
+      dispatch('resetModules', null, { root: true })
+
+      // Removed saved children from local storage
+      localStorage.removeItem('children')
 
       if (process.client) {
         this.$cookies.remove('atoken')
