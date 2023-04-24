@@ -63,6 +63,9 @@ export default actionTree(
       // Reset module values
       dispatch('resetModules', null, { root: true })
 
+      // Removed saved children from local storage
+      localStorage.removeItem('children')
+
       if (process.client) {
         this.$cookies.remove('atoken')
       }
