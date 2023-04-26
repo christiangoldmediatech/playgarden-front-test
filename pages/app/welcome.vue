@@ -13,36 +13,38 @@
 
             <v-row justify="center">
               <v-card class="d-flex flex-column welcome-content-card elevation-0">
-                <pg-video-player
-                  class="welcome-inline-player"
-                  inline
-                  :control-config="{
-                    prevTrack: false,
-                    nextTrack: false,
-                    favorite: false,
-                  }"
-                  @ready="onPlayerReady"
-                  @on-fullscreen-change="handleFullscreenChange"
-                  v-on="playerEvents"
-                >
-                  <template #inline-play-icon="{ firstPlay }">
-                    <div
-                      class="player-preview-container"
-                      :class="{
-                        'player-preview-container-shown': showPreview
-                      }"
-                      @click="handlePlay(firstPlay)"
-                    >
-                      <v-hover v-slot="{ hover }">
-                        <img
-                          :class="['play-icon no-background', { 'scaled-play-icon': hover }]"
-                          src="@/assets/svg/simple-play.svg"
-                          width="100%"
-                        >
-                      </v-hover>
-                    </div>
-                  </template>
-                </pg-video-player>
+                <pg-loading :loading="loadingVideo">
+                  <pg-video-player
+                    class="welcome-inline-player"
+                    inline
+                    :control-config="{
+                      prevTrack: false,
+                      nextTrack: false,
+                      favorite: false,
+                    }"
+                    @ready="onPlayerReady"
+                    @on-fullscreen-change="handleFullscreenChange"
+                    v-on="playerEvents"
+                  >
+                    <template #inline-play-icon="{ firstPlay }">
+                      <div
+                        class="player-preview-container"
+                        :class="{
+                          'player-preview-container-shown': showPreview
+                        }"
+                        @click="handlePlay(firstPlay)"
+                      >
+                        <v-hover v-slot="{ hover }">
+                          <img
+                            :class="['play-icon no-background', { 'scaled-play-icon': hover }]"
+                            src="@/assets/svg/simple-play.svg"
+                            width="100%"
+                          >
+                        </v-hover>
+                      </div>
+                    </template>
+                  </pg-video-player>
+                </pg-loading>
               </v-card>
             </v-row>
           </v-col>
@@ -58,7 +60,6 @@ import WelcomeOverlay from '@/components/app/WelcomeOverlay.vue'
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
-import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import { useRegisterFlow } from '../../composables/use-register-flow.composable'
 
 export default defineComponent({
@@ -71,56 +72,18 @@ export default defineComponent({
     const isFullscreen = ref(false)
     const showPreview = ref(true)
     const player = ref<PlayerInstance | null>(null)
-    const video = ref<MediaObject[]>([{
-      title: 'cds',
-      description: '',
-      poster: 'https://playgarden-assets-dev.s3.amazonaws.com/images/activity-thumbnail/9c7f6f54-724c-40fd-be7c-c9f249c67c1b.png',
-      src: {
-        url: 'https://d2cj0am26xqmod.cloudfront.net/out/v1/cc87e0707d8d4c35ab769ba8944b7ece/4d64baf073cf4991b5fa1b5fb333e077/81176810af364bf2a58d60269e296f9e/index.m3u8',
-        type: 'application/x-mpegURL'
-      },
-      meta: {
-        videoId: 534,
-        activityId: 204,
-        activityType: {
-          id: 3,
-          name: 'Art',
-          description: 'Create and imagine with our hands-on art projects and DIY area.',
-          type: {
-            extra: true,
-            lesson: true,
-            activity: true,
-            kidsCorner: false
-          },
-          icon: 'https://img.playgardenonline.com/images/activity-type/39994559-b230-4173-a16a-2d1a0f55b522.svg',
-          color: '#8DC63F',
-          createdAt: '2020-08-03T02:06:25.661Z',
-          updatedAt: '2022-02-08T17:09:16.000Z',
-          deletedAt: null
-        },
-        curriculumType: {
-          id: 15,
-          name: 'Oo',
-          description: 'Letter O',
-          icon: 'https://img.playgardenonline.com/images/curriculum-type/3db3be7a-9d40-4d6a-8ba3-4e4c000ee6c2.svg',
-          letter: 'Oo',
-          picture: null,
-          order: 16,
-          createdAt: '2020-08-27T00:05:28.792Z',
-          updatedAt: '2020-11-20T01:31:08.000Z',
-          deletedAt: null
-        },
-        type: 'Activities',
-        videoType: 'ACTIVITIES:',
-        author: 'scsd',
-        favorite: false
-      }
-    }])
-    const { viewOverlay, changeViewOverlayStatus, playerEvents } = useRegisterFlow()
+    const {
+      viewOverlay,
+      loadingVideo,
+      welcomeVideo,
+      changeViewOverlayStatus,
+      playerEvents,
+      getWelcomeVideo
+    } = useRegisterFlow()
 
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
-      player.value.loadPlaylist(video.value)
+      player.value.loadPlaylist(welcomeVideo.value)
     }
 
     const handleFullscreenChange = (val: boolean): void => {
@@ -137,16 +100,19 @@ export default defineComponent({
       showPreview.value = false
     }
 
-    onMounted(() => {
+    onMounted(async () => {
       changeViewOverlayStatus()
+      await getWelcomeVideo()
     })
 
     return {
       viewOverlay,
+      loadingVideo,
       showPreview,
       onPlayerReady,
       handlePlay,
       playerEvents,
+      getWelcomeVideo,
       handleFullscreenChange
     }
   }
