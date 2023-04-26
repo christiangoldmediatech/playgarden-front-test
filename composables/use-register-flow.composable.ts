@@ -24,7 +24,7 @@ export const useRegisterFlow = () => {
 
   const getWelcomeVideo = async () => {
     loadingVideo.value = true
-    const video = await axios.$get(`/videos/${WELCOME_VIDEO_ID}`)
+    const video = await axios.$get(`/videos/welcome-video/${WELCOME_VIDEO_ID}`)
     const mediaObjectVideo = videoToMediaObject(video)
     welcomeVideo.value = [mediaObjectVideo]
     loadingVideo.value = false
