@@ -4,7 +4,7 @@ import { ref, useRouter } from '@nuxtjs/composition-api'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import { useLibraryHelpers } from './library'
 
-const OVERLAY_TIMEOUT = 3000
+const OVERLAY_TIMEOUT = 6000
 
 const WELCOME_VIDEO_ID = 0
 
