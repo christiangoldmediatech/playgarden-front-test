@@ -6,7 +6,7 @@ import { useLibraryHelpers } from './library'
 
 const OVERLAY_TIMEOUT = 3000
 
-const WELCOME_VIDEO_ID = 6
+const WELCOME_VIDEO_ID = 0
 
 const viewOverlay = ref(true)
 const loadingVideo = ref(false)
