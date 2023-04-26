@@ -75,6 +75,7 @@ export interface User extends Entity {
   email: string
   firstName: string
   flow: UserFlow
+  hasCreditCards: boolean
   fullName: string
   gclId?: string
   lastName: string

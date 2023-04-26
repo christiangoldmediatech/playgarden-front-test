@@ -2,6 +2,7 @@
   <pg-dialog
     :value="showDialog"
     max-width="600"
+    persistent
     content-class="pg-bg-[#FFFCFC] py-2 px-10 v2-font !pg-overflow-hidden !pg-rounded-2xl !pg-relative"
   >
     <v-img :src="require('~/assets/png/child-no-cc-flow-dialog.png')" width="200" height="200" class="!pg-absolute pg-top-[-140px] pg-left-0 pg-right-0 pg-mx-auto !pg-z-[5000]" />

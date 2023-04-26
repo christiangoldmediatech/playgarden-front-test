@@ -46,6 +46,9 @@ export default getterTree(state, {
     state.userInfo?.planSelected?.id === PlanTier.PLAY_AND_LEARN_LIVE,
 
   getFinishNoCCFlow: (state) =>
-    state.userInfo && state.userInfo.flow === Flow.NOCREDITCARD && dayjs().diff(dayjs(state.userInfo.createdAt), 'days') >= 3
+    state.userInfo &&
+    state.userInfo.flow === Flow.NOCREDITCARD &&
+    !state.userInfo.hasCreditCards &&
+    dayjs().diff(dayjs(state.userInfo.createdAt), 'days') >= 3
 
 })
