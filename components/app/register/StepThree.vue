@@ -64,7 +64,7 @@ export default defineComponent({
 
     goToLessons() {
       this.$router.push({
-        name: 'app-onboarding',
+        name: 'app-welcome',
         query: {
           ...this.utmContent
         }

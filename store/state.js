@@ -6,6 +6,7 @@ export default () => ({
   showContent: false,
 
   fullWidthPages: {
+    'app-welcome': 1,
     'app-account-index': 1,
     'app-account-index-caregiver': 1,
     'app-account-index-personal': 1,
