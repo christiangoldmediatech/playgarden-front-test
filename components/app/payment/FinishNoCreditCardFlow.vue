@@ -5,6 +5,19 @@
     persistent
     content-class="pg-bg-[#FFFCFC] py-2 px-10 v2-font !pg-overflow-hidden !pg-rounded-2xl !pg-relative"
   >
+    <v-col class="text-right pg-pr-3" cols="12">
+      <v-btn
+        icon
+        color="white"
+        class="pg-bg-[#F6B7D2]"
+        @click="closeDialog"
+      >
+        <v-icon>
+          mdi-close
+        </v-icon>
+      </v-btn>
+    </v-col>
+
     <v-img :src="require('~/assets/png/child-no-cc-flow-dialog.png')" width="200" height="200" class="!pg-absolute pg-top-[-140px] pg-left-0 pg-right-0 pg-mx-auto !pg-z-[5000]" />
 
     <v-col cols="12" class="pa-0 pg-mt-16">
@@ -49,8 +62,13 @@ export default defineComponent({
       store.getters['auth/getFinishNoCCFlow']
     )
 
+    const closeDialog = () => {
+      store.dispatch('auth/disableCreditCardDialog')
+    }
+
     return {
-      showDialog
+      showDialog,
+      closeDialog
     }
   }
 })
