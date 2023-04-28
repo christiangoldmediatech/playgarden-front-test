@@ -2,6 +2,7 @@ import { PLAYER_EVENTS, PlayerInstanceEvent } from '@gold-media-tech/pg-video-pl
 import { axios } from '@/utils'
 import { ref, useRouter } from '@nuxtjs/composition-api'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
+import { Meeting } from '@/models'
 import { useLibraryHelpers } from './library'
 
 const OVERLAY_TIMEOUT = 6000
@@ -10,7 +11,9 @@ const WELCOME_VIDEO_ID = 0
 
 const viewOverlay = ref(true)
 const loadingVideo = ref(false)
+const loadingMeeting = ref(false)
 const welcomeVideo = ref<MediaObject[]>([])
+const upcomingMeeting = ref<Meeting | null>(null)
 
 export const useRegisterFlow = () => {
   const router = useRouter()
@@ -30,6 +33,12 @@ export const useRegisterFlow = () => {
     loadingVideo.value = false
   }
 
+  const getUpcomingMeeting = async () => {
+    loadingMeeting.value = true
+    upcomingMeeting.value = await axios.$get('/live-sessions/upcoming')
+    loadingMeeting.value = false
+  }
+
   const playerEvents = {
     // Whenever a video ends
     [PLAYER_EVENTS.ON_ENDED]: (event: PlayerInstanceEvent) => {
@@ -40,9 +49,12 @@ export const useRegisterFlow = () => {
   return {
     viewOverlay,
     loadingVideo,
+    loadingMeeting,
     welcomeVideo,
+    upcomingMeeting,
     changeViewOverlayStatus,
     getWelcomeVideo,
+    getUpcomingMeeting,
     playerEvents
   }
 }

@@ -1,0 +1,72 @@
+.player-content-card {
+  width: 80%;
+  height: 500px;
+  border-radius: 16px;
+}
+
+.play-icon {
+  width: 250px;
+  height: 250px;
+  transition: transform 250ms;
+  filter: drop-shadow(0px 3.62243px 10.8673px rgba(0, 0, 0, 0.15));
+
+  @media screen and (max-width: $breakpoint-xs) {
+    width: 50%;
+    height: 50%;
+  }
+}
+
+.watercolor-background {
+  background-image: url("~@/assets/png/play-learn/acuarela-yellow.png"),
+    url("~@/assets/png/play-learn/acuarela-green.png");
+  background-size: auto,
+    400px 400px;
+  background-position: -40% 15%,
+    100% 0%;
+}
+
+.inline-player {
+  @media screen and (max-width: 1263px) and (orientation: portrait) {
+    aspect-ratio: 16/9;
+  }
+
+  @media screen and (max-width: 1263px) and (orientation: landscape) {
+    aspect-ratio: 2.36;
+  }
+}
+
+.player-preview-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(0deg, #000000 -20.15%, rgba(77, 77, 77, 0) 73.48%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding-top: 25px;
+  cursor: pointer;
+  transition: opacity 250ms ease-in-out;
+  pointer-events: none;
+  opacity: 0;
+
+  &.player-preview-container-shown {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .player-preview-icon {
+    width: 15%;
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center center;
+    transition: transform 250ms ease-in-out;
+
+    &.player-preview-icon-scaled {
+      transform: scale(1.15);
+    }
+  }
+}
