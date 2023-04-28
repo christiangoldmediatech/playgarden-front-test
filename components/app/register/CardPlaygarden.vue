@@ -56,13 +56,13 @@
           Still not sure? Call, text, or email us with your questions, and a member of our teacher team will get back to you with more information.
         </p>
 
-        <div class="pg-flex pg-items-center pg-justify-between pg-gap-5">
+        <div class="pg-flex pg-items-center pg-justify-between">
           <v-img
             :src="require('@/assets/png/miss_rose.png')"
             alt="Miss Rose"
             class="pg-block pg-mx-auto pg-mt-5 pg-rounded-[50%]"
-            width="150"
-            height="150"
+            width="200"
+            height="200"
             contain
           />
           <div class="pg-text-center pg-mt-5">
