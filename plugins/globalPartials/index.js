@@ -36,11 +36,13 @@ import FileUploader from './file-uploader/FileUploader'
 import NotifyEvent from './NotifyEvent'
 import PromptDialog from './PromptDialog'
 import UnderlinedTitle from './UnderlinedTitle'
+import NormalTitle from './NormalTitle.vue'
 
 Vue.component(FileUploader.name, FileUploader)
 Vue.component(NotifyEvent.name, NotifyEvent)
 Vue.component(PromptDialog.name, PromptDialog)
 Vue.component(UnderlinedTitle.name, UnderlinedTitle)
+Vue.component(NormalTitle.name, NormalTitle)
 
 Vue.component(PgAudioPlayer.name, PgAudioPlayer)
 

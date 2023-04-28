@@ -7,7 +7,7 @@
             CHILD INFORMATION
           </h1>
           <h2 class="form-subtitle">
-            Tell us a little about your little one
+            Tell us about your little one:
           </h2>
           <children-form
             class="mt-6"

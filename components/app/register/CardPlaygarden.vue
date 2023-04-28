@@ -53,27 +53,35 @@
         class="pg-text-center"
       >
         <p class="pg-text-center pg-mt-5">
-          Still not sure? Call us, text us, email us, We'll be happy to explain
-          our program in more detail
+          Still not sure? Call, text, or email us with your questions, and a member of our teacher team will get back to you with more information.
         </p>
 
-        <img
-          src="@/assets/png/Miss Sarah.png"
-          alt="Miss Sarah"
-          class="pg-block pg-mx-auto pg-w-[150px] pg-mt-5 pg-rounded-[50%]"
-        >
-
-        <div class="pg-text-center pg-mt-5">
-          <span>
-            Miss Sarah
-          </span>
-          <br>
-          <a class="blue--text" href="tel:646-504-4716">646-504-4716 </a>
-          <br>
-          <a
-            class="black--text"
-            href="mailto:hello@playgardenprep.com"
-          >hello@playgardenprep.com</a>
+        <div class="pg-flex pg-items-center pg-justify-between">
+          <v-img
+            :src="require('@/assets/png/miss_rose.png')"
+            alt="Miss Rose"
+            class="pg-block pg-mx-auto pg-mt-5 pg-rounded-[50%]"
+            width="200"
+            height="200"
+            contain
+          />
+          <div class="pg-text-center pg-mt-5">
+            <p class="!pg-mb-2">
+              <strong>
+                Reach out to speak with a teacher like Miss Sarah!
+              </strong>
+            </p>
+            <p class="!pg-mb-2">
+              <a class="blue--text" href="tel:646-504-4716">
+                +1 (646) 504-4716 (call/text) </a>
+            </p>
+            <a
+              class="black--text"
+              href="mailto:hello@playgardenprep.com"
+            >
+              hello@playgardenprep.com
+            </a>
+          </div>
         </div>
       </div>
     </div>

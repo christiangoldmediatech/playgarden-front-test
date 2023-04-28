@@ -18,6 +18,10 @@ export default actionTree(
         delete user.passwordConfirmation
       }
 
+      if (!user.phoneNumber && user.phoneNumber === '') {
+        delete user.phoneNumber
+      }
+
       const utm = getters.getUtm
       const { accessToken } = await this.$axios.$post('/auth/signup', {
         ...user,

@@ -21,7 +21,7 @@
 
       <!-- HEADING -->
       <div :class="['pg-mt-6', 'pg-inline']">
-        <UnderlinedTitle
+        <NormalTitle
           text="CREATE AN ACCOUNT TO START LEARNING!"
           font-size="40px"
           font-size-mobile="20px"
@@ -65,7 +65,7 @@
             'pg-justify-center',
             'pg-mt-14',
             'lg:pg-col-span-5',
-            'height-mobile',
+            'height-mobile'
           ]"
         >
           <CardInfo />
@@ -149,7 +149,9 @@ export default defineComponent({
 
     function goToNextStep() {
       const SignupStep = useSignupStep()
-      const currentPlanType = shouldPickPlanOnSignup.value ? undefined : signupType
+      const currentPlanType = shouldPickPlanOnSignup.value
+        ? undefined
+        : signupType
 
       router.push(
         SignupStep.getStepOneNextStepLocation({

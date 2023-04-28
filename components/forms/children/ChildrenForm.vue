@@ -7,45 +7,39 @@
       order-lg="1"
       :class="{ 'pr-2': isLargeScreen }"
     >
-      <v-row :no-gutters="!isLargeScreen">
-        <v-col cols="12" lg="6">
-          <!-- Name -->
-          <validation-provider
-            v-slot="{ errors }"
-            :name="(removable ? `Child #${index + 1} - ` : '') + 'Name'"
-            rules="required"
-          >
-            <pg-text-field
-              v-model="itemCurrent.firstName"
-              clearable
-              :disabled="isLoading"
-              :error-messages="errors"
-              label="First name"
-              solo
-              class="custom-text-field"
-            />
-          </validation-provider>
-        </v-col>
+      <!-- Name -->
+      <validation-provider
+        v-slot="{ errors }"
+        :name="(removable ? `Child #${index + 1} - ` : '') + 'Name'"
+        rules="required"
+      >
+        <pg-text-field
+          v-model="itemCurrent.firstName"
+          clearable
+          :disabled="isLoading"
+          :error-messages="errors"
+          label="First name"
+          solo
+          class="custom-text-field"
+        />
+      </validation-provider>
 
-        <v-col cols="12" lg="6">
-          <!-- Lastname -->
-          <validation-provider
-            v-slot="{ errors }"
-            :name="(removable ? `Child #${index + 1} - ` : '') + 'Lastname'"
-            rules="required"
-          >
-            <pg-text-field
-              v-model="itemCurrent.lastName"
-              clearable
-              :disabled="isLoading"
-              :error-messages="errors"
-              label="Last name"
-              solo
-              class="custom-text-field"
-            />
-          </validation-provider>
-        </v-col>
-      </v-row>
+      <!-- Lastname -->
+      <validation-provider
+        v-slot="{ errors }"
+        :name="(removable ? `Child #${index + 1} - ` : '') + 'Lastname'"
+        rules="required"
+      >
+        <pg-text-field
+          v-model="itemCurrent.lastName"
+          clearable
+          :disabled="isLoading"
+          :error-messages="errors"
+          label="Last name"
+          solo
+          class="custom-text-field"
+        />
+      </validation-provider>
 
       <!-- Birth date -->
       <v-menu
