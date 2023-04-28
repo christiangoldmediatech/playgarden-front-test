@@ -16,7 +16,7 @@
                 clearable
                 :disabled="loading"
                 :error-messages="errors"
-                label="Name"
+                label="First Name"
                 class="custom-text-field"
                 :loading="loading"
                 solo
@@ -241,7 +241,7 @@
                   type="submit"
                   x-large
                 >
-                  Start learning
+                  CHOOSE YOUR PLAN
                 </v-btn>
               </v-col>
             </v-row>
