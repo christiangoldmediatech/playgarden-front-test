@@ -3,6 +3,7 @@ import { Flow } from '../enums'
 import { PlanSelected, Role, Subscription } from './'
 
 export interface User extends Entity {
+  hasCreditCards: boolean
   email: string
   firstName: string
   flow: Flow

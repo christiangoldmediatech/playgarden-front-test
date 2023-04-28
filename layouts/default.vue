@@ -3,6 +3,8 @@
     <template v-if="showContent">
       <coming-soon-player />
 
+      <finish-no-credit-card-flow />
+
       <!-- APP MAV & BAR -->
       <app-navigation />
 
@@ -112,12 +114,14 @@ import {
   useVuetifyHelper
 } from '@/composables'
 import LearningKitsPopup from '@/components/app/payment/LearningKitsPopup.vue'
+import FinishNoCreditCardFlow from '@/components/app/payment/FinishNoCreditCardFlow.vue'
 import socket from '~/plugins/socket.io.js'
 
 export default defineComponent({
   middleware: ['utmHandler'],
 
   components: {
+    FinishNoCreditCardFlow,
     ApplicationHeader,
     AppNavigation,
     ComingSoonDialog,
