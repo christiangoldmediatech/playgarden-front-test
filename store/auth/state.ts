@@ -6,5 +6,6 @@ export default () => ({
   expiresAt: null as NullableNumber,
   issuedAt: null as NullableNumber,
   playdateInvitationToken: null as NullableString,
-  userInfo: null as User | null
+  userInfo: null as User | null,
+  disableCreditCardNeededAlert: false
 })

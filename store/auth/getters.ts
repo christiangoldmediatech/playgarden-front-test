@@ -1,5 +1,7 @@
 import { getterTree } from 'typed-vuex'
 import { PlanTier } from '@/models'
+import { Flow } from '@/composables/users/enums'
+import dayjs from 'dayjs'
 import { state } from './'
 
 export default getterTree(state, {
@@ -41,5 +43,13 @@ export default getterTree(state, {
     false,
 
   hasPlayAndLearnLivePlan: (state): boolean =>
-    state.userInfo?.planSelected?.id === PlanTier.PLAY_AND_LEARN_LIVE
+    state.userInfo?.planSelected?.id === PlanTier.PLAY_AND_LEARN_LIVE,
+
+  getFinishNoCCFlow: (state) =>
+    state.userInfo &&
+    state.userInfo.flow === Flow.NOCREDITCARD &&
+    !state.userInfo.hasCreditCards &&
+    dayjs().diff(dayjs(state.userInfo.createdAt), 'days') >= 3 &&
+    !state.disableCreditCardNeededAlert
+
 })

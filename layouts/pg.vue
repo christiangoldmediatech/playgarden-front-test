@@ -7,6 +7,7 @@
         @expired="handleExpiredTrialCoundown"
       />
 
+      <finish-no-credit-card-flow />
       <!-- APP HEADER -->
       <pg-header />
 
@@ -76,11 +77,13 @@ import {
 import AppNavigation from '@/components/app/header/AppNavigation.vue'
 import PgHeader from '@/components/app/header/PgHeader.vue'
 import DefaultFooter from '@/components/app/footer/DefaultFooter.vue'
+import FinishNoCreditCardFlow from '@/components/app/payment/FinishNoCreditCardFlow.vue'
 
 export default defineComponent({
   middleware: ['utmHandler'],
 
   components: {
+    FinishNoCreditCardFlow,
     AppNavigation,
     PgHeader,
     DefaultFooter,

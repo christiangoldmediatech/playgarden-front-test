@@ -28,5 +28,9 @@ export default mutationTree(state, {
 
   SET_USER_INFO(state, userInfo: User | null) {
     state.userInfo = userInfo
+  },
+
+  SET_CREDIT_CARD_ALERT(state, disableCreditCardNeededAlert: boolean) {
+    state.disableCreditCardNeededAlert = disableCreditCardNeededAlert
   }
 })

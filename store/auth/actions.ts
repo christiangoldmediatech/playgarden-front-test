@@ -117,10 +117,36 @@ export default actionTree(
       }
     },
 
+    disableCreditCardDialog  ({ commit }) {
+      const now = new Date()
+      const expiry = now.getTime() + 1000 * 60 * 60 * 24 * 7 // 7 days
+      const creditCardDialog = {
+        value: true,
+        expiry
+      }
+
+      localStorage.setItem('creditCardAlert', JSON.stringify(creditCardDialog))
+      commit('SET_CREDIT_CARD_ALERT', true)
+    },
+
     async fetchUserInfo({ commit, rootGetters }): Promise<User | undefined> {
       try {
         const { data } = await this.$axios.get('/auth/me', {})
         commit('SET_USER_INFO', data)
+
+        let creditCardDialog:any = localStorage.getItem('creditCardAlert')
+        if (creditCardDialog) {
+          creditCardDialog = JSON.parse(creditCardDialog)
+          const now = new Date()
+
+          if (now.getTime() > creditCardDialog.expiry) {
+            localStorage.removeItem('creditCardAlert')
+            creditCardDialog.value = false
+          }
+
+          commit('SET_CREDIT_CARD_ALERT', creditCardDialog.value)
+        }
+
         return data
       } catch (error) {
         if (!rootGetters.isDisabledAxiosGlobalErrorHandler) {
