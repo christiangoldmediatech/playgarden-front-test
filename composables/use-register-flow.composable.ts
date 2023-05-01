@@ -39,7 +39,7 @@ export const useRegisterFlow = () => {
   }
 
   const playerEvents = {
-    // Whenever a video ends
+    // Whenever a video ends.
     [PLAYER_EVENTS.ON_ENDED]: (event: PlayerInstanceEvent) => {
       router.push({ name: 'app-dashboard' })
     }
