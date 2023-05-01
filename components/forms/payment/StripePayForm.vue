@@ -95,6 +95,8 @@
           <center>
             <span class="font-weight-bold text-completely">
               Playgarden Prep Online is COMPLETELY FREE for the next 15 days.
+              <br />
+              YOU CAN CANCEL YOUR TRIAL ANY TIME
             </span>
           </center>
         </p>

@@ -7,8 +7,6 @@ import { useLibraryHelpers } from './library'
 
 const OVERLAY_TIMEOUT = 6000
 
-const WELCOME_VIDEO_ID = 0
-
 const viewOverlay = ref(true)
 const loadingVideo = ref(false)
 const loadingMeeting = ref(false)
@@ -27,9 +25,19 @@ export const useRegisterFlow = () => {
 
   const getWelcomeVideo = async () => {
     loadingVideo.value = true
-    const video = await axios.$get(`/videos/welcome-video/${WELCOME_VIDEO_ID}`)
-    const mediaObjectVideo = videoToMediaObject(video)
-    welcomeVideo.value = [mediaObjectVideo]
+    const response = await axios.$get('/lessons', { params: { name: 'WELCOME', includeHidden: true } })
+
+    if (response && response.lessons.length > 0) {
+      const lesson = response.lessons[0]
+      const lessonVideos = lesson.videos
+
+      if (lessonVideos.length > 0) {
+        const video = lessonVideos[0]
+        const mediaObjectVideo = videoToMediaObject(video)
+        welcomeVideo.value = [mediaObjectVideo]
+      }
+    }
+
     loadingVideo.value = false
   }
 
@@ -40,7 +48,7 @@ export const useRegisterFlow = () => {
   }
 
   const playerEvents = {
-    // Whenever a video ends
+    // Whenever a video ends.
     [PLAYER_EVENTS.ON_ENDED]: (event: PlayerInstanceEvent) => {
       router.push({ name: 'app-dashboard' })
     }
