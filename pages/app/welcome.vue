@@ -3,6 +3,7 @@
     <v-row no-gutters class="fill-height pt-16">
       <v-col cols="12">
         <welcome-overlay v-model="viewOverlay" />
+        <lesson-end-overlay :value.sync="endLessonOverlay" :worksheet-url="worksheetUrl" />
         <v-row no-gutters>
           <v-col cols="12">
             <v-row no-gutters justify="center" class="mb-6">
@@ -55,20 +56,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
+import { computed, defineComponent, onMounted, ref, useStore } from '@nuxtjs/composition-api'
 import WelcomeOverlay from '@/components/app/WelcomeOverlay.vue'
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
-import { useRegisterFlow } from '../../composables/use-register-flow.composable'
+import LessonEndOverlay from '@/components/app/LessonEndOverlay.vue'
+import { TypedStore } from '@/models'
+import { useChildLesson } from '@/composables'
+import { axios } from '@/utils'
+import { useRegisterFlow } from '@/composables/use-register-flow.composable'
 
 export default defineComponent({
   name: 'Welcome',
   components: {
+    LessonEndOverlay,
     WelcomeOverlay,
     PgVideoPlayer
   },
   setup() {
+    const store = useStore<TypedStore>()
     const isFullscreen = ref(false)
     const showPreview = ref(true)
     const player = ref<PlayerInstance | null>(null)
@@ -78,8 +85,21 @@ export default defineComponent({
       welcomeVideo,
       changeViewOverlayStatus,
       playerEvents,
-      getWelcomeVideo
+      getWelcomeVideo,
+      endLessonOverlay,
+      lesson
     } = useRegisterFlow()
+
+    const worksheetUrl = computed(() => {
+      return {
+        name: 'app-dashboard-online-worksheet',
+        query: {
+          childId: store.getters.getCurrentChild[0].id,
+          lessonId: lesson.value ? lesson.value.id : 0,
+          worksheet: 0
+        }
+      }
+    })
 
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
@@ -100,20 +120,33 @@ export default defineComponent({
       showPreview.value = false
     }
 
+    const createFirstLesson = async () => {
+      const children = store.getters.getCurrentChild
+
+      await store.dispatch('children/lesson/createLessonById', {
+        childId: children[0].id,
+        lessonId: lesson.value.id
+      })
+    }
+
     onMounted(async () => {
       changeViewOverlayStatus()
-      await getWelcomeVideo()
+      await getWelcomeVideo().finally(() => {
+        createFirstLesson()
+      })
     })
 
     return {
       viewOverlay,
+      endLessonOverlay,
       loadingVideo,
       showPreview,
       onPlayerReady,
       handlePlay,
       playerEvents,
       getWelcomeVideo,
-      handleFullscreenChange
+      handleFullscreenChange,
+      worksheetUrl
     }
   }
 })

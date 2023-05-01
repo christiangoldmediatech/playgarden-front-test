@@ -47,6 +47,17 @@ export default {
     }
   },
 
+  async createLessonById(ctx, {
+    childId,
+    lessonId
+  }) {
+    try {
+      return await this.$axios.$get(`lessons/children/${childId}/lesson/${lessonId}/advance`)
+    } catch (e) {
+      return Promise.reject(e)
+    }
+  },
+
   async getCurrentCurriculumType({ commit }, childId) {
     try {
       const data = await this.$axios.$get(

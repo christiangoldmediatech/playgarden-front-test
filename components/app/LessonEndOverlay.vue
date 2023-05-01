@@ -1,7 +1,7 @@
 <template>
-  <v-overlay :dark="false" :value="viewOverlay" z-index="4000">
+  <v-overlay :dark="false" :value="value" z-index="4000">
     <div class="d-flex flex-column align-center !pg-relative">
-      <v-btn class="btn-close" icon color="white" x-large @click="viewOverlay = false">
+      <v-btn class="btn-close" icon color="white" x-large @click="$emit('update:value', false)">
         <v-icon>mdi-close</v-icon>
       </v-btn>
 
@@ -46,24 +46,31 @@ export default defineComponent({
   components: {
     MeetingCard
   },
-  setup() {
-    const viewOverlay = ref(true)
+  props: {
+    value: {
+      type: Boolean,
+      default: false
+    },
+    worksheetUrl: {
+      type: Object,
+      default: ''
+    }
+  },
+  emits: ['update:value'],
+  setup(props) {
     const {
       loadingMeeting,
       upcomingMeeting,
       getUpcomingMeeting
     } = useRegisterFlow()
 
-    const store = useStore()
     const router = useRouter()
-
-    const lesson = computed(() => store.getters['admin/curriculum/getLesson'])
 
     const sections = ref([
       {
         title: 'Worksheet',
         img: require('@/assets/png/worksheet.png'),
-        to: '',
+        to: props.worksheetUrl,
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
       },
       {
@@ -80,8 +87,12 @@ export default defineComponent({
       }
     ])
 
-    const goTo = (routName: string) => {
-      router.push({ name: routName })
+    const goTo = (routName: any) => {
+      if (typeof routName !== 'string') {
+        router.push(routName)
+      } else {
+        router.push({ name: routName })
+      }
     }
 
     onMounted(async () => {
@@ -89,7 +100,6 @@ export default defineComponent({
     })
 
     return {
-      viewOverlay,
       loadingMeeting,
       sections,
       upcomingMeeting,
