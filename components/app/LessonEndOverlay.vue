@@ -1,10 +1,6 @@
 <template>
   <v-overlay :dark="false" :value="value" z-index="4000">
     <div class="d-flex flex-column align-center !pg-relative">
-      <v-btn class="btn-close" icon color="white" x-large @click="$emit('update:value', false)">
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-
       <h1 class="overlay-title mb-2">
         You've completed your first day of video lessons.
       </h1>

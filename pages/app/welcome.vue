@@ -3,7 +3,11 @@
     <v-row no-gutters class="fill-height pt-16">
       <v-col cols="12">
         <welcome-overlay v-model="viewOverlay" />
-        <lesson-end-overlay :value.sync="endLessonOverlay" :worksheet-url="worksheetUrl" />
+        <lesson-end-overlay
+          v-if="!loadingVideo"
+          :value.sync="endLessonOverlay"
+          :worksheet-url="worksheetUrl"
+        />
         <v-row no-gutters>
           <v-col cols="12">
             <v-row no-gutters justify="center" class="mb-6">
@@ -13,7 +17,9 @@
             </v-row>
 
             <v-row justify="center">
-              <v-card class="d-flex flex-column player-content-card elevation-0">
+              <v-card
+                class="d-flex flex-column player-content-card elevation-0"
+              >
                 <pg-loading :loading="loadingVideo">
                   <pg-video-player
                     class="inline-player"
@@ -21,7 +27,7 @@
                     :control-config="{
                       prevTrack: false,
                       nextTrack: false,
-                      favorite: false,
+                      favorite: false
                     }"
                     @ready="onPlayerReady"
                     @on-fullscreen-change="handleFullscreenChange"
@@ -37,10 +43,13 @@
                       >
                         <v-hover v-slot="{ hover }">
                           <img
-                            :class="['play-icon no-background', { 'scaled-play-icon': hover }]"
+                            :class="[
+                              'play-icon no-background',
+                              { 'scaled-play-icon': hover }
+                            ]"
                             src="@/assets/svg/simple-play.svg"
                             width="100%"
-                          >
+                          />
                         </v-hover>
                       </div>
                     </template>
@@ -56,15 +65,21 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, useStore } from '@nuxtjs/composition-api'
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  ref,
+  useRouter,
+  useStore,
+  watch
+} from '@nuxtjs/composition-api'
 import WelcomeOverlay from '@/components/app/WelcomeOverlay.vue'
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import LessonEndOverlay from '@/components/app/LessonEndOverlay.vue'
 import { TypedStore } from '@/models'
-import { useChildLesson } from '@/composables'
-import { axios } from '@/utils'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
 
 export default defineComponent({
@@ -115,12 +130,12 @@ export default defineComponent({
     }
 
     // Handle video play from video preview
-    const handlePlay = (firstPlay: () => void):void => {
+    const handlePlay = (firstPlay: () => void): void => {
       firstPlay()
       showPreview.value = false
     }
 
-    const createFirstLesson = async () => {
+    const createWelcomeLesson = async () => {
       const children = store.getters.getCurrentChild
 
       await store.dispatch('children/lesson/createLessonById', {
@@ -132,7 +147,7 @@ export default defineComponent({
     onMounted(async () => {
       changeViewOverlayStatus()
       await getWelcomeVideo().finally(() => {
-        createFirstLesson()
+        createWelcomeLesson()
       })
     })
 
@@ -150,7 +165,6 @@ export default defineComponent({
     }
   }
 })
-
 </script>
 
 <style lang="scss" scoped>
@@ -162,6 +176,6 @@ export default defineComponent({
   font-weight: 700;
   font-size: 54px;
   line-height: 80px;
-  color: #68C453;
+  color: #68c453;
 }
 </style>

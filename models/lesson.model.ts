@@ -89,4 +89,5 @@ export interface Lesson extends Entity {
   status: 'PUBLISH'
   videos: LessonVideo[]
   worksheets: LessonWorksheet[]
+  closingVideo?: Video | null
 }

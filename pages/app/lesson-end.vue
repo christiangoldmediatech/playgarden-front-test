@@ -2,7 +2,6 @@
   <v-main class="watercolor-background">
     <v-row no-gutters class="fill-height pt-16">
       <v-col cols="12">
-        <lesson-end-overlay />
         <v-row no-gutters>
           <v-col cols="12">
             <v-row no-gutters justify="center" class="mb-6">
@@ -13,7 +12,7 @@
 
             <v-row justify="center">
               <v-card class="d-flex flex-column player-content-card elevation-0">
-                <pg-loading :loading="false">
+                <pg-loading :loading="loadingVideo">
                   <pg-video-player
                     class="inline-player"
                     inline
@@ -67,12 +66,17 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, useStore } from '@nuxtjs/composition-api'
+import { computed, defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
-import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
+import {
+  PLAYER_EVENTS,
+  PlayerInstance,
+  PlayerInstanceEvent
+} from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import LessonEndOverlay from '@/components/app/LessonEndOverlay.vue'
+import { useRegisterFlow } from '@/composables/use-register-flow.composable'
 
 export default defineComponent({
   name: 'LessonEnd',
@@ -81,24 +85,20 @@ export default defineComponent({
     LessonEndOverlay
   },
   setup() {
-    const store = useStore()
-
+    const {
+      loadingVideo,
+      getClosingVideo,
+      closingVideo
+    } = useRegisterFlow()
+    const router = useRouter()
     const isFullscreen = ref(false)
     const showPreview = ref(true)
     const viewOverlay = ref(true)
     const player = ref<PlayerInstance | null>(null)
-    const lesson = computed(() => store.getters['admin/curriculum/getLesson'])
 
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
-
-      const video: MediaObject[] = []
-
-      if (lesson.value?.closingVideo) {
-        video.push(lesson.value.video)
-      }
-
-      player.value.loadPlaylist(video)
+      player.value.loadPlaylist(closingVideo.value)
     }
 
     const handleFullscreenChange = (val: boolean): void => {
@@ -115,13 +115,25 @@ export default defineComponent({
       showPreview.value = false
     }
 
+    onMounted(() => {
+      getClosingVideo()
+    })
+
+    const playerEvents = {
+      // Whenever a video ends.
+      [PLAYER_EVENTS.ON_ENDED]: (event: PlayerInstanceEvent) => {
+        router.push({ name: 'app-dashboard' })
+      }
+    }
+
     return {
       viewOverlay,
       showPreview,
       onPlayerReady,
       handlePlay,
-      // playerEvents,
-      handleFullscreenChange
+      handleFullscreenChange,
+      playerEvents,
+      loadingVideo
     }
   }
 })

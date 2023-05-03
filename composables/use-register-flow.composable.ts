@@ -20,6 +20,7 @@ const endLessonOverlay = ref(false)
 const loadingVideo = ref(false)
 const loadingMeeting = ref(false)
 const welcomeVideo = ref<MediaObject[]>([])
+const closingVideo = ref<MediaObject[]>([])
 const upcomingMeeting = ref<Meeting | null>(null)
 
 export const useRegisterFlow = () => {
@@ -47,6 +48,23 @@ export const useRegisterFlow = () => {
         const video = lessonVideos[0]
         const mediaObjectVideo = videoToMediaObject(video)
         welcomeVideo.value = [mediaObjectVideo]
+      }
+    }
+
+    loadingVideo.value = false
+  }
+
+  const getClosingVideo = async () => {
+    loadingVideo.value = true
+    const response = await axios.$get('/lessons', { params: { name: 'WELCOME', includeHidden: true } })
+
+    if (response && response.lessons.length > 0) {
+      lesson.value = response.lessons[0]
+
+      if (lesson.value && lesson.value.closingVideo) {
+        const video = lesson.value.closingVideo
+        const mediaObjectVideo = videoToMediaObject(video)
+        closingVideo.value = [mediaObjectVideo]
       }
     }
 
@@ -92,6 +110,8 @@ export const useRegisterFlow = () => {
     getWelcomeVideo,
     getUpcomingMeeting,
     playerEvents,
-    lesson
+    lesson,
+    closingVideo,
+    getClosingVideo
   }
 }

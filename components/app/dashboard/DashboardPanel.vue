@@ -492,6 +492,7 @@
         </content-section>
 
         <content-section
+          v-if="activities && activities.items.length > 0"
           number="3"
           title="Activities"
           :progress="activities.progress"
