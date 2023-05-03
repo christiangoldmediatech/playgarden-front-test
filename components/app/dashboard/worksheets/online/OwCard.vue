@@ -198,13 +198,16 @@ export default {
       }
 
       const result = [
-        ...buttons,
-        {
+        ...buttons
+      ]
+
+      const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
+      if (activities.length > 0) {
+        result.push({
           text: 'GO TO ACTIVITIES',
           color: '#FEC572',
           iconLeft: 'pg-icon-play',
           action: () => {
-            const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
             if (activities.length) {
               const validActivities = this.lesson.lessonsActivities.filter(({ activity }) => {
                 return activity.videos.videoUrl
@@ -237,8 +240,8 @@ export default {
               this.$router.push(this.generateNuxtRoute('lesson-activities', { id: activities[0].id }))
             }
           }
-        }
-      ]
+        })
+      }
 
       result[0].color = 'accent'
 
