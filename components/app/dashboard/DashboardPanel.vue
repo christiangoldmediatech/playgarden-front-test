@@ -240,7 +240,7 @@
               @click.stop="handleDownloadWorksheetClick"
                 >
                   <v-row no-gutters align="center">
-                    <v-col cols="4">
+                    <v-col v-if="offlineWorksheet" cols="4">
                       <v-img
                         class="dashboard-item-image"
                         :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')"
