@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, useRouter, watch } from '@nuxtjs/composition-api'
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import {
@@ -74,7 +74,6 @@ import {
   PlayerInstance,
   PlayerInstanceEvent
 } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
-import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import LessonEndOverlay from '@/components/app/LessonEndOverlay.vue'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
 
@@ -99,6 +98,9 @@ export default defineComponent({
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
       player.value.loadPlaylist(closingVideo.value)
+      handlePlay(() => {
+        player.value?.play()
+      })
     }
 
     const handleFullscreenChange = (val: boolean): void => {

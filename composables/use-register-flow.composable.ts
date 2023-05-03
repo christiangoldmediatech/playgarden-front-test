@@ -1,6 +1,6 @@
 import { PLAYER_EVENTS, PlayerInstanceEvent } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { axios } from '@/utils'
-import { ref, useRouter, useStore } from '@nuxtjs/composition-api'
+import { ref, useStore } from '@nuxtjs/composition-api'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import { Meeting, TypedStore } from '@/models'
 import { useChildLesson } from '@/composables/use-child'
@@ -24,7 +24,6 @@ const closingVideo = ref<MediaObject[]>([])
 const upcomingMeeting = ref<Meeting | null>(null)
 
 export const useRegisterFlow = () => {
-  const router = useRouter()
   const store = useStore<TypedStore>()
   const { videoToMediaObject } = useLibraryHelpers()
   const { saveVideoProgress } = useChildLesson({ store, axios })

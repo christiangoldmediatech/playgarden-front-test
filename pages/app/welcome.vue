@@ -70,9 +70,8 @@ import {
   defineComponent,
   onMounted,
   ref,
-  useRouter,
-  useStore,
-  watch
+  watch,
+  useStore
 } from '@nuxtjs/composition-api'
 import WelcomeOverlay from '@/components/app/WelcomeOverlay.vue'
 // @ts-ignore
@@ -143,6 +142,14 @@ export default defineComponent({
         lessonId: lesson.value.id
       })
     }
+
+    watch(viewOverlay, () => {
+      if (!viewOverlay.value && !loadingVideo.value) {
+        handlePlay(() => {
+          player.value?.play()
+        })
+      }
+    })
 
     onMounted(async () => {
       changeViewOverlayStatus()
