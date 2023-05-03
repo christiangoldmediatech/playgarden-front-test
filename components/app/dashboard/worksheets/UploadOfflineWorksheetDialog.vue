@@ -216,7 +216,7 @@ import {
   ref,
   computed,
   watch,
-  useStore
+  useStore, useRouter
 } from '@nuxtjs/composition-api'
 import { useChildren, useNuxtHelper, useToastHelper, useOfflineWorksheet } from '@/composables'
 import { APP_EVENTS, UploadedOfflineWorksheet } from '@/models'
@@ -235,6 +235,7 @@ export default defineComponent({
   setup(props, { emit }) {
     // Globals and helpers
     const store = useStore()
+    const router = useRouter()
     const $nuxt = useNuxtHelper()
     const toast = useToastHelper()
     const { currentChild } = useChildren({ store })
@@ -456,6 +457,13 @@ export default defineComponent({
 
         $nuxt.$emit(APP_EVENTS.DASHBOARD_WORKSHEET_UPLOAD, lessonId)
         toast.success('Your worksheet has been uploaded!')
+
+        if (lesson.name === 'WELCOME') {
+          toast.success('You\'ve finish your first day')
+          await store.dispatch('children/lesson/handleCreateFirstLesson', childId)
+          await router.push({ name: 'app-lesson-end' })
+        }
+
         $nuxt.$emit('dashboard-panel-update')
         $nuxt.$emit('student-portafolio-update-worksheets-lesson', lessonId, false)
 

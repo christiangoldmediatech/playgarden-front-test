@@ -2,24 +2,16 @@
   <v-main class="watercolor-background">
     <v-row no-gutters class="fill-height pt-16">
       <v-col cols="12">
-        <welcome-overlay v-model="viewOverlay" />
-        <lesson-end-overlay
-          v-if="!loadingVideo"
-          :value.sync="endLessonOverlay"
-          :worksheet-url="worksheetUrl"
-        />
         <v-row no-gutters>
           <v-col cols="12">
             <v-row no-gutters justify="center" class="mb-6">
-              <h1 class="welcome-title">
-                Welcome to Playgarden Online!
+              <h1 class="lesson-end-title">
+                We can't wait to see you tomorrow!
               </h1>
             </v-row>
 
             <v-row justify="center">
-              <v-card
-                class="d-flex flex-column player-content-card elevation-0"
-              >
+              <v-card class="d-flex flex-column player-content-card elevation-0">
                 <pg-loading :loading="loadingVideo">
                   <pg-video-player
                     class="inline-player"
@@ -27,7 +19,7 @@
                     :control-config="{
                       prevTrack: false,
                       nextTrack: false,
-                      favorite: false
+                      favorite: false,
                     }"
                     @ready="onPlayerReady"
                     @on-fullscreen-change="handleFullscreenChange"
@@ -43,18 +35,27 @@
                       >
                         <v-hover v-slot="{ hover }">
                           <img
-                            :class="[
-                              'play-icon no-background',
-                              { 'scaled-play-icon': hover }
-                            ]"
+                            :class="['play-icon no-background', { 'scaled-play-icon': hover }]"
                             src="@/assets/svg/simple-play.svg"
                             width="100%"
-                          />
+                          >
                         </v-hover>
                       </div>
                     </template>
                   </pg-video-player>
                 </pg-loading>
+
+                <div class="email-info-wrapper d-flex">
+                  <div class="email-info-text py-2 px-14">
+                    <p>
+                      Want to receive an email with all of the things you did today? <br>
+                      <nuxt-link :to="{ name: 'app-account-index-notification' }">
+                        Click here to update your Email Notification Settings.
+                      </nuxt-link>
+                    </p>
+                    <img src="@/assets/svg/email.svg" />
+                  </div>
+                </div>
               </v-card>
             </v-row>
           </v-col>
@@ -65,60 +66,39 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  ref,
-  useRouter,
-  useStore,
-  watch
-} from '@nuxtjs/composition-api'
-import WelcomeOverlay from '@/components/app/WelcomeOverlay.vue'
+import { computed, defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
-import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
+import {
+  PLAYER_EVENTS,
+  PlayerInstance,
+  PlayerInstanceEvent
+} from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
+import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import LessonEndOverlay from '@/components/app/LessonEndOverlay.vue'
-import { TypedStore } from '@/models'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
 
 export default defineComponent({
-  name: 'Welcome',
+  name: 'LessonEnd',
   components: {
-    LessonEndOverlay,
-    WelcomeOverlay,
-    PgVideoPlayer
+    PgVideoPlayer,
+    LessonEndOverlay
   },
   setup() {
-    const store = useStore<TypedStore>()
+    const {
+      loadingVideo,
+      getClosingVideo,
+      closingVideo
+    } = useRegisterFlow()
+    const router = useRouter()
     const isFullscreen = ref(false)
     const showPreview = ref(true)
+    const viewOverlay = ref(true)
     const player = ref<PlayerInstance | null>(null)
-    const {
-      viewOverlay,
-      loadingVideo,
-      welcomeVideo,
-      changeViewOverlayStatus,
-      playerEvents,
-      getWelcomeVideo,
-      endLessonOverlay,
-      lesson
-    } = useRegisterFlow()
-
-    const worksheetUrl = computed(() => {
-      return {
-        name: 'app-dashboard-online-worksheet',
-        query: {
-          childId: store.getters.getCurrentChild[0].id,
-          lessonId: lesson.value ? lesson.value.id : 0,
-          worksheet: 0
-        }
-      }
-    })
 
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
-      player.value.loadPlaylist(welcomeVideo.value)
+      player.value.loadPlaylist(closingVideo.value)
     }
 
     const handleFullscreenChange = (val: boolean): void => {
@@ -130,52 +110,82 @@ export default defineComponent({
     }
 
     // Handle video play from video preview
-    const handlePlay = (firstPlay: () => void): void => {
+    const handlePlay = (firstPlay: () => void):void => {
       firstPlay()
       showPreview.value = false
     }
 
-    const createWelcomeLesson = async () => {
-      const children = store.getters.getCurrentChild
-
-      await store.dispatch('children/lesson/createLessonById', {
-        childId: children[0].id,
-        lessonId: lesson.value.id
-      })
-    }
-
-    onMounted(async () => {
-      changeViewOverlayStatus()
-      await getWelcomeVideo().finally(() => {
-        createWelcomeLesson()
-      })
+    onMounted(() => {
+      getClosingVideo()
     })
+
+    const playerEvents = {
+      // Whenever a video ends.
+      [PLAYER_EVENTS.ON_ENDED]: (event: PlayerInstanceEvent) => {
+        router.push({ name: 'app-dashboard' })
+      }
+    }
 
     return {
       viewOverlay,
-      endLessonOverlay,
-      loadingVideo,
       showPreview,
       onPlayerReady,
       handlePlay,
-      playerEvents,
-      getWelcomeVideo,
       handleFullscreenChange,
-      worksheetUrl
+      playerEvents,
+      loadingVideo
     }
   }
 })
+
 </script>
 
 <style lang="scss" scoped>
 @import '~@/assets/scss/register-flow.scss';
 
-.welcome-title {
+.lesson-end-title {
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
   font-size: 54px;
   line-height: 80px;
-  color: #68c453;
+  color: #96D5DE;
+}
+
+.email-info-wrapper {
+  position: absolute;
+  bottom: -30px;
+  right: 0;
+}
+
+.email-info-text {
+  position: relative;
+  background: white;
+  width: 250px;
+  border-radius: 35px;
+  box-sizing: content-box;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+
+  p {
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    color: #707070;
+    margin: 0;
+  }
+
+  a {
+    color: #F89838 !important;
+    text-decoration: underline !important;
+  }
+
+  img {
+    position: absolute;
+    top: -30px;
+    right: -100px;
+    width: 160px;
+  }
 }
 </style>
