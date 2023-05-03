@@ -24,6 +24,20 @@
           </span>
         </v-btn>
       </v-list-item>
+      <v-list-item v-else-if="item.name === 'Welcome'">
+        <v-btn text>
+          <v-img
+            width="35"
+            height="35"
+            contain
+            class="ml-n4 mr-4"
+            :src="item.icon"
+          />
+          <span class="hidden-sm-and-down">
+            Welcome
+          </span>
+        </v-btn>
+      </v-list-item>
       <v-list-item v-else class="w-100">
         <recorded-letter
           v-bind="{ letter: item, small: smallLetter }"
@@ -50,6 +64,20 @@
           />
           <span class="hidden-sm-and-down">
             Nature
+          </span>
+        </v-btn>
+      </v-list-item>
+      <v-list-item v-else-if="item.name === 'Welcome'" v-bind="attrs" v-on="on">
+        <v-btn text>
+          <v-img
+            width="35"
+            height="35"
+            contain
+            class="ml-n1 mr-4"
+            :src="item.icon"
+          />
+          <span class="hidden-sm-and-down">
+            Welcome
           </span>
         </v-btn>
       </v-list-item>
