@@ -230,7 +230,7 @@
           <template
             v-if="$vuetify.breakpoint.mdAndUp || $vuetify.breakpoint.xsOnly"
           >
-            <!-- DOWNLOAD WORKSHEETS -->
+            <!-- DOWNLOAD WORKSHEETS-->
             <v-card
               :disabled="false"
               :ripple="false"
