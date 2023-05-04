@@ -1,6 +1,6 @@
 .player-content-card {
   width: 80%;
-  height: 500px;
+  height: 620px;
   border-radius: 16px;
 }
 
@@ -29,7 +29,6 @@
   @media screen and (max-width: 1263px) and (orientation: portrait) {
     aspect-ratio: 16/9;
   }
-
   @media screen and (max-width: 1263px) and (orientation: landscape) {
     aspect-ratio: 2.36;
   }
