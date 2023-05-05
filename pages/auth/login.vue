@@ -115,7 +115,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { UserRole } from '@/models'
+import { UserRole, APP_EVENTS } from '@/models'
 import LoginForm from '@/components/forms/auth/LoginForm.vue'
 
 export default {
@@ -199,6 +199,10 @@ export default {
     }
   },
 
+  beforeDestroy() {
+    this.$nuxt.$off(APP_EVENTS.LOGIN_EVENT)
+  },
+
   methods: {
     ...mapActions('auth', ['fetchUserInfo']),
     ...mapActions('children', { getChildren: 'get' }),
@@ -279,6 +283,10 @@ export default {
     },
 
     goToPage(user) {
+      this.$gtm.push({
+        event: APP_EVENTS.LOGIN_EVENT,
+        userId_parent: user.id
+      })
       if (user.stripeStatus === 'active' && user.registerStep > 3) {
         if (user.planSelected.id === 2 || user.planSelected.id === 3) {
           return { name: 'app-virtual-preschool', query: {} }
