@@ -1,4 +1,6 @@
 export enum APP_EVENTS {
+  // LOGIN
+  LOGIN_EVENT = 'login',
   // DASHOARD
   DASHBOARD_VIDEO_LESSON_CLICKED = 'dashboard-video-lesson-clicked',
   DASHBOARD_VIDEO_LESSON_VIDEO_CLICKED = 'dashboard-video-lesson-video-clicked',
