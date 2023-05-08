@@ -6,7 +6,7 @@
     solo
     data-test-id="child-select"
     v-bind="{ ...$attrs }"
-    @input="$emit('input', $event)"
+    @input="$emit('input', $event), sendAnalytics($event)"
   >
     <template v-slot:selection="{ item }">
       <v-list-item class="pa-0 w-100">
@@ -79,6 +79,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { APP_EVENTS } from '@/models'
 
 export default {
   name: 'ChildSelect',
@@ -112,6 +113,8 @@ export default {
 
   computed: {
     ...mapGetters('auth', ['isUserCaregiver']),
+
+    ...mapGetters('auth', ['getUserInfo']),
 
     ...mapGetters('children', { children: 'rows' }),
 
@@ -177,8 +180,20 @@ export default {
     this.getChildren(this.$route)
   },
 
+  beforeDestroy() {
+    this.$nuxt.$off(APP_EVENTS.SWITCH_NAME)
+  },
+
   methods: {
-    ...mapActions('children', { getChildren: 'get' })
+    ...mapActions('children', { getChildren: 'get' }),
+
+    sendAnalytics(item) {
+      this.$gtm.push({
+        event: APP_EVENTS.SWITCH_NAME,
+        userId_parent: this.getUserInfo.id,
+        userId_child: item
+      })
+    }
   }
 }
 </script>
