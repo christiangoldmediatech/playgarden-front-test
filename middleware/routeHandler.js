@@ -51,6 +51,11 @@ export default async function ({ redirect, route, store, app, req }) {
     }
   }
 
+  const noUserFlow = route.query.noUserFlow
+  if (noUserFlow && route.name === 'app-payment-iframe-plan') {
+    return
+  }
+
   isLoggedIn = await store.dispatch('auth/checkAuth', undefined, { root: true })
 
   if (route.name === 'app-payment-iframe-plan' && !route.query.isLogged && isLoggedIn) {
