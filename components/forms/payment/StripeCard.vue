@@ -90,7 +90,7 @@ export default {
       }
     },
 
-    checkFormStatus (payload) {
+    checkFormStatus(payload) {
       const { complete } = payload
       if (complete) {
         this.isValidInput = true
@@ -107,6 +107,7 @@ export default {
 
         if (res.error) {
           this.inputErrorMessage = res.error.message
+          this.$toast.error(res.error.message)
         } else {
           this.inputErrorMessage = ''
           this.$emit('input', res.token.id)
