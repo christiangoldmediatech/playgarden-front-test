@@ -5,7 +5,7 @@
       <div class="navbar-right">
         <div class="contact-menu-header">
           <div class="message">
-            <strong>Call now</strong> to speak with a specialist
+            <strong>{{ $t('login.callNowTextPart1') }}</strong> {{ $t('login.callNowTextPart2') }}
           </div>
           <div class="contact-phone">
             <img loading="lazy" class="img-phone-call" src="https://playgardenonline.com/wp-content/uploads/2022/01/phone-call-1.svg" alt="Call to Playgarden Prep Online">
@@ -15,80 +15,80 @@
 
         <ul v-if="!hideNavbarOptions" class="menu-header logged-">
           <li class="only-desktop link-option">
-            <a href="https://playgardenonline.com/">Home</a>
+            <a href="https://playgardenonline.com/">{{ $t('menuLandingPage.home') }}</a>
           </li>
           <li class="only-desktop link-option link-option-with-icon">
             <a href="#admisions" class="menu-view-more">
-              <span>Admissions</span>
+              <span>{{ $t('menuLandingPage.admissions') }}</span>
               <v-icon class="menu-view-icon" large>
                 mdi-chevron-down
               </v-icon>
             </a>
             <div class="container-submenu">
               <ul class="submenu">
-                <li><a href="https://playgardenonline.com/virtual-preschool/">Virtual Preschool</a></li>
-                <li><a href="https://playgardenonline.com/plans/">Enrollment Plans</a></li>
-                <li><a href="https://playgardenonline.com/testimonials/">Parent Testimonials</a></li>
-                <li><a href="https://playgardenprep.com/group-solutions/">Group Solutions</a></li>
-                <li><a href="https://playgardenonline.com/esl/">English as a Second Language</a></li>
+                <li><a href="https://playgardenonline.com/virtual-preschool/">{{ $t('menuLandingPage.virtualPreschool') }}</a></li>
+                <li><a href="https://playgardenonline.com/plans/">{{ $t('menuLandingPage.enrollmentPlans') }}</a></li>
+                <li><a href="https://playgardenonline.com/testimonials/">{{ $t('menuLandingPage.parentTestimonials') }}</a></li>
+                <li><a href="https://playgardenprep.com/group-solutions/">{{ $t('menuLandingPage.groupSolutions') }}</a></li>
+                <li><a href="https://playgardenonline.com/esl/">{{ $t('menuLandingPage.englishASL') }}</a></li>
               </ul>
             </div>
           </li>
           <li class="only-desktop link-option link-option-with-icon">
             <a href="#the-virtual-preschool" class="menu-view-more">
-              <span>Resources</span>
+              <span>{{ $t('menuLandingPage.resources') }}</span>
               <v-icon class="menu-view-icon" large>
                 mdi-chevron-down
               </v-icon>
             </a>
             <div class="container-submenu">
               <ul class="submenu">
-                <li><a href="https://playgardenonline.com/how-it-works/">How it Works</a></li>
+                <li><a href="https://playgardenonline.com/how-it-works/">{{ $t('menuLandingPage.howItWorks') }}</a></li>
                 <!-- <li><a href="https://playgardenonline.com/do-it-yourself/">DIY</a></li> -->
-                <li><a href="https://playgardenonline.com/blog">Blog</a></li>
-                <li><a href="https://playgardenonline.com/specialized-learning/">Specialized Learning</a></li>
-                <li><a href="https://playgardenonline.com/do-it-yourself/">Do it Yourself</a></li>
+                <li><a href="https://playgardenonline.com/blog">{{ $t('menuLandingPage.blog') }}</a></li>
+                <li><a href="https://playgardenonline.com/specialized-learning/">{{ $t('menuLandingPage.specializedLearning') }}</a></li>
+                <li><a href="https://playgardenonline.com/do-it-yourself/">{{ $t('menuLandingPage.doItYourself') }}</a></li>
               </ul>
             </div>
           </li>
           <li class="only-desktop link-option link-option-with-icon">
             <a href="#the-virtual-preschool" class="menu-view-more">
-              <span>About us</span>
+              <span>{{ $t('menuLandingPage.aboutUs') }}</span>
               <v-icon class="menu-view-icon" large>
                 mdi-chevron-down
               </v-icon>
             </a>
             <div class="container-submenu">
               <ul class="submenu">
-                <li><a href="https://playgardenonline.com/school/help/">FAQs</a></li>
-                <li><a href="https://playgardenonline.com/about-us/">About Us</a></li>
-                <li><a href="https://playgardenonline.com/your-teachers/">Your Teachers</a></li>
+                <li><a href="https://playgardenonline.com/school/help/">{{ $t('menuLandingPage.faqs') }}</a></li>
+                <li><a href="https://playgardenonline.com/about-us/">{{ $t('menuLandingPage.aboutUs') }}</a></li>
+                <li><a href="https://playgardenonline.com/your-teachers/">{{ $t('menuLandingPage.yourTeachers') }}</a></li>
               </ul>
             </div>
           </li>
           <li class="only-desktop link-option">
-            <a @click="openDialog">Community</a>
+            <a @click="openDialog">{{ $t('menuLandingPage.community') }}</a>
           </li>
           <li class="login link-option">
             <a href="https://playgardenonline.com/school/auth/login">
-              <span>Log In</span>
+              <span>{{ $t('menuLandingPage.login') }}</span>
               <img loading="lazy" src="https://playgardenonline.com/wp-content/uploads/2022/01/log-in.svg" alt="Login - Playgarden Prep Online" class="login-icon">
             </a>
           </li>
           <li class="header-action-btn">
-            <a href="https://playgardenonline.com/school/auth/parent">TRY FOR FREE</a>
+            <a href="https://playgardenonline.com/school/auth/parent">{{ $t('menuLandingPage.tryForFree') }}</a>
           </li>
           <li class="logged-active">
-            <a href="https://playgardenonline.com/school/auth/parent">Go to Preschool</a>
+            <a href="https://playgardenonline.com/school/auth/parent">{{ $t('menuLandingPage.goToPreschool') }}</a>
           </li>
         </ul>
 
         <ul v-else class="menu-header">
           <li v-if="showLogInNavbar" class="header-action-btn">
-            <a href="https://playgardenonline.com/school/auth/login">LOG IN</a>
+            <a href="https://playgardenonline.com/school/auth/login">{{ $t('login.loginBtn') }}</a>
           </li>
           <li v-if="showSignUpNavbar" class="header-action-btn">
-            <a href="https://playgardenonline.com/school/auth/preschool/normal">SIGN UP NOW</a>
+            <a href="https://playgardenonline.com/school/auth/preschool/normal">{{ $t('login.signUp') }}</a>
           </li>
         </ul>
       </div>
@@ -102,21 +102,21 @@
             <div class="container-list-menu-mobile">
               <ul>
                 <li>
-                  <a href="https://playgardenonline.com/">Home</a>
+                  <a href="https://playgardenonline.com/">{{ $t('menuLandingPage.home') }}</a>
                 </li>
                 <li class="more-menu">
                   <a href="#admissions" class="more-menu-link">
-                    <span>Admissions</span>
+                    <span>{{ $t('menuLandingPage.admissions') }}</span>
                     <i class="fas fa-sort-down" />
                   </a>
                   <ul class="submenu">
-                    <li><a href="https://playgardenonline.com/plans/">Enrollment Plans</a></li>
-                    <li><a href="https://playgardenonline.com/testimonials/">Parent Testimonials</a></li>
+                    <li><a href="https://playgardenonline.com/plans/">{{ $t('menuLandingPage.enrollmentPlans') }}</a></li>
+                    <li><a href="https://playgardenonline.com/testimonials/">{{ $t('menuLandingPage.parentTestimonials') }}</a></li>
                   </ul>
                 </li>
                 <li class="more-menu">
                   <a href="#the-virtual-preschool" class="more-menu-link">
-                    <span>Virtual Preschool</span>
+                    <span>{{ $t('menuLandingPage.virtualPreschool') }}</span>
                     <i class="fas fa-sort-down" />
                   </a>
                   <ul class="submenu">

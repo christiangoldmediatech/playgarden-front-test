@@ -176,6 +176,30 @@ export default {
    ** Nuxt.js modules
    */
   modules: [
+    [
+      '@nuxtjs/i18n',
+      {
+        locales: [
+          {
+            code: 'es',
+            file: 'es.js'
+          },
+          {
+            code: 'en',
+            file: 'en.js'
+          }
+        ],
+        defaultLocale: 'en',
+        strategy: 'no_prefix',
+        langDir: 'lang/',
+        lazy: true,
+        detectBrowserLanguage: {
+          useCookie: true,
+          cookieKey: 'i18n_redirected',
+          redirectOn: 'root'
+        }
+      }
+    ],
     '@nuxtjs/sentry',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',

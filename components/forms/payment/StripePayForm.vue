@@ -174,7 +174,7 @@ export default {
 
   data: vm => ({
     lockButton: false,
-    isValidCoupon: false,
+    isValidCoupon: true,
     isValidatingCoupon: false,
     checkValid: debounce(vm._checkValid, 1050)
   }),

@@ -70,7 +70,7 @@
         </nuxt-link>
 
         <div class="pg-mt-8 pg-max-w-[200px] pg-text-center pg-font-medium">
-          <span class="pg-font-bold pg-text-black">Call now</span> to speak with a specialist.
+          <span class="pg-font-bold pg-text-black">{{ $t('login.callNowTextPart1') }}</span> {{ $t('login.callNowTextPart2') }}
         </div>
 
         <div class="pg-mt-4 pg-font-medium">

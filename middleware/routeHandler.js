@@ -5,6 +5,21 @@ import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscripti
 import routeHandlerIgnoredRoutes from '~/utils/consts/routeHandlerIgnoredRoutes.json'
 
 export default async function ({ redirect, route, store, app, req }) {
+  // Set language
+  const queriedLanguage = route.query.lang
+  const isLangQueryPresent = !!queriedLanguage
+  const availableLanguages = store.getters.getLanguages.map(lang => lang.code)
+  const currentAppliedLanguage = app.i18n.locale
+  const browserLanguage = navigator.language
+  const browserLanguageCode = browserLanguage.includes('-') ? browserLanguage.split('-')[0] : browserLanguage
+  if (isLangQueryPresent && queriedLanguage !== currentAppliedLanguage && availableLanguages.includes(queriedLanguage)) {
+    app.i18n.setLocale(queriedLanguage)
+  } else if (browserLanguageCode !== currentAppliedLanguage && availableLanguages.includes(browserLanguageCode)) {
+    app.i18n.setLocale(browserLanguageCode)
+  } else {
+    app.i18n.setLocale('en')
+  }
+
   const redirectLogout = (route.query.logout)
 
   if (redirectLogout) {

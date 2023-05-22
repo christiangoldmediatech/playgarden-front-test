@@ -4,5 +4,6 @@ export default {
   getGlobalNotificationMessage: get('globalNotificationMessage'),
   getCurrentChild: get('currentChild'),
   getCurrentChildExpires: get('currentChildExpires'),
-  isDisabledAxiosGlobalErrorHandler: get('axiosGlobalErrorHandler')
+  isDisabledAxiosGlobalErrorHandler: get('axiosGlobalErrorHandler'),
+  getLanguages: get('languages')
 }

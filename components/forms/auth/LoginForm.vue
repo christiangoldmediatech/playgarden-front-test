@@ -5,7 +5,7 @@
       v-model="user.email"
       clearable
       :disabled="loading"
-      label="Email"
+      :label="$t('commonWords.emailPlaceholder')"
       :loading="loading"
       :rules="[required, isValidEmail]"
       solo
@@ -19,7 +19,7 @@
       v-model="user.password"
       clearable
       :disabled="loading"
-      label="Password"
+      :label="$t('commonWords.passwordPlaceholder')"
       :loading="loading"
       :rules="[required, ...isValidPassword]"
       solo
@@ -38,22 +38,22 @@
       x-large
       data-test-id="login-button"
     >
-      LOGIN
+      {{ $t('login.loginBtn') }}
     </v-btn>
 
     <p class="forgot-password mt-6 mt-md-4 text-center text-md-right">
       <nuxt-link class="black--text" :to="{ name: 'auth-forgot-password' }">
-        <underlined-title subtitle text="Forgot password?" />
+        <underlined-title subtitle :text="$t('login.forgotPassword')" />
       </nuxt-link>
     </p>
 
     <p class="signup text-center text-md-left">
-      New to Playgarden Prep Online?
+      {{ $t('login.invitationText') }}
 
       <br class="hidden-md-and-up">
 
       <nuxt-link :to="{ name: 'auth-preschool-normal' }">
-        <span>SIGN UP NOW!</span>
+        <span>{{ $t('login.signUpInvitation') }}</span>
       </nuxt-link>
     </p>
   </v-form>
