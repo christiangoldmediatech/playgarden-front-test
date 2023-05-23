@@ -129,9 +129,9 @@
 
             <v-card>
               <v-list dense>
-                <!-- Hidden by ticket: https://app.shortcut.com/gold-media-tech/story/4106/hide-video-tutorial-option -->
+                <!--Hidden by ticket: https://app.shortcut.com/gold-media-tech/story/4106/hide-video-tutorial-option -->
 
-                <!-- <v-list-item>
+                <!--<v-list-item>
                   <v-btn
                     class="btn-register text--disabled"
                     :ripple="false"
