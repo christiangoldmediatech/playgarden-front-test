@@ -2,6 +2,7 @@
   <v-main class="watercolor-background">
     <v-row no-gutters class="fill-height pt-16">
       <v-col cols="12">
+        <days-selector-overlay v-model="viewDaySelectorOverlay" />
         <welcome-overlay v-model="viewOverlay" />
         <lesson-end-overlay
           v-if="!loadingVideo"
@@ -80,13 +81,15 @@ import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/Playe
 import LessonEndOverlay from '@/components/app/LessonEndOverlay.vue'
 import { TypedStore } from '@/models'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
+import DaysSelectorOverlay from '@/components/app/DaysSelectorOverlay.vue'
 
 export default defineComponent({
   name: 'Welcome',
   components: {
     LessonEndOverlay,
     WelcomeOverlay,
-    PgVideoPlayer
+    PgVideoPlayer,
+    DaysSelectorOverlay
   },
   setup() {
     const store = useStore<TypedStore>()
@@ -95,6 +98,7 @@ export default defineComponent({
     const player = ref<PlayerInstance | null>(null)
     const {
       viewOverlay,
+      viewDaySelectorOverlay,
       loadingVideo,
       welcomeVideo,
       changeViewOverlayStatus,
@@ -151,8 +155,13 @@ export default defineComponent({
       }
     })
 
+    watch(viewDaySelectorOverlay, () => {
+      if (!viewDaySelectorOverlay.value) {
+        changeViewOverlayStatus()
+      }
+    })
+
     onMounted(async () => {
-      changeViewOverlayStatus()
       await getWelcomeVideo().finally(() => {
         createWelcomeLesson()
       })
@@ -160,6 +169,7 @@ export default defineComponent({
 
     return {
       viewOverlay,
+      viewDaySelectorOverlay,
       endLessonOverlay,
       loadingVideo,
       showPreview,

@@ -1,10 +1,13 @@
 import dayjs from 'dayjs'
 import { computed } from '@nuxtjs/composition-api'
+import { axios } from '@/utils'
+import { useToastHelper } from '@/composables'
 import { useAccessorHelper } from '../helpers.composable'
 import { User } from './types'
 
 export const useUser = () => {
   const store = useAccessorHelper().auth
+  const toast = useToastHelper()
 
   const userInfo = computed(() => store.userInfo)
 
@@ -43,12 +46,21 @@ export const useUser = () => {
     return store.setPlanChoosen()
   }
 
+  const setUserExpectDays = async (days: number) => {
+    try {
+      await axios.$patch('/users/days-expect-use', { dayExpectUse: days })
+    } catch {
+      toast.error('Could not set days')
+    }
+  }
+
   return {
     userInfo,
     isTrialExpired,
     lastDayOfTrial,
     trialEndedTooLongAgo,
     getUserInfo,
+    setUserExpectDays,
     setPlanChoosen
   }
 }
