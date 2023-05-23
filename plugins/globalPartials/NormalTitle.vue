@@ -9,7 +9,9 @@
       fontWeight: _fontWeight,
       paddingBottom: _paddingBottom,
       lineHeight,
-      letterSpacing
+      letterSpacing,
+      fontFamily,
+      color
     }"
     v-on="$listeners"
   >
@@ -72,7 +74,14 @@ export default {
     letterSpacing: {
       type: String,
       default: '2px'
-    }
+    },
+
+    fontFamily: {
+      type: String,
+      default: "'Poppins', sans-serif"
+    },
+
+    color: { type: String, default: '#000000' }
   },
 
   computed: {
