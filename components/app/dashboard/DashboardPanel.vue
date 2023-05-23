@@ -801,7 +801,9 @@ export default defineComponent({
           userId: this.getUserInfo.id,
           dayLetter: this.lesson.curriculumType.letter,
           dayNumber: this.lesson.day,
-          fileName: this.offlineWorksheet.name
+          fileName: this.offlineWorksheet.name,
+          link_url: this.offlineWorksheet.pdfUrl,
+          file_extension: 'pdf'
         })
       }
     },
