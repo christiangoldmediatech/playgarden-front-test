@@ -4,10 +4,10 @@
       <v-img
         :src="section.imageUrl"
         gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
-        class="pg-rounded-md"
+        class="pg-rounded-md image-sizer"
         cover
         tile
-        height="100%"
+        :height="small ? '300px' : '100%'"
         position="top center"
         @click="$emit('click', section)"
       >
@@ -37,7 +37,11 @@
             <img
               :data-test-id="`vp-section-${section.title}`"
               :style="
-                small ? `top: 35%; height: 45%;` : `top: 35%; height: 35%;`
+                small && $vuetify.breakpoint.mdAndDown
+                  ? `top: 60%; height: 45%;`
+                  : small && $vuetify.breakpoint.mdAndUp
+                    ? `top: 35%; height: 45%;`
+                    : `top: 35%; height: 35%;`
               "
               class="section-start-playing"
               src="@/assets/svg/virtual-preschool/rainbow-circle.svg"
@@ -48,11 +52,11 @@
                 small && $vuetify.breakpoint.mdAndUp
                   ? 'pg-text-sm pg-top-2'
                   : small && $vuetify.breakpoint.mdAndDown
-                    ? 'pg-text-sm pg-top-40'
+                    ? 'pg-text-sm pg-top-[10.5rem]'
                     : 'pg-text-xl pg-top-10',
                 {
                   'start-learning-small': small,
-                  'start-learning': !small,
+                  'start-learning': !small
                 }
               ]"
               :style="{ color: small ? section.textColor : section.color }"
@@ -288,7 +292,7 @@ export default defineComponent({
       bottom: 20%;
       right: 25%;
     }
-    &-bubble-text-small{
+    &-bubble-text-small {
       width: 70%;
       bottom: 1% !important;
     }
@@ -313,7 +317,7 @@ export default defineComponent({
     }
 
     &-start-playing {
-      visibility: hidden;
+      bottom: 2rem;
     }
   }
 }
