@@ -798,10 +798,10 @@ export default defineComponent({
         window.open(this.offlineWorksheet.pdfUrl, '_blank')
         this.$gtm.push({
           event: TAG_MANAGER_EVENTS.DASHBOARD_WORKSHEET_DOWNLOAD,
-          userId: this.getUserInfo.id,
-          dayLetter: this.lesson.curriculumType.letter,
-          dayNumber: this.lesson.day,
-          fileName: this.offlineWorksheet.name,
+          user_id: this.getUserInfo.id,
+          day_letter: this.lesson.curriculumType.letter,
+          day_number: this.lesson.day,
+          file_name: this.offlineWorksheet.name,
           link_url: this.offlineWorksheet.pdfUrl,
           file_extension: 'pdf'
         })
