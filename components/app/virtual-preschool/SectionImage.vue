@@ -21,7 +21,12 @@
             backgroundColor: section.color
           }"
         >
-          <div :style="{ color: `${section.textColor}` }" :class="{'!pg-text-[14px]': small && $vuetify.breakpoint.mdAndDown}">
+          <div
+            :style="{ color: `${section.textColor}` }"
+            :class="{
+              '!pg-text-[14px]': small && $vuetify.breakpoint.mdAndDown
+            }"
+          >
             {{ section.title }}
           </div>
         </div>
@@ -40,7 +45,15 @@
             <div
               class="pg-absolute pg-inset-0 pg-w-6/12 pg-h-[50%] pg-m-auto pg-text-center pg-font-bold pg-font-quick"
               :class="[
-                small && $vuetify.breakpoint.mdAndUp ? 'pg-text-sm pg-top-2' : small && $vuetify.breakpoint.mdAndDown ? 'pg-text-sm pg-top-40' : ' pg-text-xl pg-top-10',
+                small && $vuetify.breakpoint.mdAndUp
+                  ? 'pg-text-sm pg-top-2'
+                  : small && $vuetify.breakpoint.mdAndDown
+                    ? 'pg-text-sm pg-top-40'
+                    : 'pg-text-xl pg-top-10',
+                {
+                  'start-learning-small': small,
+                  'start-learning': !small,
+                }
               ]"
               :style="{ color: small ? section.textColor : section.color }"
             >
@@ -64,15 +77,17 @@
             v-if="section.message"
             class="section-bubble-text pg-font-quick"
             :class="{
-              'section-bubble-text-small': (small || medium) && $vuetify.breakpoint.mdAndUp,
-              'section-bubble-text-mobile': (small || medium) && $vuetify.breakpoint.mdAndDown
+              'section-bubble-text-small':
+                (small || medium) && $vuetify.breakpoint.mdAndUp,
+              'section-bubble-text-mobile':
+                (small || medium) && $vuetify.breakpoint.mdAndDown
             }"
             :style="{ color: small ? section.textColor : section.color }"
           >
             <v-btn icon class="my-n3 mx-n2">
               <v-icon
                 :color="small ? section.textColor : section.color"
-                size="22"
+                :size="small ? 15 : 20"
                 @click.stop="$emit('click:play', section)"
               >
                 mdi-volume-high
@@ -85,7 +100,11 @@
               src="@/assets/svg/bubble-chat-arrow.svg"
               class="pg-absolute pg-right-10"
               :style="bubbleStyles"
-              :class="[small && $vuetify.breakpoint.mdAndUp ? 'pg-top-[-30px]' : 'pg-bottom-[-30px]']"
+              :class="[
+                small && $vuetify.breakpoint.mdAndUp
+                  ? 'pg-top-[-30px]'
+                  : 'pg-bottom-[-30px]'
+              ]"
             />
           </div>
         </div>
@@ -132,7 +151,7 @@ export default defineComponent({
   },
 
   computed: {
-    bubbleStyles () {
+    bubbleStyles() {
       if (this.small && this.$vuetify.breakpoint.mdAndUp) {
         return 'transform: scaleY(-1)'
       }
@@ -253,13 +272,36 @@ export default defineComponent({
   opacity: 0;
 }
 
-@media (min-width: $breakpoint-md) {
+@media (max-width: 1300px) and (min-width: $breakpoint-sm) {
+  .start-learning {
+    font-size: 1rem !important;
+    top: 1.2rem !important;
+  }
+
+  .start-learning-small {
+    font-size: 10px !important;
+    top: 0 !important;
+  }
+
+  .section {
+    &-bubble-text {
+      bottom: 20%;
+      right: 25%;
+    }
+    &-bubble-text-small{
+      width: 70%;
+      bottom: 1% !important;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
   .section {
     &-bubble-text {
       font-size: 1.3rem;
+      width: 60%;
     }
   }
-
 }
 
 @media (max-width: $breakpoint-sm) {
