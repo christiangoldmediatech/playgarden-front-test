@@ -4,10 +4,10 @@
       <v-img
         :src="section.imageUrl"
         gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
-        class="pg-rounded-md"
+        class="pg-rounded-md image-sizer"
         cover
         tile
-        height="100%"
+        :height="small ? '300px' : '100%'"
         position="top center"
         @click="$emit('click', section)"
       >
@@ -15,39 +15,101 @@
         <div
           class="section-btn"
           :class="{
-            translucent: hover,
+            translucent: hover
+          }"
+          :style="{
+            backgroundColor: section.color
           }"
         >
-          <div>{{ section.title }}</div>
+          <div
+            :style="{ color: `${section.textColor}` }"
+            :class="{
+              '!pg-text-[14px]': small && $vuetify.breakpoint.mdAndDown
+            }"
+          >
+            {{ section.title }}
+          </div>
         </div>
 
         <div class="section-content">
           <!-- Start Playing Button -->
-          <img
-            :data-test-id="`vp-section-${section.title}`"
-            :style="small ? `top: 75%; height: 60%;` : `top: 50%; height: 35%;`"
-            class="section-start-playing"
-            src="@/assets/png/virtual-preschool/Start Playing.png"
-          >
+          <div class="pg-absolute pg-w-full pg-h-full">
+            <img
+              :data-test-id="`vp-section-${section.title}`"
+              :style="
+                small && $vuetify.breakpoint.mdAndDown
+                  ? `top: 60%; height: 45%;`
+                  : small && $vuetify.breakpoint.mdAndUp
+                    ? `top: 35%; height: 45%;`
+                    : `top: 35%; height: 35%;`
+              "
+              class="section-start-playing"
+              src="@/assets/svg/virtual-preschool/rainbow-circle.svg"
+            />
+            <div
+              class="pg-absolute pg-inset-0 pg-w-6/12 pg-h-[50%] pg-m-auto pg-text-center pg-font-bold pg-font-quick"
+              :class="[
+                small && $vuetify.breakpoint.mdAndUp
+                  ? 'pg-text-sm pg-top-2'
+                  : small && $vuetify.breakpoint.mdAndDown
+                    ? 'pg-text-sm pg-top-[10.5rem]'
+                    : 'pg-text-xl pg-top-10',
+                {
+                  'start-learning-small': small,
+                  'start-learning': !small
+                }
+              ]"
+              :style="{ color: small ? section.textColor : section.color }"
+            >
+              Start <br />
+              Learning
+            </div>
+          </div>
 
           <!-- Lady -->
-          <img class="section-lady" :class="{ 'section-lady-small': medium }" :src="section.teacherUrl">
+          <img
+            class="section-lady"
+            :class="{ 'section-lady-small': small }"
+            :src="section.teacherUrl"
+          />
 
           <!-- Bubble -->
           <div class="section-bubble" />
 
           <!-- Bubble Text -->
-          <div v-if="section.message" class="section-bubble-text" :class="{ 'section-bubble-text-small': small || medium }">
-            {{ section.message }}
-            <v-btn icon class="my-n4 mx-n2">
+          <div
+            v-if="section.message"
+            class="section-bubble-text pg-font-quick"
+            :class="{
+              'section-bubble-text-small':
+                (small || medium) && $vuetify.breakpoint.mdAndUp,
+              'section-bubble-text-mobile':
+                (small || medium) && $vuetify.breakpoint.mdAndDown
+            }"
+            :style="{ color: small ? section.textColor : section.color }"
+          >
+            <v-btn icon class="my-n3 mx-n2">
               <v-icon
-                class="white--text"
-                size="22"
+                :color="small ? section.textColor : section.color"
+                :size="small ? 15 : 20"
                 @click.stop="$emit('click:play', section)"
               >
                 mdi-volume-high
               </v-icon>
             </v-btn>
+            <span>
+              {{ section.message }}
+            </span>
+            <img
+              src="@/assets/svg/bubble-chat-arrow.svg"
+              class="pg-absolute pg-right-10"
+              :style="bubbleStyles"
+              :class="[
+                small && $vuetify.breakpoint.mdAndUp
+                  ? 'pg-top-[-30px]'
+                  : 'pg-bottom-[-30px]'
+              ]"
+            />
           </div>
         </div>
       </v-img>
@@ -57,6 +119,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import vuetify from '@gold-media-tech/pg-video-player/src/plugins/vuetify'
 
 interface Section {
   imageUrl: string
@@ -64,10 +127,17 @@ interface Section {
   title: string
   message: string
   audio: string
+  color: string
+  textColor: string
 }
 
 export default defineComponent({
   name: 'SectionImage',
+  methods: {
+    vuetify() {
+      return vuetify
+    }
+  },
 
   props: {
     section: {
@@ -81,6 +151,15 @@ export default defineComponent({
     medium: {
       type: Boolean,
       default: false
+    }
+  },
+
+  computed: {
+    bubbleStyles() {
+      if (this.small && this.$vuetify.breakpoint.mdAndUp) {
+        return 'transform: scaleY(-1)'
+      }
+      return ''
     }
   },
 
@@ -107,27 +186,40 @@ export default defineComponent({
   }
 
   &-bubble-text {
-    color: white;
     font-weight: bold;
     font-size: 1rem;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    background-color: rgba(255, 172, 52, 0.25);
-    border: 4px solid rgba(255, 172, 52, 1);
+    text-align: center;
+    background-color: white;
 
-    padding: 12px;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 0px;
-    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    padding: 20px 10px;
+    border-radius: 30px;
+    width: 40%;
     position: absolute;
-    top: 10%;
-    left: 10%;
+    bottom: 25%;
+    right: 20%;
+    z-index: 999;
   }
 
   &-bubble-text-small {
-    top: 6% !important;
-    font-size: 0.95rem !important;
+    padding: 10px;
+    right: 30%;
+    width: 60%;
+    bottom: 4% !important;
+    font-size: 0.7rem !important;
+  }
+
+  &-bubble-text-mobile {
+    padding: 10px;
+    right: 20%;
+    width: 60%;
+    bottom: 70% !important;
+    font-size: 0.7rem !important;
   }
 
   &-bubble {
@@ -142,7 +234,7 @@ export default defineComponent({
   }
 
   &-lady {
-    height: 60%;
+    height: 40%;
     position: absolute;
     right: 0;
     bottom: 0;
@@ -150,7 +242,7 @@ export default defineComponent({
   }
 
   &-lady-small {
-    height: 45% !important;
+    height: 60% !important;
   }
 
   &-start-playing {
@@ -174,20 +266,44 @@ export default defineComponent({
       color: white;
       font-size: 18px;
       font-weight: 500;
-      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
       padding: 8px 12px;
     }
   }
 }
 
 .translucent {
-  opacity: 0.25;
+  opacity: 0;
 }
 
-@media (min-width: $breakpoint-md) {
+@media (max-width: 1300px) and (min-width: $breakpoint-sm) {
+  .start-learning {
+    font-size: 1rem !important;
+    top: 1.2rem !important;
+  }
+
+  .start-learning-small {
+    font-size: 10px !important;
+    top: 0 !important;
+  }
+
+  .section {
+    &-bubble-text {
+      bottom: 20%;
+      right: 25%;
+    }
+    &-bubble-text-small {
+      width: 70%;
+      bottom: 1% !important;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-md) {
   .section {
     &-bubble-text {
       font-size: 1.3rem;
+      width: 60%;
     }
   }
 }
@@ -201,7 +317,7 @@ export default defineComponent({
     }
 
     &-start-playing {
-      visibility: hidden;
+      bottom: 2rem;
     }
   }
 }
