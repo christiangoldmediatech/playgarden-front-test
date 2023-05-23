@@ -1,6 +1,20 @@
 <template>
   <v-overlay :dark="false" :value="value" z-index="4000">
     <div class="d-flex flex-column align-center !pg-relative">
+      <v-col class="!pg-relative" cols="12">
+        <v-btn
+          icon
+          color="white"
+          class="pg-bg-[#F6B7D2] !pg-absolute pg-top-[-20px] pg-right-[-30px]"
+          x-large
+          @click="closeOverlay"
+        >
+          <v-icon>
+            mdi-close
+          </v-icon>
+        </v-btn>
+      </v-col>
+
       <h1 class="overlay-title mb-2">
         You've completed your first day of video lessons.
       </h1>
@@ -91,6 +105,10 @@ export default defineComponent({
       }
     }
 
+    const closeOverlay = () => {
+      router.push({ name: 'index' })
+    }
+
     onMounted(async () => {
       await getUpcomingMeeting()
     })
@@ -99,7 +117,8 @@ export default defineComponent({
       loadingMeeting,
       sections,
       upcomingMeeting,
-      goTo
+      goTo,
+      closeOverlay
     }
   }
 })

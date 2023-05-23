@@ -15,7 +15,8 @@ type SaveVideoProgressPayload = {
 
 const OVERLAY_TIMEOUT = 6000
 
-const viewOverlay = ref(true)
+const viewOverlay = ref(false)
+const viewDaySelectorOverlay = ref(true)
 const endLessonOverlay = ref(false)
 const loadingVideo = ref(false)
 const loadingMeeting = ref(false)
@@ -30,6 +31,7 @@ export const useRegisterFlow = () => {
   const lesson = ref()
 
   const changeViewOverlayStatus = () => {
+    viewOverlay.value = true
     setTimeout(() => {
       viewOverlay.value = false
     }, OVERLAY_TIMEOUT)
@@ -100,6 +102,7 @@ export const useRegisterFlow = () => {
 
   return {
     viewOverlay,
+    viewDaySelectorOverlay,
     endLessonOverlay,
     loadingVideo,
     loadingMeeting,
