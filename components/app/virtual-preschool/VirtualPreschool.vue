@@ -121,7 +121,7 @@ export default defineComponent({
       },
       kidscorner: {
         imageUrl: require('@/assets/png/virtual-preschool/sections-images/kids_corner.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/LadyC.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
         title: 'Kids Corner',
         route: goToKidsCorner,
         message:
@@ -132,7 +132,7 @@ export default defineComponent({
       },
       classes: {
         imageUrl: require('@/assets/png/virtual-preschool/sections-images/live_classes.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/LadyB.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
         title: 'Live Classes & Playdates',
         route: { name: 'app-live-classes' },
         message: 'Enjoy cooking, music, movement zooms and more!',
@@ -155,7 +155,7 @@ export default defineComponent({
       },
       music: {
         imageUrl: require('@/assets/png/virtual-preschool/sections-images/music.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/LadyC.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
         title: 'Music',
         route: { name: 'app-music' },
         message: 'Listen anytime to sing and learn!',
@@ -165,7 +165,7 @@ export default defineComponent({
       },
       library: {
         imageUrl: require('@/assets/png/virtual-preschool/sections-images/video_library.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/LadyC.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
         title: 'Video Library',
         route: { name: 'app-library' },
         message: 'Come read with us in the book nook!',
@@ -175,7 +175,7 @@ export default defineComponent({
       },
       wellbeing: {
         imageUrl: require('@/assets/png/virtual-preschool/sections-images/social_emotional.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/LadyB.png'),
+        teacherUrl: require('@/assets/png/virtual-preschool/LadyA.png'),
         title: 'Social & Emotional',
         route: { name: 'app-learn-play' },
         message:
