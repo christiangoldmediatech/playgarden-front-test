@@ -71,7 +71,7 @@
     "@nuxtjs/eslint-config-typescript": "^6.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/style-resources": "^1.0.0",
-    "@nuxtjs/vuetify": "^1.11.3",
+    "@nuxtjs/vuetify": "^1.12.3",
     "@types/jest": "^26.0.23",
     "@types/jwt-decode": "^2.2.0",
     "@types/lodash": "^4.14.170",
