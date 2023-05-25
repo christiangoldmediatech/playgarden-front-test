@@ -53,7 +53,7 @@
                   ? 'pg-text-sm pg-top-2'
                   : small && $vuetify.breakpoint.mdAndDown
                     ? 'pg-text-sm pg-top-[10.5rem]'
-                    : 'pg-text-xl pg-top-10',
+                    : 'pg-text-xl pg-top-[3rem]',
                 {
                   'start-learning-small': small,
                   'start-learning': !small
@@ -107,7 +107,7 @@
               :class="[
                 small && $vuetify.breakpoint.mdAndUp
                   ? 'pg-top-[-30px]'
-                  : 'pg-bottom-[-30px]'
+                  : 'pg-bottom-[-30px]',
               ]"
             />
           </div>
@@ -202,7 +202,7 @@ export default defineComponent({
     width: 40%;
     position: absolute;
     bottom: 25%;
-    right: 20%;
+    right: 28%;
     z-index: 999;
   }
 
