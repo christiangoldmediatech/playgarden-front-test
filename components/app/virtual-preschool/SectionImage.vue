@@ -43,20 +43,21 @@
                     ? `top: 35%; height: 45%;`
                     : `top: 35%; height: 35%;`
               "
-              class="section-start-playing"
+              class="section-start-playing pg-absolute"
               src="@/assets/svg/virtual-preschool/rainbow-circle.svg"
             />
             <div
-              class="pg-absolute pg-inset-0 pg-w-6/12 pg-h-[50%] pg-m-auto pg-text-center pg-font-bold pg-font-quick"
+              class="pg-relative pg-inset-0 pg-m-auto pg-text-center pg-font-bold pg-font-quick"
               :class="[
                 small && $vuetify.breakpoint.mdAndUp
-                  ? 'pg-text-sm pg-top-2'
+                  ? 'pg-text-sm pg-top-[29%]'
                   : small && $vuetify.breakpoint.mdAndDown
-                    ? 'pg-text-sm pg-top-[10.5rem]'
-                    : 'pg-text-xl pg-top-[3rem]',
+                    ? 'pg-text-sm pg-top-[53%]'
+                    : $vuetify.breakpoint.width > 1550
+                      ? 'pg-text-xl pg-top-[30%]'
+                      : 'pg-text-sm pg-top-[30%]',
                 {
                   'start-learning-small': small,
-                  'start-learning': !small
                 }
               ]"
               :style="{ color: small ? section.textColor : section.color }"
