@@ -234,7 +234,7 @@ export default defineComponent({
   }
 
   &-lady {
-    height: 40%;
+    height: 60%;
     position: absolute;
     right: 0;
     bottom: 0;
