@@ -139,11 +139,10 @@ export const useRegisterFlow = () => {
     [PLAYER_EVENTS.ON_ENDED]: (event: PlayerInstanceEvent) => {
       if (getUserInfo.value.stepIntroductionVideo === StepIntroductionVideoEnum.FIRST) {
         endLessonOverlay.value = true
+        saveVideoProgress(lesson.value.id, currentChild[0].id, determineSaveVideoProgressPayload(event, true))
       } else {
         router.push({ name: 'app-dashboard' })
       }
-
-      saveVideoProgress(lesson.value.id, currentChild[0].id, determineSaveVideoProgressPayload(event, true))
     }
   }
 

@@ -107,8 +107,7 @@ export default defineComponent({
       getWelcomeVideo,
       endLessonOverlay,
       getVideoByName,
-      lesson,
-      updateStepIntroductionVideo
+      lesson
     } = useRegisterFlow()
 
     const stepIntroductionVideo = computed(() => getUserInfo.value.stepIntroductionVideo as StepIntroductionVideoEnum)
