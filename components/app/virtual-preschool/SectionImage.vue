@@ -7,7 +7,7 @@
         class="pg-rounded-md image-sizer"
         cover
         tile
-        :height="small ? '300px' : '100%'"
+        :height="small && $vuetify.breakpoint.smAndDown ? '300px' : small && $vuetify.breakpoint.smAndUp ? '200px' : '100%'"
         position="top center"
         @click="$emit('click', section)"
       >
@@ -24,7 +24,7 @@
           <div
             :style="{ color: `${section.textColor}` }"
             :class="{
-              '!pg-text-[14px]': small && $vuetify.breakpoint.mdAndDown
+              '!pg-text-[14px]': small && $vuetify.breakpoint.mdAndDown || $vuetify.breakpoint.width < 1350,
             }"
           >
             {{ section.title }}
@@ -34,42 +34,35 @@
         <div class="section-content">
           <!-- Start Playing Button -->
           <div class="pg-absolute pg-w-full pg-h-full">
-            <img
+            <v-img
               :data-test-id="`vp-section-${section.title}`"
               :style="
                 small && $vuetify.breakpoint.mdAndDown
                   ? `top: 60%; height: 45%;`
                   : small && $vuetify.breakpoint.mdAndUp
-                    ? `top: 35%; height: 45%;`
+                    ? `top: 30%; height: 50%;`
                     : `top: 35%; height: 35%;`
               "
-              class="section-start-playing"
-              src="@/assets/svg/virtual-preschool/rainbow-circle.svg"
-            />
-            <div
-              class="pg-absolute pg-inset-0 pg-w-6/12 pg-h-[50%] pg-m-auto pg-text-center pg-font-bold pg-font-quick"
-              :class="[
-                small && $vuetify.breakpoint.mdAndUp
-                  ? 'pg-text-sm pg-top-2'
-                  : small && $vuetify.breakpoint.mdAndDown
-                    ? 'pg-text-sm pg-top-[10.5rem]'
-                    : 'pg-text-xl pg-top-10',
-                {
-                  'start-learning-small': small,
-                  'start-learning': !small
-                }
-              ]"
-              :style="{ color: small ? section.textColor : section.color }"
+              :width="small ? 150 : 200"
+              contain
+              class="section-start-playing pg-relative"
+              :src="require('@/assets/svg/virtual-preschool/rainbow-circle.svg')"
             >
-              Start <br />
-              Learning
-            </div>
+              <div
+                class="pg-absolute pg-inset-0 pg-m-auto pg-text-center pg-font-bold pg-font-quick translate-text"
+                :class="[small ? 'pg-text-[12px]' : $vuetify.breakpoint.width <= 1600 ? 'pg-text-[14px]' : 'pg-text-[22px]']"
+                :style="{ color: small ? section.textColor : section.color }"
+              >
+                Start <br />
+                Learning
+              </div>
+            </v-img>
           </div>
 
           <!-- Lady -->
           <img
             class="section-lady"
-            :class="{ 'section-lady-small': small }"
+            :class="{ 'section-lady-medium': $vuetify.breakpoint.width < 1350 && $vuetify.breakpoint.width > 1000 , 'section-lady-small': small}"
             :src="section.teacherUrl"
           />
 
@@ -107,7 +100,7 @@
               :class="[
                 small && $vuetify.breakpoint.mdAndUp
                   ? 'pg-top-[-30px]'
-                  : 'pg-bottom-[-30px]'
+                  : 'pg-bottom-[-30px]',
               ]"
             />
           </div>
@@ -202,7 +195,7 @@ export default defineComponent({
     width: 40%;
     position: absolute;
     bottom: 25%;
-    right: 20%;
+    right: 28%;
     z-index: 999;
   }
 
@@ -234,15 +227,20 @@ export default defineComponent({
   }
 
   &-lady {
-    height: 40%;
+    height: 60%;
     position: absolute;
     right: 0;
     bottom: 0;
     z-index: 1;
-  }
 
-  &-lady-small {
-    height: 60% !important;
+    &-small {
+      height: 60% !important;
+    }
+
+    &-medium {
+      right: -10px !important;
+    }
+
   }
 
   &-start-playing {
@@ -276,15 +274,14 @@ export default defineComponent({
   opacity: 0;
 }
 
+.translate-text {
+  transform: translate(0%, 36%);
+}
+
 @media (max-width: 1300px) and (min-width: $breakpoint-sm) {
   .start-learning {
     font-size: 1rem !important;
     top: 1.2rem !important;
-  }
-
-  .start-learning-small {
-    font-size: 10px !important;
-    top: 0 !important;
   }
 
   .section {
@@ -293,8 +290,11 @@ export default defineComponent({
       right: 25%;
     }
     &-bubble-text-small {
-      width: 70%;
-      bottom: 1% !important;
+      padding: 5px;
+      right: 29%;
+      width: 70% !important;
+      bottom: 4% !important;
+      font-size: 0.6rem !important;
     }
   }
 }
