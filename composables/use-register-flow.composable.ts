@@ -1,10 +1,12 @@
 import { PLAYER_EVENTS, PlayerInstanceEvent } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { axios } from '@/utils'
-import { ref, useStore } from '@nuxtjs/composition-api'
+import { computed, ref, useRouter, useStore } from '@nuxtjs/composition-api'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import { Meeting, TypedStore } from '@/models'
 import { useChildLesson } from '@/composables/use-child'
+import { StepIntroductionVideoEnum } from '@/enums/step-introduction-video.enum'
 import { useLibraryHelpers } from './library'
+import { useToastHelper } from './helpers.composable'
 
 type SaveVideoProgressPayload = {
   id: number // videoId
@@ -15,17 +17,22 @@ type SaveVideoProgressPayload = {
 
 const OVERLAY_TIMEOUT = 6000
 
+const SECOND_VIDEO = 'SECOND_VIDEO_WELCOME'
+const THIRD_VIDEO = 'THIRD_VIDEO_WELCOME'
+
 const viewOverlay = ref(false)
 const viewDaySelectorOverlay = ref(true)
 const endLessonOverlay = ref(false)
 const loadingVideo = ref(false)
 const loadingMeeting = ref(false)
-const welcomeVideo = ref<MediaObject[]>([])
+const videoPlaylist = ref<MediaObject[]>([])
 const closingVideo = ref<MediaObject[]>([])
 const upcomingMeeting = ref<Meeting | null>(null)
 
 export const useRegisterFlow = () => {
   const store = useStore<TypedStore>()
+  const toast = useToastHelper()
+  const router = useRouter()
   const { videoToMediaObject } = useLibraryHelpers()
   const { saveVideoProgress } = useChildLesson({ store, axios })
   const lesson = ref()
@@ -36,6 +43,10 @@ export const useRegisterFlow = () => {
       viewOverlay.value = false
     }, OVERLAY_TIMEOUT)
   }
+
+  const getUserInfo = computed(() => {
+    return store.getters['auth/getUserInfo']
+  })
 
   const getWelcomeVideo = async () => {
     loadingVideo.value = true
@@ -48,7 +59,27 @@ export const useRegisterFlow = () => {
       if (lessonVideos.length > 0) {
         const video = lessonVideos[0]
         const mediaObjectVideo = videoToMediaObject(video)
-        welcomeVideo.value = [mediaObjectVideo]
+        videoPlaylist.value = [mediaObjectVideo]
+      }
+    }
+
+    loadingVideo.value = false
+  }
+
+  const getVideoByName = async () => {
+    loadingVideo.value = true
+
+    const name = getUserInfo.value.stepIntroductionVideo === StepIntroductionVideoEnum.SECOND ? SECOND_VIDEO : THIRD_VIDEO
+
+    const response = await axios.$get('/parent-corners-videos', { params: { name } })
+
+    if (response && response.length > 0) {
+      const videoToPlay = response[0].video
+
+      if (videoToPlay) {
+        const video = videoToPlay
+        const mediaObjectVideo = videoToMediaObject(video)
+        videoPlaylist.value = [mediaObjectVideo]
       }
     }
 
@@ -60,10 +91,9 @@ export const useRegisterFlow = () => {
     const response = await axios.$get('/lessons', { params: { name: 'WELCOME', includeHidden: true } })
 
     if (response && response.lessons.length > 0) {
-      lesson.value = response.lessons[0]
-
-      if (lesson.value && lesson.value.closingVideo) {
-        const video = lesson.value.closingVideo
+      const responseVideo = response[0]
+      if (responseVideo && responseVideo.video) {
+        const video = responseVideo.video
         const mediaObjectVideo = videoToMediaObject(video)
         closingVideo.value = [mediaObjectVideo]
       }
@@ -91,11 +121,28 @@ export const useRegisterFlow = () => {
     }
   }
 
+  const updateStepIntroductionVideo = async () => {
+    try {
+      await axios.$patch('/users/step-introduction-video')
+    } catch {
+      toast.error('Could not update step introduction video')
+    }
+  }
+
   const currentChild = store.getters.getCurrentChild
   const playerEvents = {
     // Whenever a video ends.
+    [PLAYER_EVENTS.ON_PLAY]: (event: PlayerInstanceEvent) => {
+      updateStepIntroductionVideo()
+    },
+    // Whenever a video ends.
     [PLAYER_EVENTS.ON_ENDED]: (event: PlayerInstanceEvent) => {
-      endLessonOverlay.value = true
+      if (getUserInfo.value.stepIntroductionVideo === StepIntroductionVideoEnum.FIRST) {
+        endLessonOverlay.value = true
+      } else {
+        router.push({ name: 'app-dashboard' })
+      }
+
       saveVideoProgress(lesson.value.id, currentChild[0].id, determineSaveVideoProgressPayload(event, true))
     }
   }
@@ -106,14 +153,16 @@ export const useRegisterFlow = () => {
     endLessonOverlay,
     loadingVideo,
     loadingMeeting,
-    welcomeVideo,
+    videoPlaylist,
     upcomingMeeting,
     changeViewOverlayStatus,
     getWelcomeVideo,
     getUpcomingMeeting,
+    getVideoByName,
     playerEvents,
     lesson,
     closingVideo,
-    getClosingVideo
+    getClosingVideo,
+    updateStepIntroductionVideo
   }
 }
