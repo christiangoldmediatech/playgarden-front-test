@@ -106,7 +106,7 @@ export default async function ({ redirect, route, store, app, req }) {
 
   if (!shouldRedirectUser) {
     const userCreatedDate = dayjs(user.createdAt).startOf('day')
-    const currentDate = dayjs().startOf('day').add(2, 'day')
+    const currentDate = dayjs().startOf('day')
     const userCreatedDaysDifference = currentDate.diff(userCreatedDate, 'day')
     if (route.name !== 'app-welcome' &&
       ((userCreatedDaysDifference === 1 && user.stepIntroductionVideo === StepIntroductionVideoEnum.SECOND) ||
