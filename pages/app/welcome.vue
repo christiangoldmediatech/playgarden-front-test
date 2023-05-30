@@ -72,7 +72,8 @@ import {
   onMounted,
   ref,
   watch,
-  useStore
+  useStore,
+  onUnmounted
 } from '@nuxtjs/composition-api'
 import WelcomeOverlay from '@/components/app/WelcomeOverlay.vue'
 // @ts-ignore
@@ -142,6 +143,9 @@ export default defineComponent({
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
       player.value.loadPlaylist(videoPlaylist.value)
+      handlePlay(() => {
+        player.value?.play()
+      })
     }
 
     const handleFullscreenChange = (val: boolean): void => {
@@ -189,6 +193,12 @@ export default defineComponent({
       } else {
         viewDaySelectorOverlay.value = false
         await getVideoByName()
+      }
+    })
+
+    onUnmounted(() => {
+      if (player.value) {
+        player.value.replacePlaylist([])
       }
     })
 

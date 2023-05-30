@@ -121,9 +121,9 @@ export const useRegisterFlow = () => {
     }
   }
 
-  const updateStepIntroductionVideo = async () => {
+  const updateStepIntroductionVideo = async (step: StepIntroductionVideoEnum) => {
     try {
-      await axios.$patch('/users/step-introduction-video')
+      await axios.$patch('/users/step-introduction-video', {}, { params: { step } })
     } catch {
       toast.error('Could not update step introduction video')
     }
@@ -133,7 +133,18 @@ export const useRegisterFlow = () => {
   const playerEvents = {
     // Whenever a video ends.
     [PLAYER_EVENTS.ON_PLAY]: (event: PlayerInstanceEvent) => {
-      updateStepIntroductionVideo()
+      let step: StepIntroductionVideoEnum
+      const currentStep = getUserInfo.value.stepIntroductionVideo
+
+      if (currentStep === StepIntroductionVideoEnum.FIRST) {
+        step = StepIntroductionVideoEnum.SECOND
+      } else if (currentStep === StepIntroductionVideoEnum.SECOND) {
+        step = StepIntroductionVideoEnum.THIRD
+      } else {
+        step = StepIntroductionVideoEnum.DONE
+      }
+
+      updateStepIntroductionVideo(step)
     },
     // Whenever a video ends.
     [PLAYER_EVENTS.ON_ENDED]: (event: PlayerInstanceEvent) => {

@@ -105,15 +105,11 @@ export default async function ({ redirect, route, store, app, req }) {
     ].includes(route.name)
 
   if (!shouldRedirectUser) {
-    const currentDate = dayjs().add(1, 'day')
-    // const currentDate = dayjs()
-    const lastCheck = dayjs(localStorage.getItem('lastCheck'))
-    const userCreatedDaysDifference = Math.ceil(dayjs(currentDate).diff(user.createdAt, 'day'))
-    const lastCheckDaysDifference = dayjs(currentDate).diff(lastCheck, 'day')
-    if ((!lastCheck.isValid() || lastCheckDaysDifference > 0) &&
-      user.createdAt &&
-      (userCreatedDaysDifference > -1 && userCreatedDaysDifference <= 3) &&
-      user.stepIntroductionVideo !== StepIntroductionVideoEnum.DONE) {
+    const currentDate = dayjs()
+    const userCreatedDaysDifference = Math.ceil(dayjs(currentDate).diff(user.createdAt, 'day', true))
+    if (route.name !== 'app-welcome' &&
+      ((userCreatedDaysDifference === 1 && user.stepIntroductionVideo === StepIntroductionVideoEnum.SECOND) ||
+      (userCreatedDaysDifference === 2 && user.stepIntroductionVideo === StepIntroductionVideoEnum.THIRD))) {
       localStorage.setItem('lastCheck', dayjs().format('YYYY-MM-DD'))
       redirect({ name: 'app-welcome' })
     }
