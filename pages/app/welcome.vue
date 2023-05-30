@@ -127,7 +127,7 @@ export default defineComponent({
       return store.getters['auth/getUserInfo']
     })
 
-    const showOverlays = computed(() => stepIntroductionVideo.value === StepIntroductionVideoEnum.FIRST)
+    const isFirstDay = computed(() => stepIntroductionVideo.value === StepIntroductionVideoEnum.FIRST)
 
     const worksheetUrl = computed(() => {
       return {
@@ -143,9 +143,9 @@ export default defineComponent({
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
       player.value.loadPlaylist(videoPlaylist.value)
-      handlePlay(() => {
+      if (!isFirstDay.value) {
         player.value?.play()
-      })
+      }
     }
 
     const handleFullscreenChange = (val: boolean): void => {
@@ -180,13 +180,13 @@ export default defineComponent({
     })
 
     watch(viewDaySelectorOverlay, () => {
-      if (!viewDaySelectorOverlay.value && showOverlays.value) {
+      if (!viewDaySelectorOverlay.value && isFirstDay.value) {
         changeViewOverlayStatus()
       }
     })
 
     onMounted(async () => {
-      if (showOverlays.value) {
+      if (isFirstDay.value) {
         await getWelcomeVideo().finally(() => {
           createWelcomeLesson()
         })
