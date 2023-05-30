@@ -1,25 +1,29 @@
 <template>
-  <v-card class="dashboard-message-container" v-bind="{ ...$attrs }">
-    <div class="green-line-bigger green-line-1" />
-    <div class="green-line-bigger green-line-2" />
-
+  <v-card class="dashboard-message-container !pg-rounded-2xl" v-bind="{ ...$attrs }">
+    <v-btn
+      icon
+      color="white"
+      class="pg-bg-[#F6B7D2] !pg-absolute pg-top-5 pg-right-5 pg-z-[100000]"
+      x-large
+      @click="doReturnAction"
+    >
+      <v-icon>
+        mdi-close
+      </v-icon>
+    </v-btn>
     <div class="dashboard-message-content">
       <v-img
         :src="backgroundImage"
-        class="align-end white--text"
+        class="align-end white--text !pg-rounded-2xl"
         :gradient="gradient"
         max-height="400px"
       >
         <v-row class="mx-0 dashboard-message-padding" justify="center">
           <v-col class="text-center pb-0" cols="12">
             <slot name="title">
-              <underlined-title
-                class="white--text"
-                font-size="56px"
-                font-size-mobile="1.5rem"
-                font-weight="bold"
-                text="Coming Next:"
-              />
+              <h2>
+                Coming next!
+              </h2>
             </slot>
           </v-col>
           <v-col class="py-0" cols="12" md="8" lg="8" xl="4">
@@ -34,15 +38,11 @@
         />
       </v-img>
 
-      <v-row class="flex-column mx-0" align="center">
-        <h5 class="my-2 text-h5 font-weight-bold text-center">
-          What do you want to do next?
-        </h5>
-
+      <v-row class="flex-column mx-0 pg-mt-10" align="center">
         <v-col
           v-for="(button, i) in buttons"
           :key="`complete-message-${_uid}-button-${i}`"
-          class="pb-1"
+          class="pb-5"
           cols="12"
           sm="10"
           md="8"
@@ -66,7 +66,7 @@
           </v-btn>
         </v-col>
 
-        <v-col v-if="returnText" cols="12">
+        <v-col v-if="returnText" cols="12" class="pg-mb-8">
           <v-btn
             class="dashboard-message-btn"
             color="primary"
@@ -76,10 +76,17 @@
             :disabled="loading"
             @click.stop="doReturnAction"
           >
+            <v-icon size="40">
+              mdi-chevron-left
+            </v-icon>
             {{ returnText }}
           </v-btn>
         </v-col>
       </v-row>
+      <img
+        src="@/assets/svg/gift-of-learning/bottom-color-dashes.svg"
+        class="pg-absolute pg-bottom-0 pg-left-0 pg-right-0 pg-mx-auto pg-w-full lg:pg-w-auto"
+      >
     </div>
   </v-card>
 </template>
@@ -211,8 +218,6 @@ export default {
   &-content {
     max-height: calc(90vh - 60px);
     box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.12);
-    overflow-x: hidden;
-    overflow-y: auto;
   }
   &-padding,
   &-padding.row {
