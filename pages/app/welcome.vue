@@ -13,7 +13,7 @@
           <v-col cols="12">
             <v-row no-gutters justify="center" class="mb-6">
               <h1 class="welcome-title">
-                Welcome to Playgarden Online!
+                {{ pageTitle }}
               </h1>
             </v-row>
 
@@ -72,7 +72,8 @@ import {
   onMounted,
   ref,
   watch,
-  useStore
+  useStore,
+  onUnmounted
 } from '@nuxtjs/composition-api'
 import WelcomeOverlay from '@/components/app/WelcomeOverlay.vue'
 // @ts-ignore
@@ -82,6 +83,7 @@ import LessonEndOverlay from '@/components/app/LessonEndOverlay.vue'
 import { TypedStore } from '@/models'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
 import DaysSelectorOverlay from '@/components/app/DaysSelectorOverlay.vue'
+import { StepIntroductionVideoEnum } from '../../enums/step-introduction-video.enum'
 
 export default defineComponent({
   name: 'Welcome',
@@ -100,13 +102,32 @@ export default defineComponent({
       viewOverlay,
       viewDaySelectorOverlay,
       loadingVideo,
-      welcomeVideo,
+      videoPlaylist,
       changeViewOverlayStatus,
       playerEvents,
       getWelcomeVideo,
       endLessonOverlay,
+      getVideoByName,
       lesson
     } = useRegisterFlow()
+
+    const stepIntroductionVideo = computed(() => getUserInfo.value.stepIntroductionVideo as StepIntroductionVideoEnum)
+
+    const pageTitle = computed(() => {
+      if (stepIntroductionVideo.value === StepIntroductionVideoEnum.FIRST) {
+        return 'Welcome to Playgarden Online!'
+      } else if (stepIntroductionVideo.value === StepIntroductionVideoEnum.SECOND) {
+        return 'Hi, welcome back to Playgarden and your second day of learning'
+      } else {
+        return 'Hi, welcome back to Playgarden and your third day of learning'
+      }
+    })
+
+    const getUserInfo = computed(() => {
+      return store.getters['auth/getUserInfo']
+    })
+
+    const isFirstDay = computed(() => stepIntroductionVideo.value === StepIntroductionVideoEnum.FIRST)
 
     const worksheetUrl = computed(() => {
       return {
@@ -121,7 +142,10 @@ export default defineComponent({
 
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
-      player.value.loadPlaylist(welcomeVideo.value)
+      player.value.loadPlaylist(videoPlaylist.value)
+      if (!isFirstDay.value) {
+        player.value?.play()
+      }
     }
 
     const handleFullscreenChange = (val: boolean): void => {
@@ -156,15 +180,26 @@ export default defineComponent({
     })
 
     watch(viewDaySelectorOverlay, () => {
-      if (!viewDaySelectorOverlay.value) {
+      if (!viewDaySelectorOverlay.value && isFirstDay.value) {
         changeViewOverlayStatus()
       }
     })
 
     onMounted(async () => {
-      await getWelcomeVideo().finally(() => {
-        createWelcomeLesson()
-      })
+      if (isFirstDay.value) {
+        await getWelcomeVideo().finally(() => {
+          createWelcomeLesson()
+        })
+      } else {
+        viewDaySelectorOverlay.value = false
+        await getVideoByName()
+      }
+    })
+
+    onUnmounted(() => {
+      if (player.value) {
+        player.value.replacePlaylist([])
+      }
     })
 
     return {
@@ -178,7 +213,8 @@ export default defineComponent({
       playerEvents,
       getWelcomeVideo,
       handleFullscreenChange,
-      worksheetUrl
+      worksheetUrl,
+      pageTitle
     }
   }
 })
@@ -194,5 +230,6 @@ export default defineComponent({
   font-size: 54px;
   line-height: 80px;
   color: #68c453;
+  text-align: center;
 }
 </style>
