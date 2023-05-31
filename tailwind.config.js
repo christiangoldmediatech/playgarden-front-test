@@ -11,10 +11,10 @@ module.exports = {
   theme: {
     // https://vuetifyjs.com/en/features/breakpoints/#breakpoint-service
     screens: {
-      sm: '600px',
-      md: '960px',
-      lg: '1264px',
-      xl: '1904px'
+      sm: '599px',
+      md: '959px',
+      lg: '1300px',
+      xl: '1903px'
     },
     // vuetify.options.js
     colors: {

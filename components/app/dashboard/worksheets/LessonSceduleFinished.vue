@@ -18,7 +18,7 @@
       </v-col>
 
       <h2
-        class="overlay-title pg-text-[20px] md:pg-text-xl mb-2 pg-px-5 !pg-mt-5 md:pg-px-0"
+        class="overlay-title pg-text-[20px] md:pg-text-xl mb-2 pg-px-5 pg-mt-[-30px] md:pg-mt-5 md:pg-px-0"
       >
         Don't forget to join us in our next live class. <br />
         They are a great complement to the video lessons!
@@ -44,7 +44,7 @@
       </h3>
 
       <div
-        class="pg-mt-14 pg-mb-3 pg-flex pg-flex-col md:pg-flex-row pg-items-center pg-justify-center pg-gap-10"
+        class="pg-mt-5 lg:pg-mt-14 pg-mb-3 pg-flex pg-flex-col md:pg-flex-row pg-items-center pg-justify-center pg-gap-10"
       >
         <v-card
           class="!pg-relative !pg-m-0 !pg-mb-5 !pg-p-0 !pg-rounded-xl pg-overflow-hidden"
@@ -115,6 +115,8 @@ export default defineComponent({
     TodayCard,
     MeetingCard
   },
+
+  emits: ['advance'],
 
   mixins: [LessonAdvanceMixin],
 
