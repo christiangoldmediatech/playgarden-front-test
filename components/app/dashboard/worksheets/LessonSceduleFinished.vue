@@ -63,7 +63,7 @@
           </div>
         </v-card>
         <v-card
-          v-if="lesson"
+          v-if="nextLessonData"
           class="!pg-relative !pg-m-0 !pg-mb-5 !pg-p-0 !pg-rounded-xl pg-overflow-hidden"
           max-width="450"
           height="315px"
@@ -72,8 +72,8 @@
         >
           <div class="pg-h-[250px] pg-w-[350px] pg-flex pg-items-center pg-justify-center">
             <pg-circle-letter-day
-              :day="lesson ? lesson.day : null"
-              :letter="lesson ? lesson.curriculumType.letter : '' "
+              :day="nextLessonData ? nextLessonData.day : null"
+              :letter="nextLessonData ? nextLessonData.curriculumType.letter : '' "
               no-auto-position
               light-theme
             />
@@ -92,21 +92,20 @@
   </v-overlay>
 </template>
 
-<script lang="ts">
+<script >
 import {
   defineComponent,
   computed,
   useStore,
-  useRoute,
   useRouter,
-  onMounted, ref
+  onMounted
 } from '@nuxtjs/composition-api'
 import MeetingCard from '@/components/app/MeetingCard.vue'
-import { TypedStore } from '@/models'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
 import LessonAdvanceMixin from '@/mixins/LessonAdvanceMixin'
 import { useWorksheetsCategories } from '@/composables/worksheets'
+import { mapGetters } from 'vuex'
 
 export default defineComponent({
   name: 'LessonScheduleFinished',
@@ -131,10 +130,19 @@ export default defineComponent({
     }
   },
 
+  computed: {
+    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
+    ...mapGetters({ children: 'getCurrentChild' }),
+
+    childId() {
+      return this.children[0].id
+    }
+  },
+
   setup(props) {
-    const store = useStore<TypedStore>()
+    const store = useStore()
     const router = useRouter()
-    const { getLessonById, lesson } = useWorksheetsCategories()
+    const { getLessonById, lesson: nextLessonData } = useWorksheetsCategories()
 
     const nextLessonId = computed(() => {
       return store.getters['children/lesson/getNextLessonId']
@@ -169,7 +177,7 @@ export default defineComponent({
       goToLibrary,
       upcomingMeeting,
       closeDialog,
-      lesson
+      nextLessonData
     }
   }
 })

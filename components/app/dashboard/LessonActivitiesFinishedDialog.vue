@@ -5,7 +5,7 @@
     persistent
     v-bind="{ value }"
   >
-    <lesson-schedule-finished :value="true" should-advance @advance="handleNextFinished" />
+    <lesson-schedule-finished :value="true" should-advance @next-finished="handleNextFinished" />
   </pg-video-dialog>
 </template>
 
