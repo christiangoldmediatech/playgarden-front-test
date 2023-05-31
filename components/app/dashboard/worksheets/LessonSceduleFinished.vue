@@ -1,13 +1,13 @@
 <template>
   <v-overlay class="lesson-completed" :value="value" z-index="4000">
     <div
-      class="d-flex flex-column align-center !pg-relative pg-overflow-y-auto lg:pg-overflow-visible pg-max-h-screen pg-pb-16 pg-pt-5 lg:pg-pb-0 pg-max-w-[100vw]"
+      class="d-flex flex-column align-center !pg-relative pg-overflow-y-auto pg-overflow-x-visible xl:pg-overflow-visible pg-max-h-screen pg-pb-16 pg-pt-5 lg:pg-pb-0 pg-max-w-[100vw]"
     >
       <v-col class="!pg-relative" cols="12">
         <v-btn
           icon
           color="white"
-          class="pg-bg-[#F6B7D2] !pg-absolute pg-top-[-10px] md:pg-top-0 pg-right-2 lg:pg-right-[-150px]"
+          class="pg-bg-[#F6B7D2] !pg-absolute pg-top-[-10px] md:pg-top-0 pg-right-2 lg:pg-right-0 xl:pg-right-[-150px]"
           x-large
           @click="closeDialog"
         >
@@ -18,21 +18,23 @@
       </v-col>
 
       <h2
-        class="overlay-title pg-text-[20px] md:pg-text-lg mb-2 pg-px-5 !pg-mt-5 md:pg-px-0"
+        class="overlay-title pg-text-[20px] md:pg-text-xl mb-2 pg-px-5 !pg-mt-5 md:pg-px-0"
       >
         Don't forget to join us in our next live class. <br />
         They are a great complement to the video lessons!
       </h2>
 
-      <meeting-card
-        v-if="upcomingMeeting && $vuetify.breakpoint.mdAndUp"
-        :meeting="upcomingMeeting"
-      />
-      <today-card
-        v-if="upcomingMeeting && $vuetify.breakpoint.mdAndDown"
-        :entry="upcomingMeeting"
-        :mobile="true"
-      />
+      <div>
+        <meeting-card
+          v-if="upcomingMeeting && $vuetify.breakpoint.mdAndUp"
+          :meeting="upcomingMeeting"
+        />
+        <today-card
+          v-if="upcomingMeeting && $vuetify.breakpoint.mdAndDown"
+          :entry="upcomingMeeting"
+          :mobile="true"
+        />
+      </div>
 
       <h3
         class="overlay-subtitle pg-text-[13px] md:pg-text-[20px] !pg-mt-10 pg-w-full md:pg-w-10/12"

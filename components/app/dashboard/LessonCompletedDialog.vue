@@ -1,11 +1,11 @@
 <template>
   <v-overlay class="lesson-completed" :value="value" z-index="4000">
-    <div class="d-flex flex-column align-center !pg-relative pg-overflow-y-auto lg:pg-overflow-visible pg-max-h-screen pg-pb-16 pg-pt-5 lg:pg-pb-0 pg-max-w-[100vw]">
+    <div class="d-flex flex-column align-center !pg-relative pg-overflow-y-auto pg-overflow-x-visible xl:pg-overflow-visible pg-max-h-screen pg-pb-16 pg-pt-5 lg:pg-pb-0 pg-max-w-[100vw]">
       <v-col class="!pg-relative" cols="12">
         <v-btn
           icon
           color="white"
-          class="pg-bg-[#F6B7D2] !pg-absolute pg-top-[-10px] md:pg-top-0 pg-right-2 lg:pg-right-[-150px]"
+          class="pg-bg-[#F6B7D2] !pg-absolute pg-top-[-10px] md:pg-top-0 pg-right-2 lg:pg-right-0 xl:pg-right-[-150px]"
           x-large
           @click="$emit('exit' )"
         >
@@ -15,9 +15,9 @@
         </v-btn>
       </v-col>
 
-      <h2 class="overlay-title pg-text-[20px] md:pg-text-lg mb-2 pg-px-1 md:pg-px-0">
+      <h2 class="overlay-title pg-text-[20px] md:pg-text-xl mb-2 pg-px-1 md:pg-px-0">
         Congratulations! <br />
-        You've completed the second day of video lessens!
+        You've completed the {{ dayString }} day of video lessens!
       </h2>
 
       <div class="lesson-completed-container">
@@ -157,6 +157,11 @@ export default defineComponent({
       return store.getters['admin/curriculum/getLesson']
     })
 
+    const dayString = computed(() => {
+      const days = ['first', 'second', 'third', 'fourth', 'fifth']
+      return days[getLesson.value.day - 1]
+    })
+
     const { generateDashboardRoute } = useDashboardLink({
       route,
       lesson: getLesson
@@ -263,7 +268,8 @@ export default defineComponent({
       onPlayerReady,
       goToWorksheets,
       skipToActivities,
-      goToOfflineWorksheets
+      goToOfflineWorksheets,
+      dayString
     }
   }
 })

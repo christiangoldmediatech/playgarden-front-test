@@ -1,5 +1,5 @@
 <template>
-  <v-card class="dashboard-message-container !pg-rounded-2xl" v-bind="{ ...$attrs }">
+  <v-card class="dashboard-message-container" v-bind="{ ...$attrs }">
     <v-btn
       icon
       color="white"
@@ -11,7 +11,7 @@
         mdi-close
       </v-icon>
     </v-btn>
-    <div class="dashboard-message-content">
+    <div class="dashboard-message-content !pg-rounded-2xl pg-overflow-x-visible pg-overflow-y-auto">
       <v-img
         :src="backgroundImage"
         class="align-end white--text !pg-rounded-2xl"
@@ -85,7 +85,7 @@
       </v-row>
       <img
         src="@/assets/svg/gift-of-learning/bottom-color-dashes.svg"
-        class="pg-absolute pg-bottom-0 pg-left-0 pg-right-0 pg-mx-auto pg-w-full lg:pg-w-auto"
+        class="pg-mx-auto pg-w-full lg:pg-w-auto pg-mt-0 md:pg-mt-[-60px] pg-block"
       >
     </div>
   </v-card>
