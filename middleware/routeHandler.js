@@ -1,5 +1,6 @@
 import { get } from 'lodash'
 import dayjs from 'dayjs'
+import { StepIntroductionVideoEnum } from '@/enums/step-introduction-video.enum'
 import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscriptionWhitelistedRoutes.json'
 import routeHandlerIgnoredRoutes from '~/utils/consts/routeHandlerIgnoredRoutes.json'
@@ -104,6 +105,16 @@ export default async function ({ redirect, route, store, app, req }) {
     ].includes(route.name)
 
   if (!shouldRedirectUser) {
+    const userCreatedDate = dayjs(user.createdAt).startOf('day')
+    const currentDate = dayjs().startOf('day')
+    const userCreatedDaysDifference = currentDate.diff(userCreatedDate, 'day')
+    if (route.name !== 'app-welcome' &&
+      ((userCreatedDaysDifference === 1 && user.stepIntroductionVideo === StepIntroductionVideoEnum.SECOND) ||
+      (userCreatedDaysDifference === 2 && user.stepIntroductionVideo === StepIntroductionVideoEnum.THIRD))) {
+      localStorage.setItem('lastCheck', dayjs().format('YYYY-MM-DD'))
+      redirect({ name: 'app-welcome' })
+    }
+
     return
   }
 
