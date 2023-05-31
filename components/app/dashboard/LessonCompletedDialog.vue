@@ -1,6 +1,6 @@
 <template>
   <v-overlay class="lesson-completed" :value="value" z-index="4000">
-    <div class="d-flex flex-column align-center !pg-relative pg-overflow-y-auto pg-overflow-x-visible xl:pg-overflow-visible pg-max-h-screen pg-pb-16 pg-pt-5 lg:pg-pb-0 pg-max-w-[100vw]">
+    <div class="lesson-completed-scroll d-flex flex-column align-center !pg-relative pg-overflow-y-auto pg-overflow-x-visible xl:pg-overflow-visible pg-max-h-screen pg-pb-16 pg-pt-5 lg:pg-pb-0 pg-max-w-[100vw]">
       <v-col class="!pg-relative" cols="12">
         <v-btn
           icon
@@ -289,6 +289,13 @@ export default defineComponent({
 }
 
 .lesson-completed {
+  &-scroll {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    &::-webkit-scrollbar{
+      display: none;
+    }
+  }
   &.v-overlay__content {
     width: 100vw;
     min-height: 100vh;
