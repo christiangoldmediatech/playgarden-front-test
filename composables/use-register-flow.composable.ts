@@ -89,11 +89,10 @@ export const useRegisterFlow = () => {
   const getClosingVideo = async () => {
     loadingVideo.value = true
     const response = await axios.$get('/lessons', { params: { name: 'WELCOME', includeHidden: true } })
-
     if (response && response.lessons.length > 0) {
-      const responseVideo = response[0]
-      if (responseVideo && responseVideo.video) {
-        const video = responseVideo.video
+      const responseVideo = response.lessons[0]
+      if (responseVideo && responseVideo.closingVideo) {
+        const video = responseVideo.closingVideo
         const mediaObjectVideo = videoToMediaObject(video)
         closingVideo.value = [mediaObjectVideo]
       }
