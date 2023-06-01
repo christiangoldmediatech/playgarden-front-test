@@ -20,23 +20,18 @@
       :z-index="2000"
     >
       <template v-slot:title>
-        <underlined-title
+        <normal-title
           class="white--text"
-          font-size="56px"
-          font-size-mobile="1.9rem"
-          font-weight="bold"
-          :text="offlineWorksheet && offlineWorksheet.completed ? 'Congratulations!' : 'Coming Next:'"
+          font-size="38px"
+          font-size-mobile="1.4rem"
+          font-weight="normal"
+          text="Coming next!"
         />
       </template>
-      <p class="text-center font-weight-medium white--text mt-2">
+      <p class="text-center font-weight-medium white--text mt-2 pg-font-quick pg-text-sm md:pg-text-xl">
         <template v-if="showTeachers">
-          <span class="font-weight-bold white--text">HANDS-ON LEARNING</span> is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
-        </template>
-        <template v-else-if="offlineWorksheet && offlineWorksheet.completed">
-          <span class="font-weight-bold white--text">You have completed the hands-on learning for the day.</span>
-        </template>
-        <template v-else>
-          <span class="font-weight-bold white--text">You have completed your worksheet!</span>
+          <span class="font-weight-bold white--text ">HANDS-ON LEARNING</span>
+          is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
         </template>
       </p>
     </completed-dialog>
@@ -133,8 +128,8 @@ export default {
       const buttons = []
 
       const goToTeachersVideo = {
-        text: this.$vuetify.breakpoint.xsOnly ? 'TEACHER\'S VIDEO' : 'GO TO TEACHER\'S VIDEO',
-        color: 'accent',
+        text: 'TEACHERS VIDEO',
+        color: '#F89838',
         iconLeft: 'pg-icon-paper-pencil',
         action: () => {
           const playlist = [
@@ -163,8 +158,8 @@ export default {
       }
 
       const downloadHandsOn = {
-        text: this.$vuetify.breakpoint.xsOnly ? 'DOWNLOAD WORKSHEET' : 'DOWNLOAD HANDS-ON WORKSHEET',
-        color: '#FEC572',
+        text: 'DOWNLOAD WORKSHEET',
+        color: '#FFAB37',
         iconLeft: 'pg-icon-download',
         action: () => {
           if (this.offlineWorksheet) {
@@ -176,7 +171,7 @@ export default {
 
       const uploadHandsOn = {
         text: this.$vuetify.breakpoint.xsOnly ? 'UPLOAD WORKSHEET' : 'UPLOAD COMPLETED WORKSHEET',
-        color: 'accent',
+        color: '#FFAB37',
         iconLeft: 'pg-icon-camera',
         action: () => {
           this.uploadDialog = true
@@ -205,7 +200,7 @@ export default {
       if (activities.length > 0) {
         result.push({
           text: 'GO TO ACTIVITIES',
-          color: '#FEC572',
+          color: '#FFAB37',
           iconLeft: 'pg-icon-play',
           action: () => {
             if (activities.length) {
