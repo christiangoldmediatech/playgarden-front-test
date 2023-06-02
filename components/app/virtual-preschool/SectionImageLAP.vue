@@ -15,7 +15,7 @@
         <img
           :data-test-id="`vp-section-${section.title}`"
           :style="{
-            top: small ? '75%' : '50%',
+            top: small ? '45%' : '50%',
             height: small ? '60%' : height
           }"
           class="section-start-playing"
