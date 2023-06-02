@@ -12,9 +12,9 @@
         <v-row no-gutters>
           <v-col cols="12">
             <v-row no-gutters justify="center" class="mb-6">
-              <h1 class="welcome-title">
+              <h2 class="welcome-title pg-text-xl md:pg-text-3xl lg:pg-text-5xl">
                 {{ pageTitle }}
-              </h1>
+              </h2>
             </v-row>
 
             <v-row justify="center">
@@ -227,8 +227,6 @@ export default defineComponent({
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
-  font-size: 54px;
-  line-height: 80px;
   color: #68c453;
   text-align: center;
 }

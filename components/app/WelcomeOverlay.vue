@@ -1,11 +1,11 @@
 <template>
   <v-overlay :dark="false" :value="viewOverlay" z-index="4000">
     <div class="d-flex flex-column align-center">
-      <img src="@/assets/svg/welcome.svg" />
-      <h1 class="overlay-title">
+      <img src="@/assets/svg/welcome.svg" class="pg-block pg-mx-auto pg-w-8/12" />
+      <h2 class="overlay-title pg-text-lg md:pg-text-4xl pg-mb-2">
         Your free trial has officially begun!
-      </h1>
-      <h2 class="overlay-subtitle">
+      </h2>
+      <h2 class="overlay-subtitle pg-text-lg md:pg-text-2xl">
         *Cancel any time from your <nuxt-link :to="{ name: 'app-account-index' }">
           Account Settings
         </nuxt-link>
@@ -47,8 +47,6 @@ export default defineComponent({
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
-  font-size: 54px;
-  line-height: 80px;
   color: #B2E68D;
 }
 
@@ -56,8 +54,6 @@ export default defineComponent({
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
-  font-size: 30px;
-  line-height: 50px;
   text-align: center;
   color: #FFFFFF;
 
