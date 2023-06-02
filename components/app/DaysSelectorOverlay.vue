@@ -1,11 +1,11 @@
 <template>
   <v-overlay :dark="false" :value="viewOverlay" z-index="4000">
-    <v-card width="800px" elevation="0" class="rounded-xl">
+    <v-card :width="$vuetify.breakpoint.mdAndUp ? '800px' : '400px'" elevation="0" class="rounded-xl">
       <v-row no-gutters>
-        <v-col cols="4">
+        <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="4">
           <img src="@/assets/jpg/girl-walking.jpg" class="day-selector-img rounded-l-xl" />
         </v-col>
-        <v-col cols="8" class="py-6 px-2">
+        <v-col cols="12" md="8" class="py-6 px-2">
           <div class="day-selector-title mb-4">
             <h1>One last thing before you get started!</h1>
           </div>
