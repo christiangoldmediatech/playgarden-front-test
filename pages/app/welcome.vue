@@ -142,7 +142,9 @@ export default defineComponent({
       player.value = playerInstance
       player.value.loadPlaylist(videoPlaylist.value)
       if (!isFirstDay.value) {
-        player.value?.play()
+        handlePlay(() => {
+          player.value?.play()
+        })
       }
     }
 
