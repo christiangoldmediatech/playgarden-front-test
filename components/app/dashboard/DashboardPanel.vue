@@ -641,13 +641,6 @@ export default defineComponent({
     }
   },
 
-  mounted() {
-    if(this.$route.query['upload-worksheet']){
-      this.handleDownloadWorksheetClick()
-      this.uploadDialog = true
-    }
-  },
-
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
     ...mapGetters('children/lesson', {

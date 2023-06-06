@@ -134,7 +134,7 @@ export default defineComponent({
     })
 
     const sections = computed(() => {
-      let items = [
+      let items: any = [
         {
           title: 'Music',
           img: require('@/assets/jpg/virtual-preschool/Music.JPG'),
@@ -169,7 +169,7 @@ export default defineComponent({
           {
             title: 'Print Worksheets',
             img: require('@/assets/png/dashboard/end-lesson/print_worksheets.png'),
-            to: 'app-dashboard-offline-worksheet',
+            to: { name: 'app-dashboard-offline-worksheet', query: { 'redirect-worksheet': true } },
             description:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
           },
