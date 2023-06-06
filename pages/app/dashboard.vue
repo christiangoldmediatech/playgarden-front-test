@@ -196,12 +196,22 @@ export default {
     redirectDashboard() {
       // console.log('redirect method called from', from)
       if (this.lesson) {
+        const lessonDay = this.lesson.day
+        const curriculumName = this.lesson.curriculumType.name
+        const shouldRedirect = this.$route.query.shouldRedirect !== 'false' // This is use to avoid redirection loops
+        const wasProgressMade = this.videos.progress > 0
+
+        if ((lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro' && shouldRedirect && !wasProgressMade) {
+          this.$router.push({ name: 'app-welcome', query: { step: lessonDay } })
+          return
+        }
+
         if (this.videos.progress < 100 && this.videos.items.length) {
           const route = this.generateNuxtRoute('lesson-videos', {
             id: this.getNextId(this.videos.items)
           })
           this.$router.push(route)
-        } else if (this.worksheets.progress < 100 && this.worksheets.ONLINE) {
+        } else if ((this.worksheets.progress < 100 && !this.worksheets.isEmpty) && this.worksheets.ONLINE) {
           const route = this.generateNuxtRoute('online-worksheet', {
             id: this.getNextId(this.worksheets.ONLINE)
           })

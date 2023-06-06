@@ -88,7 +88,7 @@ export default defineComponent({
     const videos = computed(() => {
       const unfilteredVideos = getLesson.value.videos ?? []
       return unfilteredVideos.filter((video: any) => {
-        return Boolean(video.videoUrl.HLS)
+        return Boolean(video.videoUrl?.HLS)
       })
     })
 

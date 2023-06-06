@@ -16,6 +16,7 @@ export default {
       if (!this.lesson || this.lesson.videos.length === 0) {
         return {
           progress: 0,
+          isEmpty: true,
           items: []
         }
       }
@@ -59,6 +60,7 @@ export default {
 
       return {
         progress,
+        isEmpty: this.lesson.videos.length === 0,
         progressNext,
         items: videos
       }
@@ -70,6 +72,7 @@ export default {
         OFFLINE: null,
         ONLINE: [],
         progress: 0,
+        isEmpty: true,
         progressNext: 0
       }
 
@@ -89,14 +92,14 @@ export default {
       const worksheetCount = onlineWorksheets.length
       const completedCount = onlineWorksheets
         .map(({ completed }) => Number(completed ? 1 : 0))
-        .reduce((a, b) => a + b)
+        .reduce((a, b) => a + b, 0)
 
       // result.progress = worksheets.length ? (completedCount / worksheets.length) * 100 : 0
       // result.progressNext = (worksheets.length && completedCount < worksheets.length) ? ((completedCount + 1) / worksheets.length) * 100 : 100
 
       result.totalCompletedWorksheets = completedCount
       result.totalWorksheets = worksheets.length
-
+      result.isEmpty = worksheetCount === 0
       result.progress = worksheetCount ? (completedCount / worksheetCount) * 100 : 0
       result.progressNext = (worksheetCount && completedCount < worksheetCount) ? ((completedCount + 1) / worksheetCount) * 100 : 100
 
@@ -115,6 +118,7 @@ export default {
       if (!this.lesson || this.lesson.lessonsActivities.length === 0) {
         return {
           progress: 0,
+          isEmpty: true,
           items: []
         }
       }
@@ -128,7 +132,7 @@ export default {
 
       // Calculate progress
       const completedCount = activities.map(({ viewed }) => Number(viewed && viewed.completed ? 1 : 0))
-        .reduce((a, b) => a + b)
+        .reduce((a, b) => a + b, 0)
 
       const progress = (completedCount / activities.length) * 100
       const progressNext = (completedCount < activities.length) ? ((completedCount + 1) / activities.length) * 100 : 100
@@ -155,12 +159,17 @@ export default {
       return {
         progress,
         progressNext,
+        isEmpty: activities.length === 0,
         items: videos
       }
     },
 
     lessonCompleted () {
-      return (this.videos.progress === 100 && this.worksheets.progress === 100 && this.activities.progress === 100)
+      const videosFinished = this.videos.progress === 100 || this.videos.isEmpty
+      const worksheetsFinished = this.worksheets.progress === 100 || this.worksheets.isEmpty
+      const activitiesFinished = this.activities.progress === 100 || this.activities.isEmpty
+
+      return (videosFinished && worksheetsFinished && activitiesFinished)
     }
   }
 }

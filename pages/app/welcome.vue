@@ -73,7 +73,8 @@ import {
   ref,
   watch,
   useStore,
-  onUnmounted
+  onUnmounted,
+  useRoute
 } from '@nuxtjs/composition-api'
 import WelcomeOverlay from '@/components/app/WelcomeOverlay.vue'
 // @ts-ignore
@@ -83,7 +84,6 @@ import LessonEndOverlay from '@/components/app/LessonEndOverlay.vue'
 import { TypedStore } from '@/models'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
 import DaysSelectorOverlay from '@/components/app/DaysSelectorOverlay.vue'
-import { StepIntroductionVideoEnum } from '../../enums/step-introduction-video.enum'
 
 export default defineComponent({
   name: 'Welcome',
@@ -97,7 +97,11 @@ export default defineComponent({
     const store = useStore<TypedStore>()
     const isFullscreen = ref(false)
     const showPreview = ref(true)
+    const route = useRoute()
     const player = ref<PlayerInstance | null>(null)
+    const stepIntroductionVideo = computed(() => {
+      return Number(route.value.query?.step || 1)
+    })
     const {
       viewOverlay,
       viewDaySelectorOverlay,
@@ -109,25 +113,19 @@ export default defineComponent({
       endLessonOverlay,
       getVideoByName,
       lesson
-    } = useRegisterFlow()
-
-    const stepIntroductionVideo = computed(() => getUserInfo.value.stepIntroductionVideo as StepIntroductionVideoEnum)
+    } = useRegisterFlow(stepIntroductionVideo.value)
 
     const pageTitle = computed(() => {
-      if (stepIntroductionVideo.value === StepIntroductionVideoEnum.FIRST) {
+      if (stepIntroductionVideo.value === 1) {
         return 'Welcome to Playgarden Online!'
-      } else if (stepIntroductionVideo.value === StepIntroductionVideoEnum.SECOND) {
+      } else if (stepIntroductionVideo.value === 2) {
         return 'Hi, welcome back to Playgarden and your second day of learning'
       } else {
         return 'Hi, welcome back to Playgarden and your third day of learning'
       }
     })
 
-    const getUserInfo = computed(() => {
-      return store.getters['auth/getUserInfo']
-    })
-
-    const isFirstDay = computed(() => stepIntroductionVideo.value === StepIntroductionVideoEnum.FIRST)
+    const isFirstDay = computed(() => stepIntroductionVideo.value === 1)
 
     const worksheetUrl = computed(() => {
       return {
@@ -144,7 +142,9 @@ export default defineComponent({
       player.value = playerInstance
       player.value.loadPlaylist(videoPlaylist.value)
       if (!isFirstDay.value) {
-        player.value?.play()
+        handlePlay(() => {
+          player.value?.play()
+        })
       }
     }
 
@@ -164,10 +164,9 @@ export default defineComponent({
 
     const createWelcomeLesson = async () => {
       const children = store.getters.getCurrentChild
-
       await store.dispatch('children/lesson/createLessonById', {
         childId: children[0].id,
-        lessonId: lesson.value.id
+        lessonId: lesson.value.lesson.id
       })
     }
 
@@ -187,6 +186,7 @@ export default defineComponent({
 
     onMounted(async () => {
       if (isFirstDay.value) {
+        viewDaySelectorOverlay.value = true
         await getWelcomeVideo().finally(() => {
           createWelcomeLesson()
         })
@@ -197,6 +197,7 @@ export default defineComponent({
     })
 
     onUnmounted(() => {
+      endLessonOverlay.value = false
       if (player.value) {
         player.value.replacePlaylist([])
       }
