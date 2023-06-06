@@ -1,6 +1,8 @@
 <template>
   <v-overlay :dark="false" :value="value" z-index="4000">
-    <div class="d-flex flex-column align-center !pg-relative pg-overflow-y-auto pg-overflow-x-visible xl:pg-overflow-visible pg-max-h-screen pg-pb-16 pg-pt-5 lg:pg-pb-0 pg-max-w-[100vw]">
+    <div
+      class="d-flex flex-column align-center !pg-relative pg-overflow-y-auto pg-overflow-x-visible xl:pg-overflow-visible pg-max-h-screen pg-pb-16 pg-pt-5 lg:pg-pb-0 pg-max-w-[100vw]"
+    >
       <v-col class="!pg-relative" cols="12">
         <v-btn
           icon
@@ -16,20 +18,34 @@
         </v-btn>
       </v-col>
 
-      <h2 class="overlay-title mb-2 pg-text-xl md:pg-text-5xl pg-pt-5 md:pg-mt-0">
+      <h2
+        class="overlay-title mb-2 pg-text-xl md:pg-text-5xl pg-pt-5 md:pg-mt-0"
+      >
         You've completed your first day of video lessons.
       </h2>
 
-      <h2 v-if="upcomingMeeting" class="overlay-subtitle-1 pg-mb-0 md:pg-mb-8 pg-text-lg md:pg-text-3xl">
+      <h2
+        v-if="upcomingMeeting"
+        class="overlay-subtitle-1 pg-mb-0 md:pg-mb-8 pg-text-lg md:pg-text-3xl"
+      >
         Join us in our next live class!
       </h2>
 
       <div>
-        <meeting-card v-if="upcomingMeeting && $vuetify.breakpoint.mdAndUp" :meeting="upcomingMeeting" />
-        <today-card v-if="upcomingMeeting && $vuetify.breakpoint.mdAndDown" :entry="upcomingMeeting" mobile />
+        <meeting-card
+          v-if="upcomingMeeting && $vuetify.breakpoint.mdAndUp"
+          :meeting="upcomingMeeting"
+        />
+        <today-card
+          v-if="upcomingMeeting && $vuetify.breakpoint.mdAndDown"
+          :entry="upcomingMeeting"
+          mobile
+        />
       </div>
 
-      <h3 class="overlay-subtitle-2 pg-my-4 md:pg-my-8 pg-text-lg md:pg-text-3xl">
+      <h3
+        class="overlay-subtitle-2 pg-my-4 md:pg-my-8 pg-text-lg md:pg-text-3xl"
+      >
         For more daily learning, check out our other features:
       </h3>
 
@@ -68,6 +84,7 @@ import {
   useStore
 } from '@nuxtjs/composition-api'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
+import { LessonApiResponse } from '@/composables'
 import MeetingCard from './MeetingCard.vue'
 
 export default defineComponent({
@@ -82,8 +99,12 @@ export default defineComponent({
       default: false
     },
     worksheetUrl: {
-      type: Object,
+      type: String,
       default: ''
+    },
+    lesson: {
+      type: Object as () => LessonApiResponse,
+      required: true
     }
   },
   emits: ['update:value'],
@@ -94,31 +115,70 @@ export default defineComponent({
       getUpcomingMeeting
     } = useRegisterFlow()
 
+    const { lesson } = props.lesson
+
     const router = useRouter()
 
-    const sections = ref([
-      {
-        title: 'Worksheet',
-        img: require('@/assets/png/worksheet.png'),
-        to: props.worksheetUrl,
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
-      },
-      {
-        title: 'Music',
-        img: require('@/assets/jpg/virtual-preschool/Music.JPG'),
-        to: 'app-music',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
-      },
-      {
-        title: 'Video Library',
-        img: require('@/assets/png/virtual-preschool/live classes.png'),
-        to: 'app-library',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+    const offlineWorksheet = computed(() => {
+      if (lesson) {
+        return lesson.worksheets.find(({ type }) => type === 'OFFLINE')
       }
-    ])
+      return null
+    })
+
+    const onlineWorksheet = computed(() => {
+      if (lesson) {
+        return lesson.worksheets.find(({ type }) => type === 'ONLINE')
+      }
+      return null
+    })
+
+    const sections = computed(() => {
+      let items = [
+        {
+          title: 'Music',
+          img: require('@/assets/jpg/virtual-preschool/Music.JPG'),
+          to: 'app-music',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+        },
+        {
+          title: 'Video Library',
+          img: require('@/assets/png/virtual-preschool/live classes.png'),
+          to: 'app-library',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+        }
+      ]
+
+      if (onlineWorksheet.value) {
+        items = [
+          {
+            title: 'Worksheet',
+            img: require('@/assets/png/worksheet.png'),
+            to: props.worksheetUrl,
+            description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+          },
+          ...items
+        ]
+      }
+
+      if (offlineWorksheet.value && !onlineWorksheet.value) {
+        items = [
+          {
+            title: 'Print Worksheets',
+            img: require('@/assets/png/dashboard/end-lesson/print_worksheets.png'),
+            to: 'app-dashboard-offline-worksheet',
+            description:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+          },
+          ...items
+        ]
+      }
+
+      return items
+    })
 
     const goTo = (routName: any) => {
       if (typeof routName !== 'string') {
