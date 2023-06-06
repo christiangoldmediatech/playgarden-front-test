@@ -216,6 +216,9 @@ export default {
             id: this.getNextId(this.videos.items)
           })
           this.$router.push(route)
+        } else if (lessonDay === 1 && curriculumName === 'Intro' && this.worksheets.OFFLINE && this.worksheets.OFFLINE.videoDetail && (!this.worksheets.OFFLINE.viewed || !this.worksheets.OFFLINE.viewed.completed)) {
+          const route = this.generateNuxtRoute('offline-worksheet', { ...this.$route.query })
+          this.$router.push(route)
         } else if ((this.worksheets.progress < 100 && !this.worksheets.isEmpty) && this.worksheets.ONLINE) {
           const route = this.generateNuxtRoute('online-worksheet', {
             id: this.getNextId(this.worksheets.ONLINE)
