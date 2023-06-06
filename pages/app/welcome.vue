@@ -5,9 +5,10 @@
         <days-selector-overlay v-model="viewDaySelectorOverlay" />
         <welcome-overlay v-model="viewOverlay" />
         <lesson-end-overlay
-          v-if="!loadingVideo"
+          v-if="!loadingVideo && lesson"
           :value.sync="endLessonOverlay"
           :worksheet-url="worksheetUrl"
+          :lesson="lesson"
         />
         <v-row no-gutters>
           <v-col cols="12">
@@ -215,7 +216,8 @@ export default defineComponent({
       getWelcomeVideo,
       handleFullscreenChange,
       worksheetUrl,
-      pageTitle
+      pageTitle,
+      lesson
     }
   }
 })

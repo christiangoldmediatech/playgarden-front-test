@@ -2,7 +2,7 @@ import { Lesson } from '@/models'
 import { axios } from '@/utils'
 import { ComputedRef } from '@nuxtjs/composition-api'
 
-type LessonApiResponse = {
+export type LessonApiResponse = {
   lesson: Lesson
   nextLessonId: number
   previousLessonId: number

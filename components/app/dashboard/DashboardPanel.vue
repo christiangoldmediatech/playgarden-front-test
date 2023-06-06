@@ -143,9 +143,12 @@
               mdi-download
             </v-icon>
           </v-avatar>
-          <span class="pr-6" :class="{
-                      'title-download-mobile': $vuetify.breakpoint.mobile
-                    }">
+          <span
+            class="pr-6"
+            :class="{
+              'title-download-mobile': $vuetify.breakpoint.mobile
+            }"
+          >
             {{ `DOWNLOAD LETTER ${getLetter} WEEK WORKSHEETS` }}
           </span>
         </v-btn>
@@ -183,7 +186,7 @@
           >
             <lesson-online-worksheet
               v-for="(onlineWorksheet,
-                      onlineWorksheetIndex) in worksheets.ONLINE"
+              onlineWorksheetIndex) in worksheets.ONLINE"
               :key="onlineWorksheet.id"
               :is-admin="isAdmin"
               :online-worksheet="onlineWorksheet"
@@ -193,8 +196,8 @@
                 noLinkMode
                   ? undefined
                   : generateNuxtRoute('online-worksheet', {
-                    worksheet: onlineWorksheetIndex
-                  })
+                      worksheet: onlineWorksheetIndex
+                    })
               "
               :enabled="completedOnlineWorksheets >= onlineWorksheetIndex"
               :active="worksheetQuery === onlineWorksheetIndex"
@@ -206,7 +209,7 @@
             <v-col cols="12" class="pa-0 dailyLessonsScrolView">
               <lesson-online-worksheet
                 v-for="(onlineWorksheet,
-                        onlineWorksheetIndex) in worksheets.ONLINE"
+                onlineWorksheetIndex) in worksheets.ONLINE"
                 :key="onlineWorksheet.id"
                 :is-admin="isAdmin"
                 :online-worksheet="onlineWorksheet"
@@ -216,8 +219,8 @@
                   noLinkMode
                     ? undefined
                     : generateNuxtRoute('online-worksheet', {
-                      worksheet: onlineWorksheetIndex
-                    })
+                        worksheet: onlineWorksheetIndex
+                      })
                 "
                 :enabled="completedOnlineWorksheets >= onlineWorksheetIndex"
                 :active="worksheetQuery === onlineWorksheetIndex"
@@ -238,43 +241,52 @@
               active-class="dashboard-item-active"
               exact-active-class="dashboard-item-exact"
               @click.stop="handleDownloadWorksheetClick"
-                >
-                  <v-row no-gutters align="center">
-                    <v-col v-if="offlineWorksheet" cols="4">
+            >
+              <v-row no-gutters align="center">
+                <v-col v-if="offlineWorksheet" cols="4">
+                  <v-img
+                    class="dashboard-item-image"
+                    :src="
+                      offlineWorksheet.pdfThumbnail ||
+                        require('@/assets/png/pdf-thumbnail-placeholder.png')
+                    "
+                    :position="
+                      offlineWorksheet.pdfThumbnail
+                        ? 'center center'
+                        : 'center 77%'
+                    "
+                    cover
+                    height="100px"
+                  />
+                </v-col>
+
+                <v-col cols="8">
+                  <div class="mx-2 mt-4 mb-2">
+                    <span :class="['dashboard-item-activity-type']">
+                      DOWNLOAD WORKSHEET OF THE DAY!
+                    </span>
+                  </div>
+                  <div
+                    class="d-flex flex-nowrap pa-2 mt-n4 align-center text-body-2"
+                  >
+                    <div
+                      class="worksheet-title flex-grow-1 pr-2 dashboard-item-disabled"
+                    >
+                      Worksheet
+                    </div>
+
+                    <div>
                       <v-img
-                        class="dashboard-item-image"
-                        :src="offlineWorksheet.pdfThumbnail || require('@/assets/png/pdf-thumbnail-placeholder.png')"
-                        :position="offlineWorksheet.pdfThumbnail ? 'center center' : 'center 77%'"
-                        cover
-                        height="100px"
+                        height="40px"
+                        contain
+                        :src="
+                          require('@/assets/png/dashboard/download-ico.png')
+                        "
                       />
-                    </v-col>
-
-                    <v-col cols="8">
-                      <div class="mx-2 mt-4 mb-2">
-                        <span
-                          :class="[
-                            'dashboard-item-activity-type',
-                          ]"
-                        >
-                        DOWNLOAD WORKSHEET OF THE DAY!
-                        </span>
-                      </div>
-                      <div class="d-flex flex-nowrap pa-2 mt-n4 align-center text-body-2">
-                        <div class="worksheet-title flex-grow-1 pr-2 dashboard-item-disabled">
-                          Worksheet
-                        </div>
-
-                        <div>
-                          <v-img
-                          height="40px"
-                          contain
-                          :src="require('@/assets/png/dashboard/download-ico.png')"
-                        />
-                        </div>
-                      </div>
-                    </v-col>
-                  </v-row>
+                    </div>
+                  </div>
+                </v-col>
+              </v-row>
             </v-card>
 
             <!-- WORKSHEET VIDEO -->
@@ -626,6 +638,13 @@ export default defineComponent({
       if (val) {
         this.getLessonsList()
       }
+    }
+  },
+
+  mounted() {
+    if(this.$route.query['upload-worksheet']){
+      this.handleDownloadWorksheetClick()
+      this.uploadDialog = true
     }
   },
 
