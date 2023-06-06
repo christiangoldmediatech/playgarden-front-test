@@ -17,7 +17,7 @@
 
       <h2 class="overlay-title pg-text-[20px] md:pg-text-xl mb-2 pg-px-1 md:pg-px-0">
         Congratulations! <br />
-        You've completed the {{ dayString }} day of video lessens!
+        You've completed the {{ dayString }} day of video lessons!
       </h2>
 
       <div class="lesson-completed-container">

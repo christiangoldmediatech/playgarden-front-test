@@ -4,9 +4,8 @@ import { computed, ref, useRouter, useStore } from '@nuxtjs/composition-api'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 import { Meeting, TypedStore } from '@/models'
 import { useChildLesson } from '@/composables/use-child'
-import { StepIntroductionVideoEnum } from '@/enums/step-introduction-video.enum'
 import { useLibraryHelpers } from './library'
-import { useToastHelper } from './helpers.composable'
+import { useLessonApi } from './lesson'
 
 type SaveVideoProgressPayload = {
   id: number // videoId
@@ -29,13 +28,18 @@ const videoPlaylist = ref<MediaObject[]>([])
 const closingVideo = ref<MediaObject[]>([])
 const upcomingMeeting = ref<Meeting | null>(null)
 
-export const useRegisterFlow = () => {
+export const useRegisterFlow = (step = 1) => {
   const store = useStore<TypedStore>()
-  const toast = useToastHelper()
   const router = useRouter()
-  const { videoToMediaObject } = useLibraryHelpers()
+  const { videoToMediaObject, lessonVideoToMediaObject } = useLibraryHelpers()
   const { saveVideoProgress } = useChildLesson({ store, axios })
   const lesson = ref()
+
+  const currentChild = computed(
+    () => store.getters.getCurrentChild?.[0]
+  )
+
+  const lessonApi = useLessonApi({ child: currentChild })
 
   const changeViewOverlayStatus = () => {
     viewOverlay.value = true
@@ -44,23 +48,14 @@ export const useRegisterFlow = () => {
     }, OVERLAY_TIMEOUT)
   }
 
-  const getUserInfo = computed(() => {
-    return store.getters['auth/getUserInfo']
-  })
-
   const getWelcomeVideo = async () => {
     loadingVideo.value = true
-    const response = await axios.$get('/lessons', { params: { name: 'WELCOME', includeHidden: true } })
-
-    if (response && response.lessons.length > 0) {
-      lesson.value = response.lessons[0]
-      const lessonVideos = lesson.value.videos
-
-      if (lessonVideos.length > 0) {
-        const video = lessonVideos[0]
-        const mediaObjectVideo = videoToMediaObject(video)
-        videoPlaylist.value = [mediaObjectVideo]
-      }
+    const response = await lessonApi.getChildsCurrentLesson()
+    const video = response?.lesson?.videos?.sort((a, b) => a.order - b.order)[0]
+    if (video) {
+      lesson.value = response
+      const mediaObjectVideo = lessonVideoToMediaObject(video)
+      videoPlaylist.value = [mediaObjectVideo]
     }
 
     loadingVideo.value = false
@@ -69,7 +64,7 @@ export const useRegisterFlow = () => {
   const getVideoByName = async () => {
     loadingVideo.value = true
 
-    const name = getUserInfo.value.stepIntroductionVideo === StepIntroductionVideoEnum.SECOND ? SECOND_VIDEO : THIRD_VIDEO
+    const name = step === 2 ? SECOND_VIDEO : THIRD_VIDEO
 
     const response = await axios.$get('/parent-corners-videos', { params: { name } })
 
@@ -120,38 +115,14 @@ export const useRegisterFlow = () => {
     }
   }
 
-  const updateStepIntroductionVideo = async (step: StepIntroductionVideoEnum) => {
-    try {
-      await axios.$patch('/users/step-introduction-video', {}, { params: { step } })
-    } catch {
-      toast.error('Could not update step introduction video')
-    }
-  }
-
-  const currentChild = store.getters.getCurrentChild
   const playerEvents = {
     // Whenever a video ends.
-    [PLAYER_EVENTS.ON_PLAY]: (event: PlayerInstanceEvent) => {
-      let step: StepIntroductionVideoEnum
-      const currentStep = getUserInfo.value.stepIntroductionVideo
-
-      if (currentStep === StepIntroductionVideoEnum.FIRST) {
-        step = StepIntroductionVideoEnum.SECOND
-      } else if (currentStep === StepIntroductionVideoEnum.SECOND) {
-        step = StepIntroductionVideoEnum.THIRD
-      } else {
-        step = StepIntroductionVideoEnum.DONE
-      }
-
-      updateStepIntroductionVideo(step)
-    },
-    // Whenever a video ends.
     [PLAYER_EVENTS.ON_ENDED]: (event: PlayerInstanceEvent) => {
-      if (getUserInfo.value.stepIntroductionVideo === StepIntroductionVideoEnum.FIRST) {
+      if (step === 1) {
         endLessonOverlay.value = true
-        saveVideoProgress(lesson.value.id, currentChild[0].id, determineSaveVideoProgressPayload(event, true))
+        saveVideoProgress(lesson.value.lesson.id, currentChild.value.id, determineSaveVideoProgressPayload(event, true))
       } else {
-        router.push({ name: 'app-dashboard' })
+        router.push({ name: 'app-dashboard', query: { shouldRedirect: 'false' } })
       }
     }
   }
@@ -171,7 +142,6 @@ export const useRegisterFlow = () => {
     playerEvents,
     lesson,
     closingVideo,
-    getClosingVideo,
-    updateStepIntroductionVideo
+    getClosingVideo
   }
 }

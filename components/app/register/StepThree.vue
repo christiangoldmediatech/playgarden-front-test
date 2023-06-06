@@ -66,6 +66,7 @@ export default defineComponent({
       this.$router.push({
         name: 'app-welcome',
         query: {
+          step: 1,
           ...this.utmContent
         }
       })
