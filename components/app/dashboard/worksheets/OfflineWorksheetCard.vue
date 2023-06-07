@@ -140,7 +140,7 @@ export default {
     },
 
     testWidth () {
-      return `${((this.testHeight * 6) / 9)}px`
+      return `${((this.testHeight * 16) / 9)}px`
     }
   },
 
