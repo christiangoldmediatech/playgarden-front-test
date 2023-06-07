@@ -231,7 +231,7 @@ export default {
 
 .test-height {
   background-color: rgba(127, 127, 127, 0.125);
-  height: calc(100% - 106px);
+  height: calc(100% - 206px);
   max-height: calc(100% - 206px);
 }
 
