@@ -2,18 +2,20 @@
   <v-main class="watercolor-background">
     <v-row no-gutters class="fill-height pt-16">
       <v-col cols="12">
+        <days-selector-overlay v-model="viewDaySelectorOverlay" />
         <welcome-overlay v-model="viewOverlay" />
         <lesson-end-overlay
-          v-if="!loadingVideo"
+          v-if="!loadingVideo && lesson"
           :value.sync="endLessonOverlay"
           :worksheet-url="worksheetUrl"
+          :lesson="lesson"
         />
         <v-row no-gutters>
           <v-col cols="12">
             <v-row no-gutters justify="center" class="mb-6">
-              <h1 class="welcome-title">
-                Welcome to Playgarden Online!
-              </h1>
+              <h2 class="welcome-title pg-text-xl md:pg-text-3xl lg:pg-text-5xl">
+                {{ pageTitle }}
+              </h2>
             </v-row>
 
             <v-row justify="center">
@@ -71,7 +73,9 @@ import {
   onMounted,
   ref,
   watch,
-  useStore
+  useStore,
+  onUnmounted,
+  useRoute
 } from '@nuxtjs/composition-api'
 import WelcomeOverlay from '@/components/app/WelcomeOverlay.vue'
 // @ts-ignore
@@ -80,29 +84,49 @@ import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/Playe
 import LessonEndOverlay from '@/components/app/LessonEndOverlay.vue'
 import { TypedStore } from '@/models'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
+import DaysSelectorOverlay from '@/components/app/DaysSelectorOverlay.vue'
 
 export default defineComponent({
   name: 'Welcome',
   components: {
     LessonEndOverlay,
     WelcomeOverlay,
-    PgVideoPlayer
+    PgVideoPlayer,
+    DaysSelectorOverlay
   },
   setup() {
     const store = useStore<TypedStore>()
     const isFullscreen = ref(false)
     const showPreview = ref(true)
+    const route = useRoute()
     const player = ref<PlayerInstance | null>(null)
+    const stepIntroductionVideo = computed(() => {
+      return Number(route.value.query?.step || 1)
+    })
     const {
       viewOverlay,
+      viewDaySelectorOverlay,
       loadingVideo,
-      welcomeVideo,
+      videoPlaylist,
       changeViewOverlayStatus,
       playerEvents,
       getWelcomeVideo,
       endLessonOverlay,
+      getVideoByName,
       lesson
-    } = useRegisterFlow()
+    } = useRegisterFlow(stepIntroductionVideo.value)
+
+    const pageTitle = computed(() => {
+      if (stepIntroductionVideo.value === 1) {
+        return 'Welcome to Playgarden Online!'
+      } else if (stepIntroductionVideo.value === 2) {
+        return 'Hi, welcome back to Playgarden and your second day of learning'
+      } else {
+        return 'Hi, welcome back to Playgarden and your third day of learning'
+      }
+    })
+
+    const isFirstDay = computed(() => stepIntroductionVideo.value === 1)
 
     const worksheetUrl = computed(() => {
       return {
@@ -117,7 +141,12 @@ export default defineComponent({
 
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
-      player.value.loadPlaylist(welcomeVideo.value)
+      player.value.loadPlaylist(videoPlaylist.value)
+      if (!isFirstDay.value) {
+        handlePlay(() => {
+          player.value?.play()
+        })
+      }
     }
 
     const handleFullscreenChange = (val: boolean): void => {
@@ -136,10 +165,9 @@ export default defineComponent({
 
     const createWelcomeLesson = async () => {
       const children = store.getters.getCurrentChild
-
       await store.dispatch('children/lesson/createLessonById', {
         childId: children[0].id,
-        lessonId: lesson.value.id
+        lessonId: lesson.value.lesson.id
       })
     }
 
@@ -151,15 +179,34 @@ export default defineComponent({
       }
     })
 
+    watch(viewDaySelectorOverlay, () => {
+      if (!viewDaySelectorOverlay.value && isFirstDay.value) {
+        changeViewOverlayStatus()
+      }
+    })
+
     onMounted(async () => {
-      changeViewOverlayStatus()
-      await getWelcomeVideo().finally(() => {
-        createWelcomeLesson()
-      })
+      if (isFirstDay.value) {
+        viewDaySelectorOverlay.value = true
+        await getWelcomeVideo().finally(() => {
+          createWelcomeLesson()
+        })
+      } else {
+        viewDaySelectorOverlay.value = false
+        await getVideoByName()
+      }
+    })
+
+    onUnmounted(() => {
+      endLessonOverlay.value = false
+      if (player.value) {
+        player.value.replacePlaylist([])
+      }
     })
 
     return {
       viewOverlay,
+      viewDaySelectorOverlay,
       endLessonOverlay,
       loadingVideo,
       showPreview,
@@ -168,7 +215,9 @@ export default defineComponent({
       playerEvents,
       getWelcomeVideo,
       handleFullscreenChange,
-      worksheetUrl
+      worksheetUrl,
+      pageTitle,
+      lesson
     }
   }
 })
@@ -181,8 +230,7 @@ export default defineComponent({
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
-  font-size: 54px;
-  line-height: 80px;
   color: #68c453;
+  text-align: center;
 }
 </style>

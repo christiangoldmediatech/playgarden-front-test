@@ -8,7 +8,7 @@
     </div>
     <v-hover v-slot="{ hover }">
       <v-card
-        class="lsess-card clickable"
+        class="lsess-card clickable !pg-bg-white"
         :style="{
           '--borderColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'
         }"
@@ -48,7 +48,7 @@
           </v-col>
           <v-col>
             <div class="d-flex flex-column justify-space-between fill-height">
-              <div class="lsess-card-title">
+              <div class="lsess-card-title pg-text-black">
                 {{
                   entry.type === 'LiveClass'
                     ? entry.activityType.name
@@ -62,7 +62,7 @@
           </v-col>
         </v-row>
         <v-row class="ma-0">
-          <v-col class="pt-0 lsess-card-description">
+          <v-col class="pt-0 lsess-card-description pg-text-black">
             {{ entry.description | descriptionFilter }}
           </v-col>
           <v-col v-if="entry.cancelled">

@@ -1,5 +1,13 @@
 export default function () {
   return {
+    breakpoint: {
+      threshold: {
+        xs: 599,
+        sm: 959,
+        md: 1300,
+        lg: 1903
+      }
+    },
     theme: {
       options: {
         customProperties: true

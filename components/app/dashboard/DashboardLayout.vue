@@ -227,6 +227,7 @@ export default {
         this.$route.name === 'app-dashboard-online-worksheet' ||
         this.$route.name === 'app-dashboard-offline-worksheet' ||
         this.$route.name === 'app-dashboard-lesson-activities' ||
+        this.$route.name === 'app-dashboard-lesson-completed' ||
         this.$route.name === 'app-dashboard'
     },
 

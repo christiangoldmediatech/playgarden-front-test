@@ -1,60 +1,58 @@
 <template>
   <v-main>
-    <div :class="$vuetify.breakpoint.mdAndDown ? 'mobile' : 'desktop'">
-      <section-image
-        class="daily-lessons"
-        :section="section.dashboard"
-        @click:play="handleAudioPlay"
-        @click="handleClick"
-      />
+    <div class="pg-w-[90%] pg-mx-auto pg-my-5">
+      <div class="pg-grid pg-grid-cols-1 md:pg-grid-cols-2 pg-gap-5">
+        <section-image
+          :section="section.dashboard"
+          :small="$vuetify.breakpoint.mdAndDown"
+          @click:play="handleAudioPlay"
+          @click="handleClick"
+        />
 
-      <section-image
-        class="well-being"
-        medium
-        :section="section.wellbeing"
-        @click:play="handleAudioPlay"
-        @click="handleClick"
-      />
+        <section-image
+          :section="section.classes"
+          :small="$vuetify.breakpoint.mdAndDown"
+          @click:play="handleAudioPlay"
+          @click="handleClick"
+        />
+      </div>
 
-      <section-image
-        class="live-classes"
-        medium
-        :section="section.classes"
-        @click:play="handleAudioPlay"
-        @click="handleClick"
-      />
+      <div class="pg-grid pg-grid-cols-1 md:pg-grid-cols-5 pg-gap-5 pg-mt-5">
+        <section-image
+          :section="section.music"
+          small
+          @click:play="handleAudioPlay"
+          @click="handleClick"
+        />
 
-      <section-image
-        class="student-cubby"
-        :section="section.cubby"
-        small
-        @click:play="handleAudioPlay"
-        @click="handleClick"
-      />
+        <section-image
+          :section="section.cubby"
+          small
+          @click:play="handleAudioPlay"
+          @click="handleClick"
+        />
 
-      <section-image
-        class="kids-corner"
-        medium
-        :section="section.kidscorner"
-        @click:play="handleAudioPlay"
-        @click="handleClick"
-      />
+        <section-image
+          :section="section.library"
+          small
+          @click:play="handleAudioPlay"
+          @click="handleClick"
+        />
 
-      <section-image
-        class="music"
-        :section="section.music"
-        small
-        @click:play="handleAudioPlay"
-        @click="handleClick"
-      />
+        <section-image
+          small
+          :section="section.wellbeing"
+          @click:play="handleAudioPlay"
+          @click="handleClick"
+        />
 
-      <section-image
-        class="library"
-        :section="section.library"
-        small
-        @click:play="handleAudioPlay"
-        @click="handleClick"
-      />
+        <section-image
+          small
+          :section="section.kidscorner"
+          @click:play="handleAudioPlay"
+          @click="handleClick"
+        />
+      </div>
     </div>
     <BirthdayVideoDialog />
   </v-main>
@@ -112,40 +110,38 @@ export default defineComponent({
 
     const section = {
       dashboard: {
-        imageUrl: require('@/assets/png/virtual-preschool/Daily lessons.png'),
+        imageUrl: require('@/assets/png/virtual-preschool/sections-images/dayli_lessons.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Beth-daily lessons.png'),
         title: 'Daily Lessons',
         route: { name: 'app-dashboard' },
         message: 'We can’t wait to learn with you every day!',
-        audio: `${baseRoute}audio/virtual-preschool/Daily lessons.m4a`
+        audio: `${baseRoute}audio/virtual-preschool/Daily lessons.m4a`,
+        color: '#359846',
+        textColor: '#C9EE9D'
       },
       kidscorner: {
-        imageUrl: require('@/assets/png/virtual-preschool/kidscorner.png'),
+        imageUrl: require('@/assets/png/virtual-preschool/sections-images/kids_corner.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Katryna-kidscorner.png'),
         title: 'Kids Corner',
         route: goToKidsCorner,
         message:
           "It's a little bit silly in the Kids Corner, where kids choose how to learn",
-        audio: `${baseRoute}audio/virtual-preschool/Kidscorner.m4a`
-      },
-      playdates: {
-        imageUrl: require('@/assets/png/virtual-preschool/playdates.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Shyla_playdates.png'),
-        title: 'Playdates',
-        route: { name: 'app-playdates' },
-        message: 'Join our teacher-led playdates for fun with friends!',
-        audio: `${baseRoute}audio/virtual-preschool/Playdates.m4a`
+        audio: `${baseRoute}audio/virtual-preschool/Kidscorner.m4a`,
+        color: '#FCF394',
+        textColor: '#AF7E00'
       },
       classes: {
-        imageUrl: require('@/assets/png/virtual-preschool/live classes.png'),
+        imageUrl: require('@/assets/png/virtual-preschool/sections-images/live_classes.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Lucy-Liveclasses.png'),
         title: 'Live Classes & Playdates',
         route: { name: 'app-live-classes' },
         message: 'Enjoy cooking, music, movement zooms and more!',
-        audio: `${baseRoute}audio/virtual-preschool/Live classes 2.m4a`
+        audio: `${baseRoute}audio/virtual-preschool/Live classes 2.m4a`,
+        color: '#F58E00',
+        textColor: '#FEEAA5'
       },
       cubby: {
-        imageUrl: require('@/assets/png/virtual-preschool/Cubby.png'),
+        imageUrl: require('@/assets/png/virtual-preschool/sections-images/student_cubby.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Ally_cubby.png'),
         title: 'Student Cubby',
         route: {
@@ -153,32 +149,40 @@ export default defineComponent({
           query: { id: currentChild.value?.id }
         },
         message: 'Save your work and track progress in your cubby!',
-        audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`
+        audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`,
+        color: '#FFC648',
+        textColor: '#FF8000'
       },
       music: {
-        imageUrl: require('@/assets/jpg/virtual-preschool/Music.JPG'),
+        imageUrl: require('@/assets/png/virtual-preschool/sections-images/music.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Emma_Music.png'),
         title: 'Music',
         route: { name: 'app-music' },
         message: 'Listen anytime to sing and learn!',
-        audio: `${baseRoute}audio/virtual-preschool/Music.m4a`
+        audio: `${baseRoute}audio/virtual-preschool/Music.m4a`,
+        color: '#F6B7D2',
+        textColor: '#CF2A5C'
       },
       library: {
-        imageUrl: require('@/assets/jpg/virtual-preschool/Library.JPG'),
+        imageUrl: require('@/assets/png/virtual-preschool/sections-images/video_library.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
         title: 'Video Library',
         route: { name: 'app-library' },
         message: 'Come read with us in the book nook!',
-        audio: `${baseRoute}audio/virtual-preschool/Library.m4a`
+        audio: `${baseRoute}audio/virtual-preschool/Library.m4a`,
+        color: '#BFBFF7',
+        textColor: '#8659C6'
       },
       wellbeing: {
-        imageUrl: require('@/assets/jpg/virtual-preschool/well-being.jpg'),
+        imageUrl: require('@/assets/png/virtual-preschool/sections-images/social_emotional.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/teacher_well_being.png'),
-        title: 'Well-being',
+        title: 'Social & Emotional',
         route: { name: 'app-learn-play' },
         message:
           'Have fun together with activities, games, books and so much more',
-        audio: ''
+        audio: '',
+        color: '#B2E68D',
+        textColor: '#1A8901'
       }
     }
 
@@ -221,54 +225,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss" scoped>
-.mobile {
-  width: 90%;
-  margin: auto;
-
-  & > * {
-    margin: 0.75rem 0;
-  }
-}
-
-.desktop {
-  display: grid;
-  grid-template-columns: repeat(3, 18.5%) repeat(2, 20%);
-  grid-template-rows: repeat(4, 200px);
-  margin: auto;
-  width: 90%;
-  gap: 1rem;
-  margin: 1rem auto;
-
-  .daily-lessons {
-    grid-column: 1 / span 3;
-    grid-row: 1 / span 3;
-  }
-  .well-being {
-    grid-column: 4 / 5;
-    grid-row: 3 / 5;
-  }
-  .live-classes {
-    grid-column: 4 / 6;
-    grid-row: 1 / 3;
-  }
-
-  .music {
-    grid-column: 1 / 2;
-    grid-row: 4 / 5;
-  }
-  .library {
-    grid-column: 3 / 4;
-    grid-row: 4 / 5;
-  }
-  .student-cubby {
-    grid-column: 2 / 3;
-    grid-row: 4 / 5;
-  }
-  .kids-corner {
-    grid-column: 5 / 6;
-    grid-row: 3 / 5;
-  }
-}
-</style>

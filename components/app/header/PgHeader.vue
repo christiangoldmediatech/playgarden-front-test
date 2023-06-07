@@ -66,7 +66,7 @@
               v-if="!hasPlayAndLearnPlan"
               alt="Playarden Prep Online Logo"
               :height="appBarLogoSize"
-              :src="require('@/assets/svg/logo.svg')"
+              :src="require('@/assets/svg/rainbow.svg')"
             />
             <img
               v-else
@@ -78,17 +78,19 @@
 
           <!-- Toolbar Title -->
           <v-col v-if="!hasPlayAndLearnPlan" cols="12">
-            <underlined-title
-              text="Welcome to School!"
+            <normal-title
+              text="Welcome to School"
               :font-size="appBarTitleSize"
               :font-size-mobile="appBarTitleSize"
+              font-family="'Quicksand', sans-serif"
+              color="#606060"
             />
           </v-col>
 
           <!-- Toolbar Description -->
           <v-col v-if="!hasPlayAndLearnPlan">
-            <div class="text-body-1 text-md-h6">
-              Are you excited for a fun-filled day of learning?
+            <div class="text-body-1 text-md-h6 !pg-font-light">
+              Thank you for learning with us today!
             </div>
           </v-col>
         </v-row>
@@ -127,9 +129,9 @@
 
             <v-card>
               <v-list dense>
-                <!-- Hidden by ticket: https://app.shortcut.com/gold-media-tech/story/4106/hide-video-tutorial-option -->
+                <!--Hidden by ticket: https://app.shortcut.com/gold-media-tech/story/4106/hide-video-tutorial-option -->
 
-                <!-- <v-list-item>
+                <!--<v-list-item>
                   <v-btn
                     class="btn-register text--disabled"
                     :ripple="false"
@@ -256,7 +258,7 @@ export default defineComponent({
             : '175px'
       }
     })
-    const appBarTitleSize = computed(() => (isMobile.value ? '28px' : '60px'))
+    const appBarTitleSize = computed(() => (isMobile.value ? '28px' : '40px'))
     const appBarLogoSize = computed(() => (isMobile.value ? '25px' : '45px'))
     const appBarLogoSizeLearnPlay = computed(() =>
       isMobile.value ? '35px' : '75px'

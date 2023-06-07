@@ -1,14 +1,14 @@
 <template>
   <v-main>
     <div :class="$vuetify.breakpoint.mdAndDown ? 'mobile' : 'desktop'">
-      <section-image
+      <SectionImageLAP
         class="learn-and-play"
         :section="section.playandlearn"
         @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
-      <section-image
+      <SectionImageLAP
         class="well-being"
         :section="section.wellbeing"
         @click:play="handleAudioPlay"
@@ -22,14 +22,15 @@
         @click="handleClick"
       />
 
-      <section-image
+      <SectionImageLAP
         class="kids-corner"
+        small
         :section="section.kidscorner"
         @click:play="handleAudioPlay"
         @click="handleClick"
       />
 
-      <section-image
+      <SectionImageLAP
         class="student-cubby"
         :section="section.cubby"
         @click:play="handleAudioPlay"
@@ -38,14 +39,14 @@
 
       <DailyLessonsDialog v-model="showIntroDialog" />
 
-      <section-image
+      <SectionImageLAP
         class="daily-lessons"
         :section="section.dashboard"
         @click:play="handleAudioPlay"
         @click="showIntroDialog = true"
       />
 
-      <section-image
+      <SectionImageLAP
         class="music"
         :section="section.music"
         small

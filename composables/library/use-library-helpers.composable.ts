@@ -1,4 +1,4 @@
-import { Activity, ExtendedActivity, ActivityType, FeaturedActivity, Playlist, Video } from '@/models'
+import { Activity, ExtendedActivity, ActivityType, FeaturedActivity, Playlist, Video, LessonVideo } from '@/models'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
 // Gets valid featured activities
@@ -90,6 +90,30 @@ const videoToMediaObject = (
   }
 })
 
+// Returns a MediaObject, combining a Video object, an index, and an ActivityType object
+const lessonVideoToMediaObject = (
+  video: LessonVideo,
+  index: number | undefined = undefined,
+  activityType: Playlist['activityType'] | undefined = video.activityType
+): MediaObject => ({
+  title: video.description,
+  description: `Learning with ${video.name ?? ''}`,
+  poster: video.thumbnail,
+  src: {
+    url: video?.videoUrl?.HLS || '',
+    type: 'application/x-mpegURL'
+  },
+  meta: {
+    author: video.name ?? '',
+    videoId: video.id,
+    playlistIndex: index,
+    type: video.activityType.id ? 'Activities' : 'Videos',
+    activityId: video.activityType.id ? video.activityType.id : undefined,
+    activityType,
+    watched: video.viewed?.completed
+  }
+})
+
 // Create a MediaObject Array playlist from an ActivityType
 const getPlaylistFromActivityType = (activity: ActivityType): MediaObject[] => {
   const playlist: MediaObject[] = []
@@ -122,6 +146,7 @@ export const useLibraryHelpers = () => {
   return {
     activityToMediaObject,
     videoToMediaObject,
+    lessonVideoToMediaObject,
     getValidActivities,
     getValidVideos,
     getPlaylistFromActivityType,

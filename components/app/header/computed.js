@@ -49,7 +49,7 @@ export default {
               exact: false
             },
             {
-              title: 'Well-being',
+              title: 'Social & Emotional',
               dataTestId: 'app-learn-play',
               to: { name: 'app-learn-play' },
               exact: false
@@ -123,7 +123,7 @@ export default {
               exact: true
             },
             {
-              title: 'Well-being',
+              title: 'Social & Emotional',
               to: { name: 'app-learn-play' },
               exact: false,
               dataTestId: 'app-learn-play'
