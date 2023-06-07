@@ -474,7 +474,10 @@ export default defineComponent({
       }
     }
 
-    function close () {
+    function close() {
+      if (uploadFinished.value === true) {
+        $nuxt.$emit('dashboard-panel-update')
+      }
       emit('input', false)
     }
 
