@@ -54,7 +54,7 @@
         >
           <v-btn
             :color="button.color"
-            class="offline-worksheet-btn"
+            class="offline-worksheet-btn mb-8"
             :loading="loading"
             :disabled="button.disabled"
             block
@@ -140,7 +140,7 @@ export default {
     },
 
     testWidth () {
-      return `${((this.testHeight * 16) / 9)}px`
+      return `${((this.testHeight * 6) / 9)}px`
     }
   },
 
@@ -231,7 +231,7 @@ export default {
 
 .test-height {
   background-color: rgba(127, 127, 127, 0.125);
-  height: calc(100% - 206px);
+  height: calc(100% - 106px);
   max-height: calc(100% - 206px);
 }
 
