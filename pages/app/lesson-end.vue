@@ -1,11 +1,17 @@
 <template>
   <v-main class="watercolor-background">
-    <v-row no-gutters class="fill-height pt-16">
+    <v-row no-gutters class="fill-height sm:pg-pt-16 pg-pt-10">
       <v-col cols="12">
+        <lesson-end-overlay
+          v-if="lesson"
+          :value.sync="endLessonOverlay"
+          :worksheet-url="worksheetUrl"
+          :lesson="lesson"
+        />
         <v-row no-gutters>
           <v-col cols="12">
             <v-row no-gutters justify="center" class="mb-6">
-              <h1 class="lesson-end-title">
+              <h1 class="lesson-end-title pg-text-xl md:pg-text-3xl lg:pg-text-5xl">
                 We can't wait to see you tomorrow!
               </h1>
             </v-row>
@@ -45,16 +51,16 @@
                   </pg-video-player>
                 </pg-loading>
 
-                <div class="email-info-wrapper d-flex">
-                  <div class="email-info-text py-2 px-14">
+                <div class="email-info-wrapper d-flex" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
+                  <div class="email-info-text py-2 px-14" :class="{ 'hide-text': hiddenInfoText }">
                     <p>
                       Want to receive an email with all of the things you did today? <br>
                       <nuxt-link :to="{ name: 'app-account-index-notification' }">
                         Click here to update your Email Notification Settings.
                       </nuxt-link>
                     </p>
-                    <img src="@/assets/svg/email.svg" />
                   </div>
+                  <img src="@/assets/svg/email.svg" />
                 </div>
               </v-card>
             </v-row>
@@ -66,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, useRouter, watch } from '@nuxtjs/composition-api'
+import { computed, defineComponent, onBeforeMount, onMounted, ref, useStore } from '@nuxtjs/composition-api'
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import {
@@ -76,6 +82,7 @@ import {
 } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import LessonEndOverlay from '@/components/app/LessonEndOverlay.vue'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
+import { TypedStore } from '@/models'
 
 export default defineComponent({
   name: 'LessonEnd',
@@ -86,13 +93,16 @@ export default defineComponent({
   setup() {
     const {
       loadingVideo,
+      lesson,
+      endLessonOverlay,
       getClosingVideo,
       closingVideo
     } = useRegisterFlow()
-    const router = useRouter()
+    const store = useStore<TypedStore>()
     const isFullscreen = ref(false)
     const showPreview = ref(true)
     const viewOverlay = ref(true)
+    const hiddenInfoText = ref(false)
     const player = ref<PlayerInstance | null>(null)
 
     const onPlayerReady = (playerInstance: PlayerInstance) => {
@@ -102,6 +112,17 @@ export default defineComponent({
         player.value?.play()
       })
     }
+
+    const worksheetUrl = computed(() => {
+      return {
+        name: 'app-dashboard-online-worksheet',
+        query: {
+          childId: store.getters.getCurrentChild[0].id,
+          lessonId: lesson.value ? lesson.value.id : 0,
+          worksheet: 0
+        }
+      }
+    })
 
     const handleFullscreenChange = (val: boolean): void => {
       isFullscreen.value = val
@@ -117,25 +138,45 @@ export default defineComponent({
       showPreview.value = false
     }
 
-    onMounted(() => {
+    const handleMouseEnter = () => {
+      hiddenInfoText.value = false
+    }
+
+    const handleMouseLeave = () => {
+      hiddenInfoText.value = true
+    }
+
+    onBeforeMount(() => {
       getClosingVideo()
+    })
+
+    onMounted(() => {
+      setTimeout(() => {
+        hiddenInfoText.value = true
+      }, 4000)
     })
 
     const playerEvents = {
       // Whenever a video ends.
       [PLAYER_EVENTS.ON_ENDED]: (event: PlayerInstanceEvent) => {
-        router.push({ name: 'app-virtual-preschool' })
+        endLessonOverlay.value = true
       }
     }
 
     return {
       viewOverlay,
+      lesson,
+      hiddenInfoText,
+      handleMouseEnter,
+      handleMouseLeave,
+      endLessonOverlay,
       showPreview,
       onPlayerReady,
       handlePlay,
       handleFullscreenChange,
       playerEvents,
-      loadingVideo
+      loadingVideo,
+      worksheetUrl
     }
   }
 })
@@ -149,8 +190,6 @@ export default defineComponent({
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
-  font-size: 54px;
-  line-height: 80px;
   color: #96D5DE;
 }
 
@@ -158,15 +197,25 @@ export default defineComponent({
   position: absolute;
   bottom: -30px;
   right: 0;
+  z-index: 100;
+
+  img {
+    position: absolute;
+    top: -30px;
+    right: -100px;
+    width: 160px;
+  }
 }
 
 .email-info-text {
   position: relative;
   background: white;
-  width: 250px;
+  overflow: hidden;
+  width: 450px;
+  height: 96px;
   border-radius: 35px;
-  box-sizing: content-box;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  transition: width 0.3s ease-in-out;
 
   p {
     font-family: 'Quicksand';
@@ -176,18 +225,21 @@ export default defineComponent({
     line-height: 20px;
     color: #707070;
     margin: 0;
+    transition: width 0.3s ease-in-out;
   }
 
   a {
     color: #F89838 !important;
     text-decoration: underline !important;
   }
+}
 
-  img {
-    position: absolute;
-    top: -30px;
-    right: -100px;
-    width: 160px;
+.hide-text {
+  width: 0 !important;
+  padding: 0 !important;
+
+  p {
+    display: none;
   }
 }
 </style>

@@ -1,6 +1,6 @@
-import { Lesson } from '@/models'
+import { Lesson, TypedStore } from '@/models'
 import { axios } from '@/utils'
-import { ComputedRef } from '@nuxtjs/composition-api'
+import { ComputedRef, useStore } from '@nuxtjs/composition-api'
 
 export type LessonApiResponse = {
   lesson: Lesson
@@ -47,6 +47,7 @@ type LessonActivityProgress = {
 }
 
 export const useLessonApi = ({ child }: { child: ComputedRef<any> }) => {
+  const store = useStore<TypedStore>()
   const getChildsCurrentLesson = async (): Promise<
     LessonApiResponse | undefined
   > => {
@@ -55,6 +56,8 @@ export const useLessonApi = ({ child }: { child: ComputedRef<any> }) => {
         childrenIds: child.value.id
       }
     })
+    const objectCopy = JSON.stringify(result.lesson)
+    store.commit('children/lesson/SET_CURRENT_LESSON', JSON.parse(objectCopy))
 
     return result
   }
