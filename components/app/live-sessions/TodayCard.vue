@@ -3,7 +3,7 @@
     class="lsess-daily-entry-container py-3 pl-2"
     :class="{ 'lsess-daily-entry-container-mobile': mobile }"
   >
-    <div class="lsess-date">
+    <div v-if="shouldShowTime" class="lsess-date">
       {{ time }}
     </div>
     <v-hover v-slot="{ hover }">
@@ -145,6 +145,10 @@ export default {
     disableOpenDialog: {
       type: Boolean,
       default: false
+    },
+    shouldShowTime: {
+      type: Boolean,
+      default: true
     }
   },
 
