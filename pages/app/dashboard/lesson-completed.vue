@@ -51,7 +51,7 @@
       </v-card>
       <v-card
         v-if="nextLessonData"
-        class="!pg-relative !pg-m-0 !pg-mb-5 !pg-p-0 !pg-rounded-xl pg-overflow-hidden"
+        class="!pg-relative !pg-m-0 !pg-mb-5 !pg-p-0 !pg-rounded-xl pg-overflow-hidden !pg-cursor-pointer"
         max-width="450"
         height="315px"
         light
