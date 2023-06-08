@@ -1,15 +1,9 @@
 <template>
   <v-main class="watercolor-background">
-    <v-row no-gutters class="fill-height pt-16">
+    <v-row no-gutters class="fill-height sm:pg-pt-16 pg-pt-10">
       <v-col cols="12">
         <days-selector-overlay v-model="viewDaySelectorOverlay" />
         <welcome-overlay v-model="viewOverlay" />
-        <lesson-end-overlay
-          v-if="!loadingVideo && lesson"
-          :value.sync="endLessonOverlay"
-          :worksheet-url="worksheetUrl"
-          :lesson="lesson"
-        />
         <v-row no-gutters>
           <v-col cols="12">
             <v-row no-gutters justify="center" class="mb-6">
@@ -81,7 +75,6 @@ import WelcomeOverlay from '@/components/app/WelcomeOverlay.vue'
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
-import LessonEndOverlay from '@/components/app/LessonEndOverlay.vue'
 import { TypedStore } from '@/models'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
 import DaysSelectorOverlay from '@/components/app/DaysSelectorOverlay.vue'
@@ -89,7 +82,6 @@ import DaysSelectorOverlay from '@/components/app/DaysSelectorOverlay.vue'
 export default defineComponent({
   name: 'Welcome',
   components: {
-    LessonEndOverlay,
     WelcomeOverlay,
     PgVideoPlayer,
     DaysSelectorOverlay
@@ -111,7 +103,6 @@ export default defineComponent({
       changeViewOverlayStatus,
       playerEvents,
       getWelcomeVideo,
-      endLessonOverlay,
       getVideoByName,
       lesson
     } = useRegisterFlow(stepIntroductionVideo.value)
@@ -127,17 +118,6 @@ export default defineComponent({
     })
 
     const isFirstDay = computed(() => stepIntroductionVideo.value === 1)
-
-    const worksheetUrl = computed(() => {
-      return {
-        name: 'app-dashboard-online-worksheet',
-        query: {
-          childId: store.getters.getCurrentChild[0].id,
-          lessonId: lesson.value ? lesson.value.id : 0,
-          worksheet: 0
-        }
-      }
-    })
 
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
@@ -198,7 +178,6 @@ export default defineComponent({
     })
 
     onUnmounted(() => {
-      endLessonOverlay.value = false
       if (player.value) {
         player.value.replacePlaylist([])
       }
@@ -207,7 +186,6 @@ export default defineComponent({
     return {
       viewOverlay,
       viewDaySelectorOverlay,
-      endLessonOverlay,
       loadingVideo,
       showPreview,
       onPlayerReady,
@@ -215,7 +193,6 @@ export default defineComponent({
       playerEvents,
       getWelcomeVideo,
       handleFullscreenChange,
-      worksheetUrl,
       pageTitle,
       lesson
     }
