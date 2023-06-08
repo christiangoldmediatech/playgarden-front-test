@@ -1,11 +1,11 @@
 <template>
   <div
-    class="background-lesson d-flex flex-column align-center !pg-relative pg-overflow-y-auto pg-overflow-x-visible xl:pg-overflow-visible pg-max-h-screen pg-pb-16 pg-pt-5 lg:pg-pb-0 pg-max-w-[100vw]"
+    class="background-lesson d-flex flex-column align-center !pg-relative pg-overflow-y-auto pg-overflow-x-visible xl:pg-overflow-visible pg-max-h-screen pg-pb-16 pg-pt-14 md:pg-pt-0 lg:pg-pb-0 pg-max-w-[100vw]"
   >
     <h2
       class="overlay-title pg-text-[20px] md:pg-text-xl mb-2 pg-px-5 pg-mt-[-30px] md:pg-mt-5 md:pg-px-0"
     >
-      Don't forget to join us in our next live class. <br />
+      Don't forget to join us in our next live class. <br v-if="$vuetify.breakpoint.mdAndUp" />
       They are a great complement to the video lessons!
     </h2>
 
@@ -18,17 +18,19 @@
         v-if="upcomingMeeting && $vuetify.breakpoint.mdAndDown"
         :entry="upcomingMeeting"
         :mobile="true"
+        :should-show-time="false"
       />
     </div>
 
     <h3
-      class="overlay-subtitle pg-text-[13px] md:pg-text-[20px] !pg-mt-10 pg-w-full md:pg-w-10/12"
+      class="overlay-subtitle pg-text-[20px] md:pg-text-[20px] pg-mt-7 md:pg-mt-10 pg-mb-5 md:pg-mb-0 pg-w-full md:pg-w-10/12"
     >
       If the schedule doesn't work for you, check out the recommended videos in
       the Library!
     </h3>
 
     <div
+      v-if="$vuetify.breakpoint.mdAndUp"
       class="pg-mt-5 lg:pg-mt-14 pg-mb-3 pg-flex pg-flex-col md:pg-flex-row pg-items-center pg-justify-center pg-gap-10"
     >
       <v-card
@@ -67,6 +69,52 @@
         </div>
         <div
           class="pg-font-bold pg-text-center pg-text-lg pg-text-[#F89838] pg-py-4 pg-px-2"
+        >
+          Go to next day
+          <v-icon color="#F89838">
+            mdi-chevron-right
+          </v-icon>
+        </div>
+      </v-card>
+    </div>
+
+    <div v-else>
+      <v-card
+        class="!pg-relative !pg-m-0 !pg-mb-5 !pg-p-0 !pg-rounded-xl pg-overflow-hidden !pg-flex !pg-items-center"
+        max-width="380"
+        light
+        @click="goToLibrary"
+      >
+        <img
+          src="@/assets/png/dashboard/end-lesson/video_library.png"
+          class="pg-h-[140px] pg-w-[160px] pg-flex pg-items-center pg-justify-center pg-bg-[#FFF7F0] pg-object-cover"
+        />
+        <div
+          class="pg-text-center pg-text-sm pg-text-[#F89838] pg-py-4 pg-px-2"
+        >
+          Come read with us in the book nook!
+        </div>
+      </v-card>
+      <v-card
+        v-if="nextLessonData"
+        max-width="380"
+        class="!pg-relative !pg-m-0 !pg-mb-5 !pg-p-0 !pg-rounded-xl pg-overflow-hidden !pg-flex !pg-items-center"
+        light
+        @click="advance"
+      >
+        <div
+          class="pg-h-[140px] pg-w-[160px] pg-flex pg-items-center pg-justify-center pg-bg-[#FFF7F0]"
+        >
+          <pg-circle-letter-day
+            :day="nextLessonData ? nextLessonData.day : null"
+            :letter="nextLessonData ? nextLessonData.curriculumType.letter : ''"
+            no-auto-position
+            light-theme
+            size="110"
+          />
+        </div>
+        <div
+          class="pg-text-center pg-text-lg pg-text-[#F89838] pg-py-4 pg-px-2 pg-mx-auto"
         >
           Go to next day
           <v-icon color="#F89838">
@@ -170,7 +218,6 @@ export default defineComponent({
   font-style: normal;
   font-weight: 700;
   text-align: center;
-  margin: 0;
 }
 
 .overlay-title {
@@ -183,5 +230,6 @@ export default defineComponent({
 
 .background-lesson {
   background-image: url('@/assets/png/bg-lesson-completed.png');
+  background-position: center center;
 }
 </style>
