@@ -1,6 +1,6 @@
 <template>
   <div
-    class="background-lesson d-flex flex-column align-center !pg-relative pg-overflow-y-auto pg-overflow-x-visible xl:pg-overflow-visible pg-max-h-screen pg-pb-16 pg-pt-14 md:pg-pt-0 lg:pg-pb-0 pg-max-w-[100vw]"
+    class="background-lesson d-flex flex-column align-center !pg-relative pg-pb-16 pg-pt-14 md:pg-pt-0 lg:pg-pb-0"
   >
     <h2
       class="overlay-title pg-text-[20px] md:pg-text-xl mb-2 pg-px-5 pg-mt-[-30px] md:pg-mt-5 md:pg-px-0"
@@ -23,7 +23,7 @@
     </div>
 
     <h3
-      class="overlay-subtitle pg-text-[20px] md:pg-text-[20px] pg-mt-7 md:pg-mt-10 pg-mb-5 md:pg-mb-0 pg-w-full md:pg-w-10/12"
+      class="overlay-subtitle pg-text-[20px] md:pg-text-[20px] pg-mt-7 md:pg-mt-6 pg-mb-5 md:pg-mb-[-15px] pg-w-full md:pg-w-10/12"
     >
       If the schedule doesn't work for you, check out the recommended videos in
       the Library!
