@@ -54,7 +54,7 @@ export default {
           thumbnail,
           to: this.generateNuxtRoute('lesson-videos', { id }),
           viewed,
-          disabled
+          disabled: this.lesson.curriculumType.name === 'Intro' ? false : disabled
         }
       })
 
@@ -152,7 +152,7 @@ export default {
           thumbnail: videos.thumbnail,
           to: this.generateNuxtRoute('lesson-activities', { id }),
           viewed,
-          disabled
+          disabled: this.lesson.curriculumType.name === 'Intro' ? false : disabled
         }
       })
 
