@@ -225,7 +225,7 @@ export default {
         } else if (curriculumName === 'Intro') {
           const offlineWorksheets = this.lesson.worksheets.filter((worksheet) => worksheet.type === 'OFFLINE')
           this.fileUpload = (offlineWorksheets && offlineWorksheets.length > 0)
-          const pathPage = this.fileUpload ? this.generateNuxtRoute('lesson-completed') : this.generateNuxtRoute('offline-worksheet', { ...this.$route.query })
+          const pathPage = this.fileUpload ? this.generateNuxtRoute('offline-worksheet', { ...this.$route.query }) : this.generateNuxtRoute('lesson-completed')
           this.$router.push(pathPage)
         } else if (
           this.activities.progress < 100 &&
