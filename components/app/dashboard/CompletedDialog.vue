@@ -54,6 +54,10 @@ export default {
     }
   },
 
+  destroyed() {
+    document.querySelector('html').style.overflowY = 'scroll'
+  },
+
   methods: {
     close () {
       this.$refs.message.stopInterval()
