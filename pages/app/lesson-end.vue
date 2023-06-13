@@ -151,6 +151,7 @@ export default defineComponent({
     })
 
     onMounted(() => {
+      endLessonOverlay.value = false
       setTimeout(() => {
         hiddenInfoText.value = true
       }, 4000)
