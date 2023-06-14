@@ -134,50 +134,15 @@ export default defineComponent({
     })
 
     const sections = computed(() => {
-      let items: any = [
+      return [
         {
-          title: 'Music',
-          img: require('@/assets/jpg/virtual-preschool/Music.JPG'),
-          to: 'app-music',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
-        },
-        {
-          title: 'Video Library',
-          img: require('@/assets/png/virtual-preschool/live classes.png'),
-          to: 'app-library',
+          title: 'Worksheet',
+          img: require('@/assets/png/worksheet.png'),
+          to: props.worksheetUrl,
           description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
         }
       ]
-
-      if (onlineWorksheet.value) {
-        items = [
-          {
-            title: 'Worksheet',
-            img: require('@/assets/png/worksheet.png'),
-            to: props.worksheetUrl,
-            description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
-          },
-          ...items
-        ]
-      }
-
-      if (offlineWorksheet.value && !onlineWorksheet.value) {
-        items = [
-          {
-            title: 'Print Worksheets',
-            img: require('@/assets/png/dashboard/end-lesson/print_worksheets.png'),
-            to: { name: 'app-dashboard-offline-worksheet', query: { 'redirect-worksheet': true } },
-            description:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
-          },
-          ...items
-        ]
-      }
-
-      return items
     })
 
     const goTo = (routName: any) => {

@@ -190,7 +190,7 @@
               :key="onlineWorksheet.id"
               :is-admin="isAdmin"
               :online-worksheet="onlineWorksheet"
-              :progress="videos.progress"
+              :progress="lesson.curriculumType.name === 'Intro' ? 100 : videos.progress"
               :no-link-mode="noLinkMode"
               :to="
                 noLinkMode
@@ -199,7 +199,7 @@
                       worksheet: onlineWorksheetIndex
                     })
               "
-              :enabled="completedOnlineWorksheets >= onlineWorksheetIndex"
+              :enabled="lesson.curriculumType.name === 'Intro' || completedOnlineWorksheets >= onlineWorksheetIndex"
               :active="worksheetQuery === onlineWorksheetIndex"
             />
           </template>
@@ -213,7 +213,7 @@
                 :key="onlineWorksheet.id"
                 :is-admin="isAdmin"
                 :online-worksheet="onlineWorksheet"
-                :progress="videos.progress"
+                :progress="lesson.curriculumType.name === 'Intro' ? 100 : videos.progress"
                 :no-link-mode="noLinkMode"
                 :to="
                   noLinkMode
@@ -222,7 +222,7 @@
                         worksheet: onlineWorksheetIndex
                       })
                 "
-                :enabled="completedOnlineWorksheets >= onlineWorksheetIndex"
+                :enabled="lesson.curriculumType.name === 'Intro' || completedOnlineWorksheets >= onlineWorksheetIndex"
                 :active="worksheetQuery === onlineWorksheetIndex"
               />
             </v-col>
@@ -292,7 +292,7 @@
             <!-- WORKSHEET VIDEO -->
             <v-card
               v-if="!displayMode && worksheets.OFFLINE"
-              :disabled="videos.progress < 100 || noLinkMode"
+              :disabled="lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100 || noLinkMode"
               :to="generateNuxtRoute('offline-worksheet')"
               :ripple="false"
               class="dashboard-item"
@@ -322,7 +322,7 @@
                   <div
                     class="text-uppercase dashboard-item-title"
                     :class="{
-                      'dashboard-item-disabled': videos.progress < 100
+                      'dashboard-item-disabled': lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100
                     }"
                   >
                     {{ worksheets.OFFLINE.name }}
@@ -338,7 +338,7 @@
             <!-- UPLOAD WORKSHEETS -->
             <v-card
               v-if="!displayMode"
-              :disabled="videos.progress < 100"
+              :disabled="lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100"
               :ripple="false"
               class="dashboard-item"
               active-class="dashboard-item-active"
@@ -364,7 +364,7 @@
                   <div
                     class="text-uppercase dashboard-item-title"
                     :class="{
-                      'dashboard-item-disabled': videos.progress < 100
+                      'dashboard-item-disabled': lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100
                     }"
                   >
                     UPLOAD WORKSHEET
@@ -385,7 +385,7 @@
               <v-col cols="4" class="pa-0">
                 <v-card
                   v-if="!displayMode && worksheets.OFFLINE"
-                  :disabled="videos.progress < 100 || noLinkMode"
+                  :disabled="lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100 || noLinkMode"
                   :to="generateNuxtRoute('offline-worksheet')"
                   :ripple="false"
                   class="dashboard-item"
@@ -409,7 +409,7 @@
                       <div
                         class="text-uppercase dashboard-item-title"
                         :class="{
-                          'dashboard-item-disabled': videos.progress < 100
+                          'dashboard-item-disabled': lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100
                         }"
                       >
                         {{ worksheets.OFFLINE.name }}
