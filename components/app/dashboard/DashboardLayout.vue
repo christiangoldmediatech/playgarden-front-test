@@ -373,11 +373,11 @@ export default {
 
     &-column {
       max-height: 100%;
-      overflow-y: hidden;
+      // overflow-y: hidden;
 
-      @media screen and (max-width: $breakpoint-lg) {
-        overflow-y: scroll;
-      }
+      // @media screen and (max-width: $breakpoint-lg) {
+      //   overflow-y: scroll;
+      // }
     }
     &-card {
       display: block;

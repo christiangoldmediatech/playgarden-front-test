@@ -51,7 +51,7 @@
                   </pg-video-player>
                 </pg-loading>
 
-                <div class="email-info-wrapper d-flex" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
+                <div v-if="!isMobile" class="email-info-wrapper d-flex" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
                   <div class="email-info-text py-2 px-14" :class="{ 'hide-text': hiddenInfoText }">
                     <p>
                       Want to receive an email with all of the things you did today? <br>
@@ -64,6 +64,22 @@
                 </div>
               </v-card>
             </v-row>
+          </v-col>
+
+          <v-col v-if="isMobile" cols="12" class="w-100 d-flex justify-center mt-10 px-2">
+            <div class="email-info-wrapper-mobile d-flex pg-ml-[50px]">
+              <div class="email-info-img-wrapper d-flex align-center">
+                <img src="@/assets/svg/email.svg" />
+              </div>
+              <div class="email-info-text py-2 px-14">
+                <p>
+                  Want to receive an email with all of the things you did today? <br>
+                  <nuxt-link :to="{ name: 'app-account-index-notification' }">
+                    Click here to update your Email Notification Settings.
+                  </nuxt-link>
+                </p>
+              </div>
+            </div>
           </v-col>
         </v-row>
       </v-col>
@@ -83,6 +99,7 @@ import {
 import LessonEndOverlay from '@/components/app/LessonEndOverlay.vue'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
 import { TypedStore } from '@/models'
+import { useVuetifyHelper } from '@/composables'
 
 export default defineComponent({
   name: 'LessonEnd',
@@ -104,6 +121,10 @@ export default defineComponent({
     const viewOverlay = ref(true)
     const hiddenInfoText = ref(false)
     const player = ref<PlayerInstance | null>(null)
+    const vuetify = useVuetifyHelper()
+    const isMobile = computed(() => {
+      return vuetify.breakpoint.smAndDown
+    })
 
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
@@ -167,6 +188,7 @@ export default defineComponent({
     return {
       viewOverlay,
       lesson,
+      isMobile,
       hiddenInfoText,
       handleMouseEnter,
       handleMouseLeave,
@@ -197,14 +219,38 @@ export default defineComponent({
 .email-info-wrapper {
   position: absolute;
   bottom: -30px;
-  right: 0;
+  right: -30px;
   z-index: 100;
 
   img {
     position: absolute;
-    top: -30px;
-    right: -100px;
-    width: 160px;
+    top: -20px;
+    right: -90px;
+    width: 140px;
+  }
+}
+
+.email-info-wrapper-mobile {
+  .email-info-img-wrapper {
+    position: relative;
+  }
+
+  img {
+    position: absolute;
+    left: -50px;
+    width: 100px;
+    z-index: 100;
+  }
+
+  @media screen and (min-width: $breakpoint-xs) {
+    width: 450px;
+    height: 96px;
+
+    img {
+      top: -20px;
+      left: -90px;
+      width: 140px;
+    }
   }
 }
 
@@ -212,8 +258,6 @@ export default defineComponent({
   position: relative;
   background: white;
   overflow: hidden;
-  width: 450px;
-  height: 96px;
   border-radius: 35px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
   transition: width 0.3s ease-in-out;
@@ -232,6 +276,11 @@ export default defineComponent({
   a {
     color: #F89838 !important;
     text-decoration: underline !important;
+  }
+
+  @media screen and (min-width: $breakpoint-xs) {
+    width: 450px;
+    height: 96px;
   }
 }
 
