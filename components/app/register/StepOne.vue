@@ -22,15 +22,15 @@
       <!-- HEADING -->
       <div :class="['pg-mt-6', 'pg-inline']">
         <NormalTitle
-          text="CREATE AN ACCOUNT TO START LEARNING!"
+          :text="$t('register.title')"
           font-size="40px"
           font-size-mobile="20px"
         />
       </div>
 
       <div class="pg-text-xl pg-text-black pg-opacity-50">
-        Are you excited for a fun-filled day of learning?
-        <span v-if="!isCreditCardRequired"> NO CREDIT CARD REQUIRED!</span>
+        {{ $t('register.subtitle1') }}
+        <span v-if="!isCreditCardRequired"> {{ $t('register.subtitle2') }}</span>
       </div>
 
       <!-- CONTENT -->
