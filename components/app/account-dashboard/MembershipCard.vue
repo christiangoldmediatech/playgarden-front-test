@@ -2,12 +2,12 @@
   <v-card class="pa-4 pa-sm-8 d-flex flex-column align-start account-card-border" :style="{ '--card-custom-color': membershipColor }">
     <div class="w-100 d-flex justify-space-between align-centers">
       <span class="account-card-title">
-        Membership
+        {{ $t('account.membership.title') }}
       </span>
     </div>
 
     <div class="py-2 account-card-subtitle">
-      Information about your membership
+      {{ $t('account.membership.subtitle') }}
     </div>
 
     <div class="account-pink-dashed-line my-4 mx-auto"></div>
@@ -15,7 +15,7 @@
     <v-col v-if="billing" cols="12">
       <v-row no-gutters>
         <v-col cols="12" class="mb-4">
-          <span class="account-field-label">Your next billing date is:</span>
+          <span class="account-field-label">  {{ $t('account.membership.nextBilling') }}</span>
           <p class="account-field-value ma-0">
             {{ billing.nextBillingDate }}
           </p>
@@ -23,7 +23,7 @@
 
         <v-col cols="12" class="mb-4">
           <span class="account-field-label">
-            Your {{ membershipInterval }} membership fee is:
+            {{ $t('account.membership.feeDescription', {type: membershipInterval}) }}
           </span>
           <div
             v-if="billing.planAmountDiscount"
@@ -97,23 +97,23 @@
         </v-col>
 
         <v-col v-if="plan" cols="12" class="mb-4">
-          <span class="account-field-label">Your plan is:</span>
+          <span class="account-field-label">{{ $t('account.membership.plan') }}</span>
           <p class="account-field-value ma-0">
             {{ plan.name }}
           </p>
         </v-col>
 
         <v-col v-if="billings.length > 0" class="mb-4">
-          <span class="account-field-label">Billing history:</span>
+          <span class="account-field-label">{{ $t('account.membership.billing') }}</span>
           <v-btn class="text-decoration-underline text-transform-none" color="#FFAB37" text x-small @click="viewBillingHistory = true">
-            View all
+            {{ $t('commonWords.viewMore') }}
           </v-btn>
           <v-row no-gutters class="mb-2">
             <v-col cols="6">
-              <span class="account-small-header">Date</span>
+              <span class="account-small-header">{{ $t('commonWords.date') }}</span>
             </v-col>
             <v-col cols="6">
-              <span class="account-small-header">Price</span>
+              <span class="account-small-header">{{ $t('commonWords.price') }}</span>
             </v-col>
           </v-row>
           <div v-for="billing in billings" :key="`billing-${billing.id}`">
@@ -129,7 +129,7 @@
         </v-col>
 
         <v-col v-if="userCards.length > 0" cols="12" class="mb-4">
-          <span class="account-field-label">Payment method</span>
+          <span class="account-field-label">{{ $t('account.membership.payment') }}</span>
           <p class="account-field-value ma-0">
             {{ cardMaskedNumber }}
           </p>
@@ -145,7 +145,7 @@
         block
         @click="goToPage"
       >
-        VIEW MORE
+        {{ $t('commonWords.viewMore') }}
       </v-btn>
     </v-col>
 
@@ -158,13 +158,15 @@ import dayjs from 'dayjs'
 import { get } from 'lodash'
 import { TypedStore } from '@/models'
 import { computed, defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
-import { useBilling } from '@/composables'
+import { useBilling, useLanguageHelper } from '@/composables'
 import BillingHistoryDialog from '@/components/BillingHistoryDialog.vue'
 
 export default defineComponent({
   components: { BillingHistoryDialog },
   name: 'MembershipCard',
   setup() {
+    const language = useLanguageHelper()
+
     const membershipColor = ref('255, 160, 200')
 
     const viewBillingHistory = ref(false)
@@ -181,9 +183,9 @@ export default defineComponent({
     const membershipInterval = computed(() => {
       switch (billing.value?.membershipInterval) {
         case 'month':
-          return 'monthly'
+          return language.t('account.membership.monthly')
         case 'year':
-          return 'yearly'
+          return language.t('account.membership.yearly')
       }
       return null
     })

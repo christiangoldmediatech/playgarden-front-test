@@ -2,12 +2,12 @@
   <v-card class="pa-4 pa-sm-8 d-flex flex-column align-start account-card-border" :style="{ '--card-custom-color': notificationsColor }">
     <div class="w-100 d-flex justify-space-between align-centers">
       <span class="account-card-title">
-        Notifications
+        {{ $t('account.notifications.title') }}
       </span>
     </div>
 
     <div class="py-2 account-card-subtitle">
-      Manage the notifications you want to receive
+      {{ $t('account.notifications.subtitle') }}
     </div>
 
     <div class="account-purple-dashed-line"></div>
@@ -47,7 +47,7 @@
         block
         @click="goToPage"
       >
-        VIEW MORE
+        {{ $t('commonWords.viewMore') }}
       </v-btn>
     </v-col>
   </v-card>

@@ -21,7 +21,7 @@
             >
 
             <div class="account-section-title py-2">
-              {{ $t('accountPage') }}
+              {{ $t('account.title') }}
             </div>
 
             <div class="account-owner-name w-100 mt-5 py-3 mr-4">
