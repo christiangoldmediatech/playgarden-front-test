@@ -45,5 +45,16 @@ export default {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+
+  async getOfflineWorksheetsByChildrenAndLesson(ctx, { childId, lessonId }) {
+    try {
+      const data = await this.$axios.$get(
+        `/worksheets/children/${childId}/lesson/${lessonId}`
+      )
+      return data
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }

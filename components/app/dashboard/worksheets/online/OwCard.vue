@@ -294,7 +294,11 @@ export default {
       await this.saveProgress()
       if (this.lastQuestion) {
         this.$nuxt.$emit(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_COMPLETED)
-        this.completed = true
+        if (this.lesson.curriculumType.name !== 'Intro') {
+          this.completed = true
+        } else {
+          this.returnAction()
+        }
       } else {
         this.index += 1
         this.$router.push(this.generateNuxtRoute('online-worksheet', {

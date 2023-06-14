@@ -30,7 +30,7 @@
         @exit="triggerScheduleDialog"
         @return="onLessonCompletedDialogClose"
       />
-      <LessonScheduleFinished v-model="isShowingScheduleDialog" />
+      <LessonScheduleFinished v-model="isShowingScheduleDialog" :should-advance="lessonData.curriculumType.name === 'Intro'" />
       <PuzzleClipPath />
     </PgVideoPlayer>
   </div>
@@ -68,6 +68,7 @@ import { TypedStore } from '@/models'
 import LessonCompletedDialog from '@/components/app/dashboard/LessonCompletedDialog.vue'
 import PuzzleClipPath from '@/components/PuzzleClipPath.vue'
 import LessonScheduleFinished from '@/components/app/dashboard/worksheets/LessonSceduleFinished.vue'
+import { mapGetters } from 'vuex'
 
 type LessonVideoPlayerParams = {
   playlist: MediaObject[]
@@ -82,6 +83,10 @@ export default defineComponent({
     PgVideoPlayer,
     LessonCompletedDialog,
     PuzzleClipPath
+  },
+
+  computed: {
+    ...mapGetters('admin/curriculum', { lessonData: 'getLesson' })
   },
 
   setup() {

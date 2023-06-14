@@ -243,6 +243,10 @@ export default {
     //   return !this.overrideMode && (this.lesson && this.lesson.curriculumType.id > 1) && (today < monday)
     // }
     canAdvance() {
+      if (this.lesson && this.lesson.curriculumType.name === 'Intro') {
+        return true
+      }
+
       if (this.lesson && this.childId && !this.previewMode) {
         // completed all video lessons
         const areLessonVideosCompleted = this.lesson?.videos?.every(video =>
@@ -369,6 +373,11 @@ export default {
 
     &-column {
       max-height: 100%;
+      overflow-y: hidden;
+
+      @media screen and (max-width: $breakpoint-lg) {
+        overflow-y: scroll;
+      }
     }
     &-card {
       display: block;

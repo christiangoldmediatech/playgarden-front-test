@@ -28,7 +28,8 @@ export default {
   mixins: [DashboardMixin],
   data: () => {
     return {
-      loading: false
+      loading: false,
+      fileUpload: false
     }
   },
   computed: {
@@ -124,6 +125,7 @@ export default {
   },
   methods: {
     ...mapActions('children', { getAllChildren: 'get' }),
+    ...mapActions('offline-worksheet', ['getOfflineWorksheetsByChildrenAndLesson']),
     ...mapActions('children/lesson', [
       'getCurrentLesson',
       'getCurrentLessonByChildrenId',
@@ -194,7 +196,6 @@ export default {
       }
     },
     redirectDashboard() {
-      // console.log('redirect method called from', from)
       if (this.lesson) {
         const lessonDay = this.lesson.day
         const curriculumName = this.lesson.curriculumType.name
@@ -216,14 +217,16 @@ export default {
             id: this.getNextId(this.videos.items)
           })
           this.$router.push(route)
-        } else if (lessonDay === 1 && curriculumName === 'Intro' && this.worksheets.OFFLINE && this.worksheets.OFFLINE.videoDetail && (!this.worksheets.OFFLINE.viewed || !this.worksheets.OFFLINE.viewed.completed)) {
-          const route = this.generateNuxtRoute('offline-worksheet', { ...this.$route.query })
-          this.$router.push(route)
         } else if ((this.worksheets.progress < 100 && !this.worksheets.isEmpty) && this.worksheets.ONLINE) {
           const route = this.generateNuxtRoute('online-worksheet', {
             id: this.getNextId(this.worksheets.ONLINE)
           })
           this.$router.push(route)
+        } else if (curriculumName === 'Intro') {
+          const offlineWorksheets = this.lesson.worksheets.filter((worksheet) => worksheet.type === 'OFFLINE')
+          this.fileUpload = (offlineWorksheets && offlineWorksheets.length > 0)
+          const pathPage = this.fileUpload ? this.generateNuxtRoute('offline-worksheet', { ...this.$route.query }) : this.generateNuxtRoute('lesson-completed')
+          this.$router.push(pathPage)
         } else if (
           this.activities.progress < 100 &&
           this.activities.items.length

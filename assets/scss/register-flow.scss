@@ -1,7 +1,11 @@
 .player-content-card {
   width: 80%;
-  height: 620px;
+  height: 220px;
   border-radius: 16px;
+
+  @media screen and (min-width: $breakpoint-xs) {
+    height: 620px;
+  }
 }
 
 .play-icon {

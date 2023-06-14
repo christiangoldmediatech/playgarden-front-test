@@ -54,7 +54,7 @@
         >
           <v-btn
             :color="button.color"
-            class="offline-worksheet-btn"
+            class="offline-worksheet-btn mb-8"
             :loading="loading"
             :disabled="button.disabled"
             block
