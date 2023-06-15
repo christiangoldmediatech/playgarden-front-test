@@ -35,7 +35,7 @@
           'error--text': shouldError,
         }"
       >
-        Address
+        {{ $t('account.shipping.address') }}
       </span>
     </template>
     <template #item="{ item }">

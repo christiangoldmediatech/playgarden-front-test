@@ -152,13 +152,13 @@ export default {
 
     sections () {
       return [
-        { text: 'General', routeName: 'app-account-index', show: true },
-        { text: 'Personal Information', routeName: 'app-account-index-personal', show: true },
-        { text: 'Student Profile', routeName: 'app-account-index-student-profile', show: true },
-        { text: 'Membership', routeName: 'app-account-index-membership', show: !this.isUserCaregiver },
-        { text: 'Caregivers', routeName: 'app-account-index-caregiver', show: !this.isUserCaregiver },
-        { text: 'Notifications', routeName: 'app-account-index-notification', show: !this.isUserCaregiver },
-        { text: 'Logout', routeName: 'auth-logout', show: true }
+        { text: this.$i18n.t('account.menu.general'), routeName: 'app-account-index', show: true },
+        { text: this.$i18n.t('account.menu.personalInformation'), routeName: 'app-account-index-personal', show: true },
+        { text: this.$i18n.t('account.menu.studentProfile'), routeName: 'app-account-index-student-profile', show: true },
+        { text: this.$i18n.t('account.menu.membership'), routeName: 'app-account-index-membership', show: !this.isUserCaregiver },
+        { text: this.$i18n.t('account.menu.caregivers'), routeName: 'app-account-index-caregiver', show: !this.isUserCaregiver },
+        { text: this.$i18n.t('account.menu.notifications'), routeName: 'app-account-index-notification', show: !this.isUserCaregiver },
+        { text: this.$i18n.t('account.menu.logout'), routeName: 'auth-logout', show: true }
       ]
     },
 

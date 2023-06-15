@@ -15,7 +15,14 @@ export default async (context, locale) => {
       phoneNumber: 'Número de teléfono',
       viewMore: 'Ver más',
       date: 'Fecha',
-      price: 'Precio'
+      price: 'Precio',
+      edit: 'Editar',
+      password: 'Contraseña',
+      newPassword: 'Nueva Contraseña',
+      passwordConfirmation: 'Confirmación de Contraseña',
+      save: 'Guardar',
+      cancel: 'Cancelar',
+      changePassword: 'Cambiar contraseña'
     },
     menuLandingPage: {
       home: 'Inicio',
@@ -59,18 +66,35 @@ export default async (context, locale) => {
     },
     account: {
       title: 'Mi cuenta',
+      menu: {
+        general: 'General',
+        personalInformation: 'Información personal',
+        studentProfile: 'Perfil del estudiante',
+        membership: 'Membresia',
+        caregivers: 'Niñeras',
+        notifications: 'Notificaciones',
+        logout: 'Cerrar sesión'
+      },
       general: {
         title: 'Información general',
-        subtitle: 'Administra tu información personal.'
+        subtitle: 'Administra tu información personal.',
+        syncFacebook: 'Conecta tu cuenta de Facebook',
+        syncGoogle: 'Conecta tu cuenta de Google',
+        connectedFacebook: 'Tu cuenta de Facebook está conectada\'',
+        connectedGoogle: 'Tu cuenta de Google está conectada'
       },
       shipping: {
         title: 'Dirección de envío',
         subtitle: 'Usamos esta información para enviarte los materiales de estudio de Playgarden Prep',
         street: 'Dirección',
+        address: 'Dirección',
         city: 'Ciudad',
         country: 'Paīs',
         state: 'Estado',
-        zip: 'Codigo postal'
+        zip: 'Codigo postal',
+        message: 'Por favor ingrese una dirección de envío',
+        addAddress: 'Agregar dirección de envío',
+        apt: 'Apt, Suite, PO BOX (opcional)'
       },
       student: {
         title: 'Información del estudiante',

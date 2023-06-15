@@ -5,7 +5,7 @@
       <v-form @submit.prevent="passes(onSubmit)">
         <v-row no-gutters>
           <v-col cols="12">
-            <span class="d-inline-block account-field-label mb-2">Address</span>
+            <span class="d-inline-block account-field-label mb-2">{{ $t('account.shipping.address') }}</span>
             <search-address-autocomplete
               v-model="draft.address1"
               :use-new-style="true"
@@ -21,12 +21,12 @@
                   <v-col cols="12" md="6" class="pr-0 pr-md-4">
                     <!-- Street 2 -->
                     <span class="d-inline-block account-field-label mb-2">
-                      Apt, Suite, PO BOX (optional)
+                      {{ $t('account.shipping.apt') }}
                     </span>
                   </v-col>
                   <v-col v-if="!isMobile" cols="12" md="6" class="pl-0 pl-md-4">
                     <!-- City -->
-                    <span class="d-inline-block account-field-label mb-2">City</span>
+                    <span class="d-inline-block account-field-label mb-2"> {{ $t('account.shipping.city') }}</span>
                   </v-col>
                 </v-row>
               </v-col>
@@ -50,7 +50,7 @@
                   <v-col cols="12" md="6" class="pl-0 pl-md-4">
                     <!-- City -->
                     <validation-provider v-slot="{ errors }" name="City" rules="required">
-                      <span v-if="isMobile" class="d-inline-block account-field-label mb-2">City</span>
+                      <span v-if="isMobile" class="d-inline-block account-field-label mb-2"> {{ $t('account.shipping.city') }}</span>
                       <pg-text-field
                         v-model="draft.city"
                         clearable
@@ -76,7 +76,7 @@
             class="pr-0 pr-md-4"
           >
             <!-- State -->
-            <span class="d-inline-block account-field-label mb-2">State</span>
+            <span class="d-inline-block account-field-label mb-2"> {{ $t('account.shipping.state') }}</span>
             <validation-provider
               v-slot="{ errors }"
               name="State"
@@ -103,7 +103,7 @@
             class="pl-0 pl-md-4"
           >
             <!-- Country -->
-            <span class="d-inline-block account-field-label mb-2">Country</span>
+            <span class="d-inline-block account-field-label mb-2"> {{ $t('account.shipping.country') }}</span>
             <validation-provider
               v-slot="{ errors }"
               name="Country"
@@ -144,7 +144,7 @@
             class="pr-0 pr-md-4"
           >
             <!-- Zipcode -->
-            <span class="d-inline-block account-field-label mb-2">Zip Code</span>
+            <span class="d-inline-block account-field-label mb-2"> {{ $t('account.shipping.zip') }}</span>
             <validation-provider
               v-slot="{ errors }"
               name="Zipcode"
@@ -200,7 +200,7 @@
           type="submit"
           x-large
         >
-          {{ saveButtonText }}
+          {{ $t('commonWords.save') }}
         </v-btn>
 
         <v-btn
@@ -212,7 +212,7 @@
           x-large
           @click="onCancel(reset)"
         >
-          {{ hideCancelButtonText }}
+          {{ $t('commonWords.cancel') }}
         </v-btn>
       </v-form>
     </validation-observer>
@@ -220,7 +220,7 @@
     <!-- Readonly user shipping address -->
     <v-row v-else no-gutters>
       <v-col cols="12" md="6" class="pr-0 pr-md-4">
-        <span class="d-inline-block account-field-label mb-2">Street</span>
+        <span class="d-inline-block account-field-label mb-2">{{ $t('account.shipping.street') }}</span>
         <pg-text-field
           :value="formattedAddress"
           background-color="#F7F7F7"
@@ -233,7 +233,7 @@
       </v-col>
 
       <v-col cols="12" md="6" class="pl-0 pl-md-4">
-        <span class="d-inline-block account-field-label mb-2">City</span>
+        <span class="d-inline-block account-field-label mb-2">{{ $t('account.shipping.city') }}</span>
         <pg-text-field
           :value="draft.city"
           background-color="#F7F7F7"
@@ -246,7 +246,7 @@
       </v-col>
 
       <v-col cols="12" md="6" class="pr-0 pr-md-4">
-        <span class="d-inline-block account-field-label mb-2">State</span>
+        <span class="d-inline-block account-field-label mb-2">{{ $t('account.shipping.state') }}</span>
         <pg-text-field
           :value="draft.state"
           background-color="#F7F7F7"
@@ -259,7 +259,7 @@
       </v-col>
 
       <v-col cols="12" md="6" class="pl-0 pl-md-4">
-        <span class="d-inline-block account-field-label mb-2">Country</span>
+        <span class="d-inline-block account-field-label mb-2">{{ $t('account.shipping.country') }}</span>
         <pg-text-field
           :value="formattedCountry"
           background-color="#F7F7F7"
@@ -272,7 +272,7 @@
       </v-col>
 
       <v-col cols="12" md="6" class="pr-0 pr-md-4">
-        <span class="d-inline-block account-field-label mb-2">Zip Code</span>
+        <span class="d-inline-block account-field-label mb-2">{{ $t('account.shipping.zip') }}</span>
         <pg-text-field
           :value="draft.zipCode"
           background-color="#F7F7F7"
@@ -322,17 +322,9 @@ export default {
       type: Boolean,
       default: false
     },
-    saveButtonText: {
-      type: String,
-      default: 'Save'
-    },
     hideCancelButton: {
       type: Boolean,
       default: false
-    },
-    hideCancelButtonText: {
-      type: String,
-      default: 'Cancel'
     },
     saveButtonColor: {
       type: String,

@@ -14,7 +14,14 @@ export default async (context, locale) => {
       phoneNumber: 'Phone Number',
       viewMore: 'View more',
       date: 'Date',
-      price: 'Price'
+      price: 'Price',
+      edit: 'Edit',
+      password: 'Password',
+      newPassword: 'New Password',
+      passwordConfirmation: 'Password Confirmation',
+      save: 'Save',
+      cancel: 'Cancel',
+      changePassword: 'Change Password'
     },
     menuLandingPage: {
       home: 'Home',
@@ -57,18 +64,35 @@ export default async (context, locale) => {
     },
     account: {
       title: 'My Account',
+      menu: {
+        general: 'General',
+        personalInformation: 'Personal Information',
+        studentProfile: 'Student Profile',
+        membership: 'Membership',
+        caregivers: 'Caregivers',
+        notifications: 'Notifications',
+        logout: 'Logout'
+      },
       general: {
         title: 'General Info',
-        subtitle: 'Manage your personal information.'
+        subtitle: 'Manage your personal information.',
+        syncFacebook: 'Sync your Facebook Account',
+        syncGoogle: 'Sync your Google Account',
+        connectedFacebook: 'Your account is synced with Facebook',
+        connectedGoogle: 'Your account is synced with Google'
       },
       shipping: {
         title: 'Shipping Address',
         subtitle: 'We use this information to send you Playgarden Prep educational materials.',
         street: 'Street',
+        address: 'Address',
         city: 'City',
         country: 'Country',
         state: 'State',
-        zip: 'Zip Code'
+        zip: 'Zip Code',
+        message: 'Please enter your shipping address.',
+        addAddress: 'Add Address',
+        apt: 'Apt, Suite, PO BOX (optional)'
       },
       student: {
         title: 'Student Profile',
