@@ -18,9 +18,11 @@
       </v-btn>
     </v-col>
 
-    <v-img :src="require('~/assets/png/child-no-cc-flow-dialog.png')" width="200" height="200" class="!pg-absolute pg-top-[-140px] pg-left-0 pg-right-0 pg-mx-auto !pg-z-[5000]" />
+    <v-col cols="12" class="ma-0 pa-0">
+      <v-img :src="require('~/assets/png/child-no-cc-flow-dialog.png')" width="200" height="200" class="pg-mx-auto !pg-z-[5000]" />
+    </v-col>
 
-    <v-col cols="12" class="pa-0 pg-mt-16">
+    <v-col cols="12" class="pa-0">
       <v-row no-gutters justify="center">
         <h1 class="pg-text-2xl pg-text-center pg-text-[#68C453]">
           Are you enjoying Playgarden Online?
