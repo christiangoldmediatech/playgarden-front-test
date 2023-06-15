@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:16.17
 
 # Create and change to the app directory.
 WORKDIR /home/node/app
