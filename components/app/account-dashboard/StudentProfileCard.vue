@@ -2,12 +2,12 @@
   <v-card class="pa-4 pa-sm-8 d-flex flex-column align-start account-card-border" :style="{ '--card-custom-color': studentProfileColor }">
     <div class="w-100 d-flex justify-space-between align-centers">
       <span class="account-card-title">
-        Student Profile
+        {{ $t('account.student.title') }}
       </span>
     </div>
 
     <div class="py-2 account-card-subtitle">
-      In this section you can edit the Child’s information or add a new Child.
+      {{ $t('account.student.subtitle') }}
     </div>
 
     <div class="account-orange-dashed-line"></div>
@@ -44,15 +44,15 @@
                       color="#FFAB37"
                       @click="selectChildToEdit(item)"
                     >
-                      View more
+                      {{ $t('commonWords.viewMore') }}
                     </v-btn>
                   </div>
                   <div>
-                    <span class="child-base-text pg-text-[#707070]">Date of birth:  </span>
+                    <span class="child-base-text pg-text-[#707070]">{{ $t('account.student.birthDate') }}  </span>
                     <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">{{ getChildBirthday(item.birthday) }}</span>
                   </div>
                   <div>
-                    <span class="child-base-text pg-text-[#707070]">Gender:  </span>
+                    <span class="child-base-text pg-text-[#707070]">{{ $t('account.student.gender') }}   </span>
                     <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">
                       {{ item.gender === 'FEMALE' ? 'Girl' : item.gender === 'MALE' ? 'Boy' : '' }}
                     </span>
@@ -73,7 +73,7 @@
         block
         @click="goToPage"
       >
-        VIEW MORE
+        {{ $t('commonWords.viewMore') }}
       </v-btn>
     </v-col>
 

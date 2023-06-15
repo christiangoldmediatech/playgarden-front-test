@@ -13,3 +13,5 @@ export const useCookiesHelper = wrapProperty('$cookies', false)
 export const useAppEventBusHelper = wrapProperty('$appEventBus', false)
 
 export const useAccessorHelper = wrapProperty('$accessor', false)
+
+export const useLanguageHelper = wrapProperty('$i18n', false)

@@ -10,10 +10,10 @@
               <div
                 class="account-card-title"
               >
-                Membership
+                {{ $t('account.membership.title') }}
               </div>
               <div class="py-2 account-card-subtitle">
-                Information about your membership
+                {{ $t('account.membership.subtitle') }}
               </div>
               <div class="account-pink-dashed-line my-4 mx-auto"></div>
             </v-col>
@@ -34,7 +34,7 @@
             <!-- Next Billing Date -->
             <v-row v-else no-gutters class="mb-3">
               <v-col cols="12">
-                <span class="account-field-label">Your next billing date is:</span>
+                <span class="account-field-label"> {{ $t('account.membership.nextBilling') }}</span>
               </v-col>
 
               <v-col cols="12">
@@ -45,7 +45,7 @@
             <!-- Monthly Membership Fee -->
             <v-row no-gutters class="mb-3">
               <v-col cols="12">
-                <span class="account-field-label">Your {{ membershipInterval }} membership fee is:</span>
+                <span class="account-field-label">  {{ $t('account.membership.feeDescription', {type: membershipInterval}) }}</span>
               </v-col>
 
               <v-col
@@ -174,7 +174,7 @@
                     mdi-plus-circle
                   </v-icon>
                   <span class="white--text">
-                    Add coupon code
+                    {{ $t('account.membership.addCoupon') }}
                   </span>
                 </v-btn>
               </v-col>
@@ -190,8 +190,8 @@
         <!-- Payment Method -->
         <membership-btn
           class="mb-4"
-          title="Billing history"
-          subtitle="View your billing history"
+          :title="$t('account.membership.billingHistory')"
+          :subtitle="$t('account.membership.viewBillingHistory')"
           color="#FAC3D9"
           text-color="#606060"
           @click="viewBillingHistory = true"
@@ -201,7 +201,7 @@
 
         <membership-btn
           v-if="billing.stripeStatus !== 'canceled'"
-          title="Payment Method"
+          :title="$t('account.membership.payment')"
           :subtitle="cardMaskedNumber"
           color="#CFBCE3"
           text-color="#606060"
@@ -236,7 +236,7 @@
             <v-col cols="12" class="text-center">
               <div class="pg-rounded-[9px] py-3" :style="{ 'background': plan.color }">
                 <div class="account-plan-text">
-                  Your Plan is:
+                  {{ $t('account.membership.plan') }}
                 </div>
                 <div class="account-plan-name">
                   {{ plan.name }}
@@ -266,8 +266,8 @@
             >
               <membership-btn
                 v-if="!isCaregiver"
-                title="Change plan"
-                subtitle="Change your plan whenever you want"
+                :title="$t('account.membership.changePlan')"
+                :subtitle="$t('account.membership.changePlanDescription')"
                 color="#F89838"
                 text-color="#FFFFFF"
                 @click="handleChangePlan"
@@ -301,7 +301,7 @@
             text
             @click="removeSubscriptionModal = true"
           >
-            CANCEL MEMBERSHIP
+            {{ $t('account.membership.cancelMembership') }}
           </v-btn>
           <!-- Create Subscription -->
           <!-- <v-btn v-else block color="primary" x-large @click="selectPlan">
@@ -716,9 +716,9 @@ export default {
     membershipInterval() {
       switch (this.billing.membershipInterval) {
         case 'month':
-          return 'monthly'
+          return this.$i18n.t('account.membership.monthly')
         case 'year':
-          return 'yearly'
+          return this.$i18n.t('account.membership.yearly')
       }
       return null
     },

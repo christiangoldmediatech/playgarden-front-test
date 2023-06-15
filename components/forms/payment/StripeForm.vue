@@ -5,7 +5,7 @@
       :class="{ 'mt-8': $vuetify.breakpoint.smAndDown }"
     >
       <span class="font-weight-bold text-h5 pg-letter-spacing">
-        PAYMENT INFORMATION
+        {{ $t('account.membership.payment') }}
       </span>
     </p>
 
@@ -25,7 +25,7 @@
         <pg-text-field
           v-model="draft.promotion_code"
           :error-messages="errors"
-          label="Promotion Code"
+          :label="$t('account.membership.couponPlaceholder')"
           solo
           class="custom-text-field"
           @blur="checkValid"
@@ -89,7 +89,7 @@
         x-large
         @click="onCancel(reset)"
       >
-        CLOSE
+        {{ $t('commonWords.cancel') }}
       </v-btn>
     </v-form>
   </validation-observer>

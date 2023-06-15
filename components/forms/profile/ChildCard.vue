@@ -26,7 +26,7 @@
                 class="text-decoration-underline"
                 @click.stop="removeChild(draft)"
               >
-                DELETE CHILD
+                {{ $t('account.student.deleteChild') }}
               </v-btn>
             </v-col>
           </v-row>
@@ -38,7 +38,7 @@
                   <v-row no-gutters>
                     <v-col cols="12">
                       <span class="account-field-label">
-                        Change icon:
+                        {{ $t('account.student.changeIcon') }}
                       </span>
                     </v-col>
                     <v-sheet
@@ -90,7 +90,7 @@
             md="6"
           >
             <!-- First name -->
-            <span class="d-inline-block account-field-label mb-2">First name</span>
+            <span class="d-inline-block account-field-label mb-2">{{ $t('commonWords.firstName') }}</span>
             <validation-provider
               v-slot="{ errors }"
               :name="
@@ -118,7 +118,7 @@
             md="6"
           >
             <!-- Last name -->
-            <span class="d-inline-block account-field-label mb-2">Last name</span>
+            <span class="d-inline-block account-field-label mb-2">{{ $t('commonWords.lastName') }}</span>
             <validation-provider
               v-slot="{ errors }"
               :name="
@@ -144,7 +144,7 @@
         <v-row class="mb-2" no-gutters>
           <v-col cols="12" md="6" class="pr-unset pr-md-2">
             <!-- Birthday date -->
-            <span class="d-inline-block account-field-label mb-2">Date of birth</span>
+            <span class="d-inline-block account-field-label mb-2">{{ $t('account.student.birthDate') }}</span>
             <v-menu
               v-model="draft._menu"
               :close-on-content-click="false"
@@ -190,7 +190,7 @@
           </v-col>
           <v-col cols="12" md="6" class="pl-unset pl-md-2">
             <!-- Gender -->
-            <span class="d-inline-block account-field-label mb-2">Gender </span>
+            <span class="d-inline-block account-field-label mb-2">{{ $t('account.student.gender') }}</span>
             <validation-provider
               v-slot="{ errors }"
               :name="
@@ -216,7 +216,7 @@
             <v-row no-gutters>
               <v-col cols="12" md="6">
                 <div>
-                  <span class="child-base-text pg-text-[#78C383]">Current letter: </span>
+                  <span class="child-base-text pg-text-[#78C383]">{{ $t('account.student.currentLetter') }}</span>
                   <span class="child-base-text">
                     {{ draft.progress.curriculumType.letter ? `Letter ${draft.progress.curriculumType.letter}` : undefined }}
                   </span>
@@ -224,7 +224,7 @@
               </v-col>
               <v-col cols="12" md="6">
                 <div>
-                  <span class="child-base-text pg-text-[#78C383]">Current day: </span>
+                  <span class="child-base-text pg-text-[#78C383]">{{ $t('account.student.currentDay') }}</span>
                   <span class="child-base-text">
                     {{ draft.progress.day ? `Day ${draft.progress.day}` : undefined }}
                   </span>
@@ -243,7 +243,7 @@
           type="submit"
           x-large
         >
-          SAVE
+          {{ $t('commonWords.save') }}
         </v-btn>
         <v-btn
           block
@@ -253,7 +253,7 @@
           x-large
           @click="editChild"
         >
-          Cancel
+          {{ $t('commonWords.cancel') }}
         </v-btn>
       </v-form>
     </validation-observer>
@@ -274,12 +274,12 @@
         </h1>
 
         <div>
-          <span class="child-base-text pg-text-[#707070]">Date of birth:  </span>
+          <span class="child-base-text pg-text-[#707070]">{{ $t('account.student.birthDate') }}</span>
           <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">{{ getChildBirthday }}</span>
         </div>
 
         <div>
-          <span class="child-base-text pg-text-[#707070]">Gender:  </span>
+          <span class="child-base-text pg-text-[#707070]">{{ $t('account.student.gender') }}</span>
           <span class="child-base-text pg-text-[#A5A5A5] pg-font-[400]">
             {{ draft.gender === 'FEMALE' ? 'Girl' : draft.gender === 'MALE' ? 'Boy' : '' }}
           </span>
@@ -290,7 +290,7 @@
         <v-row class="d-flex space-between" no-gutters>
           <v-col cols="12" md="6" class="d-flex">
             <div class="ml-md-auto mr-auto">
-              <span class="child-base-text pg-text-[#78C383]">Current letter: </span>
+              <span class="child-base-text pg-text-[#78C383]">{{ $t('account.student.currentLetter') }}</span>
               <span class="child-base-text">
                 {{ draft.progress.curriculumType.letter ? `Letter ${draft.progress.curriculumType.letter}` : undefined }}
               </span>
@@ -299,7 +299,7 @@
 
           <v-col cols="12" md="6" class="d-flex">
             <div class="ml-md-auto mr-auto">
-              <span class="child-base-text pg-text-[#78C383]">Current day: </span>
+              <span class="child-base-text pg-text-[#78C383]">{{ $t('account.student.currentDay') }}</span>
               <span class="child-base-text">
                 {{ draft.progress.day ? `Day ${draft.progress.day}` : undefined }}
               </span>
@@ -315,7 +315,7 @@
           class="text-decoration-underline"
           @click="$emit('openTimeline')"
         >
-          View letter progress
+          {{ $t('account.student.viewCurrentLetter') }}
         </v-btn>
       </v-col>
       <v-col cols="12" class="d-flex justify-center">
@@ -325,7 +325,7 @@
           class="text-decoration-underline"
           @click="goToProgressReport"
         >
-          View progress report
+          {{ $t('account.student.viewProgressReport') }}
         </v-btn>
       </v-col>
 
@@ -335,7 +335,7 @@
         color="#F89838"
         @click="editChild"
       >
-        <span class="text-decoration-underline">Edit</span>
+        <span class="text-decoration-underline">{{ $t('commonWords.edit') }}</span>
         <v-icon right>
           mdi-pencil
         </v-icon>

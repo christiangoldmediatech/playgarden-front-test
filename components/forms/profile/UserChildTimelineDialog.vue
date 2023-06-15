@@ -23,7 +23,7 @@
           <template v-if="child">
             <div class="timeline-header pl-2 pl-md-9">
               <span class="timeline-name">
-                {{ child.firstName }}'s timeline
+                {{ child.firstName }}{{ $t('account.student.timeline') }}
               </span>
 
               <div class="timeline-letter-selector pr-2 pr-md-9 pt-2">

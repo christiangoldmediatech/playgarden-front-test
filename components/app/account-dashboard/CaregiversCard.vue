@@ -2,12 +2,12 @@
   <v-card class="pa-4 pa-sm-8 d-flex flex-column align-start account-card-border" :style="{ '--card-custom-color': caregiverColor }">
     <div class="w-100 d-flex justify-space-between align-centers">
       <span class="account-card-title">
-        Caregivers
+        {{ $t('account.caregivers.title') }}
       </span>
     </div>
 
     <div class="py-2 account-card-subtitle">
-      Give access to your child’s caregiver!
+      {{ $t('account.caregivers.subtitle') }}
     </div>
 
     <div class="account-green-dashed-line mt-2 mb-4 mx-auto"></div>
@@ -19,7 +19,7 @@
         </v-col>
         <v-col cols="8" lg="9">
           <p class="account-caregiver-placeholder ma-0">
-            Give access to your child’s caregiver!
+            {{ $t('account.caregivers.subtitle') }}
           </p>
         </v-col>
       </v-row>
@@ -49,7 +49,7 @@
         block
         @click="goToPage"
       >
-        VIEW MORE
+        {{ $t('commonWords.viewMore') }}
       </v-btn>
     </v-col>
   </v-card>

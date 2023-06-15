@@ -6,10 +6,10 @@
           <!-- Desktop Title -->
           <v-col cols="12" md="6" class="d-none d-sm-block">
             <div class="account-page-title">
-              Student Profile
+              {{ $t('account.student.title') }}
             </div>
             <div class="account-page-subtitle">
-              In this section you can edit the Child’s information or add a new Child.
+              {{ $t('account.student.subtitle') }}
             </div>
             <div class="my-4 pr-10 pl-2">
               <div class="account-orange-dashed-line"></div>
@@ -29,7 +29,7 @@
               <v-icon color="white" left>
                 mdi-plus-circle
               </v-icon>
-              Add Child
+              {{ $t('account.student.addChild') }}
             </v-btn>
           </v-col>
         </v-row>

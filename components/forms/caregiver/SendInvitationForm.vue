@@ -1,7 +1,7 @@
 <template>
   <validation-observer v-slot="{ invalid, passes }">
     <p class="title">
-      ADD NEW CAREGIVERS
+      {{ $t('account.caregivers.addNewCaregiver') }}
     </p>
 
     <v-form @submit.prevent="passes(onSubmit)">
@@ -78,7 +78,7 @@
         type="submit"
         large
       >
-        SEND INVITES
+        {{ $t('account.caregivers.sendInvitation') }}
       </v-btn>
     </v-form>
   </validation-observer>

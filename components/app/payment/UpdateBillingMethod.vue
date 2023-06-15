@@ -1,6 +1,6 @@
 <template>
   <stripe-form
-    button-text="SAVE"
+    :button-text="$t('commonWords.save')"
     cancelable
     :loading="loading"
     :no-terms="noTerms"
