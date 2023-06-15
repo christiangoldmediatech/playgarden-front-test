@@ -21,7 +21,10 @@ export default async (context, locale) => {
       passwordConfirmation: 'Password Confirmation',
       save: 'Save',
       cancel: 'Cancel',
-      changePassword: 'Change Password'
+      changePassword: 'Change Password',
+      browseByLetter: 'Browse by letter',
+      apply: 'Apply',
+      planPrice: 'Plan and price'
     },
     menuLandingPage: {
       home: 'Home',
@@ -98,12 +101,26 @@ export default async (context, locale) => {
         title: 'Student Profile',
         subtitle: 'In this section you can edit the Child’s information or add a new Child.',
         birthDate: 'Date of birth:',
-        gender: 'Gender:'
+        gender: 'Gender:',
+        addChild: 'Add Child',
+        currentLetter: 'Current letter:',
+        currentDay: 'Current day:',
+        deleteChild: 'Delete child',
+        changeIcon: 'Change icon:',
+        viewCurrentLetter: 'View letter progress',
+        viewProgressReport: 'View progress report',
+        timeline: '\'s timeline'
       },
       caregivers: {
         title: 'Caregivers',
         subtitle: 'Give access to your child’s caregiver!',
-        description: 'Give access to your child’s caregiver!'
+        description: 'Give access to your child’s caregiver!',
+        addCaregiver: 'Add caregiver',
+        addNewCaregiver: 'Add new caregiver',
+        sendInvitation: 'Send invites',
+        deleteCaregiver: 'Delete caregiver',
+        pending: 'Pending invites sent',
+        pendingDescription: 'You don´t have any pending invites'
       },
       membership: {
         title: 'Membership',
@@ -114,7 +131,17 @@ export default async (context, locale) => {
         feeDescription: 'Your %{type} membership fee is:',
         plan: 'Your plan is:',
         billing: 'Billing history',
-        payment: 'Payment method'
+        payment: 'Payment method',
+        changePayment: 'Change payment method',
+        addCoupon: 'Add coupon code',
+        couponPlaceholder: 'Promotion code',
+        couponNote: '*Note that you may only use one promotion code at a time; adding a new promo code will remove any currently-active coupons that were previously applied.',
+        billingHistory: 'Billing history',
+        viewBillingHistory: 'View your billing history',
+        viewInvoice: 'View invoice',
+        changePlan: 'Change plan',
+        changePlanDescription: 'Change your plan whenever you want',
+        cancelMembership: 'Cancel membership'
       },
       notifications: {
         title: 'Notifications',

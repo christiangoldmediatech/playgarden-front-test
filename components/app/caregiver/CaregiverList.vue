@@ -10,10 +10,10 @@
       <!-- Desktop Title -->
       <v-col cols="12" md="6">
         <div class="account-page-title !pg-text-[#78C383]">
-          Caregivers
+          {{ $t('account.caregivers.title') }}
         </div>
         <div class="account-page-subtitle">
-          Give access to your child’s caregiver!
+          {{ $t('account.caregivers.subtitle') }}
         </div>
         <div class="my-4 pr-10 pl-2">
           <div class="account-green-dashed-line"></div>
@@ -32,7 +32,7 @@
             </v-col>
             <v-col cols="8" lg="9">
               <p class="account-caregiver-placeholder ma-0">
-                Give access to your child’s caregiver!
+                {{ $t('account.caregivers.subtitle') }}
               </p>
             </v-col>
           </v-row>
@@ -53,7 +53,7 @@
                   color="#F89838"
                   @click="setEditing(caregiver)"
                 >
-                  <span class="text-decoration-underline">Edit</span>
+                  <span class="text-decoration-underline">{{ $t('commonWords.edit') }}</span>
                   <v-icon right>
                     mdi-pencil
                   </v-icon>
@@ -76,13 +76,13 @@
                 text
                 @click="remove(caregiver)"
               >
-                DELETE CAREGIVER
+                {{ $t('account.caregivers.deleteCaregiver') }}
               </v-btn>
 
               <v-row class="mt-8" no-gutters>
                 <v-row no-gutters>
                   <v-col cols="12" md="6" class="pr-unset pr-sm-4">
-                    <span class="d-inline-block account-field-label mb-2">First name</span>
+                    <span class="d-inline-block account-field-label mb-2">{{ $t('commonWords.firstName') }}</span>
                     <pg-text-field
                       v-model="form.firstName"
                       background-color="#F7F7F7"
@@ -95,7 +95,7 @@
                   </v-col>
 
                   <v-col cols="12" md="6" class="pl-unset pl-sm-4">
-                    <span class="d-inline-block account-field-label mb-2">Last name</span>
+                    <span class="d-inline-block account-field-label mb-2">{{ $t('commonWords.lastName') }}</span>
                     <v-text-field
                       v-model="form.lastName"
                       background-color="#F7F7F7"
@@ -118,7 +118,7 @@
                 color="#AAD579"
                 @click="saveCaregivers(form)"
               >
-                SAVE
+                {{ $t('commonWords.save') }}
               </v-btn>
               <v-btn
                 x-large
@@ -130,7 +130,7 @@
                 color="#F89838"
                 @click="isEditing = false"
               >
-                CANCEL
+                {{ $t('commonWords.cancel') }}
               </v-btn>
             </v-col>
           </v-row>
@@ -146,7 +146,7 @@
             </v-col>
             <v-col cols="8" lg="9">
               <p class="account-caregiver-title mb-2">
-                Pending invites sent
+                {{ $t('account.caregivers.pending') }}
               </p>
               <invitation-list />
             </v-col>

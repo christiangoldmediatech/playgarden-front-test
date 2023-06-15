@@ -17,7 +17,7 @@
         <v-icon color="white" left>
           mdi-plus-circle
         </v-icon>
-        Add Caregiver
+        {{ $t('account.caregivers.addCaregiver') }}
       </v-btn>
     </template>
 
@@ -39,7 +39,7 @@
         <p
           class="text-left pg-text-[25px] pg-text-[#707070] pg-font-[500]"
         >
-          Add Caregiver
+          {{ $t('account.caregivers.addCaregiver') }}
         </p>
       </v-col>
     </v-row>

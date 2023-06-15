@@ -22,7 +22,10 @@ export default async (context, locale) => {
       passwordConfirmation: 'Confirmación de Contraseña',
       save: 'Guardar',
       cancel: 'Cancelar',
-      changePassword: 'Cambiar contraseña'
+      changePassword: 'Cambiar contraseña',
+      browseByLetter: 'Buscar por letra',
+      apply: 'Aplicar',
+      planPrice: 'Plan y precio'
     },
     menuLandingPage: {
       home: 'Inicio',
@@ -100,11 +103,25 @@ export default async (context, locale) => {
         title: 'Información del estudiante',
         subtitle: 'En esta sección puedes editar la información del estudiante o agregar un nuevo estudiante.',
         birthDate: 'Fecha de nacimiento:',
-        gender: 'Género:'
+        gender: 'Género:',
+        addChild: 'Agregar estudiante',
+        currentLetter: 'Letra actual:',
+        currentDay: 'Día actual:',
+        deleteChild: 'Eliminar estudiante',
+        changeIcon: 'Cambiar icono:',
+        viewCurrentLetter: 'Ver progreso de la letra',
+        viewProgressReport: 'Ver reporte del progreso',
+        timeline: ' historial'
       },
       caregivers: {
         title: 'Niñeras',
-        subtitle: 'Concede acceso a tu niñera!'
+        subtitle: 'Concede acceso a tu niñera!',
+        addCaregiver: 'Agregar niñera',
+        addNewCaregiver: 'Agregar nueva niñera',
+        sendInvitation: 'Enviar invitaciones',
+        deleteCaregiver: 'Eliminar niñera',
+        pending: 'Invitaciones pendientes',
+        pendingDescription: 'No tienes ninguna invitación pendiente'
       },
       membership: {
         title: 'Membresia',
@@ -115,7 +132,17 @@ export default async (context, locale) => {
         feeDescription: 'Tu membresia %{type} es de:',
         plan: 'Tu plan es:',
         billing: 'Historial de pagos',
-        payment: 'Información de pago'
+        payment: 'Información de pago',
+        changePayment: 'Cambiar información de pago',
+        addCoupon: 'Agregar codigo de descuento',
+        couponPlaceholder: 'Codigo de descuento',
+        couponNote: '*Tenga en cuenta que solo puede usar un código de promoción a la vez; agregar un nuevo código de promoción eliminará cualquier cupón actualmente activo que se haya aplicado anteriormente.',
+        billingHistory: 'Historial de pago',
+        viewBillingHistory: 'Ver historial de pago',
+        viewInvoice: 'Ver factura',
+        changePlan: 'Cambiar plan',
+        changePlanDescription: 'Cambiar tu plan cuando quieras',
+        cancelMembership: 'Cancelar membresia'
       },
       notifications: {
         title: 'Notificaciones',

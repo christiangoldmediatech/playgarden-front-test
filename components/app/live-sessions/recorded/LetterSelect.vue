@@ -5,7 +5,7 @@
     item-value="id"
     hide-details
     solo
-    :placeholder="(labelTitle) ? labelTitle : 'Browse by letter'"
+    :placeholder="(labelTitle) ? labelTitle : $t('commonWords.browseByLetter')"
     v-bind="{ ...$attrs }"
     @input="$emit('input', $event)"
   >
