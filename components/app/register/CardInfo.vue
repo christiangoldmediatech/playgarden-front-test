@@ -19,7 +19,7 @@
     <div>
       <template>
         <NormalTitle
-          text="It's the easiest way to give your child an immersive education at home!"
+          :text="$t('register.cardInfo.title')"
           font-size="24px"
           font-size-mobile="20px"
         />
@@ -28,7 +28,7 @@
 
     <!-- CONTENT -->
     <div class="pg-text-base lg:pg-text-lg pg-text-black pg-mt-4">
-      Engaged children and proven outcomes!
+      {{ $t('register.cardInfo.subtitle') }}
     </div>
 
     <!-- IMAGE -->

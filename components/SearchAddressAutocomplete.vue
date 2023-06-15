@@ -35,7 +35,7 @@
           'error--text': shouldError,
         }"
       >
-        Address
+        {{ $t('register.registerForm.address') }}
       </span>
     </template>
     <template #item="{ item }">
