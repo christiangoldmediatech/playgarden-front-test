@@ -197,6 +197,24 @@ export default async (context, locale) => {
         title2: 'Change your child’s icon',
         title3: 'CHOOSE AN ICON FOR YOUR CHILD:'
       }
+    },
+    welcome: {
+      titleDay1: 'Welcome to Playgarden Online!',
+      titleDay2: 'Hi, welcome back to Playgarden and your second day of learning',
+      titleDay3: 'Hi, welcome back to Playgarden and your third day of learning',
+      overlay: {
+        title: 'Your free trial has officially begun!',
+        subtitle1: '*Cancel any time from your',
+        subtitle2: 'Account Settings'
+      },
+      daysSelector: {
+        title: 'One last thing before you get started!',
+        subtitle: 'Please tell us how many days a week do you expect to use Playgarden Online',
+        daySingular: 'DAY',
+        dayPlural: 'DAYS',
+        button: 'START FIRST LESSON',
+        footer: 'This will help us improve your little one\'s learning experience'
+      }
     }
   })
 }

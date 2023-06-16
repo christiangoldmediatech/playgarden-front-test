@@ -7,10 +7,10 @@
         </v-col>
         <v-col cols="12" md="8" class="py-6 px-2">
           <div class="day-selector-title mb-4">
-            <h1>One last thing before you get started!</h1>
+            <h1>{{ $t('welcome.daysSelector.title') }}</h1>
           </div>
           <div class="day-selector-subtitle mb-6">
-            <h2>Please tell us how many days a week do you expect to use Playgarden Online</h2>
+            <h2>{{ $t('welcome.daysSelector.subtitle') }}</h2>
           </div>
           <v-row no-gutters justify="center">
             <v-col v-for="dayOption in dayOptions" :key="dayOption.value" cols="4" class="d-flex justify-center">
@@ -22,7 +22,7 @@
                 @click="selectDay(dayOption.value)"
               >
                 <img class="mb-2" :src="dayOption.image" />
-                <span>{{ dayOption.value === 1 ? 'DAY' : 'DAYS' }}</span>
+                <span>{{ dayOption.value === 1 ? $t('welcome.daysSelector.daySingular') : $t('welcome.daysSelector.dayPlural') }}</span>
               </v-card>
             </v-col>
           </v-row>
@@ -35,11 +35,11 @@
               large
               @click="submitDaysSelected"
             >
-              <span class="day-selector-btn">START FIRST LESSON</span>
+              <span class="day-selector-btn">{{ $t('welcome.daysSelector.button') }}</span>
             </v-btn>
           </div>
           <div class="d-flex justify-center day-selector-small-text">
-            <span>This will help us improve your little one's learning experience</span>
+            <span>{{ $t('welcome.daysSelector.footer') }}</span>
           </div>
         </v-col>
       </v-row>
