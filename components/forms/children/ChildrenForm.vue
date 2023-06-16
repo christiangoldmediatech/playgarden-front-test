@@ -18,7 +18,7 @@
           clearable
           :disabled="isLoading"
           :error-messages="errors"
-          label="First name"
+          :label="$t('commonWords.firstName')"
           solo
           class="custom-text-field"
         />
@@ -35,7 +35,7 @@
           clearable
           :disabled="isLoading"
           :error-messages="errors"
-          label="Last name"
+          :label="$t('commonWords.lastName')"
           solo
           class="custom-text-field"
         />
@@ -52,7 +52,7 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <pg-text-field
-            label="Birth date"
+            :label="$t('commonWords.birthDate')"
             readonly
             solo
             :suffix="itemCurrent._birthdayFormatted ? '' : 'MM/DD/YYYY'"
@@ -89,7 +89,7 @@
               x-large
               @click="itemCurrent.gender = gender"
             >
-              {{ gender === "FEMALE" ? "Girl" : "Boy" }}
+              {{ gender === "FEMALE" ? $t('commonWords.girl') : $t('commonWords.boy') }}
             </v-btn>
           </v-col>
         </v-row>
@@ -123,7 +123,7 @@
       color="primary"
       @click.stop="removeChild"
     >
-      DELETE CHILD PROFILE
+      {{ $t('children.button3') }}
     </v-btn>
 
     <v-divider v-if="removable" class="mt-6" />

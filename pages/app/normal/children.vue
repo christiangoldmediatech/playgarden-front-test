@@ -11,7 +11,7 @@
           mdi-less-than
         </v-icon>
 
-        Back
+        {{ $t('commonWords.backButton') }}
       </v-btn>
     </v-row>
     <back-warning-dialog v-model="showBackWarning" />

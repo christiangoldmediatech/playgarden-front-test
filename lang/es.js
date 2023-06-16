@@ -11,6 +11,9 @@ export default async (context, locale) => {
       firstName: 'Nombre',
       lastName: 'Apellido',
       fullName: 'Nombre completo',
+      birthDate: 'Fecha de nacimiento',
+      girl: 'Niña',
+      boy: 'Niño',
       phoneNumber: 'Número de teléfono',
       viewMore: 'Ver más',
       date: 'Fecha',
@@ -25,7 +28,8 @@ export default async (context, locale) => {
       browseByLetter: 'Buscar por letra',
       apply: 'Aplicar',
       planPrice: 'Plan y precio',
-      onlinePreschool: 'ONLINE PRESCHOOL'
+      onlinePreschool: 'ONLINE PRESCHOOL',
+      backButton: 'Atrás'
     },
     menuLandingPage: {
       home: 'Inicio',
@@ -180,6 +184,18 @@ export default async (context, locale) => {
         footer1: 'Puedes cancelar tu prueba y membresía en cualquier momento desde la Configuración de tu cuenta. ',
         footer2: 'Una vez que finalice tu prueba gratuita se te colocará en el',
         footer3: ' plan mensual, puedes cambiar planes en cualquier momento desde tu página de perfil.'
+      }
+    },
+    children: {
+      title: 'INFORMACIÓN DEL NIÑO',
+      subtitle: 'Cuéntanos sobre tu pequeño:',
+      button1: 'EMPIEZA A APRENDER',
+      button2: 'AGREGAR OTRO NIÑO',
+      button3: 'ELIMINAR PERFIL DEL NIÑO',
+      iconSelector: {
+        title1: 'Elige un icono para tu hijo',
+        title2: 'Cambia el icono de tu hijo',
+        title3: 'ELIGE UN ICONO PARA TU HIJO:'
       }
     }
   })

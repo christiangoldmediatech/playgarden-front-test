@@ -11,6 +11,9 @@ export default async (context, locale) => {
       firstName: 'First Name',
       lastName: 'Last Name',
       fullName: 'Full Name',
+      birthDate: 'Birth Date',
+      girl: 'Girl',
+      boy: 'Boy',
       phoneNumber: 'Phone Number',
       viewMore: 'View more',
       date: 'Date',
@@ -25,7 +28,8 @@ export default async (context, locale) => {
       browseByLetter: 'Browse by letter',
       apply: 'Apply',
       planPrice: 'Plan and price',
-      onlinePreschool: 'ONLINE PRESCHOOL'
+      onlinePreschool: 'ONLINE PRESCHOOL',
+      backButton: 'Back'
     },
     menuLandingPage: {
       home: 'Home',
@@ -180,6 +184,18 @@ export default async (context, locale) => {
         footer1: 'You can cancel your trial and membership anytime from the account settings. ',
         footer2: 'Once your free trial ends you will be placed on the',
         footer3: ' monthly plan, you can change plans at any time in your profile page.'
+      }
+    },
+    children: {
+      title: 'CHILD INFORMATION',
+      subtitle: 'Tell us about your little one:',
+      button1: 'START LEARNING',
+      button2: 'ADD ANOTHER CHILD',
+      button3: 'DELETE CHILD PROFILE',
+      iconSelector: {
+        title1: 'Choose an icon for your child',
+        title2: 'Change your child’s icon',
+        title3: 'CHOOSE AN ICON FOR YOUR CHILD:'
       }
     }
   })
