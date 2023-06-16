@@ -1,4 +1,4 @@
-FROM 318730995815.dkr.ecr.us-east-1.amazonaws.com/node:16.17-alpine
+FROM public.ecr.aws/docker/library/node:16.17.0
 
 # Create and change to the app directory.
 WORKDIR /home/node/app

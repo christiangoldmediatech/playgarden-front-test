@@ -1,4 +1,4 @@
-FROM node:16.17
+FROM public.ecr.aws/docker/library/node:16.17.0
 
 # Create and change to the app directory.
 WORKDIR /home/node/app

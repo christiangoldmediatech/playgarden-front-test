@@ -1,5 +1,5 @@
 ui:
-  image: "node:16.17"
+  image: "public.ecr.aws/docker/library/node:16.17.0"
   volumes:
     - "/home/node/app/node_modules/"
     - ".:/home/node/app"
