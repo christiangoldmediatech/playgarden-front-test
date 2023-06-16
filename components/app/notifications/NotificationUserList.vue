@@ -7,10 +7,10 @@
           <!-- Desktop Title -->
           <v-col cols="12" sm="6" class="d-no  d-sm-block">
             <div class="account-page-title !pg-text-[#C399ED]">
-              Notifications
+              {{ $t('account.notifications.title') }}
             </div>
             <div class="account-page-subtitle">
-              Manage the notifications you want to receive
+              {{ $t('account.notifications.subtitle') }}
             </div>
             <div class="my-4 pr-10 pl-2">
               <div class="account-purple-dashed-line"></div>

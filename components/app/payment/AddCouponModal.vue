@@ -23,7 +23,7 @@
           <p
             class="text-center font-weight-bold pg-text-[20px] pg-leading-[25px]"
           >
-            Add Coupon Code
+            {{ $t('account.membership.addCoupon') }}
           </p>
         </v-col>
       </v-row>
@@ -31,7 +31,7 @@
         <v-col cols="12">
           <pg-text-field
             v-model="promotionCode"
-            label="Promotion Code"
+            :label="$t('account.membership.couponPlaceholder')"
             class="custom-text-field"
             :color="isValidCoupon ? '' : 'error'"
             :suffix="getTextValidateCoupon"
@@ -39,9 +39,7 @@
             solo
           />
           <small class="note-text mt-n4 mb-5">
-            *Note that you may only use one promotion code at a time;
-            adding a new promo code will remove any currently-active
-            coupons that were previously applied.
+            {{ $t('account.membership.couponNote') }}
           </small>
         </v-col>
       </v-row>
@@ -52,7 +50,7 @@
           :loading="loading || isValidatingCoupon"
           @click="savePromotion"
         >
-          APPLY
+          {{ $t('commonWords.apply') }}
         </v-btn>
       </v-col>
       <v-col cols="12" class="text-center pa-0 pb-5">
@@ -63,7 +61,7 @@
           :loading="loading || isValidatingCoupon"
           @click="closeDialog"
         >
-          CANCEL
+          {{ $t('commonWords.cancel') }}
         </v-btn>
       </v-col>
       <img

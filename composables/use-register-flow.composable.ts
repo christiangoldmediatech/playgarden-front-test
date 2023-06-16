@@ -81,13 +81,13 @@ export const useRegisterFlow = (step = 1) => {
     loadingVideo.value = false
   }
 
-  const getClosingVideo = async () => {
+  const getClosingVideo = () => {
     loadingVideo.value = true
-    const response = await axios.$get('/lessons', { params: { name: 'WELCOME', includeHidden: true } })
-    if (response && response.lessons.length > 0) {
-      const responseVideo = response.lessons[0]
-      if (responseVideo && responseVideo.closingVideo) {
-        const video = responseVideo.closingVideo
+    const currentLesson = store.getters['children/lesson/getCurrentLessonInState']
+    if (currentLesson) {
+      if (currentLesson.closingVideo) {
+        lesson.value = currentLesson
+        const video = currentLesson.closingVideo
         const mediaObjectVideo = videoToMediaObject(video)
         closingVideo.value = [mediaObjectVideo]
       }
@@ -119,8 +119,8 @@ export const useRegisterFlow = (step = 1) => {
     // Whenever a video ends.
     [PLAYER_EVENTS.ON_ENDED]: (event: PlayerInstanceEvent) => {
       if (step === 1) {
-        endLessonOverlay.value = true
         saveVideoProgress(lesson.value.lesson.id, currentChild.value.id, determineSaveVideoProgressPayload(event, true))
+        router.push({ name: 'app-lesson-end', query: { shouldRedirect: 'false' } })
       } else {
         router.push({ name: 'app-dashboard', query: { shouldRedirect: 'false' } })
       }

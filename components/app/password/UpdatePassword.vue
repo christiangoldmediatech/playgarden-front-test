@@ -1,8 +1,8 @@
 <template>
   <v-row no-gutters>
     <v-col class="mb-6 text-center" cols="12">
-      <span class="font-weight-bold text-h5">
-        CHANGE PASSWORD
+      <span class="font-weight-bold text-h5 pg-uppercase">
+        {{ $t('commonWords.changePassword') }}
       </span>
     </v-col>
 
