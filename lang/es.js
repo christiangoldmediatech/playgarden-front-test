@@ -156,6 +156,8 @@ export default async (context, locale) => {
       footer2: 'PUEDES CANCELAR TU PRUEBA EN CUALQUIER MOMENTO',
       footer3: 'Puedes fácilmente cancelar tu prueba o membresía en cualquier momento desde tu Configuración de cuenta. Una vez que finalice tu prueba gratuita, se te colocará en el',
       footer4: 'plan mensual; su información de pago proporcionada se debitará automáticamente, y su primer ciclo de facturación comenzará. Puede cambiar los planes en cualquier momento desde su Configuración de cuenta. Para obtener ayuda, comuníquese con',
+      button1: 'REACTIVAR CUENTA',
+      button2: 'EMPIEZA A APRENDER AHORA',
       card: {
         title: 'Unase a miles de familias felices que se han graduado de Playgarden Prep',
         subtitle: '¿Aún no estás seguro? Llámanos, envíanos un mensaje de texto o un correo electrónico con tus preguntas, y un miembro de nuestro equipo de profesores se comunicará contigo para brindarte más información.',
@@ -167,6 +169,17 @@ export default async (context, locale) => {
         subtitle1: 'QUIERES SABER MÁS SOBRE TU',
         subtitle2: 'PRUEBA GRATUITA',
         footer: '*Puedes cancelar tu membresía en cualquier momento desde la Configuración de tu cuenta.'
+      },
+      stripe: {
+        description1: 'Necesitamos tu información de tarjeta de crédito para confirmar tu identidad',
+        description2: ', pero NO se te cobrará hasta que finalice tu prueba gratuita de 15 días, a menos que elijas finalizar tu prueba antes de tiempo',
+        promotionCode: 'Código de Promoción',
+        acceptTerms1: 'He leído y acepto los',
+        acceptTerms2: 'Términos y Condiciones',
+        cancel: 'CERRAR',
+        footer1: 'Puedes cancelar tu prueba y membresía en cualquier momento desde la Configuración de tu cuenta. ',
+        footer2: 'Una vez que finalice tu prueba gratuita se te colocará en el',
+        footer3: ' plan mensual, puedes cambiar planes en cualquier momento desde tu página de perfil.'
       }
     }
   })

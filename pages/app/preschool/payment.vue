@@ -140,6 +140,7 @@ import {
 import { useGtm } from '@/composables/web/gtm'
 import { useUTM } from '@/composables/web/utm'
 import {
+  useLanguageHelper,
   usePayment,
   useToastHelper
 } from '@/composables'
@@ -168,6 +169,7 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const toast = useToastHelper()
+    const language = useLanguageHelper()
 
     const Gtm = useGtm()
     const Utm = useUTM({ route: route.value })
@@ -187,8 +189,8 @@ export default defineComponent({
 
     const stripeButtonText = computed(() => {
       return isUserInactive.value
-        ? 'REACTIVATE ACCOUNT'
-        : 'START LEARNING NOW'
+        ? language.t('payment.button1')
+        : language.t('payment.button2')
     })
 
     async function goToNextStep() {

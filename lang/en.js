@@ -156,6 +156,8 @@ export default async (context, locale) => {
       footer2: 'YOU CAN CANCEL YOUR TRIAL ANY TIME',
       footer3: 'You can easily cancel your trial or membership at any time from your Account Settings. Once your free trial ends, you will be placed on the',
       footer4: 'monthly plan; your provided payment information will be automatically charged, and your first billing cycle will begin. You can change plans at any time from your Account Settings. For assistance, contact',
+      button1: 'REACTIVATE ACCOUNT',
+      button2: 'START LEARNING NOW',
       card: {
         title: 'Join thousands of happy families that have graduated from Playgarden Prep',
         subtitle: 'Still not sure? Call, text, or email us with your questions, and a member of our teacher team will get back to you with more information.',
@@ -167,6 +169,17 @@ export default async (context, locale) => {
         subtitle1: 'WANT TO KNOW MORE ABOUT YOUR',
         subtitle2: 'FREE TRIAL',
         footer: '*You can cancel your membership at any time from the Account Settings.'
+      },
+      stripe: {
+        description1: 'We need your credit card information to confirm your identity',
+        description2: ', but you will NOT be charged until your 15 day free trial has ended, unless you choose to end your trial early',
+        promotionCode: 'Promotion Code',
+        acceptTerms1: 'I have read and accept the',
+        acceptTerms2: 'Terms & Conditions',
+        cancel: 'CLOSE',
+        footer1: 'You can cancel your trial and membership anytime from the account settings. ',
+        footer2: 'Once your free trial ends you will be placed on the',
+        footer3: ' monthly plan, you can change plans at any time in your profile page.'
       }
     }
   })

@@ -6,13 +6,13 @@
         :class="{ 'mt-n10': $vuetify.breakpoint.smAndUp }"
       >
         <strong class="text-left">
-          We need your credit card information to confirm your identity<span v-if="isNotChargedTextVisbile">, but you will NOT be charged until your 15 day free trial has ended, unless you choose to end your trial early</span>.
+          {{ $t('payment.stripe.description1') }}<span v-if="isNotChargedTextVisbile">{{ $t('payment.stripe.description2') }}</span>.
         </strong>
         <br>
         <br>
         <underlined-title
           class="text-h6 text-md-h5"
-          text="CREDIT CARD INFORMATION"
+          :text="$t('payment.title')"
         />
       </p>
     </slot>
@@ -27,7 +27,7 @@
         <pg-text-field
           v-model="draft.promotion_code"
           :error-messages="errors"
-          label="Promotion Code"
+          :label="$t('payment.stripe.promotionCode')"
           class="custom-text-field"
           :color="isValidCoupon ? '' : 'error'"
           :suffix="getTextValidateCoupon"
@@ -47,13 +47,13 @@
           >
             <template #label>
               <span>
-                I have read and accept the
+                {{ $t('payment.stripe.acceptTerms1') }}
 
                 <span
                   class="ml-1 terms-conditions link-text"
                   @click="goToTermsAndConditions"
                 >
-                  Terms & Conditions
+                  {{ $t('payment.stripe.acceptTerms2') }}
                 </span>
               </span>
             </template>
@@ -86,7 +86,7 @@
         x-large
         @click="onCancel(reset)"
       >
-        CLOSE
+        {{ $t('payment.stripe.cancel') }}
       </v-btn>
     </v-form>
     <div class="pb-4 pb-md-0">
@@ -94,9 +94,9 @@
         <p v-if="isFreeForDaysTextVisible">
           <center>
             <span class="font-weight-bold text-completely">
-              Playgarden Prep Online is COMPLETELY FREE for the next 15 days.
+              {{ $t('payment.footer1') }}
               <br />
-              YOU CAN CANCEL YOUR TRIAL ANY TIME
+              {{ $t('payment.footer2') }}
             </span>
           </center>
         </p>
@@ -110,12 +110,10 @@
             <span class="info-pay">
               <span
                 class="d-none d-md-block"
-              >You can cancel your trial and membership anytime from the
-                account settings. <br></span>
+              >{{ $t('payment.stripe.footer1') }}<br></span>
 
-              Once your free trial ends you will be placed on the
-              <span class="option-standar">ONLINE PRESCHOOL</span> monthly plan, you can
-              change plans at any time in your profile page.
+              {{ $t('payment.stripe.footer2') }}
+              <span class="option-standar">{{ $t('commonWords.onlinePreschool') }}</span> {{ $t('payment.stripe.footer3') }}
             </span>
           </center>
         </p>
