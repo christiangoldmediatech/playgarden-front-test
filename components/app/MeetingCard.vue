@@ -57,7 +57,7 @@
     </div>
     <div class="d-flex justify-center">
       <v-btn class="btn-meeting white--text" color="#F89838" @click="goToLiveClasses">
-        GO TO LIVE CLASSES SCHEDULE
+        {{ $t('lessonEnd.meetingCard.button') }}
       </v-btn>
     </div>
   </div>

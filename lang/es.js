@@ -215,6 +215,25 @@ export default async (context, locale) => {
         button: 'EMPIEZA A APRENDER',
         footer: 'Esto nos ayudará a mejorar la experiencia de aprendizaje de tu pequeño'
       }
+    },
+    lessonEnd: {
+      title: '¡No podemos esperar a verte mañana!',
+      emailText1: '¿Quieres recibir un correo electrónico con todas las cosas que hiciste hoy?',
+      emailText2: 'Haz clic aquí para actualizar tu configuración de notificación por email.',
+      overlay: {
+        title: 'Has completado tu primer día de lecciones de video.',
+        subtitle: '¡Únete a nosotros en nuestra próxima clase en vivo!',
+        footer: 'Para más aprendizaje diario, revisa nuestras otras características:',
+        sectionTitle: 'Worksheet',
+        sectionDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+      },
+      todayCard: {
+        title1: '¡Disculpa!',
+        title2: 'Esta clase ha sido cancelada hoy. ¡Nos vemos la próxima vez!'
+      },
+      meetingCard: {
+        button: 'IR AL HORARIO DE CLASES EN VIVO'
+      }
     }
   })
 }

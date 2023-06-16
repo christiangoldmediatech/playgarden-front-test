@@ -215,6 +215,25 @@ export default async (context, locale) => {
         button: 'START FIRST LESSON',
         footer: 'This will help us improve your little one\'s learning experience'
       }
+    },
+    lessonEnd: {
+      title: 'We can\'t wait to see you tomorrow!',
+      emailText1: 'Want to receive an email with all of the things you did today?',
+      emailText2: 'Click here to update your Email Notification Settings.',
+      overlay: {
+        title: 'You\'ve completed your first day of video lessons.',
+        subtitle: 'Join us in our next live class!',
+        footer: 'For more daily learning, check out our other features:',
+        sectionTitle: 'Worksheet',
+        sectionDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+      },
+      todayCard: {
+        title1: 'Sorry!',
+        title2: 'This class has been cancelled today. See you next time!'
+      },
+      meetingCard: {
+        button: 'GO TO LIVE CLASSES SCHEDULE'
+      }
     }
   })
 }
