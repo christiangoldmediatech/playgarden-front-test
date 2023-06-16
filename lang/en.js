@@ -24,7 +24,8 @@ export default async (context, locale) => {
       changePassword: 'Change Password',
       browseByLetter: 'Browse by letter',
       apply: 'Apply',
-      planPrice: 'Plan and price'
+      planPrice: 'Plan and price',
+      onlinePreschool: 'ONLINE PRESCHOOL'
     },
     menuLandingPage: {
       home: 'Home',
@@ -146,6 +147,26 @@ export default async (context, locale) => {
       notifications: {
         title: 'Notifications',
         subtitle: 'Manage the notifications you want to receive'
+      }
+    },
+    payment: {
+      title: 'CREDIT CARD INFORMATION',
+      description: 'FOR THE SAFETY OF OUR STUDENTS DURING THE LIVE CLASSES, WE NEED TO VERIFY WHO YOU ARE. Please add a credit card to your account. YOU WILL NOT BE CHARGED. Playgarden only charges when your trial has ended and you have confirmed your plan.',
+      footer1: 'Playgarden Prep Online is COMPLETELY FREE for the next 15 days.',
+      footer2: 'YOU CAN CANCEL YOUR TRIAL ANY TIME',
+      footer3: 'You can easily cancel your trial or membership at any time from your Account Settings. Once your free trial ends, you will be placed on the',
+      footer4: 'monthly plan; your provided payment information will be automatically charged, and your first billing cycle will begin. You can change plans at any time from your Account Settings. For assistance, contact',
+      card: {
+        title: 'Join thousands of happy families that have graduated from Playgarden Prep',
+        subtitle: 'Still not sure? Call, text, or email us with your questions, and a member of our teacher team will get back to you with more information.',
+        teacherTitle: 'Reach out to speak with a teacher like Miss Sarah!',
+        phone: '+1 (646) 504-4716 (call/text)'
+      },
+      cardKnowMore: {
+        title: 'Your 15 Day Free Trial Includes:',
+        subtitle1: 'WANT TO KNOW MORE ABOUT YOUR',
+        subtitle2: 'FREE TRIAL',
+        footer: '*You can cancel your membership at any time from the Account Settings.'
       }
     }
   })

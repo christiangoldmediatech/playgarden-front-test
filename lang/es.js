@@ -3,7 +3,6 @@ export default async (context, locale) => {
     const response = await context.$axios.$get('/i18n/es')
     console.log(response.content)
   }
-
   return await Promise.resolve({
     commonWords: {
       conjunctionText: 'o',
@@ -25,7 +24,8 @@ export default async (context, locale) => {
       changePassword: 'Cambiar contraseña',
       browseByLetter: 'Buscar por letra',
       apply: 'Aplicar',
-      planPrice: 'Plan y precio'
+      planPrice: 'Plan y precio',
+      onlinePreschool: 'ONLINE PRESCHOOL'
     },
     menuLandingPage: {
       home: 'Inicio',
@@ -147,6 +147,26 @@ export default async (context, locale) => {
       notifications: {
         title: 'Notificaciones',
         subtitle: 'Administra las notificaciones que quieres recibir'
+      }
+    },
+    payment: {
+      title: 'INFORMACIÓN DE TARJETA DE CRÉDITO',
+      description: 'PARA LA SEGURIDAD DE NUESTROS ESTUDIANTES DURANTE LAS CLASES EN VIVO, NECESITAMOS VERIFICAR QUIÉN ERES. Agregue una tarjeta de crédito a su cuenta. NO SE LE COBRARÁ. Playgarden solo cobra cuando su prueba ha finalizado y ha confirmado su plan.',
+      footer1: 'Playgarden Prep Online es COMPLETAMENTE GRATIS durante los próximos 15 días.',
+      footer2: 'PUEDES CANCELAR TU PRUEBA EN CUALQUIER MOMENTO',
+      footer3: 'Puedes fácilmente cancelar tu prueba o membresía en cualquier momento desde tu Configuración de cuenta. Una vez que finalice tu prueba gratuita, se te colocará en el',
+      footer4: 'plan mensual; su información de pago proporcionada se debitará automáticamente, y su primer ciclo de facturación comenzará. Puede cambiar los planes en cualquier momento desde su Configuración de cuenta. Para obtener ayuda, comuníquese con',
+      card: {
+        title: 'Unase a miles de familias felices que se han graduado de Playgarden Prep',
+        subtitle: '¿Aún no estás seguro? Llámanos, envíanos un mensaje de texto o un correo electrónico con tus preguntas, y un miembro de nuestro equipo de profesores se comunicará contigo para brindarte más información.',
+        teacherTitle: '¡Comunícate con un maestro como la señorita Sarah!',
+        phone: '+1 (646) 504-4716 (llamada/mensaje de texto)'
+      },
+      cardKnowMore: {
+        title: 'Tu prueba de 15 días incluye:',
+        subtitle1: 'QUIERES SABER MÁS SOBRE TU',
+        subtitle2: 'PRUEBA GRATUITA',
+        footer: '*Puedes cancelar tu membresía en cualquier momento desde la Configuración de tu cuenta.'
       }
     }
   })
