@@ -201,6 +201,7 @@
                     <child-select
                       v-if="!hasSpotInThisPlaydate"
                       v-model="childId"
+                      :disabled="hasPlayAndLearnPlanLivePlan"
                       hide-details
                     />
                     <child-select
@@ -239,7 +240,7 @@
 
             <div class="pg-w-full md:pg-w-8/12 pg-mx-auto pg-mt-10">
               <v-btn
-                v-if="entry.type === 'Playdate' && !hasSpotInThisPlaydate"
+                v-if="entry.type === 'Playdate' && !hasSpotInThisPlaydate && !hasPlayAndLearnPlanLivePlan"
                 :disabled="!childId || entry.cancelled || entry.backpackImages.length >= entry.spots"
                 :loading="isLoadingSpotAction"
                 class="!pg-shadow-button !pg-text-[18px] text-none white--text"
@@ -251,6 +252,21 @@
                 @click="handleReserveSpot"
               >
                 RESERVE SPOT
+              </v-btn>
+
+              <v-btn
+                v-if="hasPlayAndLearnPlanLivePlan"
+                color="#FD82AC"
+                class="!pg-shadow-button !pg-text-[18px] text-none white--text !pg-uppercase"
+                large
+                nuxt
+                link
+                to="/app/payment/plan"
+              >
+                <v-icon class="pg-mr-2">
+                  mdi-lock-outline
+                </v-icon>
+                UNLOCK THIS SECTION WITH <span class="pg-text-[#CD0088] pg-mx-1"> ONLINE PRESCHOOL </span> PLAN
               </v-btn>
 
               <v-btn
@@ -350,6 +366,10 @@ export default {
       'December'
     ]
 
+    const hasPlayAndLearnPlanLivePlan = computed(
+      () => store.getters['auth/hasPlayAndLearnLivePlan']
+    )
+
     const child = computed(() => {
       return children.value.find(({ id }) => {
         return playdate.value?.backpackImages?.find(({ childrenId }) => {
@@ -416,7 +436,8 @@ export default {
       isLoadingSpotAction,
       child,
       handleReserveSpot,
-      handleCancelSpot
+      handleCancelSpot,
+      hasPlayAndLearnPlanLivePlan
     }
   },
 

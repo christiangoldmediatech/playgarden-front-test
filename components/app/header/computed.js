@@ -61,7 +61,7 @@ export default {
               exact: false
             },
             {
-              title: 'Video Library',
+              title: 'Watch and Learn',
               to: { name: 'app-library' },
               exact: false,
               dataTestId: 'app-library'

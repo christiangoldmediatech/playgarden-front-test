@@ -63,16 +63,22 @@
           <!-- PlaygardenPrep Logo -->
           <v-col cols="12">
             <img
-              v-if="!hasPlayAndLearnPlan"
+              v-if="!hasPlayAndLearnPlan && !hasPlayAndLearnPlanLivePlan"
               alt="Playarden Prep Online Logo"
               :height="appBarLogoSize"
               :src="require('@/assets/svg/rainbow.svg')"
             />
             <img
-              v-else
+              v-else-if="hasPlayAndLearnPlan && !hasPlayAndLearnPlanLivePlan"
               alt="Playarden Prep Online Logo"
               :height="appBarLogoSizeLearnPlay"
               :src="require('@/assets/png/logo-PlayandLearn.svg')"
+            />
+            <img
+              v-else-if="!hasPlayAndLearnPlan && hasPlayAndLearnPlanLivePlan"
+              alt="Playarden Prep Online Logo"
+              :height="appBarLogoSizeLearnPlay"
+              :src="require('@/assets/png/logo-PG-PAL-live.svg')"
             />
           </v-col>
 
@@ -88,7 +94,7 @@
           </v-col>
 
           <!-- Toolbar Description -->
-          <v-col v-if="!hasPlayAndLearnPlan">
+          <v-col>
             <div class="text-body-1 text-md-h6 !pg-font-light">
               Thank you for learning with us today!
             </div>
@@ -244,19 +250,11 @@ export default defineComponent({
     const isMobileLandscape = computed(() => vuetify.breakpoint.smOnly)
 
     const appBarHeight = computed(() => {
-      if (store.getters['auth/hasPlayAndLearnPlan']) {
-        return isMobileLandscape.value
-          ? '100px'
-          : isMobile.value
-            ? '90px'
-            : '115px'
-      } else {
-        return isMobileLandscape.value
-          ? '140px'
-          : isMobile.value
-            ? '250px'
-            : '175px'
-      }
+      return isMobileLandscape.value
+        ? '140px'
+        : isMobile.value
+          ? '250px'
+          : '175px'
     })
     const appBarTitleSize = computed(() => (isMobile.value ? '28px' : '40px'))
     const appBarLogoSize = computed(() => (isMobile.value ? '25px' : '45px'))
@@ -265,6 +263,10 @@ export default defineComponent({
     )
     const hasPlayAndLearnPlan = computed(
       () => store.getters['auth/hasPlayAndLearnPlan']
+    )
+
+    const hasPlayAndLearnPlanLivePlan = computed(
+      () => store.getters['auth/hasPlayAndLearnLivePlan']
     )
 
     const store = useStore<TypedStore>()
@@ -298,7 +300,8 @@ export default defineComponent({
       handleSidebarToggle,
       handleClickOnBirthdayIcon,
       isCurrentChildsBirthday,
-      hasPlayAndLearnPlan
+      hasPlayAndLearnPlan,
+      hasPlayAndLearnPlanLivePlan
     }
   }
 })
