@@ -16,7 +16,7 @@
                 clearable
                 :disabled="loading"
                 :error-messages="errors"
-                label="First Name"
+                :label="$t('register.registerForm.firstName')"
                 class="custom-text-field"
                 :loading="loading"
                 solo
@@ -35,7 +35,7 @@
                 clearable
                 :disabled="loading"
                 :error-messages="errors"
-                label="Last name"
+                :label="$t('register.registerForm.lastName')"
                 class="custom-text-field"
                 :loading="loading"
                 solo
@@ -56,7 +56,7 @@
                     clearable
                     :disabled="loading"
                     :error-messages="errors"
-                    label="Phone Number (optional)"
+                    :label="$t('register.registerForm.optionalPhoneNumber')"
                     :loading="loading"
                     class="custom-text-field"
                     solo
@@ -78,7 +78,7 @@
                       loading || hasInvitationEmail || hasUserSocialData
                     "
                     :error-messages="errors"
-                    label="Email"
+                    :label="$t('register.registerForm.email')"
                     :loading="loading"
                     solo
                     class="custom-text-field"
@@ -110,7 +110,7 @@
                         clearable
                         :disabled="loading"
                         :error-messages="errors"
-                        label="Phone Number (optional)"
+                        :label="$t('register.registerForm.optionalPhoneNumber')"
                         class="custom-text-field"
                         :loading="loading"
                         solo
@@ -142,7 +142,7 @@
                           clearable
                           :disabled="loading"
                           :error-messages="errors"
-                          label="Password"
+                          :label="$t('register.registerForm.password')"
                           :loading="loading"
                           maxlength="20"
                           solo
@@ -154,19 +154,19 @@
                     </template>
 
                     <span class="white--text">
-                      At least 6 characters—the more characters, the better.
+                      {{ $t('register.registerForm.passwordSuggestion1') }}
                     </span>
                     <br />
                     <span class="white--text">
-                      A mixture of both uppercase and lowercase letters.
+                      {{ $t('register.registerForm.passwordSuggestion2') }}
                     </span>
                     <br />
                     <span class="white--text">
-                      A mixture of letters and numbers.
+                      {{ $t('register.registerForm.passwordSuggestion3') }}
                     </span>
                     <br />
                     <span class="white--text">
-                      Inclusion of at least one special character, e.g., !@#?]
+                      {{ $t('register.registerForm.passwordSuggestion4') }}
                     </span>
                     <br />
                   </v-tooltip>
@@ -184,7 +184,7 @@
                       :error-messages="errors"
                       :loading="isCheckingCoupon"
                       clearable
-                      label="Coupon"
+                      :label="$t('register.registerForm.coupon')"
                       solo
                       class="custom-text-field"
                       @change="checkCoupon"
@@ -197,9 +197,9 @@
                     class="mt-n6 mb-4"
                   >
                     <span v-if="isValidCoupon" class="green--text">
-                      Valid coupon!
+                      {{ $t('register.registerForm.validCoupon') }}
                     </span>
-                    <span v-else class="error--text">Invalid coupon!</span>
+                    <span v-else class="error--text">{{ $t('register.registerForm.invalidCoupon') }}</span>
                   </div>
                 </template>
 
@@ -217,13 +217,13 @@
                       :false-value="null"
                     >
                       <template #label>
-                        I agree to the
+                        {{ $t('register.registerForm.termsAndConditionsPart1') }}
 
                         <span
                           class="ml-1 terms-conditions link-text"
                           @click="goToTermsAndConditions"
                         >
-                          Terms & Conditions
+                          {{ $t('register.registerForm.termsAndConditionsPart2') }}
                         </span>
                       </template>
                     </v-checkbox>
@@ -241,7 +241,7 @@
                   type="submit"
                   x-large
                 >
-                  CHOOSE YOUR PLAN
+                  {{ $t('register.registerForm.choosePlan') }}
                 </v-btn>
               </v-col>
             </v-row>
@@ -253,7 +253,7 @@
               </v-col>
 
               <v-col class="text-center">
-                or
+                {{ $t('commonWords.conjunctionText') }}
               </v-col>
 
               <v-col class="hr-line">
@@ -277,7 +277,7 @@
                     src="@/assets/svg/facebook_icon.svg"
                   />
 
-                  <span class="spanSocialNetwork">Continue with Facebook</span>
+                  <span class="spanSocialNetwork">{{ $t('register.registerForm.registerWithFb') }}</span>
                 </v-btn>
               </v-col>
 
@@ -295,7 +295,7 @@
                     src="@/assets/svg/google_icon.svg"
                   />
 
-                  <span class="spanSocialNetwork">Continue with Google</span>
+                  <span class="spanSocialNetwork">{{ $t('register.registerForm.registerWithGoogle') }}</span>
                 </v-btn>
               </v-col>
             </v-row>
