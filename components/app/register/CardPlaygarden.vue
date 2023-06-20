@@ -53,7 +53,7 @@
         class="pg-text-center"
       >
         <p class="pg-text-center pg-mt-5">
-          Still not sure? Call, text, or email us with your questions, and a member of our teacher team will get back to you with more information.
+          {{ $t('payment.card.subtitle') }}
         </p>
 
         <div class="pg-flex pg-items-center pg-justify-between">
@@ -68,12 +68,12 @@
           <div class="pg-text-center pg-mt-5">
             <p class="!pg-mb-2">
               <strong>
-                Reach out to speak with a teacher like Miss Sarah!
+                {{ $t('payment.card.teacherTitle') }}
               </strong>
             </p>
             <p class="!pg-mb-2">
               <a class="blue--text" href="tel:646-504-4716">
-                +1 (646) 504-4716 (call/text) </a>
+                {{ $t('payment.card.phone') }} </a>
             </p>
             <a
               class="black--text"

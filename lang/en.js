@@ -14,6 +14,9 @@ export default async (context, locale) => {
       firstName: 'First Name',
       lastName: 'Last Name',
       fullName: 'Full Name',
+      birthDate: 'Birth Date',
+      girl: 'Girl',
+      boy: 'Boy',
       phoneNumber: 'Phone Number',
       viewMore: 'View more',
       date: 'Date',
@@ -27,7 +30,9 @@ export default async (context, locale) => {
       changePassword: 'Change Password',
       browseByLetter: 'Browse by letter',
       apply: 'Apply',
-      planPrice: 'Plan and price'
+      planPrice: 'Plan and price',
+      onlinePreschool: 'ONLINE PRESCHOOL',
+      backButton: 'Back'
     },
     menuLandingPage: {
       home: 'Home',
@@ -173,6 +178,88 @@ export default async (context, locale) => {
       notifications: {
         title: 'Notifications',
         subtitle: 'Manage the notifications you want to receive'
+      }
+    },
+    payment: {
+      title: 'CREDIT CARD INFORMATION',
+      description: 'FOR THE SAFETY OF OUR STUDENTS DURING THE LIVE CLASSES, WE NEED TO VERIFY WHO YOU ARE. Please add a credit card to your account. YOU WILL NOT BE CHARGED. Playgarden only charges when your trial has ended and you have confirmed your plan.',
+      footer1: 'Playgarden Prep Online is COMPLETELY FREE for the next 15 days.',
+      footer2: 'YOU CAN CANCEL YOUR TRIAL ANY TIME',
+      footer3: 'You can easily cancel your trial or membership at any time from your Account Settings. Once your free trial ends, you will be placed on the',
+      footer4: 'monthly plan; your provided payment information will be automatically charged, and your first billing cycle will begin. You can change plans at any time from your Account Settings. For assistance, contact',
+      button1: 'REACTIVATE ACCOUNT',
+      button2: 'START LEARNING NOW',
+      card: {
+        title: 'Join thousands of happy families that have graduated from Playgarden Prep',
+        subtitle: 'Still not sure? Call, text, or email us with your questions, and a member of our teacher team will get back to you with more information.',
+        teacherTitle: 'Reach out to speak with a teacher like Miss Sarah!',
+        phone: '+1 (646) 504-4716 (call/text)'
+      },
+      cardKnowMore: {
+        title: 'Your 15 Day Free Trial Includes:',
+        subtitle1: 'WANT TO KNOW MORE ABOUT YOUR',
+        subtitle2: 'FREE TRIAL',
+        footer: '*You can cancel your membership at any time from the Account Settings.'
+      },
+      stripe: {
+        description1: 'We need your credit card information to confirm your identity',
+        description2: ', but you will NOT be charged until your 15 day free trial has ended, unless you choose to end your trial early',
+        promotionCode: 'Promotion Code',
+        acceptTerms1: 'I have read and accept the',
+        acceptTerms2: 'Terms & Conditions',
+        cancel: 'CLOSE',
+        footer1: 'You can cancel your trial and membership anytime from the account settings. ',
+        footer2: 'Once your free trial ends you will be placed on the',
+        footer3: ' monthly plan, you can change plans at any time in your profile page.'
+      }
+    },
+    children: {
+      title: 'CHILD INFORMATION',
+      subtitle: 'Tell us about your little one:',
+      button1: 'START LEARNING',
+      button2: 'ADD ANOTHER CHILD',
+      button3: 'DELETE CHILD PROFILE',
+      iconSelector: {
+        title1: 'Choose an icon for your child',
+        title2: 'Change your child’s icon',
+        title3: 'CHOOSE AN ICON FOR YOUR CHILD:'
+      }
+    },
+    welcome: {
+      titleDay1: 'Welcome to Playgarden Online!',
+      titleDay2: 'Hi, welcome back to Playgarden and your second day of learning',
+      titleDay3: 'Hi, welcome back to Playgarden and your third day of learning',
+      overlay: {
+        title: 'Your free trial has officially begun!',
+        subtitle1: '*Cancel any time from your',
+        subtitle2: 'Account Settings'
+      },
+      daysSelector: {
+        title: 'One last thing before you get started!',
+        subtitle: 'Please tell us how many days a week do you expect to use Playgarden Online',
+        daySingular: 'DAY',
+        dayPlural: 'DAYS',
+        button: 'START FIRST LESSON',
+        footer: 'This will help us improve your little one\'s learning experience'
+      }
+    },
+    lessonEnd: {
+      title: 'We can\'t wait to see you tomorrow!',
+      emailText1: 'Want to receive an email with all of the things you did today?',
+      emailText2: 'Click here to update your Email Notification Settings.',
+      overlay: {
+        title: 'You\'ve completed your first day of video lessons.',
+        subtitle: 'Join us in our next live class!',
+        footer: 'For more daily learning, check out our other features:',
+        sectionTitle: 'Worksheet',
+        sectionDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+      },
+      todayCard: {
+        title1: 'Sorry!',
+        title2: 'This class has been cancelled today. See you next time!'
+      },
+      meetingCard: {
+        button: 'GO TO LIVE CLASSES SCHEDULE'
       }
     },
     dailyLessons: {

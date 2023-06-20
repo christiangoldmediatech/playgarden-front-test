@@ -4,10 +4,10 @@
       <v-row v-for="(item, index) in draft" :key="index" no-gutters>
         <v-col>
           <h1 class="form-title">
-            CHILD INFORMATION
+            {{ $t('children.title') }}
           </h1>
           <h2 class="form-subtitle">
-            Tell us about your little one:
+            {{ $t('children.subtitle') }}
           </h2>
           <children-form
             class="mt-6"
@@ -32,7 +32,7 @@
             type="submit"
             x-large
           >
-            START LEARNING
+            {{ $t('children.button1') }}
           </v-btn>
 
           <v-btn
@@ -46,7 +46,7 @@
             x-large
             @click="addRow(null)"
           >
-            ADD ANOTHER CHILD
+            {{ $t('children.button2') }}
           </v-btn>
         </v-col>
       </v-row>
