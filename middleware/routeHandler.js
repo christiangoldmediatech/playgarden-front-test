@@ -12,12 +12,10 @@ export default async function ({ redirect, route, store, app, req }) {
   const currentAppliedLanguage = app.i18n.locale
   const browserLanguage = navigator.language
   const browserLanguageCode = browserLanguage.includes('-') ? browserLanguage.split('-')[0] : browserLanguage
-  if (isLangQueryPresent && queriedLanguage !== currentAppliedLanguage && availableLanguages.includes(queriedLanguage)) {
+  if (isLangQueryPresent && availableLanguages.includes(queriedLanguage)) {
     app.i18n.setLocale(queriedLanguage)
   } else if (browserLanguageCode !== currentAppliedLanguage && availableLanguages.includes(browserLanguageCode)) {
     app.i18n.setLocale(browserLanguageCode)
-  } else {
-    app.i18n.setLocale('en')
   }
 
   const redirectLogout = (route.query.logout)

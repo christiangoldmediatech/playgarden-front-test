@@ -78,6 +78,7 @@ import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/Playe
 import { TypedStore } from '@/models'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
 import DaysSelectorOverlay from '@/components/app/DaysSelectorOverlay.vue'
+import { useLanguageHelper } from '@/composables'
 
 export default defineComponent({
   name: 'Welcome',
@@ -92,6 +93,7 @@ export default defineComponent({
     const showPreview = ref(true)
     const route = useRoute()
     const player = ref<PlayerInstance | null>(null)
+    const language = useLanguageHelper()
     const stepIntroductionVideo = computed(() => {
       return Number(route.value.query?.step || 1)
     })
@@ -109,11 +111,11 @@ export default defineComponent({
 
     const pageTitle = computed(() => {
       if (stepIntroductionVideo.value === 1) {
-        return 'Welcome to Playgarden Online!'
+        return language.t('welcome.titleDay1')
       } else if (stepIntroductionVideo.value === 2) {
-        return 'Hi, welcome back to Playgarden and your second day of learning'
+        return language.t('welcome.titleDay2')
       } else {
-        return 'Hi, welcome back to Playgarden and your third day of learning'
+        return language.t('welcome.titleDay3')
       }
     })
 

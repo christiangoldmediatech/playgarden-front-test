@@ -21,14 +21,14 @@
       <h2
         class="overlay-title mb-2 pg-text-xl md:pg-text-5xl pg-pt-5 md:pg-mt-0"
       >
-        You've completed your first day of video lessons.
+        {{ $t('lessonEnd.overlay.title') }}
       </h2>
 
       <h2
         v-if="upcomingMeeting"
         class="overlay-subtitle-1 pg-mb-0 md:pg-mb-8 pg-text-lg md:pg-text-3xl"
       >
-        Join us in our next live class!
+        {{ $t('lessonEnd.overlay.subtitle') }}
       </h2>
 
       <div>
@@ -46,7 +46,7 @@
       <h3
         class="overlay-subtitle-2 pg-my-4 md:pg-my-8 pg-text-lg md:pg-text-3xl"
       >
-        For more daily learning, check out our other features:
+        {{ $t('lessonEnd.overlay.footer') }}
       </h3>
 
       <div class="pg-flex pg-flex-col md:pg-flex-row pg-gap-1 md:pg-gap-16">
@@ -84,7 +84,7 @@ import {
   useStore
 } from '@nuxtjs/composition-api'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
-import { LessonApiResponse } from '@/composables'
+import { LessonApiResponse, useLanguageHelper } from '@/composables'
 import MeetingCard from './MeetingCard.vue'
 
 export default defineComponent({
@@ -118,6 +118,7 @@ export default defineComponent({
     const { lesson } = props.lesson
 
     const router = useRouter()
+    const language = useLanguageHelper()
 
     const offlineWorksheet = computed(() => {
       if (lesson) {
@@ -136,11 +137,10 @@ export default defineComponent({
     const sections = computed(() => {
       return [
         {
-          title: 'Worksheet',
+          title: language.t('lessonEnd.overlay.sectionTitle'),
           img: require('@/assets/png/worksheet.png'),
           to: props.worksheetUrl,
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+          description: language.t('lessonEnd.overlay.sectionDescription')
         }
       ]
     })

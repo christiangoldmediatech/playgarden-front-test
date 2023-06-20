@@ -12,7 +12,7 @@
           <v-col cols="12">
             <v-row no-gutters justify="center" class="mb-6">
               <h1 class="lesson-end-title pg-text-xl md:pg-text-3xl lg:pg-text-5xl">
-                We can't wait to see you tomorrow!
+                {{ $t('lessonEnd.title') }}
               </h1>
             </v-row>
 
@@ -54,9 +54,9 @@
                 <div v-if="!isMobile" class="email-info-wrapper d-flex" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
                   <div class="email-info-text py-2 px-14" :class="{ 'hide-text': hiddenInfoText }">
                     <p>
-                      Want to receive an email with all of the things you did today? <br>
+                      {{ $t('lessonEnd.emailText1') }} <br>
                       <nuxt-link :to="{ name: 'app-account-index-notification' }">
-                        Click here to update your Email Notification Settings.
+                        {{ $t('lessonEnd.emailText2') }}
                       </nuxt-link>
                     </p>
                   </div>
