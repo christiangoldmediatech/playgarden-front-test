@@ -7,6 +7,9 @@ export default async (context, locale) => {
   return await Promise.resolve({
     commonWords: {
       conjunctionText: 'o',
+      prepositionText: 'CON',
+      upload: 'SUBIR',
+      return1: 'VOLVER',
       emailPlaceholder: 'Email',
       passwordPlaceholder: 'Contraseña',
       firstName: 'Nombre',
@@ -170,6 +173,29 @@ export default async (context, locale) => {
       notifications: {
         title: 'Notificaciones',
         subtitle: 'Administra las notificaciones que quieres recibir'
+      }
+    },
+    dailyLessons: {
+      downloadWorksheetDay: 'DOWNLOAD WORKSHEET OF THE DAY!',
+      worksheet: 'Worksheet',
+      worksheetPlural: 'Worksheets',
+      panel: {
+        previousDay: 'GO TO PREVIOUS DAY',
+        nextDay: 'GO TO NEXT DAY',
+        downloadWorksheets1: 'DOWNLOAD LETTER',
+        downloadWorksheets2: 'WEEK WORKSHEETS',
+        winPuzzlePiece: 'Win a puzzle piece!',
+        earnedPuzzlePiece: 'You earned a puzzle piece',
+        videoTitle: 'Video Lessons',
+        worksheetTitle: 'Worksheets',
+        activitiesTitle: 'Activities',
+        uploadWorksheet: 'UPLOAD WORKSHEET',
+        uploadWorksheetSubtitle: 'File(s) must be in JPG or PNG format',
+        downloadWorksheet: 'DOWNLOAD WORKSHEET',
+        viewWorksheets: 'View worksheets'
+      },
+      onlineWorksheet: {
+        title: 'Online Worksheet'
       }
     }
   })

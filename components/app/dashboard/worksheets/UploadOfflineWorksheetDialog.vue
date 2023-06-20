@@ -13,15 +13,15 @@
       <v-card-text class="pt-6">
         <v-row class="ma-0" justify="center">
           <h2 class="upload-ow-title">
-            UPLOAD YOUR WORKSHEET
+            {{ $t('dailyLessons.uploadWorksheetDialog.title') }}
           </h2>
         </v-row>
 
         <v-row class="ma-0" justify="center">
           <h3 class="upload-ow-subtitle">
-            * File(s) must be in
-            <span class="upload-ow-subtitle-bold">JPG</span> or
-            <span class="upload-ow-subtitle-bold">PNG</span> format only.
+            {{ $t('dailyLessons.uploadWorksheetDialog.requirement1') }}
+            <span class="upload-ow-subtitle-bold">JPG</span> {{ $t('commonWords.conjunctionText') }}
+            <span class="upload-ow-subtitle-bold">PNG</span> {{ $t('dailyLessons.uploadWorksheetDialog.requirement2') }}
           </h3>
         </v-row>
 
@@ -56,7 +56,7 @@
             <div class="d-flex justify-center">
               <div class="text-center mt-3">
                 <div class="upload-ow-dialog-success mb-6">
-                  UPLOAD SUCCESSFUL!
+                  {{ $t('dailyLessons.uploadWorksheetDialog.success') }}
                 </div>
 
                 <v-btn
@@ -66,7 +66,7 @@
                   :loading="!canRemoveOrUpload"
                   @click="resetParams"
                 >
-                  UPLOAD MORE
+                  {{ $t('dailyLessons.uploadWorksheetDialog.uploadMore') }}
                 </v-btn>
               </div>
             </div>
@@ -133,7 +133,7 @@
                   </v-btn>
 
                   <div class="mt-6">
-                    DRAG AND DROP YOUR DOCUMENTS OR UPLOAD MORE
+                    {{ $t('dailyLessons.uploadWorksheetDialog.dragAndDrop') }}
                   </div>
                 </div>
               </div>
@@ -147,11 +147,11 @@
                   :disabled="!thumbnailList.length"
                   @click="uploadWorksheets"
                 >
-                  UPLOAD
+                  {{ $t('commonWords.upload') }}
                 </v-btn>
                 <br>
                 <v-btn v-if="!!uploadedList.length" class="mt-3" text color="accent" @click="goBack">
-                  GO BACK
+                  {{ $t('commonWords.return1') }}
                 </v-btn>
               </div>
             </template>
@@ -166,20 +166,20 @@
               </div>
 
               <div class="upload-ow-dialog-folder-text">
-                DRAG YOUR WORKSHEET
+                {{ $t('dailyLessons.uploadWorksheetDialog.drag') }}
               </div>
 
               <div class="d-flex flex-nowrap justify-center align-center">
                 <div class="upload-ow-dialog-line" />
                 <div class="upload-ow-dialog-line-text mx-6">
-                  or
+                  {{ $t('commonWords.conjunctionText') }}
                 </div>
                 <div class="upload-ow-dialog-line" />
               </div>
 
               <div class="text-center mb-6">
                 <v-btn color="accent" x-large @click="openFileDialog">
-                  BROWSE FILES
+                  {{ $t('dailyLessons.uploadWorksheetDialog.browse') }}
                 </v-btn>
               </div>
             </div>
@@ -202,7 +202,7 @@
             :disabled="!canRemoveOrUpload"
             @click.stop="close"
           >
-            Return to lesson
+            {{ $t('dailyLessons.uploadWorksheetDialog.return') }}
           </v-btn>
         </v-row>
       </v-card-text>

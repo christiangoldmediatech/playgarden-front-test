@@ -6,6 +6,9 @@ export default async (context, locale) => {
   return await Promise.resolve({
     commonWords: {
       conjunctionText: 'or',
+      prepositionText: 'with',
+      upload: 'UPLOAD',
+      return1: 'GO BACK',
       emailPlaceholder: 'Email',
       passwordPlaceholder: 'Password',
       firstName: 'First Name',
@@ -170,6 +173,40 @@ export default async (context, locale) => {
       notifications: {
         title: 'Notifications',
         subtitle: 'Manage the notifications you want to receive'
+      }
+    },
+    dailyLessons: {
+      downloadWorksheetDay: 'DOWNLOAD WORKSHEET OF THE DAY!',
+      worksheet: 'Worksheet',
+      worksheetPlural: 'Worksheets',
+      panel: {
+        previousDay: 'GO TO PREVIOUS DAY',
+        nextDay: 'GO TO NEXT DAY',
+        downloadWorksheets1: 'DOWNLOAD LETTER',
+        downloadWorksheets2: 'WEEK WORKSHEETS',
+        winPuzzlePiece: 'Win a puzzle piece!',
+        earnedPuzzlePiece: 'You earned a puzzle piece',
+        videoTitle: 'Video Lessons',
+        worksheetTitle: 'Worksheets',
+        activitiesTitle: 'Activities',
+        uploadWorksheet: 'UPLOAD WORKSHEET',
+        uploadWorksheetSubtitle: 'File(s) must be in JPG or PNG format',
+        downloadWorksheet: 'DOWNLOAD WORKSHEET',
+        viewWorksheets: 'View worksheets'
+      },
+      uploadWorksheetDialog: {
+        title: ' UPLOAD YOUR WORKSHEET',
+        requirement1: '* File(s) must be in',
+        requirement2: 'format only.',
+        success: 'UPLOAD SUCCESSFUL!',
+        uploadMore: 'UPLOAD MORE',
+        dragAndDrop: 'DRAG AND DROP YOUR DOCUMENTS OR UPLOAD MORE',
+        drag: 'DRAG YOUR WORKSHEET',
+        browse: 'BROWSE FILES',
+        return: 'Return to lesson'
+      },
+      onlineWorksheet: {
+        title: 'Online Worksheet'
       }
     }
   })
