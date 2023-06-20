@@ -67,9 +67,32 @@ export default async (context, locale) => {
     },
     register: {
       title: '¡CRÉATE UNA CUENTA PARA EMPEZAR A APRENDER!',
-      subtitle1:
-        '¿Estás emocionado para un día lleno de diversión aprendiendo?',
-      subtitle2: '¡NO ES NECESARIA UNA TARJETA DE CRÉDITO!'
+      subtitle1: '¿Estás emocionado para un día lleno de diversión aprendiendo?',
+      subtitle2: '¡NO ES NECESARIA UNA TARJETA DE CRÉDITO!',
+      registerForm: {
+        firstName: 'Nombre',
+        lastName: 'Apellido',
+        optionalPhoneNumber: 'Número de teléfono (opcional)',
+        email: 'Email',
+        address: 'Dirección',
+        password: 'Contraseña',
+        passwordSuggestion1: 'Como mínimo 6 caracteres, cuanto más caracteres, mejor.',
+        passwordSuggestion2: 'Una mezcla de letras mayúsculas y minúsculas.',
+        passwordSuggestion3: 'Una mezcla de letras y números.',
+        passwordSuggestion4: 'Inclusión de al menos un carácter especial, por ejemplo, !@#?]',
+        coupon: 'Cupón',
+        validCoupon: '¡Cupón válido!',
+        invalidCoupon: '¡Cupón inválido!',
+        termsAndConditionsPart1: 'Acepto los',
+        termsAndConditionsPart2: 'Términos y Condiciones',
+        choosePlan: 'ELIGE TU PLAN',
+        registerWithFb: 'Continuar con Facebook',
+        registerWithGoogle: 'Continuar con Google'
+      },
+      cardInfo: {
+        title: '¡Es la forma más fácil de darle a tu hijo una educación inmersiva en casa!',
+        subtitle: '¡Niños comprometidos y resultados comprobados!'
+      }
     },
     account: {
       title: 'Mi cuenta',

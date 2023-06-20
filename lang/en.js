@@ -68,7 +68,31 @@ export default async (context, locale) => {
     register: {
       title: 'CREATE AN ACCOUNT TO START LEARNING!',
       subtitle1: 'Are you excited for a fun-filled day of learning?',
-      subtitle2: 'NO CREDIT CARD REQUIRED!'
+      subtitle2: 'NO CREDIT CARD REQUIRED!',
+      registerForm: {
+        firstName: 'First Name',
+        lastName: 'Last Name',
+        optionalPhoneNumber: 'Phone Number (optional)',
+        email: 'Email',
+        address: 'Address',
+        password: 'Password',
+        passwordSuggestion1: 'At least 6 characters—the more characters, the better.',
+        passwordSuggestion2: 'A mixture of both uppercase and lowercase letters.',
+        passwordSuggestion3: 'A mixture of letters and numbers.',
+        passwordSuggestion4: 'Inclusion of at least one special character, e.g., !@#?]',
+        coupon: 'Coupon',
+        validCoupon: 'Valid coupon!',
+        invalidCoupon: 'Invalid Coupon!',
+        termsAndConditionsPart1: 'I agree to the',
+        termsAndConditionsPart2: 'Terms & Conditions',
+        choosePlan: 'CHOOSE YOUR PLAN',
+        registerWithFb: 'Continue with Facebook',
+        registerWithGoogle: 'Continue with Google'
+      },
+      cardInfo: {
+        title: 'It\'s the easiest way to give your child an immersive education at home!',
+        subtitle: 'Engaged children and proven outcomes!'
+      }
     },
     account: {
       title: 'My Account',
