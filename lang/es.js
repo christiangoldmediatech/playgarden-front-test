@@ -186,7 +186,7 @@ export default async (context, locale) => {
       button1: 'REACTIVAR CUENTA',
       button2: 'EMPIEZA A APRENDER AHORA',
       card: {
-        title: 'Unase a miles de familias felices que se han graduado de Playgarden Prep',
+        title: 'Únase a miles de familias felices que se han graduado de Playgarden Prep',
         subtitle: '¿Aún no estás seguro? Llámanos, envíanos un mensaje de texto o un correo electrónico con tus preguntas, y un miembro de nuestro equipo de profesores se comunicará contigo para brindarte más información.',
         teacherTitle: '¡Comunícate con un maestro como la señorita Sarah!',
         phone: '+1 (646) 504-4716 (llamada/mensaje de texto)'
