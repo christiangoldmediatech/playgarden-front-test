@@ -138,7 +138,7 @@ export default defineComponent({
       classes: {
         imageUrl: require('@/assets/png/virtual-preschool/sections-images/live_classes.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Lucy-Liveclasses.png'),
-        title: 'Live Classes & Playdates',
+        title: 'Live Classes <br> & Playdates',
         route: { name: 'app-live-classes' },
         message: 'Enjoy cooking, music, movement zooms and more!',
         audio: `${baseRoute}audio/virtual-preschool/Live classes 2.m4a`,

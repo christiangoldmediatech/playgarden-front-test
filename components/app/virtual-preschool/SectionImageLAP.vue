@@ -15,7 +15,7 @@
         <div
           class="section-btn"
           :class="{
-            translucent: hover
+            translucent: hover && !blocked
           }"
           :style="{
             backgroundColor: section.color
@@ -26,12 +26,12 @@
             :class="{
               '!pg-text-[14px]': small && $vuetify.breakpoint.mdAndDown || $vuetify.breakpoint.width < 1350,
             }"
+            v-html="section.title"
           >
-            {{ section.title }}
           </div>
         </div>
 
-        <div class="section-content" :class="{'pg-hidden': small && blocked || small && miniBlocked}">
+        <div v-if="!miniBlocked" class="section-content" :class="{'pg-hidden': small && blocked}">
           <!-- Start Playing Button -->
           <div class="pg-absolute pg-w-full pg-h-full">
             <v-img
@@ -50,7 +50,78 @@
             >
               <div
                 class="pg-absolute pg-inset-0 pg-m-auto pg-text-center pg-font-bold pg-font-quick translate-text"
-                :class="[small ? 'pg-text-[12px]' : $vuetify.breakpoint.width <= 1600 ? 'pg-text-[14px]' : 'pg-text-[22px]']"
+                :class="[small ? 'pg-text-[12px] pg-top-[8px]' : $vuetify.breakpoint.width <= 1600 ? 'pg-text-[14px] pg-top-[2px]' : 'pg-text-[22px] pg-top-[0]']"
+                :style="{ color: small ? section.textColor : section.color }"
+              >
+                Start <br />
+                Learning
+              </div>
+            </v-img>
+          </div>
+
+          <!-- Lady -->
+          <img
+            class="section-lady"
+            :class="{ 'section-lady-medium': $vuetify.breakpoint.width < 1350 && $vuetify.breakpoint.width > 1000 , 'section-lady-small': small}"
+            :src="section.teacherUrl"
+          />
+
+          <!-- Bubble -->
+          <div class="section-bubble" />
+
+          <!-- Bubble Text -->
+          <div
+            v-if="section.message"
+            class="section-bubble-text pg-font-quick"
+            :class="{
+              'section-bubble-text-small':
+                (small || medium) && $vuetify.breakpoint.mdAndUp,
+              'section-bubble-text-mobile':
+                (small || medium) && $vuetify.breakpoint.mdAndDown
+            }"
+            :style="{ color: small ? section.textColor : section.color }"
+          >
+            <v-btn icon class="my-n3 mx-n2">
+              <v-icon
+                :color="small ? section.textColor : section.color"
+                :size="small ? 15 : 20"
+                @click.stop="$emit('click:play', section)"
+              >
+                mdi-volume-high
+              </v-icon>
+            </v-btn>
+            <span>
+              {{ section.message }}
+            </span>
+            <img
+              src="@/assets/svg/bubble-chat-arrow.svg"
+              class="pg-absolute pg-right-10"
+              :style="bubbleStyles"
+              :class="[
+                small && $vuetify.breakpoint.mdAndUp
+                  ? 'pg-top-[-30px]'
+                  : 'pg-bottom-[-30px]',
+              ]"
+            />
+          </div>
+        </div>
+
+        <div v-else class="section-content">
+          <!-- Start Playing Button -->
+          <div class="pg-absolute pg-w-full pg-h-full">
+            <v-img
+              :data-test-id="`vp-section-${section.title}`"
+              :style="
+                small ? `top: 43%; height: 45%;` : ''
+              "
+              :width="small ? 150 : 200"
+              contain
+              class="section-start-playing pg-relative"
+              :src="require('@/assets/svg/virtual-preschool/rainbow-circle.svg')"
+            >
+              <div
+                class="pg-absolute pg-inset-0 pg-m-auto pg-text-center pg-font-bold pg-font-quick translate-text"
+                :class="[small ? 'pg-text-[12px] pg-top-[8px]' : $vuetify.breakpoint.width <= 1600 ? 'pg-text-[14px] pg-top-[2px]' : 'pg-text-[22px] pg-top-[0]']"
                 :style="{ color: small ? section.textColor : section.color }"
               >
                 Start <br />
@@ -344,7 +415,7 @@ export default defineComponent({
       font-size: 18px;
       font-weight: 500;
       text-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
-      padding: 8px 12px;
+      padding: 8px 20px;
     }
   }
 }
