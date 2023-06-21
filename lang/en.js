@@ -7,6 +7,11 @@ export default async (context, locale) => {
     commonWords: {
       conjunctionText: 'or',
       prepositionText: 'with',
+      letter: 'Letter',
+      day: 'DAY',
+      progress: 'PROGRESS',
+      view: 'View',
+      puzzle: 'Puzzle',
       upload: 'UPLOAD',
       return1: 'GO BACK',
       emailPlaceholder: 'Email',
@@ -269,6 +274,7 @@ export default async (context, locale) => {
       panel: {
         previousDay: 'GO TO PREVIOUS DAY',
         nextDay: 'GO TO NEXT DAY',
+        nextDay1: 'Go to next day',
         downloadWorksheets1: 'DOWNLOAD LETTER',
         downloadWorksheets2: 'WEEK WORKSHEETS',
         winPuzzlePiece: 'Win a puzzle piece!',
@@ -294,6 +300,39 @@ export default async (context, locale) => {
       },
       onlineWorksheet: {
         title: 'Online Worksheet'
+      },
+      scheduledFinished: {
+        description1: 'Don\'t forget to join us in our next live class.',
+        description2: 'They are a great complement to the video lessons!',
+        subtitle: 'If the schedule doesn\'t work for you, check out the recommended videos in the Library!',
+        librarySubtitle: 'Come read with us in the book nook!'
+      },
+      childSelect: {
+        placeholder: 'Select a child',
+        onPlaydate: 'Already on a Playdate',
+        management: 'Manage Student Profiles'
+      },
+      unlockPrompt: {
+        title: 'DAILY LESSONS',
+        description: 'Upgrade your plan to have access to daily lessons with your favorite playgarden prep teachers',
+        unlock: 'To unlock',
+        upgrade: 'Upgrade your Plan'
+      },
+      carouselLetter: {
+        placeholder: 'Browse by letter'
+      },
+      puzzles: {
+        title: 'PUZZLE LETTER',
+        description: 'Look at all the pieces you\'ve got! Keep going to earn a printable coloring page.',
+        congratulations: 'CONGRATULATIONS!',
+        getPuzzlePiece: 'GET A PUZZLE PIECE!',
+        earned: 'You earned a puzzle piece',
+        watch1: 'Watch',
+        watch2: 'in a row'
+      },
+      letterSelect: {
+        nature: 'Nature',
+        welcome: 'Welcome'
       }
     }
   })

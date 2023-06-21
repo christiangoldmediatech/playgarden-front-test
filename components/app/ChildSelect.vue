@@ -2,7 +2,7 @@
   <pg-select
     :value="internalValue"
     :items="childrenList"
-    placeholder="Select a child"
+    :placeholder="$t('dailyLessons.childSelect.placeholder')"
     solo
     data-test-id="child-select"
     v-bind="{ ...$attrs }"
@@ -55,7 +55,7 @@
             v-if="item.disabled"
             :class="{ 'pl-2': multiple, 'grey--text': true }"
           >
-            Already on a Playdate
+            {{ $t('dailyLessons.childSelect.onPlaydate') }}
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -69,7 +69,7 @@
             nuxt
             :to="{ name: 'app-account-index', query: { tab: 2 } }"
           >
-            Manage Student Profiles
+            {{ $t('dailyLessons.childSelect.management') }}
           </v-btn>
         </v-list-item-content>
       </v-list-item>

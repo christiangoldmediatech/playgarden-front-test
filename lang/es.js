@@ -7,6 +7,11 @@ export default async (context, locale) => {
     commonWords: {
       conjunctionText: 'o',
       prepositionText: 'CON',
+      letter: 'Letra',
+      day: 'DÍA',
+      progress: 'PROGRESO',
+      view: 'Ver',
+      puzzle: 'Puzzle',
       upload: 'SUBIR',
       return1: 'VOLVER',
       emailPlaceholder: 'Email',

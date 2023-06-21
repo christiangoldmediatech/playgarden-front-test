@@ -10,19 +10,19 @@
       <div class="pieces-data">
         <div class="remaining-title">
           <template v-if="won">
-            CONGRATULATIONS!
+            {{ $t('dailyLessons.puzzles.congratulations') }}
           </template>
           <template v-else>
-            GET A PUZZLE PIECE!
+            {{ $t('dailyLessons.puzzles.getPuzzlePiece') }}
           </template>
         </div>
 
         <div class="remaining-text">
           <template v-if="won">
-            You earned a puzzle piece
+            {{ $t('dailyLessons.puzzles.earned') }}
           </template>
           <template v-else>
-            Watch {{ completeTotal }} in a row
+            {{ $t('dailyLessons.puzzles.watch1') + ' ' + completeTotal + ' ' + $t('dailyLessons.puzzles.watch2') }}
           </template>
         </div>
 
@@ -42,8 +42,8 @@
     </div>
 
     <div class="view-puzzle" @click="openLessonPuzzleDialog">
-      View<br>
-      Puzzle
+      {{ $t('commonWords.view') }}<br>
+      {{ $t('commonWords.puzzle') }}
     </div>
   </div>
 </template>
