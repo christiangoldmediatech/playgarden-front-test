@@ -238,7 +238,12 @@
               </v-btn>
             </div>
 
-            <div class="pg-w-full md:pg-w-8/12 pg-mx-auto pg-mt-10">
+            <div
+              class="pg-w-full pg-mx-auto pg-mt-10"
+              :class="[
+                {'pg-flex pg-flex-col pg-items-center': hasPlayAndLearnPlanLivePlan},
+                hasPlayAndLearnPlanLivePlan ? 'md:pg-w-10/12' : 'md:pg-w-8/12']"
+            >
               <v-btn
                 v-if="entry.type === 'Playdate' && !hasSpotInThisPlaydate && !hasPlayAndLearnPlanLivePlan"
                 :disabled="!childId || entry.cancelled || entry.backpackImages.length >= entry.spots"
@@ -257,7 +262,7 @@
               <v-btn
                 v-if="hasPlayAndLearnPlanLivePlan"
                 color="#FD82AC"
-                class="!pg-shadow-button !pg-text-[18px] text-none white--text !pg-uppercase"
+                class="!pg-shadow-button !pg-text-[18px] text-none white--text !pg-uppercase !pg-mx-auto"
                 large
                 nuxt
                 link
@@ -327,11 +332,11 @@
 <script>
 import { ref, computed, useStore } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
+import moment from 'moment'
 import { TAG_MANAGER_EVENTS } from '@/models'
 import { useChild, usePlaydates, useToastHelper } from '@/composables'
 import { getNumberOrder, formatTimezone } from '@/utils/dateTools'
 import ChildSelect from '@/components/app/ChildSelect.vue'
-import moment from 'moment'
 
 export default {
   name: 'EntryDialog',

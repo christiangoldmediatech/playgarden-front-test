@@ -75,7 +75,7 @@
               :src="require('@/assets/png/logo-PlayandLearn.svg')"
             />
             <img
-              v-else-if="!hasPlayAndLearnPlan && hasPlayAndLearnPlanLivePlan"
+              v-else-if="hasPlayAndLearnPlanLivePlan"
               alt="Playarden Prep Online Logo"
               :height="appBarLogoSizeLearnPlay"
               :src="require('@/assets/png/logo-PG-PAL-live.svg')"
