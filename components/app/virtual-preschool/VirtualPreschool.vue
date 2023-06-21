@@ -166,7 +166,7 @@ export default defineComponent({
       library: {
         imageUrl: require('@/assets/png/virtual-preschool/sections-images/video_library.png'),
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
-        title: 'Video Library',
+        title: 'Watch and Learn',
         route: { name: 'app-library' },
         message: 'Come read with us in the book nook!',
         audio: `${baseRoute}audio/virtual-preschool/Library.m4a`,
