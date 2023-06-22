@@ -112,7 +112,7 @@
             <v-img
               :data-test-id="`vp-section-${section.title}`"
               :style="
-                small ? `top: 43%; height: 45%;` : ''
+                $vuetify.breakpoint.mdAndUp ? `top: 43%; height: 45%;` : `top: 40%; height: 45%;`
               "
               :width="small ? 150 : 200"
               contain
@@ -147,7 +147,7 @@
             :class="{
               'section-bubble-text-small':
                 (small || medium) && $vuetify.breakpoint.mdAndUp,
-              'section-bubble-text-mobile':
+              'section-bubble-text-mobile-blocked':
                 (small || medium) && $vuetify.breakpoint.mdAndDown
             }"
             :style="{ color: section.bubbleText }"
@@ -166,13 +166,8 @@
             </span>
             <img
               src="@/assets/svg/bubble-chat-arrow.svg"
-              class="pg-absolute pg-right-10"
+              class="pg-absolute pg-right-10 pg-top-[-30px]"
               :style="bubbleStyles"
-              :class="[
-                small && $vuetify.breakpoint.mdAndUp
-                  ? 'pg-top-[-30px]'
-                  : 'pg-bottom-[-30px]',
-              ]"
             />
           </div>
         </div>
@@ -300,7 +295,7 @@ export default defineComponent({
 
   computed: {
     bubbleStyles() {
-      if (this.small && this.$vuetify.breakpoint.mdAndUp) {
+      if (this.$vuetify.breakpoint.mdAndUp || (this.small && this.miniBlocked)) {
         return 'transform: scaleY(-1)'
       }
       return ''
@@ -363,6 +358,14 @@ export default defineComponent({
     right: 20%;
     width: 60%;
     bottom: 70% !important;
+    font-size: 0.7rem !important;
+  }
+
+  &-bubble-text-mobile-blocked {
+    padding: 10px;
+    right: 20%;
+    width: 60%;
+    bottom: 16% !important;
     font-size: 0.7rem !important;
   }
 
