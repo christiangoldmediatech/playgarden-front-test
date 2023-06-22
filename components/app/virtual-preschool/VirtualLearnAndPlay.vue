@@ -122,7 +122,8 @@ export default defineComponent({
         message: 'We can’t wait to learn with you every day!',
         audio: `${baseRoute}audio/virtual-preschool/Daily lessons.m4a`,
         color: '#359846',
-        textColor: '#C9EE9D'
+        textColor: '#C9EE9D',
+        bubbleText: '#359846'
       },
       kidscorner: {
         imageUrl: require('@/assets/png/virtual-preschool/sections-images/kids_corner.png'),
@@ -133,7 +134,8 @@ export default defineComponent({
           "It's a little bit silly in the Kids Corner, where kids choose how to learn",
         audio: `${baseRoute}audio/virtual-preschool/Kidscorner.m4a`,
         color: '#FCF394',
-        textColor: '#AF7E00'
+        textColor: '#AF7E00',
+        bubbleText: '#AF7E00'
       },
       classes: {
         imageUrl: require('@/assets/png/virtual-preschool/sections-images/live_classes.png'),
@@ -143,7 +145,8 @@ export default defineComponent({
         message: 'Enjoy cooking, music, movement zooms and more!',
         audio: `${baseRoute}audio/virtual-preschool/Live classes 2.m4a`,
         color: '#F58E00',
-        textColor: '#FEEAA5'
+        textColor: '#FEEAA5',
+        bubbleText: '#F58E00'
       },
       cubby: {
         imageUrl: require('@/assets/png/virtual-preschool/sections-images/student_cubby.png'),
@@ -156,7 +159,8 @@ export default defineComponent({
         message: 'Save your work and track progress in your cubby!',
         audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`,
         color: '#FFC648',
-        textColor: '#FF8000'
+        textColor: '#FF8000',
+        bubbleText: '#FF8000'
       },
       music: {
         imageUrl: require('@/assets/png/virtual-preschool/sections-images/music.png'),
@@ -166,7 +170,8 @@ export default defineComponent({
         message: 'Listen anytime to sing and learn!',
         audio: `${baseRoute}audio/virtual-preschool/Music.m4a`,
         color: '#F6B7D2',
-        textColor: '#CF2A5C'
+        textColor: '#CF2A5C',
+        bubbleText: '#CF2A5C'
       },
       library: {
         imageUrl: require('@/assets/png/virtual-preschool/sections-images/video_library.png'),
@@ -176,7 +181,8 @@ export default defineComponent({
         message: 'Come read with us in the book nook!',
         audio: `${baseRoute}audio/virtual-preschool/Library.m4a`,
         color: '#BFBFF7',
-        textColor: '#8659C6'
+        textColor: '#8659C6',
+        bubbleText: '#8659C6'
       },
       wellbeing: {
         imageUrl: require('@/assets/png/virtual-preschool/sections-images/social_emotional.png'),
@@ -187,7 +193,8 @@ export default defineComponent({
           'Have fun together with activities, games, books and so much more',
         audio: '',
         color: '#B2E68D',
-        textColor: '#1A8901'
+        textColor: '#1A8901',
+        bubbleText: '#1A8901'
       }
     }
 
