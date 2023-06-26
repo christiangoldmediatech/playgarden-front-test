@@ -1,5 +1,5 @@
 <template>
-  <v-app class="!pg-bg-[#00000000]">
+  <v-app class="transparent-layout">
     <v-main>
       <v-container fluid class="pa-0">
         <nuxt />
