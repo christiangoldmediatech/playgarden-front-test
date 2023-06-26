@@ -51,7 +51,7 @@
               <div
                 class="pg-absolute pg-inset-0 pg-m-auto pg-text-center pg-font-bold pg-font-quick translate-text"
                 :class="[small ? 'pg-text-[12px]' : $vuetify.breakpoint.width <= 1600 ? 'pg-text-[14px]' : 'pg-text-[22px]']"
-                :style="{ color: small ? section.textColor : section.color }"
+                :style="{ color: section.bubbleText}"
               >
                 Start <br />
                 Learning
@@ -79,11 +79,11 @@
               'section-bubble-text-mobile':
                 (small || medium) && $vuetify.breakpoint.mdAndDown
             }"
-            :style="{ color: small ? section.textColor : section.color }"
+            :style="{ color: section.bubbleText }"
           >
             <v-btn icon class="my-n3 mx-n2">
               <v-icon
-                :color="small ? section.textColor : section.color"
+                :color="section.bubbleText"
                 :size="small ? 15 : 20"
                 @click.stop="$emit('click:play', section)"
               >
@@ -122,6 +122,7 @@ interface Section {
   audio: string
   color: string
   textColor: string
+  bubbleText? : string
 }
 
 export default defineComponent({
