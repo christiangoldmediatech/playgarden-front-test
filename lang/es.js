@@ -257,6 +257,36 @@ export default async (context, locale) => {
       meetingCard: {
         button: 'IR AL HORARIO DE CLASES EN VIVO'
       }
+    },
+    studentCubby: {
+      puzzle: {
+        text: 'PUZZLE',
+        title: 'PORTAL DEL ESTUDIANTE',
+        content: 'Encuentra todas las insignias completas de %{childName} aqui. Una vez completado, puedes imprimir tus insignias como hojas de color. Coleccionalos todos! Puedes compartirnos tus insignias completadas en Instragram <strong>@PlaygardenPrep</strong>. No podemos esperar a verlas!',
+        viewPuzzle: 'Ver Puzzle',
+        viewProgress: 'Ver Progreso'
+      },
+      patches: {
+        text: 'Insignias',
+        title: 'Gana insignias por ver videos de actividades',
+        content: '¡Domina materias para coleccionar insignias para tu Portal de Estudiante!'
+      },
+      curriculum: {
+        text: 'CURRICULUM',
+        title: 'Ver todos tus curriculum',
+        content: '¡Desplácese para revisar sus lecciones y hojas de trabajo!'
+      },
+      portfolio: {
+        text: 'PORFOLIO',
+        title: 'PORFOLIO',
+        content: '¡Haz un seguimiento de tus hojas de trabajo y tu progreso!',
+        letter: 'Letra'
+      },
+      progressReport: {
+        text: 'REPORTE DE PROGRESO',
+        title: 'Reporte de progreso del alumno',
+        content: 'Las lecciones en línea de Playgarden Prep se han desarrollado para respaldar una o más de las áreas centrales de desarrollo. Después de ver un video, hacer la hoja de trabajo junto con un adulto o participar activamente en una clase en vivo, los padres estarán ayudando en el desarrollo de su hijo en cada una de las áreas específicas.'
+      }
     }
   })
 }

@@ -9,8 +9,7 @@
             <span class="ml-4 text-h4 text-md-h3">PROGRESS REPORT</span>
           </div>
           <div class="my-6 text-md-h6 text-body-1">
-            Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development.
-            After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.
+            {{ $t('studentCubby.progressReport.content') }}
           </div>
         </div>
         <dashboard />

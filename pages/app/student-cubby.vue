@@ -76,7 +76,7 @@ import StudentCubbyItems from '@/components/app/student-cubby/StudentCubbyItems.
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import UpdatePlanDialog from '@/components/app/student-cubby/UpdatePlanDialog.vue'
 import { TypedStore } from '@/models'
-import { useChildRoute, useVuetifyHelper } from '@/composables'
+import { useChildRoute, useLanguageHelper, useVuetifyHelper } from '@/composables'
 
 export default defineComponent({
   name: 'StudentCubby',
@@ -92,6 +92,7 @@ export default defineComponent({
     const router = useRouter()
     const store = useStore<TypedStore>()
     const vuetify = useVuetifyHelper()
+    const language = useLanguageHelper()
     const ChildRoute = useChildRoute({
       store,
       route,
@@ -101,32 +102,32 @@ export default defineComponent({
 
     const studentCubbyItems = [
       {
-        text: 'PUZZLE',
-        title: 'STUDENT CUBBY',
+        text: language.t('studentCubby.puzzle.text'),
+        title: language.t('studentCubby.puzzle.title'),
         imgName: 'puzzle-piece.png',
         routeName: 'app-student-cubby-puzzle'
       },
       {
-        text: 'PATCHES',
-        title: 'Earn Activity Patches for learning',
+        text: language.t('studentCubby.patches.text'),
+        title: language.t('studentCubby.patches.title'),
         imgName: 'patches.svg',
         routeName: 'app-student-cubby-patches'
       },
       {
-        text: 'CURRICULUM',
-        title: 'Review all Curriculum',
+        text: language.t('studentCubby.curriculum.text'),
+        title: language.t('studentCubby.curriculum.title'),
         imgName: 'abc.png',
         routeName: 'app-student-cubby-course-progress'
       },
       {
-        text: 'PORTFOLIO',
-        title: 'PORTFOLIO',
+        text: language.t('studentCubby.portfolio.text'),
+        title: language.t('studentCubby.portfolio.title'),
         imgName: 'group.png',
         routeName: 'app-student-cubby-student-portfolio'
       },
       {
-        text: 'PROGRESS REPORT',
-        title: 'Student progress report',
+        text: language.t('studentCubby.progressReport.text'),
+        title: language.t('studentCubby.progressReport.title'),
         imgName: 'progress.png',
         routeName: 'app-student-cubby-progress-report'
       }

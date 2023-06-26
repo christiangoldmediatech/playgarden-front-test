@@ -8,7 +8,7 @@
           <span class="ml-4 text-h4 text-md-h3">PORTFOLIO</span>
         </div>
         <div class="my-6 text-md-h6 text-body-1">
-          Keep track of your worksheets and progress!
+          {{ $t('studentCubby.portfolio.content') }}
         </div>
       </div>
       <!--carousel letter-->
@@ -29,7 +29,7 @@
                 v-if="!isMobile"
                 class="text-uppercase font-weight-bold portfolio-carousel-title d-flex align-center"
               >
-                LETTER
+                {{$t('studentCubby.portfolio.letter')}}
                 <recorded-letter
                   v-if="getCurrentLetter"
                   :letter="getCurrentLetter"

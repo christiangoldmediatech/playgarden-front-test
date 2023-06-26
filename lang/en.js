@@ -258,6 +258,36 @@ export default async (context, locale) => {
       meetingCard: {
         button: 'GO TO LIVE CLASSES SCHEDULE'
       }
+    },
+    studentCubby: {
+      puzzle: {
+        text: 'PUZZLE',
+        title: 'STUDENT CUBBY',
+        content: 'Find all of %{childName} completed puzzles here. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram <strong>@PlaygardenPrep</strong>. We can\'t wait to see yours!',
+        viewPuzzle: 'View Puzzle',
+        viewProgress: 'View Progress'
+      },
+      patches: {
+        text: 'PATCHES',
+        title: 'Earn Activity Patches for learning',
+        content: 'Master subjects to collect patches for your Student Cubby!'
+      },
+      curriculum: {
+        text: 'CURRICULUM',
+        title: 'Review all Curriculum',
+        content: 'Scroll through to review your lessons and worksheets!'
+      },
+      portfolio: {
+        text: 'PORTFOLIO',
+        title: 'PORTFOLIO',
+        content: 'Keep track of your worksheets and progress!',
+        letter: 'Letter'
+      },
+      progressReport: {
+        text: 'PROGRESS REPORT',
+        title: 'Student progress report',
+        content: ' Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.'
+      }
     }
   })
 }
