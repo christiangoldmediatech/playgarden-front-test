@@ -30,8 +30,8 @@
     </v-card-text>
     <unlock-prompt
       v-if="hasPlayAndLearnPlan"
-      title="CURRICULUM"
-      desc="Scroll through to review your lessons and worksheets!"
+      :title="$t('studentCubby.curriculum.text')"
+      :desc="$t('studentCubby.curriculum.unlockText')"
       img="student-cubby/abc.png"
     />
 

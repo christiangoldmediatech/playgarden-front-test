@@ -8,7 +8,7 @@
           class="font-weight-black text-outline subtitle-text text--color-black-base carousel-text text-uppercase pg-letter-spacing"
           :style="{ '--bgColor': activityType.color }"
         >
-          {{ activityType.name }}
+          {{ translatedCategory }}
         </span>
       </div>
     </v-row>
@@ -66,6 +66,9 @@ export default {
   computed: {
     nextPatchToUnlock () {
       return this.activityType.patches.find(patch => patch.unblocked === false) || {}
+    },
+    translatedCategory () {
+      return this.$t(`commonWords.activitiesType.${this.activityType.name.toLowerCase()}`)
     }
   },
 

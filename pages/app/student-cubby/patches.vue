@@ -28,8 +28,8 @@
       </v-card-text>
       <unlock-prompt
         v-if="hasPlayAndLearnPlan"
-        title="PATCHES"
-        desc="Master subjects in the Activities section to collect patches for your Student Cubby! Collect all badges to receive a real patch for your backpack."
+        :title="$t('studentCubby.patches.text')"
+        :desc="$t('studentCubby.puzzle.unlockText')"
         img="student-cubby/patches.svg"
       />
     </v-card>

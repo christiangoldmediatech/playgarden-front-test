@@ -29,7 +29,22 @@ export default async (context, locale) => {
       apply: 'Apply',
       planPrice: 'Plan and price',
       onlinePreschool: 'ONLINE PRESCHOOL',
-      backButton: 'Back'
+      backButton: 'Back',
+      activitiesType: {
+        art: 'Art',
+        cognitive: 'Cognitive',
+        language: 'Language',
+        math: 'Math',
+        movement: 'Movement',
+        music: 'Music',
+        nutrition: 'Nutrition',
+        science: 'Science',
+        sensory: 'Sensory',
+        songs: 'Songs',
+        storytime: 'Storytime',
+        theater: 'Theater',
+        writing: 'Writing'
+      }
     },
     menuLandingPage: {
       home: 'Home',
@@ -265,17 +280,22 @@ export default async (context, locale) => {
         title: 'STUDENT CUBBY',
         content: 'Find all of %{childName} completed puzzles here. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram <strong>@PlaygardenPrep</strong>. We can\'t wait to see yours!',
         viewPuzzle: 'View Puzzle',
-        viewProgress: 'View Progress'
+        viewProgress: 'View Progress',
+        unlockText: 'Find all of your children completed puzzles. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram @PlaygardenPrep. We can\'t wait to see yours!'
       },
-      patches: {
+      c: {
         text: 'PATCHES',
         title: 'Earn Activity Patches for learning',
-        content: 'Master subjects to collect patches for your Student Cubby!'
+        content: 'Master subjects to collect patches for your Student Cubby!',
+        unlockText: 'Master subjects in the Activities section to collect patches for your Student Cubby! Collect all badges to receive a real patch for your backpack.',
+        unlockShort: 'Unlock',
+        unlockLong: 'Unlock This Patch'
       },
       curriculum: {
         text: 'CURRICULUM',
         title: 'Review all Curriculum',
-        content: 'Scroll through to review your lessons and worksheets!'
+        content: 'Scroll through to review your lessons and worksheets!',
+        unlockText: 'Scroll through to review your lessons and worksheets!'
       },
       portfolio: {
         text: 'PORTFOLIO',
@@ -286,7 +306,8 @@ export default async (context, locale) => {
       progressReport: {
         text: 'PROGRESS REPORT',
         title: 'Student progress report',
-        content: ' Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.'
+        content: ' Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.',
+        unlockText: 'Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.'
       }
     }
   })

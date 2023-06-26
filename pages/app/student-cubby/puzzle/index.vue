@@ -7,7 +7,7 @@
       <!-- Section Title and Description -->
       <div class="d-flex align-center justify-center">
         <img height="80px" src="@/assets/png/student-cubby/puzzle-piece.png" />
-        <span class="ml-4 text-h4 text-md-h3">PUZZLE</span>
+        <span class="ml-4 text-h4 text-md-h3">{{ $t('studentCubby.puzzle.text') }}</span>
       </div>
       <div v-if="child" class="my-6 text-md-h6 text-body-1" v-html="$t('studentCubby.puzzle.content', {childName: child.firstName || 'Child'})">
       </div>
@@ -124,8 +124,8 @@
 
     <unlock-prompt
       v-if="hasPlayAndLearnPlan"
-      title="PUZZLE"
-      desc="Find all of your children completed puzzles. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram @PlaygardenPrep. We can't wait to see yours!"
+      :title="$t('studentCubby.puzzle.text')"
+      :desc="$t('studentCubby.puzzle.unlockText')"
       img="student-cubby/puzzle-piece.png"
     />
     <puzzle-pieces-dialog v-model="dialog" v-bind="{ toShow }" />
