@@ -294,6 +294,8 @@ export default async (context, locale) => {
       curriculum: {
         text: 'CURRICULUM',
         title: 'Review all Curriculum',
+        download: 'DOWNLOAD LETTER %{letter} WEEK WORKSHEETS',
+        downloading: 'GETTING DOCUMENT...',
         content: 'Scroll through to review your lessons and worksheets!',
         unlockText: 'Scroll through to review your lessons and worksheets!'
       },

@@ -45,8 +45,8 @@
                 <span class="portfolio-subtitle">
                   {{
                     loadingDownloadLessonsFile
-                      ? 'GETTING DOCUMENT...'
-                      : downloadText
+                      ? $t('studentCubby.curriculum.downloading')
+                      : $t('studentCubby.curriculum.download', { letter:this.formattedLetterName })
                   }}
                 </span>
                 <v-btn class="ml-4" color="primary" fab small>
@@ -404,7 +404,7 @@ export default defineComponent({
       return letterName[0]
     },
     downloadText() {
-      return `DOWNLOAD LETTER ${this.formattedLetterName} WEEK WORKSHEETS`
+      return this.$t('studentCubby.curriculum.download', {letter:this.formattedLetterName })
     }
   },
   async mounted() {

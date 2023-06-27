@@ -293,12 +293,14 @@ export default async (context, locale) => {
       curriculum: {
         text: 'CURRICULUM',
         title: 'Ver todos tus curriculum',
+        download: 'DESCARGA LAS ACTIVIDADES DE LA LETRA %{letter}',
+        downloading: 'OBTENIENDO DOCUMENTO...',
         content: '¡Desplácese para revisar sus lecciones y hojas de trabajo!',
         unlockText: '¡Desplácese para revisar sus lecciones y hojas de trabajo!'
       },
       portfolio: {
-        text: 'PORFOLIO',
-        title: 'PORFOLIO',
+        text: 'PORTAFOLIO',
+        title: 'PORTAFOLIO',
         content: '¡Haz un seguimiento de tus hojas de trabajo y tu progreso!',
         letter: 'Letra'
       },
