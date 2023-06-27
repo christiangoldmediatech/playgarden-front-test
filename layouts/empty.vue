@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="transparent-layout">
     <v-main>
       <v-container fluid class="pa-0">
         <nuxt />
@@ -13,3 +13,9 @@ export default {
   name: 'Empty'
 }
 </script>
+
+<style>
+.transparent-layout {
+  background-color: #00000000 !important;
+}
+</style>
