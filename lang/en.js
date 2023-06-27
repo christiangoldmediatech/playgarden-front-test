@@ -307,7 +307,9 @@ export default async (context, locale) => {
         text: 'PROGRESS REPORT',
         title: 'Student progress report',
         content: ' Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.',
-        unlockText: 'Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.'
+        unlockText: 'Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.',
+        generalProgress: 'General Progress',
+        lettersProgress: 'Letters Progress'
       }
     }
   })

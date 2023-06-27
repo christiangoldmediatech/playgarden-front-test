@@ -306,7 +306,9 @@ export default async (context, locale) => {
         text: 'REPORTE DE PROGRESO',
         title: 'Reporte de progreso del alumno',
         content: 'Las lecciones en línea de Playgarden Prep se han desarrollado para respaldar una o más de las áreas centrales de desarrollo. Después de ver un video, hacer la hoja de trabajo junto con un adulto o participar activamente en una clase en vivo, los padres estarán ayudando en el desarrollo de su hijo en cada una de las áreas específicas.',
-        unlockText: 'Las lecciones en línea de Playgarden Prep se han desarrollado para respaldar una o más de las áreas centrales de desarrollo. Después de ver un video, hacer la hoja de trabajo junto con un adulto o participar activamente en una clase en vivo, los padres estarán ayudando en el desarrollo de su hijo en cada una de las áreas específicas.'
+        unlockText: 'Las lecciones en línea de Playgarden Prep se han desarrollado para respaldar una o más de las áreas centrales de desarrollo. Después de ver un video, hacer la hoja de trabajo junto con un adulto o participar activamente en una clase en vivo, los padres estarán ayudando en el desarrollo de su hijo en cada una de las áreas específicas.',
+        generalProgress: 'Progreso General',
+        lettersProgress: 'Progreso de letras'
       }
     }
   })

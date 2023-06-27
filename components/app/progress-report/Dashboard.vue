@@ -158,12 +158,12 @@ export default {
 
     getMenu() {
       const menuGeneral = {
-        name: 'General Progress',
+        name: this.$t('studentCubby.progressReport.generalProgress'),
         type: 'General',
         icon: require('@/assets/svg/note.svg')
       }
       const letterProgress = {
-        name: 'Letters Progress',
+        name: this.$t('studentCubby.progressReport.lettersProgress'),
         type: 'Letters',
         icon: require('@/assets/svg/bar-chart.svg')
       }
