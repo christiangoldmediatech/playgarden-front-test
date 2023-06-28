@@ -26,7 +26,7 @@
       @next="onNext"
     >
       <template v-if="correct" v-slot:button>
-        Continue
+        {{ $t('commonWords.continue') }}
       </template>
     </ow-message>
   </div>

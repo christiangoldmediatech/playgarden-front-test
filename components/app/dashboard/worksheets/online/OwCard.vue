@@ -25,13 +25,13 @@
           font-size="38px"
           font-size-mobile="1.4rem"
           font-weight="normal"
-          text="Coming next!"
+          :text="$t('dailyLessons.onlineWorksheet.coming')"
         />
       </template>
       <p class="text-center font-weight-medium white--text mt-2 pg-font-quick pg-text-sm md:pg-text-xl">
         <template v-if="showTeachers">
-          <span class="font-weight-bold white--text ">HANDS-ON LEARNING</span>
-          is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
+          <span class="font-weight-bold white--text ">{{ $t('dailyLessons.onlineWorksheet.handsOn1') }}</span>
+          {{ $t('dailyLessons.onlineWorksheet.handsOn2') }}
         </template>
       </p>
     </completed-dialog>
@@ -128,7 +128,7 @@ export default {
       const buttons = []
 
       const goToTeachersVideo = {
-        text: 'TEACHERS VIDEO',
+        text: this.$t('dailyLessons.onlineWorksheet.button1'),
         color: '#F89838',
         iconLeft: 'pg-icon-paper-pencil',
         action: () => {
@@ -158,7 +158,7 @@ export default {
       }
 
       const downloadHandsOn = {
-        text: 'DOWNLOAD WORKSHEET',
+        text: this.$t('dailyLessons.onlineWorksheet.button2'),
         color: '#FFAB37',
         iconLeft: 'pg-icon-download',
         action: () => {
@@ -170,7 +170,7 @@ export default {
       }
 
       const uploadHandsOn = {
-        text: this.$vuetify.breakpoint.xsOnly ? 'UPLOAD WORKSHEET' : 'UPLOAD COMPLETED WORKSHEET',
+        text: this.$vuetify.breakpoint.xsOnly ? this.$t('dailyLessons.onlineWorksheet.button3') : this.$t('dailyLessons.onlineWorksheet.button4'),
         color: '#FFAB37',
         iconLeft: 'pg-icon-camera',
         action: () => {

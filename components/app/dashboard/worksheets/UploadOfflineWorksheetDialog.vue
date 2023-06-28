@@ -202,7 +202,7 @@
             :disabled="!canRemoveOrUpload"
             @click.stop="close"
           >
-            {{ $t('dailyLessons.uploadWorksheetDialog.return') }}
+            {{ $t('commonWords.returnToLesson') }}
           </v-btn>
         </v-row>
       </v-card-text>

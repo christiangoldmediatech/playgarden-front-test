@@ -22,10 +22,10 @@
       <v-card-text v-if="selectedImage">
         <div class="ow-dialog-title">
           <span v-if="correct">
-            GREAT JOB!
+            {{ $t('dailyLessons.onlineWorksheet.messageDialog1') }}
           </span>
           <span v-else>
-            OOPS!
+            {{ $t('dailyLessons.onlineWorksheet.messageDialog2') }}
           </span>
         </div>
 
@@ -65,7 +65,7 @@
               <v-icon left small>
                 mdi-less-than
               </v-icon>
-              Go Back
+              {{ $t('commonWords.return2') }}
             </slot>
           </v-btn>
         </div>

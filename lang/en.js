@@ -14,6 +14,10 @@ export default async (context, locale) => {
       puzzle: 'Puzzle',
       upload: 'UPLOAD',
       return1: 'GO BACK',
+      return2: 'Go back',
+      returnToLesson: 'Return to lesson',
+      skip: 'Skip for now',
+      continue: 'Continue',
       emailPlaceholder: 'Email',
       passwordPlaceholder: 'Password',
       firstName: 'First Name',
@@ -295,17 +299,41 @@ export default async (context, locale) => {
         uploadMore: 'UPLOAD MORE',
         dragAndDrop: 'DRAG AND DROP YOUR DOCUMENTS OR UPLOAD MORE',
         drag: 'DRAG YOUR WORKSHEET',
-        browse: 'BROWSE FILES',
-        return: 'Return to lesson'
+        browse: 'BROWSE FILES'
       },
       onlineWorksheet: {
-        title: 'Online Worksheet'
+        title: 'Online Worksheet',
+        titleUppercase: 'ONLINE WORKSHEET',
+        coming: 'Coming next!',
+        handsOn1: 'HANDS-ON LEARNING',
+        handsOn2: 'is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.',
+        button1: 'TEACHERS VIDEO',
+        button2: 'DOWNLOAD WORKSHEET',
+        button3: 'UPLOAD WORKSHEET',
+        button4: 'UPLOAD COMPLETED WORKSHEET',
+        messageDialog1: 'GREAT JOB!',
+        messageDialog2: 'OOPS!',
+        complete: 'Complete the Online Worksheets, and get a new Puzzle Piece!'
+      },
+      offlineWorksheet: {
+        title: 'Watch the Worksheet Video',
+        subtitle: 'Complete your hands-on worksheets with a Playgarden Prep teacher!',
+        alternativeTitle: 'Hands-on Learning',
+        alternativeSubtitle: 'Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.',
+        question: 'What do you want to do next?',
+        download1: 'DOWNLOAD WORKSHEET',
+        download2: 'DOWNLOAD HANDS-ON WORKSHEET',
+        upload1: 'UPLOAD WORKSHEET',
+        upload2: 'UPLOAD COMPLETED WORKSHEET',
+        correctAnswer: 'is the correct answer!',
+        nextWord: 'Next Word'
       },
       scheduledFinished: {
         description1: 'Don\'t forget to join us in our next live class.',
         description2: 'They are a great complement to the video lessons!',
         subtitle: 'If the schedule doesn\'t work for you, check out the recommended videos in the Library!',
-        librarySubtitle: 'Come read with us in the book nook!'
+        librarySubtitle: 'Come read with us in the book nook!',
+        nextDay: 'Go to next day'
       },
       childSelect: {
         placeholder: 'Select a child',
@@ -329,6 +357,20 @@ export default async (context, locale) => {
         earned: 'You earned a puzzle piece',
         watch1: 'Watch',
         watch2: 'in a row'
+      },
+      lessonCompleted: {
+        congratulations: 'Congratulations!',
+        subtitle1: 'You\'ve completed the',
+        subtitle2: 'day of video lessons!',
+        first: 'first',
+        second: 'second',
+        third: 'third',
+        fourth: 'fourth',
+        fifth: 'fifth',
+        card1: 'Online Worksheets',
+        card2: 'Print Worksheets',
+        card3: 'Activities',
+        footer: 'Remember that in order to continue to the next lesson, you must complete the online worksheets, video activities and worksheets of this lesson.'
       },
       letterSelect: {
         nature: 'Nature',
