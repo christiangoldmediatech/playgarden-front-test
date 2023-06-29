@@ -31,7 +31,7 @@
                   {{ currentLessonActivity.meta.activityType.name }}
                 </span>
                 <span class="dashboard-item-name">
-                  with {{ currentLessonActivity.title }}
+                  {{ $t('commonWords.prepositionText') }} {{ currentLessonActivity.title }}
                 </span>
               </v-list-item-title>
               <v-list-item-subtitle>

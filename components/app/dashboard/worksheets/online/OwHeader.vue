@@ -2,14 +2,14 @@
   <div>
     <div class="ow-title">
       <span class="hidden-md-and-up">
-        ONLINE WORKSHEET
+        {{ $t('dailyLessons.onlineWorksheet.titleUppercase') }}
       </span>
       <span class="hidden-sm-and-down">
         {{ question.name }}
       </span>
       <br class="hidden-sm-and-down">
       <span class="hidden-sm-and-down">
-        DAY {{ day }}
+        {{ $t('commonWords.day') + ' ' + day }}
       </span>
     </div>
 
@@ -46,7 +46,7 @@
             >
           </template>
           <span>
-            Complete the Online Worksheets, and get a new Puzzle Piece!
+            {{ $t('dailyLessons.onlineWorksheet.complete') }}
           </span>
         </v-tooltip>
       </div>

@@ -30,7 +30,7 @@
     >
       <template v-if="selectedImage">
         <template v-if="correct">
-          {{ selectedImage.word }} is the correct answer!
+          {{ selectedImage.word + ' ' + $t('dailyLessons.offlineWorksheet.correctAnswer') }}
         </template>
         <template v-else>
           {{ selectedImage.errorMessage }}
@@ -39,10 +39,10 @@
 
       <template v-if="correct" v-slot:button>
         <template v-if="!lastWord">
-          Next Word
+          {{ $t('dailyLessons.offlineWorksheet.nextWord') }}
         </template>
         <template v-else>
-          Continue
+          {{ $t('commonWords.continue') }}
         </template>
         <v-icon right small>
           mdi-greater-than

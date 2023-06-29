@@ -6,6 +6,18 @@ export default async (context, locale) => {
   return await Promise.resolve({
     commonWords: {
       conjunctionText: 'or',
+      prepositionText: 'with',
+      letter: 'Letter',
+      day: 'DAY',
+      progress: 'PROGRESS',
+      view: 'View',
+      puzzle: 'Puzzle',
+      upload: 'UPLOAD',
+      return1: 'GO BACK',
+      return2: 'Go back',
+      returnToLesson: 'Return to lesson',
+      skip: 'Skip for now',
+      continue: 'Continue',
       emailPlaceholder: 'Email',
       passwordPlaceholder: 'Password',
       firstName: 'First Name',
@@ -333,6 +345,112 @@ export default async (context, locale) => {
         activitiesCompleted: 'Activities Completed',
         onlineWorksheet: 'Online Worksheets',
         worksheetsUploaded: 'Worksheets Uploaded'
+      }
+    },
+    dailyLessons: {
+      downloadWorksheetDay: 'DOWNLOAD WORKSHEET OF THE DAY!',
+      worksheet: 'Worksheet',
+      worksheetPlural: 'Worksheets',
+      panel: {
+        previousDay: 'GO TO PREVIOUS DAY',
+        nextDay: 'GO TO NEXT DAY',
+        nextDay1: 'Go to next day',
+        downloadWorksheets1: 'DOWNLOAD LETTER',
+        downloadWorksheets2: 'WEEK WORKSHEETS',
+        winPuzzlePiece: 'Win a puzzle piece!',
+        earnedPuzzlePiece: 'You earned a puzzle piece',
+        videoTitle: 'Video Lessons',
+        worksheetTitle: 'Worksheets',
+        activitiesTitle: 'Activities',
+        uploadWorksheet: 'UPLOAD WORKSHEET',
+        uploadWorksheetSubtitle: 'File(s) must be in JPG or PNG format',
+        downloadWorksheet: 'DOWNLOAD WORKSHEET',
+        viewWorksheets: 'View worksheets'
+      },
+      uploadWorksheetDialog: {
+        title: ' UPLOAD YOUR WORKSHEET',
+        requirement1: '* File(s) must be in',
+        requirement2: 'format only.',
+        success: 'UPLOAD SUCCESSFUL!',
+        uploadMore: 'UPLOAD MORE',
+        dragAndDrop: 'DRAG AND DROP YOUR DOCUMENTS OR UPLOAD MORE',
+        drag: 'DRAG YOUR WORKSHEET',
+        browse: 'BROWSE FILES'
+      },
+      onlineWorksheet: {
+        title: 'Online Worksheet',
+        titleUppercase: 'ONLINE WORKSHEET',
+        coming: 'Coming next!',
+        handsOn1: 'HANDS-ON LEARNING',
+        handsOn2: 'is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.',
+        button1: 'TEACHERS VIDEO',
+        button2: 'DOWNLOAD WORKSHEET',
+        button3: 'UPLOAD WORKSHEET',
+        button4: 'UPLOAD COMPLETED WORKSHEET',
+        messageDialog1: 'GREAT JOB!',
+        messageDialog2: 'OOPS!',
+        complete: 'Complete the Online Worksheets, and get a new Puzzle Piece!'
+      },
+      offlineWorksheet: {
+        title: 'Watch the Worksheet Video',
+        subtitle: 'Complete your hands-on worksheets with a Playgarden Prep teacher!',
+        alternativeTitle: 'Hands-on Learning',
+        alternativeSubtitle: 'Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.',
+        question: 'What do you want to do next?',
+        download1: 'DOWNLOAD WORKSHEET',
+        download2: 'DOWNLOAD HANDS-ON WORKSHEET',
+        upload1: 'UPLOAD WORKSHEET',
+        upload2: 'UPLOAD COMPLETED WORKSHEET',
+        correctAnswer: 'is the correct answer!',
+        nextWord: 'Next Word'
+      },
+      scheduledFinished: {
+        description1: 'Don\'t forget to join us in our next live class.',
+        description2: 'They are a great complement to the video lessons!',
+        subtitle: 'If the schedule doesn\'t work for you, check out the recommended videos in the Library!',
+        librarySubtitle: 'Come read with us in the book nook!',
+        nextDay: 'Go to next day'
+      },
+      childSelect: {
+        placeholder: 'Select a child',
+        onPlaydate: 'Already on a Playdate',
+        management: 'Manage Student Profiles'
+      },
+      unlockPrompt: {
+        title: 'DAILY LESSONS',
+        description: 'Upgrade your plan to have access to daily lessons with your favorite playgarden prep teachers',
+        unlock: 'To unlock',
+        upgrade: 'Upgrade your Plan'
+      },
+      carouselLetter: {
+        placeholder: 'Browse by letter'
+      },
+      puzzles: {
+        title: 'PUZZLE LETTER',
+        description: 'Look at all the pieces you\'ve got! Keep going to earn a printable coloring page.',
+        congratulations: 'CONGRATULATIONS!',
+        getPuzzlePiece: 'GET A PUZZLE PIECE!',
+        earned: 'You earned a puzzle piece',
+        watch1: 'Watch',
+        watch2: 'in a row'
+      },
+      lessonCompleted: {
+        congratulations: 'Congratulations!',
+        subtitle1: 'You\'ve completed the',
+        subtitle2: 'day of video lessons!',
+        first: 'first',
+        second: 'second',
+        third: 'third',
+        fourth: 'fourth',
+        fifth: 'fifth',
+        card1: 'Online Worksheets',
+        card2: 'Print Worksheets',
+        card3: 'Activities',
+        footer: 'Remember that in order to continue to the next lesson, you must complete the online worksheets, video activities and worksheets of this lesson.'
+      },
+      letterSelect: {
+        nature: 'Nature',
+        welcome: 'Welcome'
       }
     }
   })

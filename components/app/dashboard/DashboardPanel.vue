@@ -44,7 +44,7 @@
                     />
                   </v-btn>
                 </template>
-                <span>GO TO PREVIOUS DAY</span>
+                <span>{{ $t('dailyLessons.panel.previousDay') }}</span>
               </v-tooltip>
               <template v-else>
                 <v-btn
@@ -94,7 +94,7 @@
                       />
                     </v-btn>
                   </template>
-                  <span>GO TO NEXT DAY</span>
+                  <span>{{ $t('dailyLessons.panel.nextDay') }}</span>
                 </v-tooltip>
                 <template v-else>
                   <v-btn
@@ -149,13 +149,13 @@
               'title-download-mobile': $vuetify.breakpoint.mobile
             }"
           >
-            {{ `DOWNLOAD LETTER ${getLetter} WEEK WORKSHEETS` }}
+            {{ $t('dailyLessons.panel.downloadWorksheets1') + ` ${getLetter} ` + $t('dailyLessons.panel.downloadWorksheets2') }}
           </span>
         </v-btn>
         <!-- VIDEO LESSONS -->
         <content-section
           number="1"
-          title="Video Lessons"
+          :title="$t('dailyLessons.panel.videoTitle')"
           :progress="videos.progress"
           :progress-next="videos.progressNext"
           enabled
@@ -174,7 +174,7 @@
         <!-- WORKSHEETS -->
         <content-section
           number="2"
-          title="Worksheets"
+          :title="$t('dailyLessons.panel.worksheetTitle')"
           :progress="worksheets.progress"
           :progress-next="worksheets.progressNext"
           :enabled="videos.progress === 100"
@@ -263,7 +263,7 @@
                 <v-col cols="8">
                   <div class="mx-2 mt-4 mb-2">
                     <span :class="['dashboard-item-activity-type']">
-                      DOWNLOAD WORKSHEET OF THE DAY!
+                      {{ $t('dailyLessons.downloadWorksheetDay') }}
                     </span>
                   </div>
                   <div
@@ -272,7 +272,7 @@
                     <div
                       class="worksheet-title flex-grow-1 pr-2 dashboard-item-disabled"
                     >
-                      Worksheet
+                      {{ $t('dailyLessons.worksheet') }}
                     </div>
 
                     <div>
@@ -367,11 +367,11 @@
                       'dashboard-item-disabled': lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100
                     }"
                   >
-                    UPLOAD WORKSHEET
+                    {{ $t('dailyLessons.panel.uploadWorksheet') }}
                   </div>
 
                   <div class="text-caption grey--text">
-                    File(s) must be in JPG or PNG format
+                    {{ $t('dailyLessons.panel.uploadWorksheetSubtitle') }}
                   </div>
                 </v-col>
               </v-row>
@@ -445,7 +445,7 @@
                     <div
                       class="text-uppercase dashboard-item-title text-center"
                     >
-                      DOWNLOAD WORKSHEET
+                      {{ $t('dailyLessons.panel.downloadWorksheet') }}
                     </div>
 
                     <span
@@ -453,7 +453,7 @@
                       class="clickable admin-view-worksheets"
                       @click.stop="goToAdminWorksheets"
                     >
-                      View worksheets
+                      {{ $t('dailyLessons.panel.viewWorksheets') }}
                     </span>
                   </v-row>
                 </v-card>
@@ -487,7 +487,7 @@
                         'dashboard-item-disabled': videos.progress < 100
                       }"
                     >
-                      UPLOAD WORKSHEET
+                      {{ $t('dailyLessons.panel.uploadWorksheet') }}
                     </div>
                   </v-row>
                 </v-card>
@@ -506,7 +506,7 @@
         <content-section
           v-if="activities && activities.items.length > 0"
           number="3"
-          title="Activities"
+          :title="$t('dailyLessons.panel.activitiesTitle')"
           :progress="activities.progress"
           :progress-next="activities.progressNext"
           :enabled="videos.progress === 100"

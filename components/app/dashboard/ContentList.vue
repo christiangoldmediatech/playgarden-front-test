@@ -60,7 +60,7 @@
                     { 'dashboard-item-disabled': isItemDisabled(item) }
                   ]"
                 >
-                  with {{ item.name }}
+                  {{ $t('commonWords.prepositionText') + ' ' + item.name }}
                 </span>
               </div>
 
@@ -133,7 +133,7 @@
                   { 'dashboard-item-disabled': isItemDisabled(item) }
                 ]"
               >
-                with {{ item.name }}
+                {{ $t('commonWords.prepositionText') + ' ' + item.name }}
               </span>
             </div>
             <div class="mx-2 mb-3 text-body-2">

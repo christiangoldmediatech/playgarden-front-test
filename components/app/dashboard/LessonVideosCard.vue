@@ -30,7 +30,7 @@
                   {{ currentVideoLesson.meta.activityType.name }}
                 </span>
                 <span class="dashboard-item-name">
-                  with {{ currentVideoLesson.title }}
+                  {{ $t('commonWords.prepositionText') + ' ' + currentVideoLesson.title }}
                 </span>
               </v-list-item-title>
               <v-list-item-subtitle>

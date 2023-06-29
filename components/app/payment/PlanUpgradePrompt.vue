@@ -10,13 +10,13 @@
         mdi-lock-outline
       </v-icon>
       <div class="pg-grey--text my-2 fw-700">
-        To unlock
+        {{ $t('dailyLessons.unlockPrompt.unlock') }}
       </div>
       <div
         class="accent--text fw-700 text-decoration-underline cursor-pointer"
         @click="handleUpgradeRequest"
       >
-        Upgrade your Plan
+        {{ $t('dailyLessons.unlockPrompt.upgrade') }}
       </div>
     </div>
   </section>
