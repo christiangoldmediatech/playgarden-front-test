@@ -403,9 +403,6 @@ export default defineComponent({
 
       return letterName[0]
     },
-    downloadText() {
-      return this.$t('studentCubby.curriculum.download', {letter:this.formattedLetterName })
-    }
   },
   async mounted() {
     this.$nuxt.$on('show-curriculum-progress', (curriculumTypeId: any) => {
