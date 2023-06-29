@@ -16,8 +16,8 @@
       </v-col>
 
       <h2 class="overlay-title pg-text-[20px] md:pg-text-xl mb-2 pg-px-1 md:pg-px-0">
-        Congratulations! <br />
-        You've completed the {{ dayString }} day of video lessons!
+        {{ $t('dailyLessons.lessonCompleted.congratulations') }} <br />
+        {{ $t('dailyLessons.lessonCompleted.subtitle1') + ' ' + dayString + ' ' + $t('dailyLessons.lessonCompleted.subtitle2') }}
       </h2>
 
       <div class="lesson-completed-container">
@@ -44,21 +44,21 @@
           <img src="@/assets/png/dashboard/end-lesson/online_worksheets.png" class="pg-w-full pg-max-h-[240px] pg-object-cover pg-mt-[-10px] !pg-rounded-2xl" />
           <img src="@/assets/png/dashboard/end-lesson/number_1.png" class="pg-absolute pg-top-[-25px] pg-left-[-10px] pg-w-14" />
           <div class="pg-font-bold pg-text-center pg-text-lg pg-text-[#F89838] pg-py-3">
-            Online Worksheets
+            {{ $t('dailyLessons.lessonCompleted.card1') }}
           </div>
         </v-card>
         <v-card class="!pg-relative !pg-m-0 !pg-mb-5 !pg-p-0 !pg-rounded-xl" max-width="200" light @click="goToOfflineWorksheets">
           <img src="@/assets/png/dashboard/end-lesson/print_worksheets.png" class="pg-w-full pg-max-h-[240px] pg-object-cover pg-mt-[-10px] !pg-rounded-2xl" />
           <img src="@/assets/png/dashboard/end-lesson/number_2.png" class="pg-absolute pg-top-[-25px] pg-left-[-10px] pg-w-14" />
           <div class="pg-font-bold pg-text-center pg-text-lg pg-text-[#F89838] pg-py-3">
-            Print Worksheets
+            {{ $t('dailyLessons.lessonCompleted.card2') }}
           </div>
         </v-card>
         <v-card class="!pg-relative !pg-m-0 !pg-mb-5 !pg-p-0 !pg-rounded-xl" max-width="200" light @click="skipToActivities">
           <img src="@/assets/png/dashboard/end-lesson/activities.png" class="pg-w-full pg-max-h-[240px] pg-object-cover pg-mt-[-10px] !pg-rounded-2xl" />
           <img src="@/assets/png/dashboard/end-lesson/number_3.png" class="pg-absolute pg-top-[-25px] pg-left-[-10px] pg-w-14" />
           <div class="pg-font-bold pg-text-center pg-text-lg pg-text-[#F89838] pg-py-3">
-            Activities
+            {{ $t('dailyLessons.lessonCompleted.card3') }}
           </div>
         </v-card>
       </div>
@@ -75,7 +75,7 @@
           <v-icon class="pg-mr-2">
             mdi-chevron-left
           </v-icon>
-          Return to lesson
+          {{ $t('commonWords.returnToLesson') }}
         </v-btn>
       </div>
 
@@ -86,10 +86,10 @@
         tile
         @click.stop="$emit('exit', false)"
       >
-        Skip for now
+        {{ $t('commonWords.skip') }}
       </v-btn>
       <div class="pg-w-full md:pg-w-8/12 pg-text-center pg-font-light pg-font-quick">
-        Remember that in order to continue to the next lesson, you must complete the online worksheets, video activities and worksheets of this lesson.
+        {{ $t('dailyLessons.lessonCompleted.footer') }}
       </div>
     </div>
   </v-overlay>
@@ -108,6 +108,7 @@ import {
   useAppEventBusHelper,
   useDashboardLink,
   useIsLessonCompleted,
+  useLanguageHelper,
   useNuxtHelper
 } from '@/composables'
 // @ts-ignore
@@ -150,6 +151,7 @@ export default defineComponent({
     const router = useRouter()
     const nuxt = useNuxtHelper()
     const appEventBus = useAppEventBusHelper()
+    const language = useLanguageHelper()
 
     let player: PlayerInstance
 
@@ -158,7 +160,13 @@ export default defineComponent({
     })
 
     const dayString = computed(() => {
-      const days = ['first', 'second', 'third', 'fourth', 'fifth']
+      const days = [
+        language.t('dailyLessons.lessonCompleted.first'),
+        language.t('dailyLessons.lessonCompleted.second'),
+        language.t('dailyLessons.lessonCompleted.third'),
+        language.t('dailyLessons.lessonCompleted.fourth'),
+        language.t('dailyLessons.lessonCompleted.fifth')
+      ]
       return days[getLesson.value.day - 1]
     })
 

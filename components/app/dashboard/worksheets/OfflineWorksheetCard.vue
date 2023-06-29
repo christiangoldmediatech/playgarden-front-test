@@ -18,10 +18,10 @@
             class="white--text"
             font-size="56px"
             font-weight="bold"
-            text="Watch the Worksheet Video"
+            :text="$t('dailyLessons.offlineWorksheet.title')"
           />
           <p class="white--text text-center">
-            Complete your hands-on worksheets with a Playgarden Prep teacher!
+            {{ $t('dailyLessons.offlineWorksheet.subtitle') }}
           </p>
         </div>
       </template>
@@ -30,17 +30,17 @@
           class="white--text"
           font-size="56px"
           font-weight="bold"
-          text="Hands-on Learning"
+          :text="$t('dailyLessons.offlineWorksheet.alternativeTitle')"
         />
         <p class="white--text text-center">
-          Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.
+          {{ $t('dailyLessons.offlineWorksheet.alternativeSubtitle') }}
         </p>
       </template>
     </div>
     <v-container>
       <v-row class="flex-column" align="center">
         <h5 class="text-h5 font-weight-bold text-center">
-          What do you want to do next?
+          {{ $t('dailyLessons.offlineWorksheet.question') }}
         </h5>
 
         <v-col
@@ -117,7 +117,7 @@ export default {
     buttons () {
       return [
         {
-          text: this.$vuetify.breakpoint.xsOnly ? 'DOWNLOAD WORKSHEET' : 'DOWNLOAD HANDS-ON WORKSHEET',
+          text: this.$vuetify.breakpoint.xsOnly ? this.$t('dailyLessons.offlineWorksheet.download1') : this.$t('dailyLessons.offlineWorksheet.download2'),
           color: 'accent',
           iconLeft: 'pg-icon-download',
           action: () => {
@@ -128,7 +128,7 @@ export default {
           }
         },
         {
-          text: this.$vuetify.breakpoint.xsOnly ? 'UPLOAD WORKSHEET' : 'UPLOAD COMPLETED WORKSHEET',
+          text: this.$vuetify.breakpoint.xsOnly ? this.$t('dailyLessons.offlineWorksheet.upload1') : this.$t('dailyLessons.offlineWorksheet.upload2'),
           color: '#FEC572',
           iconLeft: 'pg-icon-camera',
           disabled: (this.getLesson && this.getLesson.previewMode),

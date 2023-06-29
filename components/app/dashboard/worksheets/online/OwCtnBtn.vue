@@ -7,7 +7,7 @@
       v-bind="{ disabled, loading }"
       @click.stop="$emit('click')"
     >
-      Continue
+      {{ $t('commonWords.continue') }}
       <v-icon right small>
         mdi-greater-than
       </v-icon>

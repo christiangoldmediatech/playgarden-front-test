@@ -6,6 +6,18 @@ export default async (context, locale) => {
   return await Promise.resolve({
     commonWords: {
       conjunctionText: 'o',
+      prepositionText: 'CON',
+      letter: 'Letra',
+      day: 'DÍA',
+      progress: 'PROGRESO',
+      view: 'Ver',
+      puzzle: 'Puzzle',
+      upload: 'SUBIR',
+      return1: 'VOLVER',
+      return2: 'volver',
+      returnToLesson: 'Volver a la lección',
+      skip: 'Skip for now',
+      continue: 'Continuar',
       emailPlaceholder: 'Email',
       passwordPlaceholder: 'Contraseña',
       firstName: 'Nombre',
@@ -143,6 +155,7 @@ export default async (context, locale) => {
       caregivers: {
         title: 'Niñeras',
         subtitle: 'Concede acceso a tu niñera!',
+        description: 'Concede acceso a tu niñera!',
         addCaregiver: 'Agregar niñera',
         addNewCaregiver: 'Agregar nueva niñera',
         sendInvitation: 'Enviar invitaciones',
@@ -256,6 +269,112 @@ export default async (context, locale) => {
       },
       meetingCard: {
         button: 'IR AL HORARIO DE CLASES EN VIVO'
+      }
+    },
+    dailyLessons: {
+      downloadWorksheetDay: '¡DESCARGA EL WORKSHEET DEL DÍA!',
+      worksheet: 'Worksheet',
+      worksheetPlural: 'Worksheets',
+      panel: {
+        previousDay: 'IR AL DÍA ANTERIOR',
+        nextDay: 'IR AL DÍA SIGUIENTE',
+        nextDay1: 'Ir al día siguiente',
+        downloadWorksheets1: 'DESCARGAR LA LETRA',
+        downloadWorksheets2: 'WORKSHEETS DE LA SEMANA',
+        winPuzzlePiece: '¡Gana una pieza de puzzle!',
+        earnedPuzzlePiece: 'Has obtenido una pieza de puzzle',
+        videoTitle: 'Lecciones de video',
+        worksheetTitle: 'Worksheets',
+        activitiesTitle: 'Actividades',
+        uploadWorksheet: 'SUBIR WORKSHEET',
+        uploadWorksheetSubtitle: 'El/Los archivo(s) deben ser formato JPG o PNG',
+        downloadWorksheet: 'DESCARGA EL WORKSHEET',
+        viewWorksheets: 'Ver worksheets'
+      },
+      uploadWorksheetDialog: {
+        title: ' SUBE TU WORKSHEET',
+        requirement1: '* Archivo(s) deben ser solamente en formato',
+        requirement2: '',
+        success: '¡CARGA EXITOSA!',
+        uploadMore: 'SUBE MÁS',
+        dragAndDrop: 'ARRASTRA Y SUELTA TUS DOCUMENTOS O SUBE MÁS',
+        drag: 'ARRASTRA TU WORKSHEET',
+        browse: 'EXPLORAR ARCHIVOS'
+      },
+      onlineWorksheet: {
+        title: 'Online Worksheet',
+        titleUppercase: 'ONLINE WORKSHEET',
+        coming: '¡Próximamente!',
+        handsOn1: 'APRENDIZAJE PRÁCTICO',
+        handsOn2: 'es una parte crucial de la experiencia educativa. Aprender haciendo fortalece las conexiones cognitivas y construye una base sólida para el conocimiento.',
+        button1: 'VIDEO DE LOS PROFESORES',
+        button2: 'DESCARGAR WORKSHEET',
+        button3: 'SUBIR WORKSHEET',
+        button4: 'SUBIR WORKSHEET COMPLETO',
+        messageDialog1: '¡BUEN TRABAJO!',
+        messageDialog2: '¡OOPS!',
+        complete: '¡Completa los Online Worksheets, y obtiene una nueva pieza de puzzle!'
+      },
+      offlineWorksheet: {
+        title: 'Ve el video del Worksheet',
+        subtitle: '¡Completa tus worksheets prácticos con un profesor de Playgarden Prep!',
+        alternativeTitle: 'Aprendizaje Práctico',
+        alternativeSubtitle: 'El aprendizaje práctico es una parte crucial de la experiencia educativa. Aprender haciendo fortalece las conexiones cognitivas y construye una base sólida para el conocimiento.',
+        question: '¿Que quieres hacer ahora?',
+        download1: 'DESCARGA WORKSHEET',
+        download2: 'DESCARGA WORKSHEET PRÁCTICO',
+        upload1: 'SUBE WORKSHEET',
+        upload2: 'SUBE EL WORKSHEET COMPLETADO',
+        correctAnswer: 'es la respuesta correcta!',
+        nextWord: 'Próxima Palabra'
+      },
+      scheduledFinished: {
+        description1: 'No olvides de unirte a nosotros en nuestra próxima clase en vivo.',
+        description2: '¡Son un gran complemento a las lecciones de vídeo!',
+        subtitle: '¡Si el horario no se adecua a ti, échale un ojo a los videos recomendados en Library!',
+        librarySubtitle: '¡Ven a leer con nosotros en el rincón de los libros!',
+        nextDay: 'Ir al día siguiente'
+      },
+      childSelect: {
+        placeholder: 'Selecciona un niño',
+        onPlaydate: 'Ya estás en un Playdate',
+        management: 'Administrar Perfiles de Estudiantes'
+      },
+      unlockPrompt: {
+        title: 'LECCIONES DIARIAS',
+        description: 'Actualiza tu plan para tener acceso a lecciones diarias con tus profesores favoritos de Playgarden Prep',
+        unlock: 'Por desbloquear',
+        upgrade: 'Actualiza tu Plan'
+      },
+      carouselLetter: {
+        placeholder: 'Navegar por letra'
+      },
+      puzzles: {
+        title: 'LETRA DE PUZZLE',
+        description: '¡Mira todas las piezas que tienes! Sigue adelante para ganar una página para colorear imprimible.',
+        congratulations: '¡FELICIDADES!',
+        getPuzzlePiece: '¡OBTÉN UNA PIEZA DE PUZZLE!',
+        earned: 'Has obtenido una pieza de puzzle',
+        watch1: 'Mira',
+        watch2: 'seguidos'
+      },
+      lessonCompleted: {
+        congratulations: '¡FELICIDADES!',
+        subtitle1: '¡Has completado el',
+        subtitle2: 'día de lecciones de video!',
+        first: 'primero',
+        second: 'segundo',
+        third: 'tercero',
+        fourth: 'cuarto',
+        fifth: 'quinto',
+        card1: 'Online Worksheets',
+        card2: 'Imprimir Worksheets',
+        card3: 'Actividades',
+        footer: 'Recuerda que para continuar a la siguiente lección, debes completar los online worksheets, video activities y worksheets de esta lección.'
+      },
+      letterSelect: {
+        nature: 'Naturaleza',
+        welcome: 'Bienvenida'
       }
     }
   })

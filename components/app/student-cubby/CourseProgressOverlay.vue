@@ -16,7 +16,7 @@
       <v-icon left>
         mdi-less-than
       </v-icon>
-      Back
+      {{ $t('commonWords.backButton') }}
     </v-btn>
 
     <div class="progress-letter-selector">
