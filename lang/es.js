@@ -280,7 +280,14 @@ export default async (context, locale) => {
         content: 'Encuentra todas las insignias completas de %{childName} aqui. Una vez completado, puedes imprimir tus insignias como hojas de color. Coleccionalos todos! Puedes compartirnos tus insignias completadas en Instragram <strong>@PlaygardenPrep</strong>. No podemos esperar a verlas!',
         viewPuzzle: 'Ver piezas',
         viewProgress: 'Ver Progreso',
-        unlockText: 'Encuentra todos los rompecabezas completados por tus hijos. Una vez completado, puede imprimir sus rompecabezas como hojas para colorear. ¡Colecciónalos todos! Puede compartir sus rompecabezas completados en Instagram @PlaygardenPrep. ¡No podemos esperar a ver el tuyo!'
+        unlockText: 'Encuentra todos los rompecabezas completados por tus hijos. Una vez completado, puede imprimir sus rompecabezas como hojas para colorear. ¡Colecciónalos todos! Puede compartir sus rompecabezas completados en Instagram @PlaygardenPrep. ¡No podemos esperar a ver el tuyo!',
+        piecesDesc: '¡Mira todas las piezas que tienes! Sigue adelante para ganar una página para colorear imprimible.',
+        progress: 'PROGRESO',
+        puzzleLetter: 'PIEZA LETRA %{letter}',
+        unlockIntro: 'Desbloquea este en ',
+        videoUnlock: 'Video Letra %{letter} Día %{day}',
+        worksheetUnlock: 'Hoja de trabajo Letra %{letter} Día %{day}',
+        activitiesUnlock: 'Actividad Letra %{letter} Día %{day}'
       },
       patches: {
         text: 'Insignias',

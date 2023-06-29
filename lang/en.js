@@ -281,7 +281,14 @@ export default async (context, locale) => {
         content: 'Find all of %{childName} completed puzzles here. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram <strong>@PlaygardenPrep</strong>. We can\'t wait to see yours!',
         viewPuzzle: 'View Puzzle',
         viewProgress: 'View Progress',
-        unlockText: 'Find all of your children completed puzzles. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram @PlaygardenPrep. We can\'t wait to see yours!'
+        unlockText: 'Find all of your children completed puzzles. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram @PlaygardenPrep. We can\'t wait to see yours!',
+        piecesDesc: 'Look at all the pieces you\'ve got! Keep going to earn a printable coloring page.',
+        progress: 'PROGRESS',
+        puzzleLetter: 'PUZZLE LETTER %{letter}',
+        unlockIntro: 'Unlock This in ',
+        videoUnlock: 'Video Letter %{letter} Day %{day}',
+        worksheetUnlock: 'Worksheet Letter %{letter} Day %{day}',
+        activitiesUnlock: 'Activities Letter %{letter} Day %{day}'
       },
       patches: {
         text: 'PATCHES',

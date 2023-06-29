@@ -5,12 +5,11 @@
         <v-col cols="8">
           <underlined-title
             class="text-h5 text-md-h3"
-            :text="`PUZZLE LETTER ${letter}`"
+            :text="$t('studentCubby.puzzle.puzzleLetter', {letter: letter})"
           />
           <p class="mt-2 mb-0">
             <span :class="$vuetify.breakpoint.smAndDown ? 'text-pieces' : ''">
-              Look at all the pieces you've got! Keep going to earn a printable
-              coloring page.
+              {{ $t('studentCubby.puzzle.piecesDesc') }}
             </span>
           </p>
         </v-col>
@@ -23,7 +22,7 @@
         >
           <div class="mt-auto w-100">
             <span class="font-weight-black text-progress">
-              PROGRESS
+              {{ $t('studentCubby.puzzle.progress') }}
             </span>
             <v-row no-gutters>
               <v-col cols="9">
@@ -79,7 +78,7 @@
                 v-if="puzzle.piecesUnclocked !== puzzle.pieces"
                 class="text-progress"
               >
-                PROGRESS
+                {{ $t('studentCubby.puzzle.progress') }}
               </span>
               <v-row justify="center" no-gutters>
                 <v-col
