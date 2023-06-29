@@ -283,7 +283,7 @@ export default async (context, locale) => {
         viewProgress: 'View Progress',
         unlockText: 'Find all of your children completed puzzles. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram @PlaygardenPrep. We can\'t wait to see yours!'
       },
-      c: {
+      patches: {
         text: 'PATCHES',
         title: 'Earn Activity Patches for learning',
         content: 'Master subjects to collect patches for your Student Cubby!',
@@ -303,7 +303,9 @@ export default async (context, locale) => {
         text: 'PORTFOLIO',
         title: 'PORTFOLIO',
         content: 'Keep track of your worksheets and progress!',
-        letter: 'Letter'
+        letter: 'Letter',
+        upload: 'UPLOAD WORKSHEET',
+        verifying: 'VERIFYING LESSON'
       },
       progressReport: {
         text: 'PROGRESS REPORT',
@@ -311,7 +313,19 @@ export default async (context, locale) => {
         content: ' Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.',
         unlockText: 'Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.',
         generalProgress: 'General Progress',
-        lettersProgress: 'Letters Progress'
+        lettersProgress: 'Letters Progress',
+        areaOfStrength: 'Area of Strength',
+        ageAppropriate: 'Age Appropriate',
+        progressing: 'Progressing',
+        cognitive: 'Cognitive',
+        languageAndLiteracy: 'Language & Literacy',
+        physical: 'Physical',
+        socialEmotional: 'Social and Emotional',
+        dailyLessons: 'Daily Lessons Attended',
+        videosCompled: 'Videos Completed',
+        activitiesCompleted: 'Activities Completed',
+        onlineWorksheet: 'Online Worksheets',
+        worksheetsUploaded: 'Worksheets Uploaded'
       }
     }
   })

@@ -253,31 +253,31 @@ export default {
       this.letterStatsData.name = 'Start a Lesson'
       this.letterStatsData.reports = [
         {
-          title: 'Daily Lessons Attended',
+          title: this.$t('studentCubby.progressReport.dailyLessons'),
           done: 0,
           percentage: 0,
           total: 0
         },
         {
-          title: 'Videos Completed',
+          title: this.$t('studentCubby.progressReport.videosCompled'),
           done: 0,
           percentage: 0,
           total: 0
         },
         {
-          title: 'Activities Completed',
+          title: this.$t('studentCubby.progressReport.activitiesCompleted'),
           done: 0,
           percentage: 0,
           total: 0
         },
         {
-          title: 'Online Worksheets',
+          title: this.$t('studentCubby.progressReport.onlineWorksheet'),
           done: 0,
           percentage: 0,
           total: 0
         },
         {
-          title: 'Worksheets Upladed',
+          title: this.$t('studentCubby.progressReport.worksheetsUploaded'),
           done: 0,
           percentage: 0,
           total: 0

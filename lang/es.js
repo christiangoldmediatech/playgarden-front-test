@@ -275,10 +275,10 @@ export default async (context, locale) => {
     },
     studentCubby: {
       puzzle: {
-        text: 'PUZZLE',
+        text: 'PIEZAS',
         title: 'PORTAL DEL ESTUDIANTE',
         content: 'Encuentra todas las insignias completas de %{childName} aqui. Una vez completado, puedes imprimir tus insignias como hojas de color. Coleccionalos todos! Puedes compartirnos tus insignias completadas en Instragram <strong>@PlaygardenPrep</strong>. No podemos esperar a verlas!',
-        viewPuzzle: 'Ver Puzzle',
+        viewPuzzle: 'Ver piezas',
         viewProgress: 'Ver Progreso',
         unlockText: 'Encuentra todos los rompecabezas completados por tus hijos. Una vez completado, puede imprimir sus rompecabezas como hojas para colorear. ¡Colecciónalos todos! Puede compartir sus rompecabezas completados en Instagram @PlaygardenPrep. ¡No podemos esperar a ver el tuyo!'
       },
@@ -291,7 +291,7 @@ export default async (context, locale) => {
         unlockLong: 'Desbloquear logro'
       },
       curriculum: {
-        text: 'CURRICULUM',
+        text: 'CURRÍCULA',
         title: 'Ver todos tus curriculum',
         download: 'DESCARGA LAS ACTIVIDADES DE LA LETRA %{letter}',
         downloading: 'OBTENIENDO DOCUMENTO...',
@@ -302,7 +302,9 @@ export default async (context, locale) => {
         text: 'PORTAFOLIO',
         title: 'PORTAFOLIO',
         content: '¡Haz un seguimiento de tus hojas de trabajo y tu progreso!',
-        letter: 'Letra'
+        letter: 'Letra',
+        upload: 'CARGAR HOJA DE TRABAJO',
+        verifying: 'VERIFICANDO LECCIÓN'
       },
       progressReport: {
         text: 'REPORTE DE PROGRESO',
@@ -310,7 +312,19 @@ export default async (context, locale) => {
         content: 'Las lecciones en línea de Playgarden Prep se han desarrollado para respaldar una o más de las áreas centrales de desarrollo. Después de ver un video, hacer la hoja de trabajo junto con un adulto o participar activamente en una clase en vivo, los padres estarán ayudando en el desarrollo de su hijo en cada una de las áreas específicas.',
         unlockText: 'Las lecciones en línea de Playgarden Prep se han desarrollado para respaldar una o más de las áreas centrales de desarrollo. Después de ver un video, hacer la hoja de trabajo junto con un adulto o participar activamente en una clase en vivo, los padres estarán ayudando en el desarrollo de su hijo en cada una de las áreas específicas.',
         generalProgress: 'Progreso General',
-        lettersProgress: 'Progreso de letras'
+        lettersProgress: 'Progreso de letras',
+        areaOfStrength: 'Areas de fortaleza',
+        ageAppropriate: 'Edad apropiada',
+        progressing: 'Progresando',
+        cognitive: 'Cognitivo',
+        languageAndLiteracy: 'Idioma y alfabetización',
+        physical: 'Física',
+        socialEmotional: 'Social y Emocional',
+        dailyLessons: 'Lecciones diarias asistidas',
+        videosCompled: 'Videos completados',
+        activitiesCompleted: 'Actividades completadas',
+        onlineWorksheet: 'Hoja de trabajo en línea',
+        worksheetsUploaded: 'Hojas de trabajo subidas'
       }
     }
   })

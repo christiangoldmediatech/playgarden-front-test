@@ -33,6 +33,7 @@
 <script lang="ts">
 import { TypedStore } from '@/models'
 import { computed, defineComponent, useStore } from '@nuxtjs/composition-api'
+import { useLanguageHelper } from '@/composables'
 
 export default defineComponent({
   name: 'CategoryExplained',
@@ -50,6 +51,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore<TypedStore>()
+    const language = useLanguageHelper()
 
     const reports = computed(() => store.getters['admin/report-card/types'])
 
@@ -72,20 +74,20 @@ export default defineComponent({
     })
 
     const reportValueDescription = computed(() => {
-      const valueDescription = {
+      const valueDescription: any = {
         title: '',
         description: ''
       }
 
       if (props.data.value !== undefined) {
         if (props.data.value <= 20) {
-          valueDescription.title = 'Progressing'
+          valueDescription.title = language.t('studentCubby.progressReport.progressing')
           valueDescription.description = props.data.progressing
         } else if (props.data.value > 20 && props.data.value <= 80) {
-          valueDescription.title = 'Age Appropriate'
+          valueDescription.title = language.t('studentCubby.progressReport.progressing')
           valueDescription.description = props.data.ageAppropiate
         } else {
-          valueDescription.title = 'Area of Strength'
+          valueDescription.title = language.t('studentCubby.progressReport.progressing')
           valueDescription.description = props.data.areaStrenght
         }
       }
