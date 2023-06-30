@@ -8,6 +8,7 @@ export default async (context, locale) => {
       conjunctionText: 'or',
       prepositionText: 'with',
       letter: 'Letter',
+      here: 'HERE',
       day: 'DAY',
       progress: 'PROGRESS',
       view: 'View',
@@ -36,9 +37,11 @@ export default async (context, locale) => {
       passwordConfirmation: 'Password Confirmation',
       save: 'Save',
       cancel: 'Cancel',
+      close: 'Close',
       changePassword: 'Change Password',
       browseByLetter: 'Browse by letter',
       apply: 'Apply',
+      plan: 'PLAN',
       planPrice: 'Plan and price',
       onlinePreschool: 'ONLINE PRESCHOOL',
       backButton: 'Back'
@@ -375,6 +378,74 @@ export default async (context, locale) => {
       letterSelect: {
         nature: 'Nature',
         welcome: 'Welcome'
+      }
+    },
+    liveClasses: {
+      day: 'Day',
+      week: 'Week',
+      timezone1: '*Hours are in',
+      timezone2: ', you can change your time zone by clicking',
+      schedule: 'Live Classes Schedule',
+      placeholder: 'There are no live classes programmed for this week. Check back later.',
+      access: 'Get access to Live Classes',
+      upgrade: 'Upgrade your plan',
+      compare: 'COMPARE PLANS',
+      timezone: 'TIMEZONE',
+      timezoneLowercase: 'Timezone',
+      unlockPrompt: {
+        title: 'LIVE CLASSES',
+        description: 'Unlock the live classes section'
+      },
+      months: {
+        january: 'January',
+        february: 'February',
+        march: 'March',
+        april: 'April',
+        may: 'May',
+        june: 'June',
+        july: 'July',
+        august: 'August',
+        september: 'September',
+        october: 'October',
+        november: 'November',
+        december: 'December'
+      },
+      entryDialog: {
+        description: 'Description',
+        download1: 'Download Ingredient List',
+        download2: 'Download Additional Information',
+        recommendedAges: 'Recommended ages',
+        spots: 'Spots:',
+        fullClass: 'Oops! This class is full. We hope to see you next time!',
+        whoIsGoing: 'Who is going?',
+        by: 'By:',
+        watchRecorded: 'Watch recorded class',
+        reserve: 'RESERVE SPOT',
+        unlock: 'UNLOCK THIS SECTION WITH',
+        cancel: 'Cancel Spot',
+        open: 'OPEN ZOOM LINK',
+        addToCalendar: 'Add to calendar'
+      },
+      sessionsTable: {
+        noLiveClasses: 'There are no live classes programmed for this day.'
+      },
+      tableEntry: {
+        live: 'Live',
+        cancelled1: 'Sorry!',
+        cancelled2: 'This class has been cancelled today. See you next time!',
+        toUnlock: 'To unlock',
+        upgrade: 'Upgrade your Plan'
+      },
+      todayCardPanel: {
+        filter: 'Filter by',
+        allClasses: 'All classes',
+        liveClasses: 'Live Classes',
+        playdates: 'Playdates',
+        myPlaydates: 'My playdates',
+        nextClasses: 'Next Classes',
+        pending1: 'There are no pending events',
+        pending2: 'for you',
+        pending3: 'this week.'
       }
     }
   })
