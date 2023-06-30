@@ -113,7 +113,7 @@
             <v-row>
               <v-col cols="12">
                 <span class="font-weight-bold">
-                  {{ $t('liveClasses.timezone1') + ' ' + getAcronymCurrent + $t('liveClasses.timezone3') }}
+                  {{ $t('liveClasses.timezone1') + ' ' + getAcronymCurrent + $t('liveClasses.timezone2') }}
                   <span
                     class=" text-decoration-underline font-weight-bold timezone"
                     @click="timezoneDialog = true"

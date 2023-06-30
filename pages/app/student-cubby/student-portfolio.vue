@@ -5,10 +5,10 @@
         <!-- Section Title and Description -->
         <div class="d-flex align-center justify-center">
           <img height="80px" src="@/assets/png/student-cubby/group.png" />
-          <span class="ml-4 text-h4 text-md-h3">PORTFOLIO</span>
+          <span class="ml-4 text-h4 text-md-h3">{{ $t('studentCubby.portfolio.text') }}</span>
         </div>
         <div class="my-6 text-md-h6 text-body-1">
-          Keep track of your worksheets and progress!
+          {{ $t('studentCubby.portfolio.content') }}
         </div>
       </div>
       <!--carousel letter-->
@@ -29,7 +29,7 @@
                 v-if="!isMobile"
                 class="text-uppercase font-weight-bold portfolio-carousel-title d-flex align-center"
               >
-                LETTER
+                {{$t('studentCubby.portfolio.letter')}}
                 <recorded-letter
                   v-if="getCurrentLetter"
                   :letter="getCurrentLetter"
@@ -45,8 +45,8 @@
                 <span class="portfolio-subtitle">
                   {{
                     loadingDownloadLessonsFile
-                      ? 'GETTING DOCUMENT...'
-                      : downloadText
+                      ? $t('studentCubby.curriculum.downloading')
+                      : $t('studentCubby.curriculum.download', { letter:this.formattedLetterName })
                   }}
                 </span>
                 <v-btn class="ml-4" color="primary" fab small>
@@ -403,9 +403,6 @@ export default defineComponent({
 
       return letterName[0]
     },
-    downloadText() {
-      return `DOWNLOAD LETTER ${this.formattedLetterName} WEEK WORKSHEETS`
-    }
   },
   async mounted() {
     this.$nuxt.$on('show-curriculum-progress', (curriculumTypeId: any) => {

@@ -88,8 +88,8 @@
     </pg-loading>
     <unlock-prompt
       v-if="hasPlayAndLearnPlan"
-      title="PROGRESS REPORT"
-      desc="Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas."
+      :title="$t('studentCubby.progressReport.text')"
+      :desc="$t('studentCubby.progressReport.unlockText')"
       img="student-cubby/progress.png"
     />
   </v-row>
@@ -158,12 +158,12 @@ export default {
 
     getMenu() {
       const menuGeneral = {
-        name: 'General Progress',
+        name: this.$t('studentCubby.progressReport.generalProgress'),
         type: 'General',
         icon: require('@/assets/svg/note.svg')
       }
       const letterProgress = {
-        name: 'Letters Progress',
+        name: this.$t('studentCubby.progressReport.lettersProgress'),
         type: 'Letters',
         icon: require('@/assets/svg/bar-chart.svg')
       }
@@ -253,31 +253,31 @@ export default {
       this.letterStatsData.name = 'Start a Lesson'
       this.letterStatsData.reports = [
         {
-          title: 'Daily Lessons Attended',
+          title: this.$t('studentCubby.progressReport.dailyLessons'),
           done: 0,
           percentage: 0,
           total: 0
         },
         {
-          title: 'Videos Completed',
+          title: this.$t('studentCubby.progressReport.videosCompled'),
           done: 0,
           percentage: 0,
           total: 0
         },
         {
-          title: 'Activities Completed',
+          title: this.$t('studentCubby.progressReport.activitiesCompleted'),
           done: 0,
           percentage: 0,
           total: 0
         },
         {
-          title: 'Online Worksheets',
+          title: this.$t('studentCubby.progressReport.onlineWorksheet'),
           done: 0,
           percentage: 0,
           total: 0
         },
         {
-          title: 'Worksheets Upladed',
+          title: this.$t('studentCubby.progressReport.worksheetsUploaded'),
           done: 0,
           percentage: 0,
           total: 0

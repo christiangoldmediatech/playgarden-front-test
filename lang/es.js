@@ -37,14 +37,29 @@ export default async (context, locale) => {
       passwordConfirmation: 'Confirmación de Contraseña',
       save: 'Guardar',
       cancel: 'Cancelar',
-      close: 'Close',
+      close: 'Cerrar',
       changePassword: 'Cambiar contraseña',
       browseByLetter: 'Buscar por letra',
       apply: 'Aplicar',
       plan: 'PLAN',
       planPrice: 'Plan y precio',
       onlinePreschool: 'ONLINE PRESCHOOL',
-      backButton: 'Atrás'
+      backButton: 'Atrás',
+      activitiesType: {
+        art: 'Arte',
+        cognitive: 'Cognitivo',
+        language: 'Lenguaje',
+        math: 'Matemáticas',
+        movement: 'Movimiento',
+        music: 'Música',
+        nutrition: 'Nutrición',
+        science: 'Ciencia',
+        sensory: 'Sensorial',
+        songs: 'Canciones',
+        storytime: 'Cuentos',
+        theater: 'Teatro',
+        writing: 'Escritura'
+      }
     },
     menuLandingPage: {
       home: 'Inicio',
@@ -378,6 +393,67 @@ export default async (context, locale) => {
       letterSelect: {
         nature: 'Naturaleza',
         welcome: 'Bienvenida'
+      }
+    },
+    studentCubby: {
+      puzzle: {
+        text: 'PIEZAS',
+        title: 'PORTAL DEL ESTUDIANTE',
+        content: 'Encuentra todas las insignias completas de %{childName} aqui. Una vez completado, puedes imprimir tus insignias como hojas de color. Coleccionalos todos! Puedes compartirnos tus insignias completadas en Instragram <strong>@PlaygardenPrep</strong>. No podemos esperar a verlas!',
+        viewPuzzle: 'Ver piezas',
+        viewProgress: 'Ver Progreso',
+        unlockText: 'Encuentra todos los rompecabezas completados por tus hijos. Una vez completado, puede imprimir sus rompecabezas como hojas para colorear. ¡Colecciónalos todos! Puede compartir sus rompecabezas completados en Instagram @PlaygardenPrep. ¡No podemos esperar a ver el tuyo!',
+        piecesDesc: '¡Mira todas las piezas que tienes! Sigue adelante para ganar una página para colorear imprimible.',
+        progress: 'PROGRESO',
+        puzzleLetter: 'PIEZAS LETRA %{letter}',
+        unlockIntro: 'Desbloquea este en ',
+        videoUnlock: 'Video Letra %{letter} Día %{day}',
+        worksheetUnlock: 'Hoja de trabajo Letra %{letter} Día %{day}',
+        activitiesUnlock: 'Actividad Letra %{letter} Día %{day}'
+      },
+      patches: {
+        text: 'Insignias',
+        title: 'Gana insignias por ver videos de actividades',
+        content: '¡Domina materias para coleccionar insignias para tu Portal de Estudiante!',
+        unlockText: '¡Domine materias en la sección de Actividades para recolectar parches para su Student Cubby! Recoge todas las insignias para recibir un parche real para tu mochila.',
+        unlockShort: 'Desbloquea',
+        unlockLong: 'Desbloquear logro'
+      },
+      curriculum: {
+        text: 'CURRÍCULA',
+        title: 'Ver todos tus curriculum',
+        download: 'DESCARGA LAS ACTIVIDADES DE LA LETRA %{letter}',
+        downloading: 'OBTENIENDO DOCUMENTO...',
+        content: '¡Desplácese para revisar sus lecciones y hojas de trabajo!',
+        unlockText: '¡Desplácese para revisar sus lecciones y hojas de trabajo!'
+      },
+      portfolio: {
+        text: 'PORTAFOLIO',
+        title: 'PORTAFOLIO',
+        content: '¡Haz un seguimiento de tus hojas de trabajo y tu progreso!',
+        letter: 'Letra',
+        upload: 'CARGAR HOJA DE TRABAJO',
+        verifying: 'VERIFICANDO LECCIÓN'
+      },
+      progressReport: {
+        text: 'REPORTE DE PROGRESO',
+        title: 'Reporte de progreso del alumno',
+        content: 'Las lecciones en línea de Playgarden Prep se han desarrollado para respaldar una o más de las áreas centrales de desarrollo. Después de ver un video, hacer la hoja de trabajo junto con un adulto o participar activamente en una clase en vivo, los padres estarán ayudando en el desarrollo de su hijo en cada una de las áreas específicas.',
+        unlockText: 'Las lecciones en línea de Playgarden Prep se han desarrollado para respaldar una o más de las áreas centrales de desarrollo. Después de ver un video, hacer la hoja de trabajo junto con un adulto o participar activamente en una clase en vivo, los padres estarán ayudando en el desarrollo de su hijo en cada una de las áreas específicas.',
+        generalProgress: 'Progreso General',
+        lettersProgress: 'Progreso de letras',
+        areaOfStrength: 'Areas de fortaleza',
+        ageAppropriate: 'Edad apropiada',
+        progressing: 'Progresando',
+        cognitive: 'Cognitivo',
+        languageAndLiteracy: 'Idioma y alfabetización',
+        physical: 'Física',
+        socialEmotional: 'Social y Emocional',
+        dailyLessons: 'Lecciones diarias asistidas',
+        videosCompled: 'Videos completados',
+        activitiesCompleted: 'Actividades completadas',
+        onlineWorksheet: 'Hoja de trabajo en línea',
+        worksheetsUploaded: 'Hojas de trabajo subidas'
       }
     },
     liveClasses: {

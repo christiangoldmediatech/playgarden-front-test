@@ -3,15 +3,15 @@
     <v-row v-if="isMobile" no-gutters>
       <v-col cols="4" class="d-flex flex-column align-center justify-center">
         <div class="pg-w-[50px] pg-h-[15px] pg-rounded-[4px] pg-bg-[#D1ADF5] mb-2"></div>
-        <span class="bar-label-mobile">Progressing</span>
+        <span class="bar-label-mobile">{{ $t('studentCubby.progressReport.areaOfStrength') }}</span>
       </v-col>
       <v-col cols="4" class="d-flex flex-column align-center justify-center">
         <div class="pg-w-[50px] pg-h-[15px] pg-rounded-[4px] pg-bg-[#FFB8E7] mb-2"></div>
-        <span class="bar-label-mobile">Age Appropriate</span>
+        <span class="bar-label-mobile">{{ $t('studentCubby.progressReport.ageAppropriate') }}</span>
       </v-col>
       <v-col cols="4" class="d-flex flex-column align-center justify-center">
         <div class="pg-w-[50px] pg-h-[15px] pg-rounded-[4px] pg-bg-[#A5EA95] mb-2"></div>
-        <span class="bar-label-mobile">Area of Strength</span>
+        <span class="bar-label-mobile">{{ $t('studentCubby.progressReport.progressing') }}</span>
       </v-col>
     </v-row>
     <report-chart ref="progress-chart" :graph="chartOptions" @click="handleClick" />
@@ -92,7 +92,7 @@ export default {
                 distance: this.$vuetify.breakpoint.smAndDown ? -110 : -140,
                 color: '#606060',
                 fontSize: this.getLabelFontSize,
-                formatter: '{square|      }  Area of Strength',
+                formatter: `{square|      }  ${this.$t('studentCubby.progressReport.areaOfStrength')}`,
                 rich: {
                   square: {
                     fontSize: '18px',
@@ -125,7 +125,7 @@ export default {
                 distance: this.$vuetify.breakpoint.smAndDown ? -110 : -140,
                 color: '#606060',
                 fontSize: this.getLabelFontSize,
-                formatter: '{square|      }  Age Appropriate',
+                formatter: `{square|      }  ${this.$t('studentCubby.progressReport.ageAppropriate')}`,
                 rich: {
                   square: {
                     fontSize: '18px',
@@ -159,7 +159,7 @@ export default {
                 color: '#606060',
                 fontSize: this.getLabelFontSize,
                 fontWeight: 'bold',
-                formatter: '{square|      }  Progressing',
+                formatter: `{square|      }  ${this.$t('studentCubby.progressReport.progressing')}`,
                 rich: {
                   square: {
                     fontSize: '18px',
@@ -258,14 +258,14 @@ export default {
         tooltip: {
           trigger: 'item',
           formatter (params) {
-            let text = (params.data.value !== undefined) ? `Percentage: <b> ${params.data.value} %</b> <br />` : 'Progress Report'
+            let text = (params.data.value !== undefined) ? `Percentage: <b> ${params.data.value} %</b> <br />` : this.$t('studentCubby.progressReport.text')
             if (params.data.value !== undefined) {
               if (params.data.value <= 20) {
-                text += 'Progressing'
+                text += this.$t('studentCubby.progressReport.progressing')
               } else if (params.data.value > 20 && params.data.value <= 80) {
-                text += 'Age Appropriate'
+                text += this.$t('studentCubby.progressReport.ageAppropriate')
               } else {
-                text += 'Area of Strength'
+                text += this.$t('studentCubby.progressReport.areaOfStrength')
               }
             }
             return text

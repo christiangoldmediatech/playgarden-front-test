@@ -79,7 +79,7 @@ export default {
       return this.toUnlock / this.total * 100
     },
     patchUnlockText () {
-      return this.isMobile ? 'Unlock' : 'Unlock This Patch'
+      return this.isMobile ? this.$t('studentCubby.patches.unlockShort') : this.$t('studentCubby.patches.unlockLong')
     }
   },
   methods: {
