@@ -33,7 +33,7 @@
             <!-- No entries found for this day -->
             <v-card>
               <v-card-text class="text-h6 text-center">
-                There are no live classes programmed for this day.
+                {{ $t('liveClasses.sessionsTable.noLiveClasses') }}
               </v-card-text>
             </v-card>
           </template>

@@ -91,13 +91,13 @@
                       v-if="entry.teacher && entry.type === 'LiveClass'"
                       class="entry-card-teacher pb-10 pg-text-center md:pg-text-left pg-text-pg-grey-2"
                     >
-                      With {{ entry.teacher.name }}
+                      {{ $t('commonWords.prepositionText') + ' ' + entry.teacher.name }}
                     </div>
                     <div
                       v-else-if="!entry.teacher && entry.type === 'LiveClass'"
                       class="entry-card-teacher pb-10 pg-text-center md:pg-text-left pg-text-pg-grey-2"
                     >
-                      With {{ entry.teacherName }}
+                      {{ $t('commonWords.prepositionText') + ' ' + entry.teacherName }}
                     </div>
                   </div>
                 </div>
@@ -110,7 +110,7 @@
                         entry.type === 'LiveClass' ? '#F89838' : '#68C453'
                     }"
                   >
-                    Description
+                    {{ $t('liveClasses.entryDialog.description') }}
                   </p>
                   <span class="pg-text-lg pg-font-normal pg-text-black">{{ entry.description }}</span>
                 </div>
@@ -129,10 +129,10 @@
                       mdi-download-outline
                     </v-icon>
                     <template v-if="isCooking">
-                      Download Ingredient List
+                      {{ $t('liveClasses.entryDialog.download1') }}
                     </template>
                     <template v-else>
-                      Download Additional Information
+                      {{ $t('liveClasses.entryDialog.download2') }}
                     </template>
                   </v-btn>
                 </div>
@@ -147,7 +147,7 @@
                         entry.type === 'LiveClass' ? '#F89838' : '#68C453'
                     }"
                   >
-                    Recommended ages
+                    {{ $t('liveClasses.entryDialog.recommendedAges') }}
                   </p>
                   {{ entry.ages }}
                 </div>
@@ -163,7 +163,7 @@
                         entry.type === 'LiveClass' ? '#F89838' : '#68C453'
                     }"
                   >
-                    Spots:
+                    {{ $t('liveClasses.entryDialog.spots') }}
                   </p>
                   <div class="pg-w-8/12">
                     <v-progress-linear
@@ -181,7 +181,7 @@
                 </div>
 
                 <p v-if="entry.type === 'Playdate' && entry.backpackImages.length >= entry.spots" class="pg-text-accent">
-                  Oops! This class is full. We hope to see you next time!
+                  {{ $t('liveClasses.entryDialog.fullClass') }}
                 </p>
 
                 <div
@@ -195,7 +195,7 @@
                         entry.type === 'LiveClass' ? '#F89838' : '#68C453'
                     }"
                   >
-                    Who is going?
+                    {{ $t('liveClasses.entryDialog.whoIsGoing') }}
                   </p>
                   <div class="mr-0 mr-sm-8 mt-3">
                     <child-select
@@ -217,7 +217,7 @@
                   v-if="entry.inCollaborationWith"
                   class="entry-card-description-title pb-6 d-flex align-start"
                 >
-                  By:
+                  {{ $t('liveClasses.entryDialog.by') }}
                   <img
                     class="entry-card-collaborator ml-6"
                     :src="entry.inCollaborationWith"
@@ -234,7 +234,7 @@
                 block
                 @click.stop="openVideo"
               >
-                Watch recorded class
+                {{ $t('liveClasses.entryDialog.watchRecorded') }}
               </v-btn>
             </div>
 
@@ -256,7 +256,7 @@
                 data-test-id="card-playdate-join-button"
                 @click="handleReserveSpot"
               >
-                RESERVE SPOT
+                {{ $t('liveClasses.entryDialog.reserve') }}
               </v-btn>
 
               <v-btn
@@ -271,7 +271,7 @@
                 <v-icon class="pg-mr-2">
                   mdi-lock-outline
                 </v-icon>
-                UNLOCK THIS SECTION WITH <span class="pg-text-[#CD0088] pg-mx-1"> ONLINE PRESCHOOL </span> PLAN
+                {{ $t('liveClasses.entryDialog.unlock') }} <span class="pg-text-[#CD0088] pg-mx-1"> {{ $t('commonWords.onlinePreschool') }} </span> {{ $t('commonWords.plan') }}
               </v-btn>
 
               <v-btn
@@ -286,7 +286,7 @@
                 <v-icon class="red--text">
                   mdi-delete
                 </v-icon>
-                Cancel Spot
+                {{ $t('liveClasses.entryDialog.cancel') }}
               </v-btn>
 
               <div v-if="!past" class="pb-3 mb-3">
@@ -301,7 +301,7 @@
                   block
                   @click="doSaveAttendance"
                 >
-                  OPEN ZOOM LINK
+                  {{ $t('liveClasses.entryDialog.open') }}
                 </v-btn>
                 <v-btn
                   v-else-if="child"
@@ -314,7 +314,7 @@
                   block
                   @click="doSaveAttendance"
                 >
-                  OPEN ZOOM LINK
+                  {{ $t('liveClasses.entryDialog.open') }}
                 </v-btn>
               </div>
 
@@ -334,7 +334,7 @@ import { ref, computed, useStore } from '@nuxtjs/composition-api'
 import { mapActions, mapGetters } from 'vuex'
 import moment from 'moment'
 import { TAG_MANAGER_EVENTS } from '@/models'
-import { useChild, usePlaydates, useToastHelper } from '@/composables'
+import { useChild, useLanguageHelper, usePlaydates, useToastHelper } from '@/composables'
 import { getNumberOrder, formatTimezone } from '@/utils/dateTools'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 
@@ -350,6 +350,7 @@ export default {
     const store = useStore()
     const { reserveASpot, cancelSpotReservation } = usePlaydates({ store })
     const { children } = useChild({ store })
+    const language = useLanguageHelper()
 
     const childId = ref(null)
     const isLoadingSpotAction = ref(false)
@@ -357,18 +358,18 @@ export default {
     const entry = ref(null)
     const playdate = computed(() => entry.value)
     const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
+      language.t('liveClasses.months.january'),
+      language.t('liveClasses.months.february'),
+      language.t('liveClasses.months.march'),
+      language.t('liveClasses.months.april'),
+      language.t('liveClasses.months.may'),
+      language.t('liveClasses.months.june'),
+      language.t('liveClasses.months.july'),
+      language.t('liveClasses.months.august'),
+      language.t('liveClasses.months.september'),
+      language.t('liveClasses.months.october'),
+      language.t('liveClasses.months.november'),
+      language.t('liveClasses.months.december')
     ]
 
     const hasPlayAndLearnPlanLivePlan = computed(

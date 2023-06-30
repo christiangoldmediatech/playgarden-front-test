@@ -8,6 +8,7 @@ export default async (context, locale) => {
       conjunctionText: 'o',
       prepositionText: 'CON',
       letter: 'Letra',
+      here: 'AQUÍ',
       day: 'DÍA',
       progress: 'PROGRESO',
       view: 'Ver',
@@ -36,9 +37,11 @@ export default async (context, locale) => {
       passwordConfirmation: 'Confirmación de Contraseña',
       save: 'Guardar',
       cancel: 'Cancelar',
+      close: 'Close',
       changePassword: 'Cambiar contraseña',
       browseByLetter: 'Buscar por letra',
       apply: 'Aplicar',
+      plan: 'PLAN',
       planPrice: 'Plan y precio',
       onlinePreschool: 'ONLINE PRESCHOOL',
       backButton: 'Atrás',
@@ -451,6 +454,73 @@ export default async (context, locale) => {
         activitiesCompleted: 'Actividades completadas',
         onlineWorksheet: 'Hoja de trabajo en línea',
         worksheetsUploaded: 'Hojas de trabajo subidas'
+    },
+    liveClasses: {
+      day: 'Día',
+      week: 'Semana',
+      timezone1: '*Horas en la',
+      timezone2: ', puedes cambiar tu zona horaria haciendo clic',
+      schedule: 'Horario de Clases en vivo',
+      placeholder: 'No hay clases en vivo programadas para esta semana. Vuelve más tarde.',
+      access: 'Obtén acceso a las clases en vivo',
+      upgrade: 'Actualiza tu plan',
+      compare: 'COMPARA PLANES',
+      timezone: 'ZONA HORARIA',
+      timezoneLowercase: 'Zona horaria',
+      unlockPrompt: {
+        title: 'CLASES EN VIVO',
+        description: 'Desbloquea la sección de clases en vivo'
+      },
+      months: {
+        january: 'Enero',
+        february: 'Febrero',
+        march: 'Marzo',
+        april: 'Abril',
+        may: 'Mayo',
+        june: 'Junio',
+        july: 'Julio',
+        august: 'Agosto',
+        september: 'Septiembre',
+        october: 'Octubre',
+        november: 'Noviembre',
+        december: 'Diciembre'
+      },
+      entryDialog: {
+        description: 'Descripción',
+        download1: 'Descargar Lista de Ingredientes',
+        download2: 'Descargar Información Adicional',
+        recommendedAges: 'Edades recomendadas',
+        spots: 'Lugares:',
+        fullClass: '¡Ups! Esta clase está llena. ¡Esperamos verte la próxima vez!',
+        whoIsGoing: '¿Quién va a ir?',
+        by: 'Por:',
+        watchRecorded: 'Ver clase grabada',
+        reserve: 'RESERVAR LUGAR',
+        unlock: 'DESBLOQUEA ESTA SECCIÓN CON EL',
+        cancel: 'Cancelar Lugar',
+        open: 'ABRIR LINK DE ZOOM',
+        addToCalendar: 'Añadir al calendario'
+      },
+      sessionsTable: {
+        noLiveClasses: 'No hay clases en vivo programadas para este día.'
+      },
+      tableEntry: {
+        live: 'En vivo',
+        cancelled1: '¡Lo sentimos!',
+        cancelled2: 'Esta clase ha sido cancelada hoy. ¡Nos vemos la próxima vez!',
+        toUnlock: 'Para desbloquear',
+        upgrade: 'Actualiza tu Plan'
+      },
+      todayCardPanel: {
+        filter: 'Filtrar por',
+        allClasses: 'Todas las clases',
+        liveClasses: 'Clases en vivo',
+        playdates: 'Playdates',
+        myPlaydates: 'Mis playdates',
+        nextClasses: 'Próximas clases',
+        pending1: 'No hay eventos pendientes',
+        pending2: 'para ti',
+        pending3: 'esta semana.'
       }
     }
   })

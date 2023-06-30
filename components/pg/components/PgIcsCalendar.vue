@@ -10,7 +10,7 @@
       <template v-slot:activator>
         <v-list-item-content>
           <v-list-item-title class="!pg-text-lg pg-text-black">
-            Add to calendar
+            {{ $t('liveClasses.entryDialog.addToCalendar') }}
           </v-list-item-title>
         </v-list-item-content>
       </template>
