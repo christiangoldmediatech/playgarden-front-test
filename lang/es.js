@@ -8,7 +8,6 @@ export default async (context, locale) => {
       conjunctionText: 'o',
       prepositionText: 'CON',
       letter: 'Letra',
-      here: 'AQUÍ',
       day: 'DÍA',
       progress: 'PROGRESO',
       view: 'Ver',
@@ -37,11 +36,9 @@ export default async (context, locale) => {
       passwordConfirmation: 'Confirmación de Contraseña',
       save: 'Guardar',
       cancel: 'Cancelar',
-      close: 'Close',
       changePassword: 'Cambiar contraseña',
       browseByLetter: 'Buscar por letra',
       apply: 'Aplicar',
-      plan: 'PLAN',
       planPrice: 'Plan y precio',
       onlinePreschool: 'ONLINE PRESCHOOL',
       backButton: 'Atrás',
@@ -454,6 +451,7 @@ export default async (context, locale) => {
         activitiesCompleted: 'Actividades completadas',
         onlineWorksheet: 'Hoja de trabajo en línea',
         worksheetsUploaded: 'Hojas de trabajo subidas'
+      }
     },
     liveClasses: {
       day: 'Día',
