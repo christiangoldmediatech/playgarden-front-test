@@ -472,6 +472,15 @@ export default async (context, locale) => {
         title: 'CLASES EN VIVO',
         description: 'Desbloquea la sección de clases en vivo'
       },
+      days: {
+        sunday: 'Domingo',
+        monday: 'Lunes',
+        tuesday: 'Martes',
+        wednesday: 'Miércoles',
+        thursday: 'Jueves',
+        friday: 'Viernes',
+        saturday: 'Sábado'
+      },
       months: {
         january: 'Enero',
         february: 'Febrero',

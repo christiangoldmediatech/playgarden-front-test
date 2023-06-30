@@ -472,6 +472,15 @@ export default async (context, locale) => {
         title: 'LIVE CLASSES',
         description: 'Unlock the live classes section'
       },
+      days: {
+        sunday: 'Sunday',
+        monday: 'Monday',
+        tuesday: 'Tuesday',
+        wednesday: 'Wednesday',
+        thursday: 'Thursday',
+        friday: 'Friday',
+        saturday: 'Saturday'
+      },
       months: {
         january: 'January',
         february: 'February',
