@@ -402,7 +402,7 @@ export default async (context, locale) => {
         unlockText: 'Encuentra todos los rompecabezas completados por tus hijos. Una vez completado, puede imprimir sus rompecabezas como hojas para colorear. ¡Colecciónalos todos! Puede compartir sus rompecabezas completados en Instagram @PlaygardenPrep. ¡No podemos esperar a ver el tuyo!',
         piecesDesc: '¡Mira todas las piezas que tienes! Sigue adelante para ganar una página para colorear imprimible.',
         progress: 'PROGRESO',
-        puzzleLetter: 'PIEZA LETRA %{letter}',
+        puzzleLetter: 'PIEZAS LETRA %{letter}',
         unlockIntro: 'Desbloquea este en ',
         videoUnlock: 'Video Letra %{letter} Día %{day}',
         worksheetUnlock: 'Hoja de trabajo Letra %{letter} Día %{day}',
