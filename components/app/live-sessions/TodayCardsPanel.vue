@@ -3,21 +3,21 @@
     <div class="lsess-daily-container">
       <div class="lsess-daily-card pt-4">
         <div class="mx-0 pl-6">
-          <span class="lsess-title">Filter by</span>
+          <span class="lsess-title">{{ $t('liveClasses.todayCardPanel.filter') }}</span>
           <v-radio-group v-model="radio" @change="$emit('change', $event)">
             <v-radio label="All classes" value="all" color="#8CD2FF">
               <template #label>
-                <span>All classes</span>
+                <span>{{ $t('liveClasses.todayCardPanel.allClasses') }}</span>
               </template>
             </v-radio>
             <v-radio label="Live Classes" value="liveClasses" color="#8CD2FF">
               <template #label>
-                <span class="pg-text-[#F89838]">Live Classes</span>
+                <span class="pg-text-[#F89838]">{{ $t('liveClasses.todayCardPanel.liveClasses') }}</span>
               </template>
             </v-radio>
             <v-radio label="Playdates" value="playdates" color="#8CD2FF">
               <template #label>
-                <span class="pg-text-[#68C453]">Playdates</span>
+                <span class="pg-text-[#68C453]">{{ $t('liveClasses.todayCardPanel.playdates') }}</span>
               </template>
             </v-radio>
           </v-radio-group>
@@ -29,11 +29,11 @@
           @click="goToMyPlaydates"
         >
           <img class="mr-3" src="@/assets/svg/camera.svg" />
-          <span class="lsess-title !pg-font-normal">My playdates</span>
+          <span class="lsess-title !pg-font-normal">{{ $t('liveClasses.todayCardPanel.myPlaydates') }}</span>
         </v-row>
         <v-row class="mx-0 pl-5" align="center" justify="start">
           <img class="mr-3" src="@/assets/svg/sessions-camera.svg" />
-          <span class="lsess-title">Next Classes</span>
+          <span class="lsess-title">{{ $t('liveClasses.todayCardPanel.nextClasses') }}</span>
         </v-row>
 
         <v-row class="mx-0 lsess-schedule-container">
@@ -60,8 +60,8 @@
 
             <template v-else>
               <div class="my-10 lsess-title text-center">
-                There are no pending events
-                {{ hasPlayAndLearnPlan ? 'for you' : '' }} this week.
+                {{ $t('liveClasses.todayCardPanel.pending1') }}
+                {{ hasPlayAndLearnPlan ? $t('liveClasses.todayCardPanel.pending2') : '' }} {{ $t('liveClasses.todayCardPanel.pending3') }}
               </div>
             </template>
           </v-col>
