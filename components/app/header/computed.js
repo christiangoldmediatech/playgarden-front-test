@@ -61,7 +61,7 @@ export default {
               exact: false
             },
             {
-              title: 'Watch and Learn',
+              title: 'Video Library',
               to: { name: 'app-library' },
               exact: false,
               dataTestId: 'app-library'
@@ -129,7 +129,7 @@ export default {
               dataTestId: 'app-learn-play'
             },
             {
-              title: 'Watch and Learn',
+              title: 'Video Library',
               to: { name: 'app-library' },
               exact: false,
               dataTestId: 'app-library'
