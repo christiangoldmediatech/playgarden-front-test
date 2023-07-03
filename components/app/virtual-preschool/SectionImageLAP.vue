@@ -322,7 +322,10 @@ export default defineComponent({
     height: 100%;
     opacity: 0;
     cursor: pointer;
-    opacity: 1;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 
   &-bubble-text {
