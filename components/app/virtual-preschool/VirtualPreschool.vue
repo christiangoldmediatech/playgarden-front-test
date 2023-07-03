@@ -17,7 +17,7 @@
         />
       </div>
 
-      <div class="pg-grid pg-grid-cols-1 md:pg-grid-cols-5 pg-gap-5 pg-mt-5">
+      <div class="pg-grid pg-grid-cols-1 md:pg-grid-cols-5 pg-gap-5 pg-mt-10">
         <section-image
           :section="section.music"
           small

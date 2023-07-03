@@ -299,7 +299,7 @@ export default defineComponent({
 
   computed: {
     bubbleStyles() {
-      if (this.$vuetify.breakpoint.mdAndUp || (this.small && this.miniBlocked)) {
+      if (this.small && this.$vuetify.breakpoint.mdAndUp) {
         return 'transform: scaleY(-1)'
       }
       return ''
@@ -322,10 +322,7 @@ export default defineComponent({
     height: 100%;
     opacity: 0;
     cursor: pointer;
-
-    &:hover {
-      opacity: 1;
-    }
+    opacity: 1;
   }
 
   &-bubble-text {
