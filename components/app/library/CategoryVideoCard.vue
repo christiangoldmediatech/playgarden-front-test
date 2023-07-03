@@ -34,7 +34,7 @@
         <div class="icon-section" :class="{ 'icon-section-scaled': hover }" :style="{ '--borderColor': color }">
           <img :src="icon">
           <div class="start-text">
-            Start!
+            {{ $t('videoLibrary.start') }}
           </div>
         </div>
       </div>

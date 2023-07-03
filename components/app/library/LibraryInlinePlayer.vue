@@ -1,8 +1,8 @@
 <template>
   <library-content-section
     :titles="{
-      columnA: 'Recommended for you',
-      columnB: 'More Lessons for You'
+      columnA: $t('videoLibrary.inlinePlayer.columnA'),
+      columnB: $t('videoLibrary.inlinePlayer.columnB')
     }"
     @scroll:last-reached="handleLastReached"
   >
@@ -42,7 +42,7 @@
                 </div>
                 <div>
                   <div class="player-preview-vow">
-                    Video of the week
+                    {{ $t('videoLibrary.inlinePlayer.videoOfWeek') }}
                   </div>
                   <div class="player-preview-title">
                     {{ title }}
@@ -50,7 +50,7 @@
                 </div>
               </div>
               <div class="player-preview-author">
-                With {{ author }}
+                {{ $t('commonWords.prepositionTextUpper') }} {{ author }}
               </div>
             </div>
           </div>
