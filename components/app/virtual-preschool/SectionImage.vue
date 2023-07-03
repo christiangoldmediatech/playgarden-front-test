@@ -1,13 +1,13 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <div class="pg-h-auto pg-relative">
+    <div class="pg-max-h-[540px] pg-relative">
       <v-img
         :src="section.imageUrl"
         gradient="rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)"
         class="pg-rounded-md image-sizer"
         cover
         tile
-        :height="small && $vuetify.breakpoint.smAndDown ? '300px' : small && $vuetify.breakpoint.smAndUp ? '200px' : '100%'"
+        :height="small && $vuetify.breakpoint.smAndDown ? '300px' : small && $vuetify.breakpoint.smAndUp ? '300px' : '100%'"
         position="top center"
         @click="$emit('click', section)"
       >

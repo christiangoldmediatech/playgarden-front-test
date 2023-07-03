@@ -299,7 +299,7 @@ export default defineComponent({
 
   computed: {
     bubbleStyles() {
-      if (this.$vuetify.breakpoint.mdAndUp || (this.small && this.miniBlocked)) {
+      if (this.small && this.$vuetify.breakpoint.mdAndUp) {
         return 'transform: scaleY(-1)'
       }
       return ''
