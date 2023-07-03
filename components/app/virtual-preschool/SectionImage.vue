@@ -81,7 +81,7 @@
             }"
             :style="{ color: section.bubbleText }"
           >
-            <v-btn icon class="my-n3 mx-n2">
+            <v-btn v-if="showAudio" icon class="my-n3 mx-n2">
               <v-icon
                 :color="section.bubbleText"
                 :size="small ? 15 : 20"
@@ -145,6 +145,10 @@ export default defineComponent({
     medium: {
       type: Boolean,
       default: false
+    },
+    showAudio: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -205,7 +209,7 @@ export default defineComponent({
     right: 30%;
     width: 60%;
     bottom: 4% !important;
-    font-size: 0.7rem !important;
+    font-size: 0.6rem !important;
   }
 
   &-bubble-text-mobile {
@@ -213,7 +217,7 @@ export default defineComponent({
     right: 20%;
     width: 60%;
     bottom: 70% !important;
-    font-size: 0.7rem !important;
+    font-size: 0.6rem !important;
   }
 
   &-bubble {
