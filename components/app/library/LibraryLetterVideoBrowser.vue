@@ -39,7 +39,7 @@
         </v-col>
         <v-col cols="auto" class="pr-0">
           <span class="letter-browser-letter-text mr-1 mr-lg-3">
-            Letter
+            {{ $t('commonWords.letter') }}
           </span>
         </v-col>
         <v-col cols="auto" class="pl-0">

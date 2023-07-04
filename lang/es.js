@@ -6,7 +6,8 @@ export default async (context, locale) => {
   return await Promise.resolve({
     commonWords: {
       conjunctionText: 'o',
-      prepositionText: 'CON',
+      prepositionText: 'con',
+      prepositionTextUpper: 'Con',
       letter: 'Letra',
       here: 'AQUÍ',
       day: 'DÍA',
@@ -531,6 +532,32 @@ export default async (context, locale) => {
         pending1: 'No hay eventos pendientes',
         pending2: 'para ti',
         pending3: 'esta semana.'
+      }
+    },
+    videoLibrary: {
+      library: 'Biblioteca',
+      start: '¡Empezar!',
+      columnA: 'Explorar por Letras',
+      columnB: 'Explorar por Categoría',
+      patchEarned: {
+        congratulations: '¡Felicidades!',
+        watch1: 'Has visto',
+        watch2: 'Actividades y has ganado un NUEVO parche!',
+        keepWatching: 'Sigue viendo videos para dominar la categoría y ganar más parches.',
+        nextText: '¿Qué quieres hacer ahora?',
+        nextVideo: 'Siguiente video',
+        goNextVideo: 'Ir al siguiente video',
+        goPatches: 'Ir a Parches',
+        returnText1: 'Volver a Biblioteca',
+        returnText2: 'Volver a Lecciones'
+      },
+      inlinePlayer: {
+        columnA: 'Recomendado para ti',
+        columnB: 'Más lecciones para ti',
+        videoOfWeek: 'Video de la semana'
+      },
+      videoCard: {
+        viewed: 'Visto'
       }
     }
   })

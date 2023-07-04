@@ -19,25 +19,25 @@
                 :font-size="$vuetify.breakpoint.xsOnly ? '30px' : '56px'"
                 font-weight="bold"
                 class="patch-earned-comp-title"
-                text="Congratulations!"
+                :text="$t('videoLibrary.patchEarned.congratulations')"
               />
             </div>
             <p class="patch-earned-comp-paragraph-1">
-              You have watched {{ number }}
+              {{ $t('videoLibrary.patchEarned.watch1') + ' ' + number }}
               <span class="text-lowercase">
                 {{ category }}
               </span>
-              Activities and earned a NEW patch!
+              {{ $t('videoLibrary.patchEarned.watch2') }}
             </p>
             <p class="patch-earned-comp-paragraph-2">
-              Keep watching videos to master the category and earn more patches.
+              {{ $t('videoLibrary.patchEarned.keepWatching') }}
             </p>
           </v-col>
           <v-col cols="12">
             <v-row justify="center">
               <v-col cols="12">
                 <p class="patch-earned-comp-next-text">
-                  What do you want to do next?
+                  {{ $t('videoLibrary.patchEarned.nextText') }}
                 </p>
               </v-col>
               <v-col cols="12">
@@ -55,10 +55,10 @@
                         src="@/assets/svg/play-button.svg"
                       >
                       <template v-if="$vuetify.breakpoint.xsOnly">
-                        Next video
+                        {{ $t('videoLibrary.patchEarned.nextVideo') }}
                       </template>
                       <template v-else>
-                        Go to next video
+                        {{ $t('videoLibrary.patchEarned.goNextVideo') }}
                       </template>
                     </v-btn>
                   </v-col>
@@ -74,7 +74,7 @@
                       nuxt
                       :to="{ name: 'app-student-cubby-patches' }"
                     >
-                      Go to Patches
+                      {{ $t('videoLibrary.patchEarned.goPatches') }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -99,6 +99,7 @@
 </template>
 
 <script lang="ts">
+import { useLanguageHelper } from '@/composables'
 import { defineComponent, computed, useRoute } from '@nuxtjs/composition-api'
 
 export default defineComponent({
@@ -129,11 +130,12 @@ export default defineComponent({
 
   setup(_, { emit }) {
     const route = useRoute()
+    const language = useLanguageHelper()
     const returnText = computed(() => {
       if (route.value.name?.includes('app-library')) {
-        return 'Return to Library'
+        return language.t('videoLibrary.patchEarned.returnText1')
       }
-      return 'Return to Lesson'
+      return language.t('videoLibrary.patchEarned.returnText2')
     })
 
     function close(): void {

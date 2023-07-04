@@ -6,7 +6,7 @@
     v-on="$listeners"
   >
     <img class="mr-1 mr-lg-2" src="@/assets/svg/library/back-button-arrow.svg">
-    Back
+    {{ $t('commonWords.backButton') }}
   </v-btn>
 </template>
 

@@ -7,6 +7,7 @@ export default async (context, locale) => {
     commonWords: {
       conjunctionText: 'or',
       prepositionText: 'with',
+      prepositionTextUpper: 'With',
       letter: 'Letter',
       here: 'HERE',
       day: 'DAY',
@@ -531,6 +532,32 @@ export default async (context, locale) => {
         pending1: 'There are no pending events',
         pending2: 'for you',
         pending3: 'this week.'
+      }
+    },
+    videoLibrary: {
+      library: 'Library',
+      start: 'Start!',
+      columnA: 'Browse by Letters',
+      columnB: 'Browse by Category',
+      patchEarned: {
+        congratulations: 'Congratulations!',
+        watch1: 'You have watched',
+        watch2: 'Activities and earned a NEW patch!',
+        keepWatching: 'Keep watching videos to master the category and earn more patches.',
+        nextText: 'What do you want to do next?',
+        nextVideo: 'Next video',
+        goNextVideo: 'Go to next video',
+        goPatches: 'Go to Patches',
+        returnText1: 'Return to Library',
+        returnText2: 'Return to Lesson'
+      },
+      inlinePlayer: {
+        columnA: 'Recommended for you',
+        columnB: 'More Lessons for You',
+        videoOfWeek: 'Video of the week'
+      },
+      videoCard: {
+        viewed: 'Viewed'
       }
     }
   })
