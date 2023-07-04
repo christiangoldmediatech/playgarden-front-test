@@ -2,10 +2,10 @@
   <div>
     <div v-if="loading || getDiyProject.length > 0" class="mb-4 d-flex align-center">
       <span class="title-dashboard">
-        DIY Project
+        {{ $t('socialEmotional.common.diyProject') }}
       </span>
 
-      <section-btn class="ml-4" text="Go to project" :is-download-btn="false" @click="downloadDiyFiles" />
+      <section-btn class="ml-4" :text="`${$t('socialEmotional.common.goToProject')}`" :is-download-btn="false" @click="downloadDiyFiles" />
     </div>
 
     <p v-if="getDiyProject.length > 0" class="diy-text">

@@ -4,7 +4,7 @@
       <v-col cols="12" md="8" class="pr-10">
         <div v-if="loading || videos.length > 0" class="mb-3">
           <span class="title-dashboard">
-            Video Lessons
+            {{ $t('socialEmotional.common.videoLessons') }}
           </span>
         </div>
 
@@ -62,7 +62,7 @@
 
       <v-col cols="12" md="4">
         <div class="mb-3">
-          <span class="title-dashboard">More like this</span>
+          <span class="title-dashboard">{{ $t('socialEmotional.common.moreLikeThis') }}</span>
         </div>
         <videos-scroll
           v-if="videos.length > 0"

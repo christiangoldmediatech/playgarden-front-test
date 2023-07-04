@@ -107,10 +107,13 @@ export default async (context, locale) => {
         email: 'Email',
         address: 'Address',
         password: 'Password',
-        passwordSuggestion1: 'At least 6 characters—the more characters, the better.',
-        passwordSuggestion2: 'A mixture of both uppercase and lowercase letters.',
+        passwordSuggestion1:
+          'At least 6 characters—the more characters, the better.',
+        passwordSuggestion2:
+          'A mixture of both uppercase and lowercase letters.',
         passwordSuggestion3: 'A mixture of letters and numbers.',
-        passwordSuggestion4: 'Inclusion of at least one special character, e.g., !@#?]',
+        passwordSuggestion4:
+          'Inclusion of at least one special character, e.g., !@#?]',
         coupon: 'Coupon',
         validCoupon: 'Valid coupon!',
         invalidCoupon: 'Invalid Coupon!',
@@ -121,7 +124,8 @@ export default async (context, locale) => {
         registerWithGoogle: 'Continue with Google'
       },
       cardInfo: {
-        title: 'It\'s the easiest way to give your child an immersive education at home!',
+        title:
+          "It's the easiest way to give your child an immersive education at home!",
         subtitle: 'Engaged children and proven outcomes!'
       }
     },
@@ -146,7 +150,8 @@ export default async (context, locale) => {
       },
       shipping: {
         title: 'Shipping Address',
-        subtitle: 'We use this information to send you Playgarden Prep educational materials.',
+        subtitle:
+          'We use this information to send you Playgarden Prep educational materials.',
         street: 'Street',
         address: 'Address',
         city: 'City',
@@ -159,7 +164,8 @@ export default async (context, locale) => {
       },
       student: {
         title: 'Student Profile',
-        subtitle: 'In this section you can edit the Child’s information or add a new Child.',
+        subtitle:
+          'In this section you can edit the Child’s information or add a new Child.',
         birthDate: 'Date of birth:',
         gender: 'Gender:',
         addChild: 'Add Child',
@@ -169,7 +175,7 @@ export default async (context, locale) => {
         changeIcon: 'Change icon:',
         viewCurrentLetter: 'View letter progress',
         viewProgressReport: 'View progress report',
-        timeline: '\'s timeline'
+        timeline: "'s timeline"
       },
       caregivers: {
         title: 'Caregivers',
@@ -195,7 +201,8 @@ export default async (context, locale) => {
         changePayment: 'Change payment method',
         addCoupon: 'Add coupon code',
         couponPlaceholder: 'Promotion code',
-        couponNote: '*Note that you may only use one promotion code at a time; adding a new promo code will remove any currently-active coupons that were previously applied.',
+        couponNote:
+          '*Note that you may only use one promotion code at a time; adding a new promo code will remove any currently-active coupons that were previously applied.',
         billingHistory: 'Billing history',
         viewBillingHistory: 'View your billing history',
         viewInvoice: 'View invoice',
@@ -210,16 +217,22 @@ export default async (context, locale) => {
     },
     payment: {
       title: 'CREDIT CARD INFORMATION',
-      description: 'FOR THE SAFETY OF OUR STUDENTS DURING THE LIVE CLASSES, WE NEED TO VERIFY WHO YOU ARE. Please add a credit card to your account. YOU WILL NOT BE CHARGED. Playgarden only charges when your trial has ended and you have confirmed your plan.',
-      footer1: 'Playgarden Prep Online is COMPLETELY FREE for the next 15 days.',
+      description:
+        'FOR THE SAFETY OF OUR STUDENTS DURING THE LIVE CLASSES, WE NEED TO VERIFY WHO YOU ARE. Please add a credit card to your account. YOU WILL NOT BE CHARGED. Playgarden only charges when your trial has ended and you have confirmed your plan.',
+      footer1:
+        'Playgarden Prep Online is COMPLETELY FREE for the next 15 days.',
       footer2: 'YOU CAN CANCEL YOUR TRIAL ANY TIME',
-      footer3: 'You can easily cancel your trial or membership at any time from your Account Settings. Once your free trial ends, you will be placed on the',
-      footer4: 'monthly plan; your provided payment information will be automatically charged, and your first billing cycle will begin. You can change plans at any time from your Account Settings. For assistance, contact',
+      footer3:
+        'You can easily cancel your trial or membership at any time from your Account Settings. Once your free trial ends, you will be placed on the',
+      footer4:
+        'monthly plan; your provided payment information will be automatically charged, and your first billing cycle will begin. You can change plans at any time from your Account Settings. For assistance, contact',
       button1: 'REACTIVATE ACCOUNT',
       button2: 'START LEARNING NOW',
       card: {
-        title: 'Join thousands of happy families that have graduated from Playgarden Prep',
-        subtitle: 'Still not sure? Call, text, or email us with your questions, and a member of our teacher team will get back to you with more information.',
+        title:
+          'Join thousands of happy families that have graduated from Playgarden Prep',
+        subtitle:
+          'Still not sure? Call, text, or email us with your questions, and a member of our teacher team will get back to you with more information.',
         teacherTitle: 'Reach out to speak with a teacher like Miss Sarah!',
         phone: '+1 (646) 504-4716 (call/text)'
       },
@@ -227,18 +240,23 @@ export default async (context, locale) => {
         title: 'Your 15 Day Free Trial Includes:',
         subtitle1: 'WANT TO KNOW MORE ABOUT YOUR',
         subtitle2: 'FREE TRIAL',
-        footer: '*You can cancel your membership at any time from the Account Settings.'
+        footer:
+          '*You can cancel your membership at any time from the Account Settings.'
       },
       stripe: {
-        description1: 'We need your credit card information to confirm your identity',
-        description2: ', but you will NOT be charged until your 15 day free trial has ended, unless you choose to end your trial early',
+        description1:
+          'We need your credit card information to confirm your identity',
+        description2:
+          ', but you will NOT be charged until your 15 day free trial has ended, unless you choose to end your trial early',
         promotionCode: 'Promotion Code',
         acceptTerms1: 'I have read and accept the',
         acceptTerms2: 'Terms & Conditions',
         cancel: 'CLOSE',
-        footer1: 'You can cancel your trial and membership anytime from the account settings. ',
+        footer1:
+          'You can cancel your trial and membership anytime from the account settings. ',
         footer2: 'Once your free trial ends you will be placed on the',
-        footer3: ' monthly plan, you can change plans at any time in your profile page.'
+        footer3:
+          ' monthly plan, you can change plans at any time in your profile page.'
       }
     },
     children: {
@@ -255,8 +273,10 @@ export default async (context, locale) => {
     },
     welcome: {
       titleDay1: 'Welcome to Playgarden Online!',
-      titleDay2: 'Hi, welcome back to Playgarden and your second day of learning',
-      titleDay3: 'Hi, welcome back to Playgarden and your third day of learning',
+      titleDay2:
+        'Hi, welcome back to Playgarden and your second day of learning',
+      titleDay3:
+        'Hi, welcome back to Playgarden and your third day of learning',
       overlay: {
         title: 'Your free trial has officially begun!',
         subtitle1: '*Cancel any time from your',
@@ -264,23 +284,27 @@ export default async (context, locale) => {
       },
       daysSelector: {
         title: 'One last thing before you get started!',
-        subtitle: 'Please tell us how many days a week do you expect to use Playgarden Online',
+        subtitle:
+          'Please tell us how many days a week do you expect to use Playgarden Online',
         daySingular: 'DAY',
         dayPlural: 'DAYS',
         button: 'START FIRST LESSON',
-        footer: 'This will help us improve your little one\'s learning experience'
+        footer:
+          "This will help us improve your little one's learning experience"
       }
     },
     lessonEnd: {
-      title: 'We can\'t wait to see you tomorrow!',
-      emailText1: 'Want to receive an email with all of the things you did today?',
+      title: "We can't wait to see you tomorrow!",
+      emailText1:
+        'Want to receive an email with all of the things you did today?',
       emailText2: 'Click here to update your Email Notification Settings.',
       overlay: {
-        title: 'You\'ve completed your first day of video lessons.',
+        title: "You've completed your first day of video lessons.",
         subtitle: 'Join us in our next live class!',
         footer: 'For more daily learning, check out our other features:',
         sectionTitle: 'Worksheet',
-        sectionDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
+        sectionDescription:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
       },
       todayCard: {
         title1: 'Sorry!',
@@ -294,11 +318,14 @@ export default async (context, locale) => {
       puzzle: {
         text: 'PUZZLE',
         title: 'STUDENT CUBBY',
-        content: 'Find all of %{childName} completed puzzles here. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram <strong>@PlaygardenPrep</strong>. We can\'t wait to see yours!',
+        content:
+          "Find all of %{childName} completed puzzles here. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram <strong>@PlaygardenPrep</strong>. We can't wait to see yours!",
         viewPuzzle: 'View Puzzle',
         viewProgress: 'View Progress',
-        unlockText: 'Find all of your children completed puzzles. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram @PlaygardenPrep. We can\'t wait to see yours!',
-        piecesDesc: 'Look at all the pieces you\'ve got! Keep going to earn a printable coloring page.',
+        unlockText:
+          "Find all of your children completed puzzles. Once completed, you can print out your puzzles as coloring sheets. Collect them all! You can share your completed puzzles on Instagram @PlaygardenPrep. We can't wait to see yours!",
+        piecesDesc:
+          "Look at all the pieces you've got! Keep going to earn a printable coloring page.",
         progress: 'PROGRESS',
         puzzleLetter: 'PUZZLE LETTER %{letter}',
         unlockIntro: 'Unlock This in ',
@@ -310,7 +337,8 @@ export default async (context, locale) => {
         text: 'PATCHES',
         title: 'Earn Activity Patches for learning',
         content: 'Master subjects to collect patches for your Student Cubby!',
-        unlockText: 'Master subjects in the Activities section to collect patches for your Student Cubby! Collect all badges to receive a real patch for your backpack.',
+        unlockText:
+          'Master subjects in the Activities section to collect patches for your Student Cubby! Collect all badges to receive a real patch for your backpack.',
         unlockShort: 'Unlock',
         unlockLong: 'Unlock This Patch'
       },
@@ -333,8 +361,10 @@ export default async (context, locale) => {
       progressReport: {
         text: 'PROGRESS REPORT',
         title: 'Student progress report',
-        content: ' Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.',
-        unlockText: 'Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.',
+        content:
+          ' Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.',
+        unlockText:
+          'Playgarden Prep Online Lessons have been developed to support one or more of the core areas of development. After watching a video, doing the worksheet together with an adult, or actively participating in a Live Class, parents will be helping in the development of their child in each of the specific areas.',
         generalProgress: 'General Progress',
         lettersProgress: 'Letters Progress',
         areaOfStrength: 'Area of Strength',
@@ -386,7 +416,8 @@ export default async (context, locale) => {
         titleUppercase: 'ONLINE WORKSHEET',
         coming: 'Coming next!',
         handsOn1: 'HANDS-ON LEARNING',
-        handsOn2: 'is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.',
+        handsOn2:
+          'is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.',
         button1: 'TEACHERS VIDEO',
         button2: 'DOWNLOAD WORKSHEET',
         button3: 'UPLOAD WORKSHEET',
@@ -397,9 +428,11 @@ export default async (context, locale) => {
       },
       offlineWorksheet: {
         title: 'Watch the Worksheet Video',
-        subtitle: 'Complete your hands-on worksheets with a Playgarden Prep teacher!',
+        subtitle:
+          'Complete your hands-on worksheets with a Playgarden Prep teacher!',
         alternativeTitle: 'Hands-on Learning',
-        alternativeSubtitle: 'Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.',
+        alternativeSubtitle:
+          'Hands-on learning is a crucial part of the educational experience. Learning through doing strengthens the cognitive connections and builds a strong foundation for knowledge.',
         question: 'What do you want to do next?',
         download1: 'DOWNLOAD WORKSHEET',
         download2: 'DOWNLOAD HANDS-ON WORKSHEET',
@@ -409,9 +442,10 @@ export default async (context, locale) => {
         nextWord: 'Next Word'
       },
       scheduledFinished: {
-        description1: 'Don\'t forget to join us in our next live class.',
+        description1: "Don't forget to join us in our next live class.",
         description2: 'They are a great complement to the video lessons!',
-        subtitle: 'If the schedule doesn\'t work for you, check out the recommended videos in the Library!',
+        subtitle:
+          "If the schedule doesn't work for you, check out the recommended videos in the Library!",
         librarySubtitle: 'Come read with us in the book nook!',
         nextDay: 'Go to next day'
       },
@@ -422,7 +456,8 @@ export default async (context, locale) => {
       },
       unlockPrompt: {
         title: 'DAILY LESSONS',
-        description: 'Upgrade your plan to have access to daily lessons with your favorite playgarden prep teachers',
+        description:
+          'Upgrade your plan to have access to daily lessons with your favorite playgarden prep teachers',
         unlock: 'To unlock',
         upgrade: 'Upgrade your Plan'
       },
@@ -431,7 +466,8 @@ export default async (context, locale) => {
       },
       puzzles: {
         title: 'PUZZLE LETTER',
-        description: 'Look at all the pieces you\'ve got! Keep going to earn a printable coloring page.',
+        description:
+          "Look at all the pieces you've got! Keep going to earn a printable coloring page.",
         congratulations: 'CONGRATULATIONS!',
         getPuzzlePiece: 'GET A PUZZLE PIECE!',
         earned: 'You earned a puzzle piece',
@@ -440,7 +476,7 @@ export default async (context, locale) => {
       },
       lessonCompleted: {
         congratulations: 'Congratulations!',
-        subtitle1: 'You\'ve completed the',
+        subtitle1: "You've completed the",
         subtitle2: 'day of video lessons!',
         first: 'first',
         second: 'second',
@@ -450,7 +486,8 @@ export default async (context, locale) => {
         card1: 'Online Worksheets',
         card2: 'Print Worksheets',
         card3: 'Activities',
-        footer: 'Remember that in order to continue to the next lesson, you must complete the online worksheets, video activities and worksheets of this lesson.'
+        footer:
+          'Remember that in order to continue to the next lesson, you must complete the online worksheets, video activities and worksheets of this lesson.'
       },
       letterSelect: {
         nature: 'Nature',
@@ -463,7 +500,8 @@ export default async (context, locale) => {
       timezone1: '*Hours are in',
       timezone2: ', you can change your time zone by clicking',
       schedule: 'Live Classes Schedule',
-      placeholder: 'There are no live classes programmed for this week. Check back later.',
+      placeholder:
+        'There are no live classes programmed for this week. Check back later.',
       access: 'Get access to Live Classes',
       upgrade: 'Upgrade your plan',
       compare: 'COMPARE PLANS',
@@ -543,7 +581,8 @@ export default async (context, locale) => {
         congratulations: 'Congratulations!',
         watch1: 'You have watched',
         watch2: 'Activities and earned a NEW patch!',
-        keepWatching: 'Keep watching videos to master the category and earn more patches.',
+        keepWatching:
+          'Keep watching videos to master the category and earn more patches.',
         nextText: 'What do you want to do next?',
         nextVideo: 'Next video',
         goNextVideo: 'Go to next video',
@@ -558,6 +597,29 @@ export default async (context, locale) => {
       },
       videoCard: {
         viewed: 'Viewed'
+      }
+    },
+    socialEmotional: {
+      common: {
+        sections: 'Sections',
+        videos: 'Videos',
+        printables: 'Printables',
+        doItTogether: 'Do-It-Together',
+        sensoryPlay: 'Sensory Play',
+        snackOfTheWeek: 'Snack of the Week',
+        book: 'Book',
+        playlist: 'Playlist',
+        topFive: 'Top five',
+        videoLessons: 'Video Lessons',
+        moreLikeThis: 'More like this',
+        worksheets: 'Worksheets',
+        diyProject: 'DIY Project',
+        goToProject: 'Go to project',
+        downloadPdf: 'Download PDF',
+        snack: 'Bocadillo',
+        weekReccomendedBooks: "This week's recommended books",
+        booksOfTheWeek: 'Books of the week',
+        buyNowOn: 'Buy now on'
       }
     }
   })
