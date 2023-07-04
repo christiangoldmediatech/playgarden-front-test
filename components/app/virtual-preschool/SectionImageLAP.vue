@@ -90,9 +90,9 @@
                 mdi-volume-high
               </v-icon>
             </v-btn>
-            <span>
+            <div class="message-container">
               {{ section.message }}
-            </span>
+            </div>
             <img
               src="@/assets/svg/bubble-chat-arrow.svg"
               class="pg-absolute pg-right-10"
@@ -161,9 +161,9 @@
                 mdi-volume-high
               </v-icon>
             </v-btn>
-            <span>
+            <div class="message-container">
               {{ section.message }}
-            </span>
+            </div>
             <img
               src="@/assets/svg/bubble-chat-arrow.svg"
               class="pg-absolute pg-right-10 pg-top-[-30px]"
@@ -354,7 +354,7 @@ export default defineComponent({
     right: 30%;
     width: 60%;
     bottom: 4% !important;
-    font-size: 0.6rem !important;
+    font-size: 0.7rem !important;
   }
 
   &-bubble-text-mobile {
@@ -362,7 +362,7 @@ export default defineComponent({
     right: 20%;
     width: 60%;
     bottom: 70% !important;
-    font-size: 0.6rem !important;
+    font-size: 0.7rem !important;
   }
 
   &-bubble-text-mobile-blocked {
@@ -370,7 +370,7 @@ export default defineComponent({
     right: 20%;
     width: 60%;
     bottom: 16% !important;
-    font-size: 0.6rem !important;
+    font-size: 0.7rem !important;
   }
 
   &-bubble {
@@ -428,6 +428,10 @@ export default defineComponent({
   }
 }
 
+.message-container {
+  white-space: pre-line;
+}
+
 .translucent {
   opacity: 0;
 }
@@ -452,7 +456,7 @@ export default defineComponent({
       right: 29%;
       width: 70% !important;
       bottom: 4% !important;
-      font-size: 0.6rem !important;
+      font-size: 0.7rem !important;
     }
   }
 }
