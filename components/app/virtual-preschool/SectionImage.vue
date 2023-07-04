@@ -90,9 +90,9 @@
                 mdi-volume-high
               </v-icon>
             </v-btn>
-            <span>
+            <div class="message-container">
               {{ section.message }}
-            </span>
+            </div>
             <img
               src="@/assets/svg/bubble-chat-arrow.svg"
               class="pg-absolute pg-right-10"
@@ -209,7 +209,7 @@ export default defineComponent({
     right: 30%;
     width: 60%;
     bottom: 4% !important;
-    font-size: 0.6rem !important;
+    font-size: 0.7rem !important;
   }
 
   &-bubble-text-mobile {
@@ -217,7 +217,7 @@ export default defineComponent({
     right: 20%;
     width: 60%;
     bottom: 70% !important;
-    font-size: 0.6rem !important;
+    font-size: 0.7rem !important;
   }
 
   &-bubble {
@@ -299,9 +299,13 @@ export default defineComponent({
       right: 29%;
       width: 70% !important;
       bottom: 4% !important;
-      font-size: 0.6rem !important;
+      font-size: 0.7rem !important;
     }
   }
+}
+
+.message-container {
+  white-space: pre-line;
 }
 
 @media (max-width: $breakpoint-md) {

@@ -162,7 +162,7 @@ export default defineComponent({
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Emma_Music.png'),
         title: 'Music',
         route: { name: 'app-music' },
-        message: 'Listen anytime, to sing and learn!',
+        message: 'Listen anytime, \n to sing and learn!',
         audio: `${baseRoute}audio/virtual-preschool/Music.m4a`,
         color: '#F6B7D2',
         textColor: '#CF2A5C',
