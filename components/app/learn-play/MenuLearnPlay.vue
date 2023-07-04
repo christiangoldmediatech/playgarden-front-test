@@ -2,42 +2,42 @@
   <v-row class="menu-learn-play pt-4" justify="center">
     <v-col cols="12">
       <span class="color-main" @click="sendSection('videoLesson')">
-        Sections
+        {{ $t('socialEmotional.common.sections') }}
       </span>
     </v-col>
     <v-col cols="12">
       <span class="color-menu clickable" @click="sendSection('videoLesson')">
-        Videos
+        {{ $t('socialEmotional.common.videos') }}
       </span>
     </v-col>
     <v-col v-if="getPrintables.length > 0" cols="12">
       <span class="color-menu clickable" @click="sendSection('worksheets')">
-        Printables
+        {{ $t('socialEmotional.common.printables') }}
       </span>
     </v-col>
     <v-col v-if="getDiyProject.length > 0" cols="12">
       <span class="color-menu clickable" @click="sendSection('diy')">
-        Do-It-Together
+        {{ $t('socialEmotional.common.doItTogether') }}
       </span>
     </v-col>
     <v-col v-if="getArtProjects.length > 0" cols="12">
       <span class="color-menu clickable" @click="sendSection('art-project')">
-        Sensory Play
+        {{ $t('socialEmotional.common.sensoryPlay') }}
       </span>
     </v-col>
     <v-col v-if="getSnacks.length > 0" cols="12">
       <span class="color-menu clickable" @click="sendSection('snack')">
-        Snack of the Week
+        {{ $t('socialEmotional.common.snackOfTheWeek') }}
       </span>
     </v-col>
     <v-col v-if="getBook.length > 0" cols="12">
       <span class="color-menu clickable" @click="sendSection('book')">
-        Book
+        {{ $t('socialEmotional.common.book') }}
       </span>
     </v-col>
     <v-col cols="12">
       <span class="color-menu clickable" @click="sendSection('playlist')">
-        Playlist
+        {{ $t('socialEmotional.common.playlist') }}
       </span>
     </v-col>
   </v-row>

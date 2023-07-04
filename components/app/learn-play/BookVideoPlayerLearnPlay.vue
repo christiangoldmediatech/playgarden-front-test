@@ -2,7 +2,7 @@
   <div>
     <div v-if="loading || getRelatedBooks.length > 0" class="mb-4 d-flex align-center">
       <span class="title-dashboard">
-        This week's recommended books
+        {{ $t('socialEmotional.common.weekReccomendedBooks') }}
       </span>
     </div>
 
@@ -61,13 +61,13 @@
             </v-col>
             <v-col cols="7">
               <div class="mb-2">
-                Book:
+                {{ $t('socialEmotional.common.book') }}:
               </div>
               <span class="title-dashboard">{{ currentBookVideo.name }}</span>
             </v-col>
             <v-col v-if="amzLink " cols="3">
               <div class="mb-2">
-                Buy now on:
+                {{ $t('socialEmotional.commmon.buyNowOn') }}:
               </div>
               <v-btn color="#B2E68D" block @click="goToLink">
                 <img src="@/assets/svg/amazon.svg" />
@@ -82,7 +82,7 @@
         <v-skeleton-loader type="card" />
       </v-card>
       <span class="title-dashboard">
-        Books of the week
+        {{ $t('socialEmotional.common.booksOfTheWeek') }}
       </span>
       <v-card class="mt-2">
         <v-row class="mx-2 my-2">
@@ -94,7 +94,7 @@
     </template>
     <div v-if="getRelatedBooks.length > 0" class="mt-8">
       <span class="title-dashboard">
-        Books of the week
+        {{ $t('socialEmotional.common.booksOfTheWeek') }}
       </span>
       <div class="mt-6">
         <BooksScroll

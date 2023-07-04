@@ -2,10 +2,15 @@
   <div v-if="loading || getSnacks.length > 0">
     <div class="mb-4 d-flex align-center">
       <span class="title-dashboard">
-        Snack
+        {{ $t('socialEmotional.common.snack') }}
       </span>
 
-      <section-btn class="ml-4" :is-download-btn="true" text="Download PDF" @click="downloadSnackFiles" />
+      <section-btn
+        class="ml-4"
+        :is-download-btn="true"
+        :text="`${$t('socialEmotional.common.downloadPdf')}`"
+        @click="downloadSnackFiles"
+      />
     </div>
 
     <p v-if="getSnacks.length > 0" class="snack-text">

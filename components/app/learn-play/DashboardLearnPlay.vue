@@ -8,7 +8,7 @@
 
       <v-col cols="12" md="auto">
         <div class="my-3 my-md-0">
-          <span class="title-dashboard pg-ml-4 md:pg-ml-0">Letter</span>
+          <span class="title-dashboard pg-ml-4 md:pg-ml-0">{{ $t('commonWords.letter') }}</span>
         </div>
       </v-col>
 

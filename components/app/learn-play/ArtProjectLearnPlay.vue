@@ -2,10 +2,10 @@
   <div v-if="loading || getArtProjects.length > 0" class="mb-4">
     <div class="mb-4 d-flex align-center">
       <span class="title-dashboard">
-        Sensory Play
+        {{ $t('socialEmotional.common.sensoryPlay') }}
       </span>
 
-      <section-btn class="ml-4" :is-download-btn="true" text="Download PDF" @click="downloadArtFiles" />
+      <section-btn class="ml-4" :is-download-btn="true" :text="`${$t('socialEmotional.common.downloadPdf')}`" @click="downloadArtFiles" />
     </div>
 
     <p v-if="getArtProjects.length > 0" class="art-text">
