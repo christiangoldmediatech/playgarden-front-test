@@ -10,7 +10,7 @@
             alt="Music Library Icon"
           />
           <h2 class="pg-text-primary pg-text-4xl pg-font-bold pg-font-quick">
-            Song List
+            {{ $t('music.songList.title') }}
           </h2>
         </div>
 
@@ -18,7 +18,7 @@
           <v-icon size="32" left>
             mdi-chevron-left
           </v-icon>
-          Back
+          {{ $t('commonWords.backButton') }}
         </v-btn>
       </v-col>
 
@@ -64,7 +64,7 @@
             <path d="M26.5914 12.121C30.2679 12.1396 33.2439 15.2315 33.2618 19.0513C33.2618 26.0495 21.0001 32.9799 21.0001 32.9799C21.0001 32.9799 8.73828 25.9476 8.73828 19.0513C8.73828 15.2238 11.7247 12.121 15.4087 12.121C17.6638 12.1027 19.7721 13.2812 21.0001 15.2464C22.2364 13.2907 24.3393 12.1153 26.5914 12.121H26.5914Z" fill="#F5737F" />
           </svg>
           <span class="pg-font-quick pg-text-pg-grey">
-            Favorites
+            {{ $t('music.songList.favorites') }}
           </span>
         </v-btn>
       </v-col>
@@ -77,7 +77,7 @@
             alt="Music Library Icon"
           />
           <h2 class="pg-text-primary pg-text-3xl pg-font-bold pg-font-quick">
-            Song List
+            {{ $t('music.songList.title') }}
           </h2>
         </div>
 
@@ -85,7 +85,7 @@
           <v-icon size="32" left>
             mdi-chevron-left
           </v-icon>
-          Back
+          {{ $t('commonWords.backButton') }}
         </v-btn>
       </v-col>
     </v-row>
@@ -101,7 +101,7 @@
             line-padding-right="30%"
           >
             <img :height="mobile ? '24px' : '36px'" src="@/assets/svg/library/favorites.svg">
-            Favorites
+            {{ $t('music.songList.favorites') }}
           </underlined-title>
         </v-col>
       </v-row>
@@ -114,7 +114,7 @@
       <img src="@/assets/svg/library/favorites.svg" :width="mobile ? '72px' : '128px'">
 
       <div class="text-h6 text-md-h4 font-weight-medium text-center grey--text text--darken-2 mt-6">
-        Add your favorite songs here, by clicking on their Heart icons.
+        {{ $t('music.songList.placeholder') }}
       </div>
     </div>
     <!-- Songs -->

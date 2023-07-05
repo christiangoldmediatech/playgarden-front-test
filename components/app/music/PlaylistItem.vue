@@ -39,7 +39,7 @@
           class="playlist-item-name"
           data-test-id="playlist-item-playing-tag"
         >
-          <span class="playlist-item-playing-tag">PLAYING</span>
+          <span class="playlist-item-playing-tag">{{ $t('music.letterSongs.playing') }}</span>
         </v-col>
 
         <v-col cols="auto" align-self="center">

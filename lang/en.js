@@ -621,6 +621,28 @@ export default async (context, locale) => {
         booksOfTheWeek: 'Books of the week',
         buyNowOn: 'Buy now on'
       }
+    },
+    music: {
+      unlockPrompt: {
+        title: 'MUSIC',
+        description: 'Unlock the full music library'
+      },
+      songList: {
+        title: 'Song List',
+        favorites: 'Favorites',
+        placeholder: 'Add your favorite songs here, by clicking on their Heart icons.'
+      },
+      letterSongs: {
+        playing: 'PLAYING',
+        addQueue: 'Add to queue',
+        addedQueue: 'Added to queue'
+      },
+      queue: {
+        empty: 'Empty queue'
+      },
+      letterCarousel: {
+        placeholder: 'Browse by letter'
+      }
     }
   })
 }
