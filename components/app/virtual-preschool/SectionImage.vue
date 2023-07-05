@@ -7,7 +7,13 @@
         class="pg-rounded-md image-sizer"
         cover
         tile
-        :height="small && $vuetify.breakpoint.smAndDown ? '300px' : small && $vuetify.breakpoint.smAndUp ? '300px' : '100%'"
+        :height="
+          small && $vuetify.breakpoint.smAndDown
+            ? '300px'
+            : small && $vuetify.breakpoint.smAndUp
+              ? '300px'
+              : '100%'
+        "
         position="top center"
         @click="$emit('click', section)"
       >
@@ -24,7 +30,9 @@
           <div
             :style="{ color: `${section.textColor}` }"
             :class="{
-              '!pg-text-[14px]': small && $vuetify.breakpoint.mdAndDown || $vuetify.breakpoint.width < 1350,
+              '!pg-text-[14px]':
+                (small && $vuetify.breakpoint.mdAndDown) ||
+                $vuetify.breakpoint.width < 1350
             }"
           >
             {{ section.title }}
@@ -46,23 +54,34 @@
               :width="small ? 150 : 200"
               contain
               class="section-start-playing pg-relative"
-              :src="require('@/assets/svg/virtual-preschool/rainbow-circle.svg')"
+              :src="
+                require('@/assets/svg/virtual-preschool/rainbow-circle.svg')
+              "
             >
-              <div
+              <UiMsg
                 class="pg-absolute pg-inset-0 pg-m-auto pg-text-center pg-font-bold pg-font-quick translate-text"
-                :class="[small ? 'pg-text-[12px]' : $vuetify.breakpoint.width <= 1600 ? 'pg-text-[14px]' : 'pg-text-[22px]']"
-                :style="{ color: section.bubbleText}"
-              >
-                Start <br />
-                Learning
-              </div>
+                :class="[
+                  small
+                    ? 'pg-text-[12px]'
+                    : $vuetify.breakpoint.width <= 1600
+                      ? 'pg-text-[14px]'
+                      : 'pg-text-[20px]'
+                ]"
+                :style="{ color: section.bubbleText }"
+                :message="`${$t('virtualPreschool.startLearning')}`"
+              />
             </v-img>
           </div>
 
           <!-- Lady -->
           <img
             class="section-lady"
-            :class="{ 'section-lady-medium': $vuetify.breakpoint.width < 1350 && $vuetify.breakpoint.width > 1000 , 'section-lady-small': small}"
+            :class="{
+              'section-lady-medium':
+                $vuetify.breakpoint.width < 1350 &&
+                $vuetify.breakpoint.width > 1000,
+              'section-lady-small': small
+            }"
             :src="section.teacherUrl"
           />
 
@@ -100,7 +119,7 @@
               :class="[
                 small && $vuetify.breakpoint.mdAndUp
                   ? 'pg-top-[-30px]'
-                  : 'pg-bottom-[-30px]',
+                  : 'pg-bottom-[-30px]'
               ]"
             />
           </div>
@@ -113,6 +132,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
 import vuetify from '@gold-media-tech/pg-video-player/src/plugins/vuetify'
+import UiMsg from '~/components/ui/lang/UiMsg.vue'
 
 interface Section {
   imageUrl: string
@@ -122,11 +142,16 @@ interface Section {
   audio: string
   color: string
   textColor: string
-  bubbleText? : string
+  bubbleText?: string
 }
 
 export default defineComponent({
   name: 'SectionImage',
+
+  components: {
+    UiMsg
+  },
+
   methods: {
     vuetify() {
       return vuetify
@@ -245,7 +270,6 @@ export default defineComponent({
     &-medium {
       right: -10px !important;
     }
-
   }
 
   &-start-playing {
