@@ -643,6 +643,49 @@ export default async (context, locale) => {
       letterCarousel: {
         placeholder: 'Browse by letter'
       }
+    },
+    virtualPreschool: {
+      header: {
+        welcomeMsg: 'Welcome to School',
+        welcomeMsgSubtitle: 'Thank you for learning with us today!',
+        profile: 'Profile',
+        help: 'Help',
+        faq: 'FAQ'
+      },
+      startLearning: 'Start<br/>Learning',
+      sections: {
+        dashboard: {
+          title: 'Daily Lessons',
+          message:
+            'Learn everyday with personalized, structured video lessons and worksheets!'
+        },
+        kidscorner: {
+          title: 'Kids Corner',
+          message: 'Children choose how to learn in a safe, fun space!'
+        },
+        classes: {
+          title: 'Live Classes & Playdates',
+          message: 'Connect with teachers and peers in daily zoom classes!'
+        },
+        cubby: {
+          title: 'Student Cubby',
+          message: 'Save your work and track progress in your cubby!'
+        },
+        music: {
+          title: 'Music',
+          message: 'Listen anytime, \n to sing and learn!'
+        },
+        library: {
+          title: 'Video Library',
+          message:
+            'Explore our Library, to create playlists and watch your favorite videos to engage little learners!'
+        },
+        wellbeing: {
+          title: 'Social & Emotional',
+          message:
+            'Play and learn together with activities, games, books and so much more!'
+        }
+      }
     }
   })
 }
