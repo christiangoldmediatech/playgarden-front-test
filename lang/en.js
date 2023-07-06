@@ -686,6 +686,34 @@ export default async (context, locale) => {
             'Play and learn together with activities, games, books and so much more!'
         }
       }
+    },
+    menus: {
+      header: {
+        home: 'Home',
+        dailyLessons: 'Daily Lessons',
+        socialEmotional: 'Social & Emotional',
+        liveClasses: 'Live Classes',
+        videoLibrary: 'Video Library',
+        music: 'Music',
+        kidsCorner: 'Kids Corner',
+        cubby: 'Student Cubby',
+        community: 'Community',
+        parentCorner: 'Parent Corner'
+      },
+      trial: {
+        title: 'Your free trial will expire in:',
+        days: 'Days',
+        compare: 'Compare plans now'
+      },
+      footer: {
+        onlineSchool: 'Online School',
+        rights: 'All rights reserved',
+        playgardenPrep: 'Playgarden Prep',
+        preschool: 'Preschool',
+        terms: 'Terms of Use',
+        privacy: 'Privacy Policy',
+        help: 'Help'
+      }
     }
   })
 }

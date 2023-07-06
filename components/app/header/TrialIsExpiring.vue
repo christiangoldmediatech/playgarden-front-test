@@ -4,7 +4,7 @@
     :class="{ 'ribbon-fixed-top': isFixedOnTop }"
   >
     <span class="white--text font-weight-bold mx-2">
-      Your free trial will expire in:
+      {{ $t('menus.trial.title') }}
     </span>
     <span class="time">
       <underlined-title
@@ -14,7 +14,7 @@
         line-color="rgba(255,255,255,0.15)"
         :line-from="30"
       />
-      <span class="white--text">Days</span>
+      <span class="white--text">{{ $t('menus.trial.days') }}</span>
     </span>
     <v-btn
       v-if="isComparePlansButtonVisible"
@@ -23,7 +23,7 @@
       nuxt
       :to="{ name: 'app-payment-plan' }"
     >
-      Compare plans now
+      {{ $t('menus.trial.compare') }}
     </v-btn>
   </div>
 </template>
