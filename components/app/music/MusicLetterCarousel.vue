@@ -28,7 +28,7 @@
           item-value="id"
           hide-details
           solo
-          placeholder="Browse by letter"
+          :placeholder="$t('music.letterCarousel.placeholder')"
           @input="selectLetterById"
         >
           <template v-slot:selection="{ item }">
@@ -41,10 +41,10 @@
 
               <v-list-item-content>
                 <v-list-item-title v-if="item.picture" class="pl-4">
-                  Letter {{ item.name }}
+                  {{ $t('commonWords.letter') + ' ' + item.name }}
                 </v-list-item-title>
                 <v-list-item-title v-else class="pl-4">
-                  Letter {{ item.name.substr(0, 1) }}
+                  {{ $t('commonWords.letter') + ' ' + item.name.substr(0, 1) }}
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -60,10 +60,10 @@
 
               <v-list-item-content>
                 <v-list-item-title v-if="item.picture" class="pl-4">
-                  Letter {{ item.name }}
+                  {{ $t('commonWords.letter') + ' ' + item.name }}
                 </v-list-item-title>
                 <v-list-item-title v-else class="pl-4">
-                  Letter {{ item.name.substr(0, 1) }}
+                  {{ $t('commonWords.letter') + ' ' + item.name.substr(0, 1) }}
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>

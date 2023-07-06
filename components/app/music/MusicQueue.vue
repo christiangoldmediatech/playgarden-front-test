@@ -43,7 +43,7 @@
 
         <template v-else>
           <div class="music-queue-empty-queue" data-test-id="music-queue-empty-queue">
-            Empty queue
+            {{ $t('music.queue.empty') }}
           </div>
         </template>
       </v-card-text>

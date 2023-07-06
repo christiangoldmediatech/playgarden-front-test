@@ -630,6 +630,28 @@ export default async (context, locale) => {
         buyNowOn: 'Comprar ahora en'
       }
     },
+    music: {
+      unlockPrompt: {
+        title: 'MÚSICA',
+        description: 'Desbloquea la biblioteca de música completa'
+      },
+      songList: {
+        title: 'Lista de canciones',
+        favorites: 'Favoritos',
+        placeholder: 'Agrega tus canciones favoritas aquí, haciendo clic en sus iconos de Corazón.'
+      },
+      letterSongs: {
+        playing: 'REPRODUCIENDO',
+        addQueue: 'Añadir a la cola',
+        addedQueue: 'Añadido a la cola'
+      },
+      queue: {
+        empty: 'Cola vacía'
+      },
+      letterCarousel: {
+        placeholder: 'Explorar por letra'
+      }
+    },
     virtualPreschool: {
       header: {
         welcomeMsg: 'Bienvenidos a la Escuela',
