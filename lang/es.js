@@ -700,15 +700,15 @@ export default async (context, locale) => {
     menus: {
       header: {
         home: 'Inicio',
-        dailyLessons: 'Lecciones Diarias',
+        dailyLessons: 'Lecciones',
         socialEmotional: 'Social & Emocional',
-        liveClasses: 'Clases en Vivo',
-        videoLibrary: 'Biblioteca de Vídeos',
+        liveClasses: 'Clases',
+        videoLibrary: 'Vídeos',
         music: 'Música',
         kidsCorner: 'Rincón de los Niños',
         cubby: 'Cubículo de Estudiante',
         community: 'Communidad',
-        parentCorner: 'Rincón de los Padres'
+        parentCorner: 'Padres'
       },
       trial: {
         title: 'Tu prueba gratuita expirará en:',
