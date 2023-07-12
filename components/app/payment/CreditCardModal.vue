@@ -22,7 +22,7 @@
 
       <v-card flat class="mx-4 mt-12 mb-4">
         <stripe-pay-form
-          button-text="Start Learning"
+          :button-text="$t('modals.creditCard.btnText')"
           :cancelable="false"
           :is-free-for-days-text-visible="false"
           :loading="isPaymentMethodModalLoading"
@@ -32,11 +32,11 @@
             <center class="pt-6">
               <underlined-title
                 class="text-h6 text-md-h5"
-                text="CREDIT CARD INFORMATION"
+                :text="$t('modals.creditCard.title')"
               />
             </center>
             <center class="grey--text text--darken-1 my-6 text-body-2">
-              We need your credit card information to confirm who you are.
+              {{ $t('modals.creditCard.subtitle') }}
             </center>
           </template>
           <template #footer>
@@ -44,8 +44,7 @@
               <div
                 class="font-weight-bold grey--text text--darken-1 mt-6 mb-2 text-body-2"
               >
-                You can cancel your trial and membership anytime from the
-                account settings.
+                {{ $t('modals.creditCard.footer') }}
               </div>
             </center>
           </template>
@@ -56,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { useAuth, useBilling, useToastHelper, useVuetifyHelper } from '@/composables'
+import { useAuth, useBilling, useLanguageHelper, useToastHelper, useVuetifyHelper } from '@/composables'
 import { TypedStore } from '@/models'
 import { defineComponent, computed, ref, useStore } from '@nuxtjs/composition-api'
 
@@ -88,6 +87,7 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
+    const language = useLanguageHelper()
     const vuetify = useVuetifyHelper()
     const toast = useToastHelper()
     const store = useStore<TypedStore>()
@@ -127,10 +127,10 @@ export default defineComponent({
         // cleanup
         await Auth.fetchUserInfo()
 
-        toast.success('Payment method added!')
+        toast.success(language.t('modals.creditCard.success'))
         emit('card-added')
       } catch (e) {
-        toast.error('Could not add payment method! Please try again.')
+        toast.error(language.t('modals.creditCard.error'))
       } finally {
         isPaymentMethodModalLoading.value = false
       }

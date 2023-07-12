@@ -21,7 +21,7 @@
 
     <v-col class="text-center" cols="12">
       <h2 class="pg-text-accent font-weight-bold pg-text-4xl v2-font">
-        ARE YOU LEAVING US?
+        {{ $t('modals.cancelSubscription.title') }}
       </h2>
     </v-col>
 
@@ -29,9 +29,7 @@
       <p
         class="text-center font-weight-medium pg-text-[20px] pg-leading-[27px] v2-font"
       >
-        Before you cancel, please let us know the reason you are leaving. Every
-        bit of feedback helps us create a better educational experience for
-        little ones!
+        {{ $t('modals.cancelSubscription.description') }}
       </p>
 
       <v-radio-group v-model="radioValue" class="px-10" @change="$emit('changeLeaveMotive', $event)">
@@ -58,7 +56,7 @@
         :disabled="isValidateMotive"
         @click="$emit('removeSubscription')"
       >
-        CANCEL ACCOUNT
+        {{ $t('modals.cancelSubscription.confirmCancel') }}
       </v-btn>
     </v-col>
 
@@ -70,7 +68,7 @@
         class="text-decoration-underline"
         @click.stop="$emit('removeSubscriptionModal')"
       >
-        Nevermind, I want to keep learning with playgarden prep!
+        {{ $t('modals.cancelSubscription.cancel') }}
       </v-btn>
     </v-col>
 
