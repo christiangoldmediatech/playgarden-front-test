@@ -1024,6 +1024,34 @@ export default async (context, locale) => {
         titleAlt: '¿Quién está en la escuela hoy?',
         button: 'ADMINISTRAR PERFILES DE ESTUDIANTE'
       }
+    },
+    menus: {
+      header: {
+        home: 'Inicio',
+        dailyLessons: 'Lecciones',
+        socialEmotional: 'Social & Emocional',
+        liveClasses: 'Clases',
+        videoLibrary: 'Vídeos',
+        music: 'Música',
+        kidsCorner: 'Rincón de los Niños',
+        cubby: 'Cubículo de Estudiante',
+        community: 'Communidad',
+        parentCorner: 'Padres'
+      },
+      trial: {
+        title: 'Tu prueba gratuita expirará en:',
+        days: 'Días',
+        compare: 'Comparar planes ahora'
+      },
+      footer: {
+        onlineSchool: 'Escuela en Línea',
+        rights: 'Todos los derechos reservados',
+        playgardenPrep: 'Playgarden Prep',
+        preschool: 'Preescolar',
+        terms: 'Términos de Uso',
+        privacy: 'Política de Privacidad',
+        help: 'Ayuda'
+      }
     }
   })
 }

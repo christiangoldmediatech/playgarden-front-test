@@ -1014,6 +1014,34 @@ export default async (context, locale) => {
         titleAlt: 'Who is at school today?',
         button: 'MANAGE STUDENT PROFILES'
       }
+    },
+    menus: {
+      header: {
+        home: 'Home',
+        dailyLessons: 'Daily Lessons',
+        socialEmotional: 'Social & Emotional',
+        liveClasses: 'Live Classes',
+        videoLibrary: 'Video Library',
+        music: 'Music',
+        kidsCorner: 'Kids Corner',
+        cubby: 'Student Cubby',
+        community: 'Community',
+        parentCorner: 'Parent Corner'
+      },
+      trial: {
+        title: 'Your free trial will expire in:',
+        days: 'Days',
+        compare: 'Compare plans now'
+      },
+      footer: {
+        onlineSchool: 'Online School',
+        rights: 'All rights reserved',
+        playgardenPrep: 'Playgarden Prep',
+        preschool: 'Preschool',
+        terms: 'Terms of Use',
+        privacy: 'Privacy Policy',
+        help: 'Help'
+      }
     }
   })
 }
