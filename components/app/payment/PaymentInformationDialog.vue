@@ -7,21 +7,21 @@
 
       <v-card-title class="d-flex justify-center mb-6">
         <h1 class="text-center dialog-title">
-          Please confirm your payment information
+          {{ $t('paymentPlan.paymentInformation.title') }}
         </h1>
       </v-card-title>
 
       <v-card-text class="d-flex flex-column align-center px-12">
         <div>
           <p>
-            <span class="option-text">Current Plan: </span>
+            <span class="option-text">{{ $t('paymentPlan.paymentInformation.current') }} </span>
             <span class="option-value">{{ currentPlanName }}</span>
           </p>
         </div>
 
         <div class="pg-relative w-100 d-flex justify-center">
           <p>
-            <span class="option-text">Switch to: </span>
+            <span class="option-text">{{ $t('paymentPlan.paymentInformation.switch') }} </span>
             <span class="option-value">{{ planToSwitchTo }}</span>
           </p>
 
@@ -31,7 +31,7 @@
             class="right-positioned-btn"
             @click="dialog = false"
           >
-            <span class="text-decoration-underline">Edit</span>
+            <span class="text-decoration-underline">{{ $t('paymentPlan.paymentInformation.edit') }}</span>
             <v-icon right>
               mdi-pencil
             </v-icon>
@@ -42,14 +42,14 @@
 
         <div class="w-100">
           <h2 class="payment-title mb-3">
-            Do you have a coupon?
+            {{ $t('paymentPlan.paymentInformation.couponQuestion') }}
           </h2>
           <div class="d-flex justify-space-between">
             <validation-provider v-slot="{ errors }" class="w-100" name="Promotion Code" rules="min:5">
               <pg-text-field
                 v-model="promotionCode"
                 :error-messages="errors"
-                label="Promotion Code"
+                :label="$t('paymentPlan.paymentInformation.label')"
                 class="custom-text-field"
                 :color="isValidCoupon ? '' : 'error'"
                 :suffix="getTextValidateCoupon"
@@ -74,7 +74,7 @@
           {{ btnConfirmationText }}
         </v-btn>
         <v-btn text color="#F89838" class="px-16" x-large @click="dialog = false">
-          <span class="text-decoration-underline">Cancel</span>
+          <span class="text-decoration-underline">{{ $t('paymentPlan.paymentInformation.cancel') }}</span>
         </v-btn>
       </v-card-actions>
 
@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { useAuth, useBilling, useToastHelper, useNotification, useNuxtHelper } from '@/composables'
+import { useAuth, useBilling, useToastHelper, useNotification, useNuxtHelper, useLanguageHelper } from '@/composables'
 import { TypedStore } from '@/models'
 import { defineComponent, computed, useStore, ref, onMounted, watch } from '@nuxtjs/composition-api'
 import { debounce } from 'lodash'
@@ -127,6 +127,7 @@ export default defineComponent({
   },
   emits: ['input'],
   setup(props, { emit }) {
+    const language = useLanguageHelper()
     const dialog = computed({
       get () { return props.value },
       set (value: boolean) { emit('input', value) }
@@ -150,10 +151,10 @@ export default defineComponent({
     const isValidatingCoupon = ref(false)
     const lockButton = ref(false)
     const disableBtn = computed(() => userCards.value?.length === 0)
-    const btnConfirmationText = computed(() => `Upgrade to ${planToSwitchTo.value}`)
+    const btnConfirmationText = computed(() => `${language.t('paymentPlan.paymentInformation.btnConfirmation')} ${planToSwitchTo.value}`)
     const getTextValidateCoupon = computed(() => {
       if (promotionCode.value) {
-        return (isValidCoupon.value) ? 'VALID COUPON' : 'INVALID COUPON'
+        return (isValidCoupon.value) ? language.t('paymentPlan.paymentInformation.valid') : language.t('paymentPlan.paymentInformation.invalid')
       } else {
         return ''
       }
@@ -167,7 +168,7 @@ export default defineComponent({
       plan.fromPlaydates = props.fromPlaydates
       try {
         if (userCards.value?.length === 0) {
-          toast.error('A credit card must be provided')
+          toast.error(language.t('paymentPlan.paymentInformation.error1'))
           loading.value = false
           return
         }
@@ -181,7 +182,7 @@ export default defineComponent({
         setIsTrialEndingPlanSelectedModalVisible(true)
         nuxt.$emit('plan-membership-changed')
       } catch (e) {
-        toast.error('Could not select plan. Please, try again later.')
+        toast.error(language.t('paymentPlan.paymentInformation.error2'))
       } finally {
         dialog.value = false
         promotionId.value = null

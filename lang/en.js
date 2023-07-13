@@ -8,6 +8,7 @@ export default async (context, locale) => {
       conjunctionText: 'or',
       prepositionText: 'with',
       prepositionTextUpper: 'With',
+      and: 'AND',
       letter: 'Letter',
       here: 'HERE',
       day: 'DAY',
@@ -695,6 +696,62 @@ export default async (context, locale) => {
           message:
             'Play and learn together with activities, games, books and so much more!'
         }
+      }
+    },
+    paymentPlan: {
+      goBack: 'Go Back to Home',
+      title: 'Enrollment Plans',
+      description1: 'Choose the plan that works best for your family!',
+      description2: 'All of our plans are monthly subscriptions offering different access to Playgarden Prep\'s curriculum and teachers.',
+      description3: 'You can also pay annually for important savings!',
+      trialExpired: 'YOUR TRIAL PERIOD HAS EXPIRED',
+      trialExpiring: 'YOUR TRIAL PERIOD IS EXPIRING',
+      trialPeriod1: 'Your trial period',
+      trialEnded: 'ended',
+      trialWillEnd: 'will end',
+      trialPeriod2: 'on',
+      trialPeriod3: 'You',
+      trialWere: 'were',
+      trialCurrently: 'are currently',
+      trialPeriod4: 'trialing the',
+      trialPeriod5: 'plan. After your trial',
+      trialEnds: 'ends',
+      trialPeriod6: 'you',
+      trialWillBe: 'will be',
+      trialPeriod7: 'automatically placed into the',
+      trialPeriod8: 'monthly plan. If you would like to trial a different plan, you may do so below!',
+      subscriptionPlan: {
+        billMonthly: 'Billed Monthly',
+        billAnnually: 'Billed Annually',
+        year: '/year',
+        month: '/month',
+        subtitle: 'What\'s included:',
+        choose: 'Choose plan',
+        current: 'Current Plan',
+        footer: 'Playgarden Prep Online is COMPLETELY FREE for the first 15 days.'
+      },
+      paymentInformation: {
+        title: 'Please confirm your payment information',
+        current: 'Current Plan:',
+        switch: 'Switch to:',
+        edit: 'Edit',
+        couponQuestion: 'Do you have a coupon?',
+        label: 'Promotion Code',
+        cancel: 'Cancel',
+        btnConfirmation: 'Upgrade to',
+        valid: 'VALID COUPON',
+        invalid: 'INVALID COUPON',
+        error1: 'A credit card must be provided',
+        error2: 'Could not select plan. Please, try again later.'
+      },
+      cards: {
+        title: 'Payment Method',
+        subtitle: 'Credit or debit cards',
+        add: 'Add a Payment Method',
+        delete: 'DELETE CARD',
+        save: 'Save',
+        cancel: 'Cancel',
+        success: 'Card has been updated successfully!'
       }
     },
     modals: {

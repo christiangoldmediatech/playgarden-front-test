@@ -8,6 +8,7 @@ export default async (context, locale) => {
       conjunctionText: 'o',
       prepositionText: 'con',
       prepositionTextUpper: 'Con',
+      and: 'Y',
       letter: 'Letra',
       here: 'AQUÍ',
       day: 'DÍA',
@@ -705,6 +706,62 @@ export default async (context, locale) => {
           message:
             '¡Jugar y aprender juntos, con actividades, juegos, libros y mucho más!'
         }
+      }
+    },
+    paymentPlan: {
+      goBack: 'Volve a Inicio',
+      title: 'Planes de Inscripción',
+      description1: '¡Elige el plan que mejor se adapte a tu familia!',
+      description2: 'Todos nuestros planes son suscripciones mensuales que ofrecen diferentes accesos al plan de estudios y maestros de Playgarden Prep.',
+      description3: '¡También puedes pagar anualmente para ahorrar!',
+      trialExpired: 'TU PERIODO DE PRUEBA HA EXPIRADO',
+      trialExpiring: 'TU PERIODO DE PRUEBA ESTÁ POR EXPIRAR',
+      trialPeriod1: 'Tu periodo de prueba',
+      trialEnded: 'terminó',
+      trialWillEnd: 'terminará',
+      trialPeriod2: 'en',
+      trialPeriod3: 'Tú',
+      trialWere: 'estabas',
+      trialCurrently: 'estás actualmente',
+      trialPeriod4: 'probando el',
+      trialPeriod5: 'plan. Después de que tu prueba',
+      trialEnds: 'termine',
+      trialPeriod6: 'tú',
+      trialWillBe: 'serás',
+      trialPeriod7: 'automáticamente colocado en el',
+      trialPeriod8: 'plan mensual. Si deseas probar un plan diferente, puedes hacerlo a continuación.',
+      subscriptionPlan: {
+        billMonthly: 'Facturado Mensualmente',
+        billAnnually: 'Facturado Anualmente',
+        year: '/año',
+        month: '/mes',
+        subtitle: 'Incluye:',
+        choose: 'Elegir plan',
+        current: 'Plan Actual',
+        footer: 'Playgarden Prep Online es COMPLETAMENTE GRATIS durante los primeros 15 días.'
+      },
+      paymentInformation: {
+        title: 'Confirma tu información de pago',
+        current: 'Plan Actual:',
+        switch: 'Cambiar a:',
+        edit: 'Editar',
+        couponQuestion: '¿Tienes un cupón?',
+        label: 'Código de Promoción',
+        cancel: 'Cancelar',
+        btnConfirmation: 'Cambiar a',
+        valid: 'CUPÓN VÁLIDO',
+        invalid: 'CUPÓN INVÁLIDO',
+        error1: 'Se debe proporcionar una tarjeta de crédito',
+        error2: 'No se pudo seleccionar el plan. Por favor, inténtalo de nuevo más tarde.'
+      },
+      cards: {
+        title: 'Método de Pago',
+        subtitle: 'Tarjetas de crédito o débito',
+        add: 'Agregar un método de pago',
+        delete: 'ELIMINAR TARJETA',
+        save: 'Guardar',
+        cancel: 'Cancelar',
+        success: 'La tarjeta se ha actualizado correctamente!'
       }
     },
     modals: {
