@@ -207,6 +207,11 @@ export default {
           return
         }
 
+        if (lessonDay === 1 && curriculumName === 'Intro') {
+          this.$router.push(this.generateNuxtRoute('lesson-completed'))
+          return
+        }
+
         if (this.$route.query['redirect-worksheet']) {
           this.$router.push({ name: 'app-dashboard-offline-worksheet' })
           return
