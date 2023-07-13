@@ -582,48 +582,6 @@ export default {
     plan: {},
     planInfo: {},
     leaveMotive: '',
-    leaveMotives: [
-      {
-        motive: this.$t('modals.cancelSubscription.motives.technicalIssues'),
-        modal: TechnicalIssuesCancellationModal.name
-      },
-      {
-        motive: this.$t('modals.cancelSubscription.motives.tooExpensive'),
-        modal: TooExpensiveModal.name
-      },
-      {
-        motive: this.$t('modals.cancelSubscription.motives.usingOtherPlatform'),
-        modal: UsingOtherPlatformModal.name
-      },
-      {
-        motive: this.$t('modals.cancelSubscription.motives.goingToInPerson'),
-        modal: GoingToInPersonModal.name
-      },
-      {
-        motive: this.$t('modals.cancelSubscription.motives.tooMuchTime'),
-        modal: TooMuchTimeModal.name
-      },
-      {
-        motive: this.$t('modals.cancelSubscription.motives.littleOneNotEngaged'),
-        modal: LittleOneNotEngagedModal.name
-      },
-      {
-        motive: this.$t('modals.cancelSubscription.motives.didNotUseEnough'),
-        modal: DidNotUseEnoughModal.name
-      },
-      {
-        motive: this.$t('modals.cancelSubscription.motives.missingFeatures'),
-        modal: MissingFeaturesModal.name
-      },
-      {
-        motive: this.$t('modals.cancelSubscription.motives.didNotMeetExpectations'),
-        modal: DidNotMeetExpectations.name
-      },
-      {
-        motive: this.$t('modals.cancelSubscription.motives.otherReason'),
-        modal: OtherReasonModal.name
-      }
-    ],
     learnAndPlayWasCanceled: false,
     viewTechnicalIssuesModal: false,
     viewTooExpensiveModal: false,
@@ -655,6 +613,51 @@ export default {
     ...mapGetters('auth', ['hasPlayAndLearnPlan']),
 
     ...mapGetters('payment', ['getBilling', 'getCards', 'getUserPlan']),
+
+    leaveMotives() {
+      return [
+        {
+          motive: this.$t('modals.cancelSubscription.motives.technicalIssues'),
+          modal: TechnicalIssuesCancellationModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.tooExpensive'),
+          modal: TooExpensiveModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.usingOtherPlatform'),
+          modal: UsingOtherPlatformModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.goingToInPerson'),
+          modal: GoingToInPersonModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.tooMuchTime'),
+          modal: TooMuchTimeModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.littleOneNotEngaged'),
+          modal: LittleOneNotEngagedModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.didNotUseEnough'),
+          modal: DidNotUseEnoughModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.missingFeatures'),
+          modal: MissingFeaturesModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.didNotMeetExpectations'),
+          modal: DidNotMeetExpectations.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.otherReason'),
+          modal: OtherReasonModal.name
+        }
+      ]
+    },
 
     membershipColor() {
       return '255, 160, 200'

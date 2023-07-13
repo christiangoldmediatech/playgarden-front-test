@@ -243,7 +243,7 @@ export default defineComponent({
           language.t('modals.negativeCancellation.firstMessageFirstAltPart5') + ' <br />' +
           `<span class="pg-text-[#F89838]">${language.t('modals.negativeCancellation.firstMessageFirstAltPart6')}</span>`
       } else if (hasPlayAndLearnLivePlan.value) {
-        return language.t('firstMessageSecondAltPart1') + ' ' +
+        return language.t('modals.negativeCancellation.firstMessageSecondAltPart1') + ' ' +
           `<span class="pg-text-[#AAD579]">${language.t('modals.negativeCancellation.firstMessageSecondAltPart2')}</span>` +
           language.t('modals.negativeCancellation.firstMessageSecondAltPart3') + ' ' +
           `<span class="pg-text-[#AAD579]">${language.t('modals.negativeCancellation.firstMessageSecondAltPart4')} </span>` +
