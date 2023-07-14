@@ -28,7 +28,7 @@
       </v-row>
       <v-row no-gutters justify="center">
         <h1 class="cancellation-title pg-text-[#F89838]">
-          Sorry to see you go!
+          {{ $t('modals.last.title') }}
         </h1>
       </v-row>
     </v-col>
@@ -36,18 +36,18 @@
     <v-col cols="12" class="px-10 py-0">
       <v-row no-gutters>
         <p class="final-message">
-          Don't forget that the
-          <span class="text-decoration-underline pg-text-[#71B2FF]"> Kids Corner</span>,
-          <span class="text-decoration-underline pg-text-[#FCBF29]"> DIY</span>, and
-          <span class="text-decoration-underline pg-text-[#F293BC]"> Community </span>
-          sections are always free. <br />
-          <span class="pg-text-[#68C453]">We hope you'll continue enjoying them!</span>
+          {{ $t('modals.last.message1') }}
+          <span class="text-decoration-underline pg-text-[#71B2FF]"> {{ $t('modals.last.kidsCorner') }}</span>,
+          <span class="text-decoration-underline pg-text-[#FCBF29]"> {{ $t('modals.last.diy') }}</span>{{ $t('modals.last.message2') }}
+          <span class="text-decoration-underline pg-text-[#F293BC]"> {{ $t('modals.last.community') }} </span>
+          {{ $t('modals.last.message3') }} <br />
+          <span class="pg-text-[#68C453]">{{ $t('modals.last.message4') }}</span>
         </p>
       </v-row>
       <v-row no-gutters class="mt-4 mb-6">
         <p class="subtitle mb-0">
-          <span class="subtitle-header">Tell us more: </span>
-          We are sad to see you go, Before you go, can you share some feedback about your time with us?
+          <span class="subtitle-header">{{ $t('modals.last.secondMessage1') }} </span>
+          {{ $t('modals.last.secondMessage2') }}
         </p>
       </v-row>
     </v-col>
@@ -74,7 +74,7 @@
             class="w-100 white--text elevation-0"
             @click="goToKidsCorner"
           >
-            KIDS CORNER
+            {{ $t('modals.last.kidsCorner').toUpperCase() }}
           </v-btn>
         </v-col>
         <v-col cols="4" class="px-4">
@@ -83,7 +83,7 @@
             class="w-100 white--text elevation-0"
             @click="goToDyi"
           >
-            DIY
+            {{ $t('modals.last.diy').toUpperCase() }}
           </v-btn>
         </v-col>
         <v-col cols="4" class="px-4">
@@ -92,7 +92,7 @@
             class="w-100 white--text elevation-0"
             @click="goToCommunity"
           >
-            COMMUNITY
+            {{ $t('modals.last.community').toUpperCase() }}
           </v-btn>
         </v-col>
       </v-row>
@@ -108,7 +108,7 @@
         :disabled="disabledBtn"
         @click="emitConfirmation(true, explanation)"
       >
-        CANCEL ACCOUNT
+        {{ $t('modals.last.cancel') }}
       </v-btn>
     </v-col>
 
@@ -120,6 +120,7 @@
 </template>
 
 <script lang="ts">
+import { useLanguageHelper } from '@/composables'
 import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
@@ -140,8 +141,9 @@ export default defineComponent({
   },
   emits: ['input', 'confirmation'],
   setup(props, { emit }) {
+    const language = useLanguageHelper()
     const explanation = ref('')
-    const placeholder = computed(() => props.explanationRequired ? '(required field)' : '(Optional)')
+    const placeholder = computed(() => props.explanationRequired ? language.t('modals.textPlaceholder') : language.t('modals.textPlaceholderOptional'))
     const disabledBtn = computed(() => {
       if (!props.explanationRequired) {
         return false

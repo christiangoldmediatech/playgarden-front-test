@@ -6,14 +6,14 @@
 
     <v-col v-if="showTextField" cols="12">
       <p class="subtitle mb-0">
-        <span class="subtitle-header">Tell us more: </span>
-        We are sad to see you go, Before you go, can you share some feedback about your time with us?
+        <span class="subtitle-header">{{ $t('modals.intermediateCancellation.subtitleHeader') }} </span>
+        {{ $t('modals.intermediateCancellation.subtitle') }}
       </p>
 
       <v-row no-gutters class="mt-4">
         <v-textarea
           v-model="explanation"
-          placeholder="(required field)"
+          :placeholder="$t('modals.textPlaceholder')"
           class="custom-text-field"
           required
           solo
@@ -45,7 +45,7 @@
           :loading="loading"
           @click="handleClick(false, explanation)"
         >
-          NO, I JUST WANT TO CANCEL
+          {{ $t('modals.intermediateCancellation.cancel') }}
         </v-btn>
       </v-col>
     </v-row>
@@ -53,6 +53,7 @@
 </template>
 
 <script lang="ts">
+import { useLanguageHelper } from '@/composables'
 import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
@@ -69,6 +70,7 @@ export default defineComponent({
   },
   emits: ['intermediateResponse'],
   setup(props, { emit }) {
+    const language = useLanguageHelper()
     const explanation = ref('')
 
     const handleClick = (confirmation: boolean, explanation: string) => {
@@ -80,7 +82,7 @@ export default defineComponent({
     })
 
     const btnConfirmedText = computed(() => {
-      return props.showTextField ? 'YES, I WANT THIS DEAL' : 'YES, SIGN ME UP'
+      return props.showTextField ? language.t('modals.intermediateCancellation.confirm1') : language.t('modals.intermediateCancellation.confirm2')
     })
 
     return {

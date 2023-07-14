@@ -18,6 +18,7 @@
 import { computed, defineComponent, useStore } from '@nuxtjs/composition-api'
 import CancellationSteps from '@/components/app/payment/CancellationSteps.vue'
 import { TypedStore } from '@/models'
+import { useLanguageHelper } from '@/composables'
 
 export default defineComponent({
   name: 'TooMuchTimeModal',
@@ -48,6 +49,7 @@ export default defineComponent({
   },
   emits: ['input', 'closeModal', 'reloadInformation'],
   setup(props, { emit }) {
+    const language = useLanguageHelper()
     const store = useStore<TypedStore>()
 
     const startFlow = computed({
@@ -80,30 +82,31 @@ export default defineComponent({
       return ((discountAmount.value / 100) * props.planInfo.priceMonthly).toFixed(2)
     })
 
-    const subtitle = computed(() => 'We\'d love to know what schedule would work better for your family. Could you share some additional feedback about your time with us?')
+    const subtitle = computed(() => language.t('modals.tooMuchTime.subtitle'))
 
-    const baseMessage = computed(() => {
+    const baseMessage = computed<any>(() => {
       if (hasPreschoolPlan.value) {
-        return 'We understand family schedules can get busy, we\'d love to work out a way to better fit into your schedule! Give us another chance and we\'ll provide a ' +
-          `<span class="pg-text-[#78C383]">${discountAmount.value}% off discount</span>` +
-          '—That\'s ' +
-          `<span class="pg-text-[#78C383]">only $${discountedAmount.value} for the next three months.</span>`
+        return language.t('modals.tooMuchTime.baseMessageFirstAlt1') +
+        `<span class="pg-text-[#78C383]"> ${discountAmount.value}% ${language.t('modals.tooMuchTime.baseMessageFirstAlt2')}</span>` +
+        language.t('modals.tooMuchTime.baseMessageFirstAlt3') +
+        `<span class="pg-text-[#78C383]"> ${language.t('modals.tooMuchTime.baseMessageFirstAlt4', { price: discountedAmount.value })}</span>`
       } else if (hasPlayAndLearnLivePlan.value) {
-        return 'We understand family schedules can get busy, we\'d love to work out a way to better fit into your schedule! Give us another chance and we\'ll provide a ' +
-          `<span class="pg-text-[#78C383]">${discountAmount.value}% off discount </span>` +
-          '—That\'s ' +
-          `<span class="pg-text-[#78C383]">only $${discountedAmount.value} for the next five months.</span>`
+        return language.t('modals.tooMuchTime.baseMessageSecondAlt1') +
+          `<span class="pg-text-[#78C383]"> ${discountAmount.value}% ${language.t('modals.tooMuchTime.baseMessageSecondAlt2')}</span>` +
+          language.t('modals.tooMuchTime.baseMessageSecondAlt3') +
+          `<span class="pg-text-[#78C383]"> ${language.t('modals.tooMuchTime.baseMessageSecondAlt4', { price: discountedAmount.value })}</span>`
       } else {
-        return 'We understand family schedules can get busy, we\'d love to work out a way to better fit into your schedule! Give us another chance and we\'ll provide a discount—' +
-        '<span class="pg-text-[#78C383]">A Play & Learn membership for only $9.99/month, forever!</span>'
+        return language.t('modals.tooMuchTime.baseMessageThirdAlt1') + '' +
+          language.t('modals.tooMuchTime.baseMessageThirdAlt2') +
+          `<span class="pg-text-[#78C383]"> ${language.t('modals.tooMuchTime.baseMessageThirdAlt3')}</span>`
       }
     })
 
     const confirmationBtnText = computed(() => {
       if (hasPreschoolPlan.value || hasPlayAndLearnLivePlan.value) {
-        return `YES, I WANT ${discountAmount.value}% OFF`
+        return language.t('modals.tooMuchTime.confirmation1', { price: `${discountAmount.value}%` })
       } else {
-        return 'YES, I WANT THIS DEAL'
+        return language.t('modals.tooMuchTime.confirmation2')
       }
     })
 

@@ -32,7 +32,7 @@
       class="plus-benefits"
     >
       <div class="!pg-relative accent--text pg-mb-1 pg-mt-6 pg-text-lg pg-font-semibold">
-        AND
+        {{ $t('commonWords.and') }}
       </div>
 
       <plan-benefit

@@ -23,7 +23,7 @@
             <!-- Trial Period Description -->
             <v-row v-if="billing.status === 'trialing'" no-gutters>
               <v-col cols="12">
-                <span class="account-field-label">Free trial period ends:</span>
+                <span class="account-field-label">{{ $t('account.membership.trialPeriod') }}</span>
               </v-col>
 
               <v-col cols="12">
@@ -119,7 +119,7 @@
                     class="account-field-label pg-py-0"
                   >
                     <span v-if="billing.planAmountDiscount || billing.percentOff">
-                      Coupon applied:
+                      {{ $t('account.membership.couponApplied') }}
                     </span>
                   </v-col>
                   <v-col cols="12" lg="4">
@@ -151,7 +151,7 @@
                         }}
                       </span>
                       <span class="account-field-label-small">
-                        discount on your membership
+                        {{ $t('account.membership.couponDiscount') }}
                       </span>
                       <v-icon color="#68C453" class="ml-2">
                         mdi-check-circle
@@ -313,18 +313,17 @@
         <div class="pg-mt-6 card-custom-border">
           <div class="text-center pa-4">
             <small class="v2-font pg-font-semibold pg-text-base pg-uppercase">
-              Add-on
+              {{ $t('account.membership.addOn') }}
             </small>
 
             <h3
               class="v2-font pg-text-[#BA89EB] pg-text-3xl pg-font-semibold mb-2"
             >
-              Learning Kits
+              {{ $t('account.membership.learningKits') }}
             </h3>
 
             <p class="v2-font pg-text-medium">
-              Add home delivery of the Learning Kits to any of the Enrollment
-              Plans
+              {{ $t('account.membership.learningKitsDesc') }}
             </p>
 
             <v-btn
@@ -334,7 +333,7 @@
               x-large
               @click="learningKitsPopup = true"
             >
-              View More
+              {{ $t('commonWords.viewMore') }}
             </v-btn>
           </div>
         </div>
@@ -583,48 +582,6 @@ export default {
     plan: {},
     planInfo: {},
     leaveMotive: '',
-    leaveMotives: [
-      {
-        motive: 'Repeated technical issues',
-        modal: TechnicalIssuesCancellationModal.name
-      },
-      {
-        motive: 'Too expensive',
-        modal: TooExpensiveModal.name
-      },
-      {
-        motive: 'Using another learning platform',
-        modal: UsingOtherPlatformModal.name
-      },
-      {
-        motive: 'Going to in person school',
-        modal: GoingToInPersonModal.name
-      },
-      {
-        motive: 'Too much time commitment',
-        modal: TooMuchTimeModal.name
-      },
-      {
-        motive: "My little one wasn't engaged",
-        modal: LittleOneNotEngagedModal.name
-      },
-      {
-        motive: "Didn't use it enough",
-        modal: DidNotUseEnoughModal.name
-      },
-      {
-        motive: 'Missing features I need',
-        modal: MissingFeaturesModal.name
-      },
-      {
-        motive: "Didn't meet my expectations",
-        modal: DidNotMeetExpectations.name
-      },
-      {
-        motive: 'Other (please explain)',
-        modal: OtherReasonModal.name
-      }
-    ],
     learnAndPlayWasCanceled: false,
     viewTechnicalIssuesModal: false,
     viewTooExpensiveModal: false,
@@ -656,6 +613,51 @@ export default {
     ...mapGetters('auth', ['hasPlayAndLearnPlan']),
 
     ...mapGetters('payment', ['getBilling', 'getCards', 'getUserPlan']),
+
+    leaveMotives() {
+      return [
+        {
+          motive: this.$t('modals.cancelSubscription.motives.technicalIssues'),
+          modal: TechnicalIssuesCancellationModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.tooExpensive'),
+          modal: TooExpensiveModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.usingOtherPlatform'),
+          modal: UsingOtherPlatformModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.goingToInPerson'),
+          modal: GoingToInPersonModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.tooMuchTime'),
+          modal: TooMuchTimeModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.littleOneNotEngaged'),
+          modal: LittleOneNotEngagedModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.didNotUseEnough'),
+          modal: DidNotUseEnoughModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.missingFeatures'),
+          modal: MissingFeaturesModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.didNotMeetExpectations'),
+          modal: DidNotMeetExpectations.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.otherReason'),
+          modal: OtherReasonModal.name
+        }
+      ]
+    },
 
     membershipColor() {
       return '255, 160, 200'

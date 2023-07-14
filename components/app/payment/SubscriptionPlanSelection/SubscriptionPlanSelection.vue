@@ -3,9 +3,9 @@
     <!-- Bill monthly/anually switch -->
     <div class="pg-flex pg-justify-center">
       <div class="pg-flex pg-items-center">
-        <span class="pg-mr-3 pg-text-xl pg-font-semibold">Bill Monthly</span>
+        <span class="pg-mr-3 pg-text-xl pg-font-semibold">{{ $t('paymentPlan.subscriptionPlan.billMonthly') }}</span>
         <v-switch v-model="billAnnually" color="#FFA0C8" inset />
-        <span class="pg-text-xl pg-font-semibold">Bill Annually</span>
+        <span class="pg-text-xl pg-font-semibold">{{ $t('paymentPlan.subscriptionPlan.billAnnually') }}</span>
       </div>
     </div>
 
@@ -60,11 +60,11 @@
             >
               <template v-if="billAnnually">
                 ${{ plan.priceAnnual.toFixed(2) }}
-                <span class="pg-text-2xl">/year</span>
+                <span class="pg-text-2xl">{{ $t('paymentPlan.subscriptionPlan.year') }}</span>
               </template>
               <template v-else>
                 ${{ plan.priceMonthly.toFixed(2) }}
-                <span class="pg-text-2xl">/month</span>
+                <span class="pg-text-2xl">{{ $t('paymentPlan.subscriptionPlan.month') }}</span>
               </template>
             </div>
 
@@ -72,7 +72,7 @@
             <div
               class="pg-px-8 pg-py-1 pg-text-[#FFA0C8] pg-text-lg pg-font-medium v2-font"
             >
-              {{ plan.commonBenefits.title || "What's included:" }}
+              {{ plan.commonBenefits.title || $t('paymentPlan.subscriptionPlan.subtitle') }}
             </div>
 
             <!-- Description -->
@@ -89,11 +89,11 @@
               :disabled="planIsSelected(plan)"
               @click="doAction(plan)"
             >
-              {{ !planIsSelected(plan) ? 'Choose plan' : 'Current Plan' }}
+              {{ !planIsSelected(plan) ? $t('paymentPlan.subscriptionPlan.choose') : $t('paymentPlan.subscriptionPlan.current') }}
             </v-btn>
 
             <p class="pg-text-center pg-text-sm pg-mt-4">
-              Playgarden Prep Online is COMPLETELY FREE for the first 15 days.
+              {{ $t('paymentPlan.subscriptionPlan.footer') }}
             </p>
           </div>
         </div>

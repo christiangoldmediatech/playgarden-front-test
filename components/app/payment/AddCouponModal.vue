@@ -98,7 +98,7 @@
         </v-row>
         <v-row no-gutters justify="center">
           <h1 class="cancellation-title pg-text-[#78C383] !pg-text-[20px]">
-            Coupon applied!
+            {{ $t('account.membership.couponApplied2') }}
           </h1>
         </v-row>
       </v-col>
@@ -123,7 +123,7 @@
               }}
             </span>
             <span>
-              discount on your membership
+              {{ $t('account.membership.couponDiscount') }}
             </span>
           </p>
         </v-row>
@@ -137,7 +137,7 @@
           color="#FFAB37"
           @click="closeLastDialog"
         >
-          CANCEL
+          {{ $t('commonWords.cancelUppercase') }}
         </v-btn>
       </v-col>
 
@@ -150,6 +150,7 @@
 </template>
 
 <script lang="ts">
+import { useLanguageHelper } from '@/composables'
 import { TypedStore } from '@/models'
 import { computed, defineComponent, ref, watch, useStore } from '@nuxtjs/composition-api'
 import { debounce } from 'lodash'
@@ -171,6 +172,7 @@ export default defineComponent({
     const promotionId = ref(null)
     const coupon = ref<any>(null)
     const store = useStore<TypedStore>()
+    const language = useLanguageHelper()
     const viewModal = computed({
       get() {
         return props.value
@@ -224,7 +226,7 @@ export default defineComponent({
 
     const getTextValidateCoupon = computed(() => {
       if (promotionCode.value) {
-        return isValidCoupon.value ? 'VALID COUPON' : 'INVALID COUPON'
+        return isValidCoupon.value ? language.t('account.membership.couponValid') : language.t('account.membership.couponInvalid')
       } else {
         return ''
       }

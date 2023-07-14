@@ -18,6 +18,7 @@
 import { computed, defineComponent, useStore } from '@nuxtjs/composition-api'
 import CancellationSteps from '@/components/app/payment/CancellationSteps.vue'
 import { TypedStore } from '@/models'
+import { useLanguageHelper } from '@/composables'
 
 export default defineComponent({
   name: 'MissingFeaturesModal',
@@ -48,6 +49,7 @@ export default defineComponent({
   },
   emits: ['input', 'closeModal', 'reloadInformation'],
   setup(props, { emit }) {
+    const language = useLanguageHelper()
     const store = useStore<TypedStore>()
 
     const startFlow = computed({
@@ -80,30 +82,30 @@ export default defineComponent({
       return ((discountAmount.value / 100) * props.planInfo.priceMonthly).toFixed(2)
     })
 
-    const subtitle = computed(() => 'We are always looking to improve, could you share more about your time with us? Are there features that would make you utilize us more?')
+    const subtitle = computed(() => language.t('modals.missingFeatures.subtitle'))
 
     const baseMessage = computed(() => {
       if (hasPreschoolPlan.value) {
-        return 'We\'d love for you to continue growing with us! Give us another chance and we\'ll provide a ' +
-          `<span class="pg-text-[#78C383]">${discountAmount.value}% off discount</span>` +
-          '—That\'s ' +
-          `<span class="pg-text-[#78C383]">only $${discountedAmount.value} for the next three months.</span>`
+        return language.t('modals.missingFeatures.baseMessageFirstAlt1') + ' ' +
+          `<span class="pg-text-[#78C383]">${discountAmount.value}% ${language.t('modals.missingFeatures.baseMessageFirstAlt2')}</span>` +
+          language.t('modals.missingFeatures.baseMessageFirstAlt3') + ' ' +
+          `<span class="pg-text-[#78C383]">${language.t('modals.missingFeatures.baseMessageFirstAlt4', { price: discountedAmount.value })}</span>`
       } else if (hasPlayAndLearnLivePlan.value) {
-        return 'We\'d love for you to continue growing with us! Give us another chance and we\'ll provide a ' +
-          `<span class="pg-text-[#78C383]">${discountAmount.value}% off discount </span>` +
-          '—That\'s ' +
-          `<span class="pg-text-[#78C383]">only $${discountedAmount.value} for the next five months.</span>`
+        return language.t('modals.missingFeatures.baseMessageSecondAlt1') + ' ' +
+          `<span class="pg-text-[#78C383]">${discountAmount.value}% ${language.t('modals.missingFeatures.baseMessageSecondAlt2')} </span>` +
+          language.t('modals.missingFeatures.baseMessageSecondAlt3') + ' ' +
+          `<span class="pg-text-[#78C383]">${language.t('modals.missingFeatures.baseMessageSecondAlt4', { price: discountedAmount.value })}</span>`
       } else {
-        return 'We\'re sorry to see you go! Give us another chance and we\'ll provide a discount—' +
-        '<span class="pg-text-[#78C383]">A Play & Learn membership for only $9.99/month, forever!</span>'
+        return language.t('modals.missingFeatures.baseMessageThirdAlt1') +
+        `<span class="pg-text-[#78C383]">${language.t('modals.missingFeatures.baseMessageThirdAlt2')}</span>`
       }
     })
 
     const confirmationBtnText = computed(() => {
       if (hasPreschoolPlan.value || hasPlayAndLearnLivePlan.value) {
-        return `YES, I WANT ${discountAmount.value}% OFF`
+        return language.t('modals.missingFeatures.confirmation1', { price: `${discountAmount.value}%` })
       } else {
-        return 'YES, I WANT THIS DEAL'
+        return language.t('modals.missingFeatures.confirmation2')
       }
     })
 

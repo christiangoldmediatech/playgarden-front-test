@@ -28,7 +28,7 @@
       </v-row>
       <v-row no-gutters justify="center">
         <h1 class="cancellation-title pg-text-[#EC85B3]">
-          Congrats!
+          {{ $t('modals.positiveCancellation.title') }}
         </h1>
       </v-row>
     </v-col>
@@ -44,7 +44,7 @@
         large
         @click="closeModal"
       >
-        Back to my account
+        {{ $t('modals.positiveCancellation.back') }}
       </v-btn>
     </v-col>
 
