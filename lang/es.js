@@ -714,9 +714,9 @@ export default async (context, locale) => {
       description1: '¡Elige el plan que mejor se adapte a tu familia!',
       description2: 'Todos nuestros planes son suscripciones mensuales que ofrecen diferentes accesos al plan de estudios y maestros de Playgarden Prep.',
       description3: '¡También puedes pagar anualmente para ahorrar!',
-      trialExpired: 'TU PERIODO DE PRUEBA HA EXPIRADO',
-      trialExpiring: 'TU PERIODO DE PRUEBA ESTÁ POR EXPIRAR',
-      trialPeriod1: 'Tu periodo de prueba',
+      trialExpired: 'SU PERIODO DE PRUEBA HA EXPIRADO',
+      trialExpiring: 'SU PERIODO DE PRUEBA ESTÁ POR EXPIRAR',
+      trialPeriod1: 'Su periodo de prueba',
       trialEnded: 'terminó',
       trialWillEnd: 'terminará',
       trialPeriod2: 'en',
@@ -1022,7 +1022,7 @@ export default async (context, locale) => {
       pickChild: {
         title: '¿Quién está en Play & Learn hoy?',
         titleAlt: '¿Quién está en la escuela hoy?',
-        button: 'ADMINISTRAR PERFILES DE ESTUDIANTE'
+        button: 'ADMINISTRAR PERFILES'
       }
     },
     menus: {
