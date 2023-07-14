@@ -4,6 +4,11 @@
       <v-col cols="12">
         <days-selector-overlay v-model="viewDaySelectorOverlay" />
         <welcome-overlay v-model="viewOverlay" />
+        <lesson-end-overlay
+          v-if="lesson"
+          :value.sync="endLessonOverlay"
+          :lesson="lesson"
+        />
         <v-row no-gutters>
           <v-col cols="12">
             <v-row no-gutters justify="center" class="mb-6">
@@ -72,6 +77,7 @@ import {
   useRoute
 } from '@nuxtjs/composition-api'
 import WelcomeOverlay from '@/components/app/WelcomeOverlay.vue'
+import LessonEndOverlay from '@/components/app/LessonEndOverlay.vue'
 // @ts-ignore
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
@@ -84,6 +90,7 @@ export default defineComponent({
   components: {
     WelcomeOverlay,
     PgVideoPlayer,
+    LessonEndOverlay,
     DaysSelectorOverlay
   },
   setup() {
@@ -100,6 +107,7 @@ export default defineComponent({
       viewDaySelectorOverlay,
       loadingVideo,
       videoPlaylist,
+      endLessonOverlay,
       changeViewOverlayStatus,
       playerEvents,
       getWelcomeVideo,
@@ -167,6 +175,7 @@ export default defineComponent({
 
     onMounted(async () => {
       if (isFirstDay.value) {
+        endLessonOverlay.value = false
         viewDaySelectorOverlay.value = true
         await getWelcomeVideo().finally(() => {
           createWelcomeLesson()
@@ -185,6 +194,7 @@ export default defineComponent({
 
     return {
       viewOverlay,
+      endLessonOverlay,
       viewDaySelectorOverlay,
       loadingVideo,
       showPreview,

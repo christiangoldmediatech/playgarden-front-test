@@ -120,7 +120,7 @@ export const useRegisterFlow = (step = 1) => {
     [PLAYER_EVENTS.ON_ENDED]: (event: PlayerInstanceEvent) => {
       if (step === 1) {
         saveVideoProgress(lesson.value.lesson.id, currentChild.value.id, determineSaveVideoProgressPayload(event, true))
-        router.push({ name: 'app-lesson-end', query: { shouldRedirect: 'false' } })
+        endLessonOverlay.value = true
       } else {
         router.push({ name: 'app-dashboard', query: { shouldRedirect: 'false' } })
       }
