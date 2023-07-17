@@ -84,6 +84,7 @@
             <v-btn v-if="showAudio" icon class="my-n3 mx-n2">
               <v-icon
                 :color="section.bubbleText"
+                class="mb-n4"
                 :size="small ? 15 : 20"
                 @click.stop="$emit('click:play', section)"
               >
@@ -155,6 +156,7 @@
             <v-btn v-if="showAudio" icon class="my-n3 mx-n2">
               <v-icon
                 :color="section.bubbleText"
+                class="mb-n4"
                 :size="small ? 15 : 20"
                 @click.stop="$emit('click:play', section)"
               >
@@ -293,7 +295,7 @@ export default defineComponent({
     },
     showAudio: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
 
