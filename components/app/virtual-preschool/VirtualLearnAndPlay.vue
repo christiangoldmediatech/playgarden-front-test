@@ -23,6 +23,7 @@
         <SectionImageLAP
           small
           :section="section.cubby"
+          @click:play="handleAudioPlay"
           @click="handleClick"
         />
 
