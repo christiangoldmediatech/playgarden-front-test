@@ -207,7 +207,7 @@ export default {
           return
         }
 
-        if (lessonDay === 1 && curriculumName === 'Intro') {
+        if ((lessonDay === 1 || lessonDay === 2) && curriculumName === 'Intro') {
           this.$router.push(this.generateNuxtRoute('lesson-completed'))
           return
         }
