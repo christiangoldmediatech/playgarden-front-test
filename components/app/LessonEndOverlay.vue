@@ -23,7 +23,7 @@
         :class="[ step === 1 ? 'color-1' : 'alternate-color-1' ]"
       >
         Congratulations! <br>
-        You've completed your first day of video lessons.
+        {{ subtitle }}
       </h2>
 
       <h2
@@ -152,6 +152,16 @@ export default defineComponent({
 
     const { lesson } = props.lesson
 
+    const subtitle = computed(() => {
+      if (props.step === 1) {
+        return 'You\'ve completed your first day of video lessons.'
+      } else if (props.step === 2) {
+        return 'You\'ve completed the second day of video lessons!'
+      } else {
+        return 'You\'ve completed the third day of video lessons!'
+      }
+    })
+
     const router = useRouter()
 
     const videoLibrary = ref({
@@ -217,6 +227,7 @@ export default defineComponent({
 
     return {
       loadingMeeting,
+      subtitle,
       sections,
       upcomingMeeting,
       videoLibrary,
