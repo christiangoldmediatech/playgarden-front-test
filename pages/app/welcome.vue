@@ -6,7 +6,7 @@
         <welcome-overlay v-model="viewOverlay" />
         <lesson-end-overlay
           v-if="lesson"
-          :value.sync="endLessonOverlay"
+          v-model="endLessonOverlay"
           :lesson="lesson"
           :step="stepIntroductionVideo"
         />
