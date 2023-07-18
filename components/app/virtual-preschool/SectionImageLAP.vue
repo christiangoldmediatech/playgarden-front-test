@@ -33,7 +33,7 @@
 
         <div v-if="!miniBlocked" class="section-content" :class="{'pg-hidden': small && blocked}">
           <!-- Start Playing Button -->
-          <div class="pg-absolute pg-w-full pg-h-full">
+          <div v-if="!blockHover" class="pg-absolute pg-w-full pg-h-full">
             <v-img
               :data-test-id="`vp-section-${section.title}`"
               :style="
@@ -296,6 +296,10 @@ export default defineComponent({
     showAudio: {
       type: Boolean,
       default: true
+    },
+    blockHover: {
+      type: Boolean,
+      default: false
     }
   },
 

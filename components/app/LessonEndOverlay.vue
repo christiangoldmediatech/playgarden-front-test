@@ -65,10 +65,11 @@
           <SectionImageLAP
             :section="videoLibrary"
             :small="$vuetify.breakpoint.mdAndDown"
+            :block-hover="true"
           />
           <v-card-text class="py-1">
             <p class="ma-0 card-description">
-              {{ videoLibrary.message }}
+              {{ videoLibrary.description }}
             </p>
           </v-card-text>
         </v-card>
@@ -155,11 +156,9 @@ export default defineComponent({
 
     const videoLibrary = ref({
       imageUrl: require('@/assets/png/virtual-preschool/sections-images/video_library.png'),
-      teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
       title: 'Video Library',
       route: { name: 'app-library' },
-      message: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
-      audio: `${baseRoute}audio/virtual-preschool/Library.m4a`,
+      description: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
       color: '#BFBFF7',
       textColor: '#8659C6',
       bubbleText: '#8659C6'
