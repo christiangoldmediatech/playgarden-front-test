@@ -1,5 +1,5 @@
 <template>
-  <v-overlay :dark="false" :value="value" z-index="4000">
+  <v-overlay :dark="false" :value="viewOverlay" z-index="4000">
     <div
       class="d-flex flex-column align-center !pg-relative pg-overflow-y-auto pg-overflow-x-visible xl:pg-overflow-visible pg-max-h-screen pg-pb-16 pg-pt-5 lg:pg-pb-0 pg-max-w-[100vw]"
     >
@@ -20,25 +20,35 @@
 
       <h2
         class="overlay-title mb-2 pg-text-xl md:pg-text-5xl pg-pt-5 md:pg-mt-0"
+        :class="[ step === 1 ? 'color-1' : 'alternate-color-1' ]"
       >
         Congratulations! <br>
-        You've completed your first day of video lessons.
+        {{ subtitle }}
       </h2>
 
       <h2
-        class="overlay-subtitle-1 pg-mb-0 md:pg-mb-8 pg-text-lg md:pg-text-3xl"
+        v-if="step === 1 || step === 3"
+        class="overlay-subtitle-1 color-3 pg-mb-0 md:pg-mb-8 pg-text-lg md:pg-text-3xl"
       >
         If you still want more learning today you can:
       </h2>
 
       <h2
-        v-if="upcomingMeeting"
+        v-else
+        class="overlay-subtitle-1 color-2 pg-mb-0 md:pg-mb-8 pg-text-lg md:pg-text-3xl"
+      >
+        If the schedule doesn’t work for you, check out <br>
+        the recommended videos in the Library
+      </h2>
+
+      <h2
+        v-if="upcomingMeeting && (step === 1 || step === 3)"
         class="overlay-subtitle-2 pg-mb-0 md:pg-mb-8 pg-text-lg md:pg-text-3xl"
       >
         Join us in our next live class!
       </h2>
 
-      <div>
+      <div v-if="step === 1 || step === 3">
         <meeting-card
           v-if="upcomingMeeting && $vuetify.breakpoint.mdAndUp"
           :meeting="upcomingMeeting"
@@ -48,6 +58,21 @@
           :entry="upcomingMeeting"
           mobile
         />
+      </div>
+
+      <div v-else class="d-flex justify-center">
+        <v-card width="40%" color="white" class="card-container" @click="goTo(videoLibrary.route)">
+          <SectionImageLAP
+            :section="videoLibrary"
+            :small="$vuetify.breakpoint.mdAndDown"
+            :block-hover="true"
+          />
+          <v-card-text class="py-1">
+            <p class="ma-0 card-description">
+              {{ videoLibrary.description }}
+            </p>
+          </v-card-text>
+        </v-card>
       </div>
 
       <h3
@@ -61,13 +86,13 @@
           v-for="section in sections"
           :key="section.name"
           class="section clickable"
-          @click="downloadWorksheet"
+          @click="section.action"
         >
           <div
             class="section-img-container d-flex flex-column align-center mb-2"
           >
-            <img :src="section.img" />
-            <h4 class="section-title py-3">
+            <img :src="section.img" :class="[ section.extraBgClass ? section.extraBgClass : '' ]" />
+            <h4 class="section-title py-3" :class="[ section.extraTitleClass ? section.extraTitleClass : '' ]">
               {{ section.title }}
             </h4>
           </div>
@@ -75,6 +100,15 @@
             {{ section.description }}
           </p>
         </div>
+      </div>
+
+      <div v-if="step === 2 || step === 3">
+        <v-btn text color="#68C453" class="no-uppercase" @click="viewOverlay = false">
+          <v-icon>
+            mdi-chevron-left
+          </v-icon>
+          Watch video again
+        </v-btn>
       </div>
     </div>
   </v-overlay>
@@ -87,18 +121,19 @@ import {
   defineComponent,
   onMounted,
   ref,
-  useRouter,
-  useStore
+  useRouter
 } from '@nuxtjs/composition-api'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
 import { LessonApiResponse } from '@/composables'
+import SectionImageLAP from '@/components/app/virtual-preschool/SectionImageLAP.vue'
 import MeetingCard from './MeetingCard.vue'
 
 export default defineComponent({
   name: 'LessonEndOverlay',
   components: {
     TodayCard,
-    MeetingCard
+    MeetingCard,
+    SectionImageLAP
   },
   props: {
     value: {
@@ -108,32 +143,51 @@ export default defineComponent({
     lesson: {
       type: Object as () => LessonApiResponse,
       required: true
+    },
+    step: {
+      type: Number,
+      default: 1
     }
   },
-  emits: ['update:value'],
-  setup(props) {
+  emits: ['input'],
+  setup(props, { emit }) {
     const {
       loadingMeeting,
       upcomingMeeting,
       getUpcomingMeeting
     } = useRegisterFlow()
 
+    const viewOverlay = computed({
+      get() {
+        return props.value
+      },
+      set(val) {
+        emit('input', val)
+      }
+    })
+
     const { lesson } = props.lesson
+
+    const subtitle = computed(() => {
+      if (props.step === 1) {
+        return 'You\'ve completed your first day of video lessons.'
+      } else if (props.step === 2) {
+        return 'You\'ve completed the second day of video lessons!'
+      } else {
+        return 'You\'ve completed the third day of video lessons!'
+      }
+    })
 
     const router = useRouter()
 
-    const offlineWorksheet = computed(() => {
-      if (lesson) {
-        return lesson.worksheets.find(({ type }) => type === 'OFFLINE')
-      }
-      return null
-    })
-
-    const onlineWorksheet = computed(() => {
-      if (lesson) {
-        return lesson.worksheets.find(({ type }) => type === 'ONLINE')
-      }
-      return null
+    const videoLibrary = ref({
+      imageUrl: require('@/assets/png/virtual-preschool/sections-images/video_library.png'),
+      title: 'Video Library',
+      route: { name: 'app-library' },
+      description: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
+      color: '#BFBFF7',
+      textColor: '#8659C6',
+      bubbleText: '#8659C6'
     })
 
     const downloadWorksheet = () => {
@@ -143,14 +197,55 @@ export default defineComponent({
     }
 
     const sections = computed(() => {
-      return [
-        {
-          title: 'Worksheet',
-          img: require('@/assets/png/worksheet.png'),
-          description:
-            'Download the printable worksheets for the video lesson you just learned'
-        }
-      ]
+      if (props.step === 1) {
+        return [
+          {
+            title: 'Worksheet',
+            img: require('@/assets/png/worksheet.png'),
+            description:
+              'Download the printable worksheets for the video lesson you just learned',
+            action: downloadWorksheet
+          }
+        ]
+      } else if (props.step === 2) {
+        return [
+          {
+            title: 'Online Worksheets',
+            img: require('@/assets/png/onlineWorksheet.png'),
+            description: '',
+            action: () => goTo({ name: 'app-dashboard-online-worksheet' })
+          },
+          {
+            title: 'Print Worksheets',
+            img: require('@/assets/png/worksheet.png'),
+            description: '',
+            action: downloadWorksheet
+          }
+        ]
+      } else {
+        return [
+          {
+            title: 'Online Worksheets',
+            img: require('@/assets/png/onlineWorksheet.png'),
+            description: '',
+            action: () => goTo({ name: 'app-dashboard-online-worksheet' })
+          },
+          {
+            title: 'Print Worksheets',
+            img: require('@/assets/png/worksheet.png'),
+            description: '',
+            action: downloadWorksheet
+          },
+          {
+            title: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
+            img: require('@/assets/svg/video-library.svg'),
+            extraTitleClass: 'small-title',
+            extraBgClass: 'position-bg',
+            description: '',
+            action: () => goTo({ name: 'app-library' })
+          }
+        ]
+      }
     })
 
     const goTo = (routName: any) => {
@@ -170,9 +265,12 @@ export default defineComponent({
     })
 
     return {
+      viewOverlay,
       loadingMeeting,
+      subtitle,
       sections,
       upcomingMeeting,
+      videoLibrary,
       goTo,
       downloadWorksheet,
       closeOverlay
@@ -182,6 +280,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.card-container {
+  border-radius: 8px;
+}
+
+.card-description {
+  font-family: Quicksand;
+  font-weight: 600;
+  color: #F89838;
+  text-align: center;
+}
+
 .overlay-title,
 .overlay-subtitle-1,
 .overlay-subtitle-2 {
@@ -191,12 +300,23 @@ export default defineComponent({
   text-align: center;
 }
 
-.overlay-title {
+.color-1 {
   color: #fec572;
+}
+
+.color-2 {
+  color: #FFAB37;
+}
+
+.alternate-color-1 {
+  color: #F89838;
 }
 
 .overlay-subtitle-1 {
   text-align: center;
+}
+
+.color-3 {
   color: #dce7b5;
 }
 
@@ -240,6 +360,19 @@ export default defineComponent({
   font-weight: 700;
   font-size: 20px;
   color: #f89838;
+}
+
+.small-title {
+  text-align: center;
+  font-size: 10px;
+}
+
+.position-bg {
+  object-position: 0% 70% !important;
+}
+
+.no-uppercase {
+  text-transform: unset !important;
 }
 
 .section-description {

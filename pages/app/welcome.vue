@@ -6,8 +6,9 @@
         <welcome-overlay v-model="viewOverlay" />
         <lesson-end-overlay
           v-if="lesson"
-          :value.sync="endLessonOverlay"
+          v-model="endLessonOverlay"
           :lesson="lesson"
+          :step="stepIntroductionVideo"
         />
         <v-row no-gutters>
           <v-col cols="12">
@@ -111,7 +112,6 @@ export default defineComponent({
       changeViewOverlayStatus,
       playerEvents,
       getWelcomeVideo,
-      getVideoByName,
       lesson
     } = useRegisterFlow(stepIntroductionVideo.value)
 
@@ -174,16 +174,15 @@ export default defineComponent({
     })
 
     onMounted(async () => {
+      endLessonOverlay.value = false
       if (isFirstDay.value) {
-        endLessonOverlay.value = false
         viewDaySelectorOverlay.value = true
-        await getWelcomeVideo().finally(() => {
-          createWelcomeLesson()
-        })
       } else {
         viewDaySelectorOverlay.value = false
-        await getVideoByName()
       }
+      await getWelcomeVideo().finally(() => {
+        createWelcomeLesson()
+      })
     })
 
     onUnmounted(() => {
@@ -194,6 +193,7 @@ export default defineComponent({
 
     return {
       viewOverlay,
+      stepIntroductionVideo,
       endLessonOverlay,
       viewDaySelectorOverlay,
       loadingVideo,

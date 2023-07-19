@@ -16,9 +16,6 @@ type SaveVideoProgressPayload = {
 
 const OVERLAY_TIMEOUT = 6000
 
-const SECOND_VIDEO = 'SECOND_VIDEO_WELCOME'
-const THIRD_VIDEO = 'THIRD_VIDEO_WELCOME'
-
 const viewOverlay = ref(false)
 const viewDaySelectorOverlay = ref(true)
 const endLessonOverlay = ref(false)
@@ -61,26 +58,6 @@ export const useRegisterFlow = (step = 1) => {
     loadingVideo.value = false
   }
 
-  const getVideoByName = async () => {
-    loadingVideo.value = true
-
-    const name = step === 2 ? SECOND_VIDEO : THIRD_VIDEO
-
-    const response = await axios.$get('/parent-corners-videos', { params: { name } })
-
-    if (response && response.length > 0) {
-      const videoToPlay = response[0].video
-
-      if (videoToPlay) {
-        const video = videoToPlay
-        const mediaObjectVideo = videoToMediaObject(video)
-        videoPlaylist.value = [mediaObjectVideo]
-      }
-    }
-
-    loadingVideo.value = false
-  }
-
   const getClosingVideo = () => {
     loadingVideo.value = true
     const currentLesson = store.getters['children/lesson/getCurrentLessonInState']
@@ -118,12 +95,8 @@ export const useRegisterFlow = (step = 1) => {
   const playerEvents = {
     // Whenever a video ends.
     [PLAYER_EVENTS.ON_ENDED]: (event: PlayerInstanceEvent) => {
-      if (step === 1) {
-        saveVideoProgress(lesson.value.lesson.id, currentChild.value.id, determineSaveVideoProgressPayload(event, true))
-        endLessonOverlay.value = true
-      } else {
-        router.push({ name: 'app-dashboard', query: { shouldRedirect: 'false' } })
-      }
+      saveVideoProgress(lesson.value.lesson.id, currentChild.value.id, determineSaveVideoProgressPayload(event, true))
+      endLessonOverlay.value = true
     }
   }
 
@@ -138,7 +111,6 @@ export const useRegisterFlow = (step = 1) => {
     changeViewOverlayStatus,
     getWelcomeVideo,
     getUpcomingMeeting,
-    getVideoByName,
     playerEvents,
     lesson,
     closingVideo,
