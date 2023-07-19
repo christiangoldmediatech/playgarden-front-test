@@ -25,7 +25,6 @@
       </h2>
 
       <h2
-        v-if="upcomingMeeting"
         class="overlay-subtitle-1 pg-mb-0 md:pg-mb-8 pg-text-lg md:pg-text-3xl"
       >
         {{ $t('lessonEnd.overlay.subtitle') }}
@@ -54,7 +53,7 @@
           v-for="section in sections"
           :key="section.name"
           class="section clickable"
-          @click="goTo(section.to)"
+          @click="downloadWorksheet"
         >
           <div
             class="section-img-container d-flex flex-column align-center mb-2"
@@ -134,11 +133,18 @@ export default defineComponent({
       return null
     })
 
+    const downloadWorksheet = () => {
+      const worksheet = props.lesson.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
+      const url = worksheet?.pdfUrl || ''
+      window.open(url, '_blank')
+    }
+
     const sections = computed(() => {
       return [
         {
           title: language.t('lessonEnd.overlay.sectionTitle'),
           img: require('@/assets/png/worksheet.png'),
+          /* eslint-disable */
           to: props.worksheetUrl,
           description: language.t('lessonEnd.overlay.sectionDescription')
         }
@@ -154,7 +160,7 @@ export default defineComponent({
     }
 
     const closeOverlay = () => {
-      router.push({ name: 'index' })
+      router.push({ name: 'app-dashboard' })
     }
 
     onMounted(async () => {
@@ -166,6 +172,7 @@ export default defineComponent({
       sections,
       upcomingMeeting,
       goTo,
+      downloadWorksheet,
       closeOverlay
     }
   }

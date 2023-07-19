@@ -235,7 +235,6 @@ export default defineComponent({
       kidsCornerVideos.value = [...kidsCornerVideos.value, ...videos]
     }, 100)
 
-    // aqui
     async function handleVideoCardPlay(mediaObject: MediaObject): Promise<any> {
       try {
         if (player.value) {

@@ -140,7 +140,7 @@ export default defineComponent({
         message:
           `${lang.t('virtualPreschool.sections.classes.message')}`,
         route: { name: 'app-live-classes' },
-        audio: `${baseRoute}audio/virtual-preschool/Live classes 2.m4a`,
+        audio: `${baseRoute}audio/virtual-preschool/Live classes.m4a`,
         color: '#F58E00',
         textColor: '#FEEAA5',
         bubbleText: '#F58E00'
@@ -189,9 +189,9 @@ export default defineComponent({
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/teacher_well_being.png'),
         title: `${lang.t('virtualPreschool.sections.wellbeing.title')}`,
         message:
-          `${lang.t('virtualPreschool.sections.wellbeing.message')}`,
+          'Play and learn together with activities, games, books and so much more!',
+        audio: `${baseRoute}audio/virtual-preschool/Social and emotional.m4a`,
         route: { name: 'app-learn-play' },
-        audio: '',
         color: '#B2E68D',
         textColor: '#1A8901',
         bubbleText: '#1A8901'
