@@ -20,7 +20,7 @@
 
     <div v-if="isIntroLesson && (lessonDay === 1 || lessonDay === 3)">
       <meeting-card
-        v-if="upcomingMeeting && $vuetify.breakpoint.mdAndUp"
+        v-if="upcomingMeeting && $vuetify.breakpoint.lgAndUp"
         :meeting="upcomingMeeting"
       />
       <today-card
@@ -62,7 +62,7 @@
 
     <div
       v-if="$vuetify.breakpoint.mdAndUp"
-      class="pg-mt-5 lg:pg-mt-14 pg-mb-3 pg-flex pg-flex-col md:pg-flex-row pg-gap-10"
+      class="pg-mt-5 lg:pg-mt-10 pg-mb-14 pg-flex pg-flex-col lg:pg-flex-row pg-gap-10"
     >
       <v-card
         v-if="!isIntroLesson"
@@ -82,7 +82,7 @@
         </div>
       </v-card>
 
-      <div v-else class="pg-flex pg-flex-col md:pg-flex-row pg-gap-1 md:pg-gap-10">
+      <div v-else class="pg-flex pg-flex-col lg:pg-flex-row pg-gap-1 md:pg-gap-10">
         <div
           v-for="section in sections"
           :key="section.name"
@@ -150,7 +150,7 @@
         </div>
       </v-card>
 
-      <div v-else class="pg-flex pg-flex-col md:pg-flex-row pg-gap-1 md:pg-gap-16">
+      <div v-else class="pg-flex pg-flex-col pg-justify-center pg-items-center pg-mb-10 pg-gap-1 md:pg-gap-16">
         <div
           v-for="section in sections"
           :key="section.name"
@@ -165,9 +165,6 @@
               {{ section.title }}
             </h4>
           </div>
-          <p class="section-description">
-            {{ section.description }}
-          </p>
         </div>
       </div>
 
@@ -397,5 +394,6 @@ export default defineComponent({
 .background-lesson {
   background-image: url('@/assets/png/bg-lesson-completed.png');
   background-position: center center;
+  background-size: cover;
 }
 </style>
