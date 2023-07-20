@@ -3,13 +3,22 @@
     class="background-lesson d-flex flex-column align-center !pg-relative pg-pb-16 pg-pt-14 md:pg-pt-0 lg:pg-pb-0"
   >
     <h2
+      v-if="isIntroLesson && lessonDay === 2"
+      class="overlay-title pg-text-[20px] md:pg-text-xl mb-2 pg-px-5 pg-mt-[-30px] md:pg-mt-5 md:pg-px-0"
+    >
+      If the schedule doesn’t work for you, check out <br v-if="$vuetify.breakpoint.mdAndUp" />
+      the recommended videos in the Library
+    </h2>
+
+    <h2
+      v-else
       class="overlay-title pg-text-[20px] md:pg-text-xl mb-2 pg-px-5 pg-mt-[-30px] md:pg-mt-5 md:pg-px-0"
     >
       Don't forget to join us in our next live class. <br v-if="$vuetify.breakpoint.mdAndUp" />
       They are a great complement to the video lessons!
     </h2>
 
-    <div>
+    <div v-if="isIntroLesson && (lessonDay === 1 || lessonDay === 3)">
       <meeting-card
         v-if="upcomingMeeting && $vuetify.breakpoint.mdAndUp"
         :meeting="upcomingMeeting"
@@ -22,7 +31,29 @@
       />
     </div>
 
+    <div v-else class="d-flex justify-center">
+      <v-card width="40%" color="white" class="card-container" @click="goTo(videoLibrary.route)">
+        <SectionImageLAP
+          :section="videoLibrary"
+          :small="$vuetify.breakpoint.mdAndDown"
+          :block-hover="true"
+        />
+        <v-card-text class="py-1">
+          <p class="ma-0 card-description">
+            {{ videoLibrary.description }}
+          </p>
+        </v-card-text>
+      </v-card>
+    </div>
+
     <h3
+      v-if="isIntroLesson && (lessonDay === 1 || lessonDay === 2)"
+      class="overlay-subtitle pg-text-[20px] md:pg-text-[20px] pg-mt-7 md:pg-mt-6 pg-mb-5 md:pg-mb-[-15px] pg-w-full md:pg-w-10/12"
+    >
+      For more daily learning, check out our other features:
+    </h3>
+    <h3
+      v-else
       class="overlay-subtitle pg-text-[20px] md:pg-text-[20px] pg-mt-7 md:pg-mt-6 pg-mb-5 md:pg-mb-[-15px] pg-w-full md:pg-w-10/12"
     >
       If the schedule doesn't work for you, check out the recommended videos in
@@ -31,9 +62,10 @@
 
     <div
       v-if="$vuetify.breakpoint.mdAndUp"
-      class="pg-mt-5 lg:pg-mt-14 pg-mb-3 pg-flex pg-flex-col md:pg-flex-row pg-items-center pg-justify-center pg-gap-10"
+      class="pg-mt-5 lg:pg-mt-14 pg-mb-3 pg-flex pg-flex-col md:pg-flex-row pg-gap-10"
     >
       <v-card
+        v-if="!isIntroLesson"
         class="!pg-relative !pg-m-0 !pg-mb-5 !pg-p-0 !pg-rounded-xl pg-overflow-hidden"
         max-width="450"
         light
@@ -49,16 +81,37 @@
           Come read with us in the book nook!
         </div>
       </v-card>
+
+      <div v-else class="pg-flex pg-flex-col md:pg-flex-row pg-gap-1 md:pg-gap-10">
+        <div
+          v-for="section in sections"
+          :key="section.name"
+          class="section clickable"
+          @click="section.action"
+        >
+          <div
+            class="section-img-container d-flex flex-column align-center mb-2"
+          >
+            <img :src="section.img" :class="[ section.extraBgClass ? section.extraBgClass : '' ]" />
+            <h4 class="section-title py-3" :class="[ section.extraTitleClass ? section.extraTitleClass : '' ]">
+              {{ section.title }}
+            </h4>
+          </div>
+          <p class="section-description">
+            {{ section.description }}
+          </p>
+        </div>
+      </div>
+
       <v-card
-        v-if="nextLessonData"
+        v-if="nextLessonData && !(isIntroLesson && lessonDay === 3)"
         class="!pg-relative !pg-m-0 !pg-mb-5 !pg-p-0 !pg-rounded-xl pg-overflow-hidden !pg-cursor-pointer"
-        max-width="450"
-        height="315px"
+        max-width="220px"
         light
         @click="advance"
       >
         <div
-          class="pg-h-[250px] pg-w-[350px] pg-flex pg-items-center pg-justify-center"
+          class="pg-w-[220px] pg-flex pg-items-center pg-justify-center"
         >
           <pg-circle-letter-day
             :day="nextLessonData ? nextLessonData.day : null"
@@ -80,6 +133,7 @@
 
     <div v-else>
       <v-card
+        v-if="!isIntroLesson"
         class="!pg-relative !pg-m-0 !pg-mb-5 !pg-p-0 !pg-rounded-xl pg-overflow-hidden !pg-flex !pg-items-center"
         max-width="380"
         light
@@ -95,8 +149,30 @@
           Come read with us in the book nook!
         </div>
       </v-card>
+
+      <div v-else class="pg-flex pg-flex-col md:pg-flex-row pg-gap-1 md:pg-gap-16">
+        <div
+          v-for="section in sections"
+          :key="section.name"
+          class="section clickable"
+          @click="section.action"
+        >
+          <div
+            class="section-img-container d-flex flex-column align-center mb-2"
+          >
+            <img :src="section.img" :class="[ section.extraBgClass ? section.extraBgClass : '' ]" />
+            <h4 class="section-title py-3" :class="[ section.extraTitleClass ? section.extraTitleClass : '' ]">
+              {{ section.title }}
+            </h4>
+          </div>
+          <p class="section-description">
+            {{ section.description }}
+          </p>
+        </div>
+      </div>
+
       <v-card
-        v-if="nextLessonData"
+        v-if="nextLessonData && !(isIntroLesson && lessonDay === 3)"
         max-width="380"
         class="!pg-relative !pg-m-0 !pg-mb-5 !pg-p-0 !pg-rounded-xl pg-overflow-hidden !pg-flex !pg-items-center"
         light
@@ -129,6 +205,7 @@
 <script>
 import {
   defineComponent,
+  ref,
   computed,
   useStore,
   useRouter,
@@ -137,6 +214,7 @@ import {
 import MeetingCard from '@/components/app/MeetingCard.vue'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
+import SectionImageLAP from '@/components/app/virtual-preschool/SectionImageLAP.vue'
 import LessonAdvanceMixin from '@/mixins/LessonAdvanceMixin'
 import { useWorksheetsCategories } from '@/composables/worksheets'
 import { mapGetters } from 'vuex'
@@ -146,7 +224,8 @@ export default defineComponent({
 
   components: {
     TodayCard,
-    MeetingCard
+    MeetingCard,
+    SectionImageLAP
   },
 
   emits: ['advance'],
@@ -161,7 +240,6 @@ export default defineComponent({
   },
 
   computed: {
-    ...mapGetters('admin/curriculum', { lesson: 'getLesson' }),
     ...mapGetters({ children: 'getCurrentChild' }),
 
     childId() {
@@ -176,6 +254,20 @@ export default defineComponent({
 
     const nextLessonId = computed(() => {
       return store.getters['children/lesson/getNextLessonId']
+    })
+
+    const lesson = computed(() => store.getters['admin/curriculum/getLesson'])
+    const isIntroLesson = computed(() => lesson.value.curriculumType.letter === 'In')
+    const lessonDay = computed(() => lesson.value.day)
+
+    const videoLibrary = ref({
+      imageUrl: require('@/assets/png/virtual-preschool/sections-images/video_library.png'),
+      title: 'Video Library',
+      route: { name: 'app-library' },
+      description: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
+      color: '#BFBFF7',
+      textColor: '#8659C6',
+      bubbleText: '#8659C6'
     })
 
     const {
@@ -196,22 +288,96 @@ export default defineComponent({
       await getLessonById(nextLessonId.value)
     }
 
+    const goTo = (routName) => {
+      if (typeof routName !== 'string') {
+        router.push(routName)
+      } else {
+        router.push({ name: routName })
+      }
+    }
+
+    const downloadWorksheet = () => {
+      const worksheet = props.lesson.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
+      const url = worksheet?.pdfUrl || ''
+      window.open(url, '_blank')
+    }
+
+    const sections = computed(() => {
+      if (lessonDay.value === 1) {
+        return [
+          {
+            title: 'Worksheet',
+            img: require('@/assets/png/worksheet.png'),
+            description:
+              'Download the printable worksheets for the video lesson you just learned',
+            action: downloadWorksheet
+          }
+        ]
+      } else if (lessonDay.value === 2) {
+        return [
+          {
+            title: 'Online Worksheets',
+            img: require('@/assets/png/onlineWorksheet.png'),
+            description: '',
+            action: () => goTo({ name: 'app-dashboard-online-worksheet' })
+          },
+          {
+            title: 'Print Worksheets',
+            img: require('@/assets/png/worksheet.png'),
+            description: '',
+            action: downloadWorksheet
+          }
+        ]
+      } else {
+        return [
+          {
+            title: 'Online Worksheets',
+            img: require('@/assets/png/onlineWorksheet.png'),
+            description: '',
+            action: () => goTo({ name: 'app-dashboard-online-worksheet' })
+          },
+          {
+            title: 'Print Worksheets',
+            img: require('@/assets/png/worksheet.png'),
+            description: '',
+            action: downloadWorksheet
+          },
+          {
+            title: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
+            img: require('@/assets/svg/video-library.svg'),
+            extraTitleClass: 'small-title',
+            extraBgClass: 'position-bg',
+            description: '',
+            action: () => goTo({ name: 'app-library' })
+          }
+        ]
+      }
+    })
+
     onMounted(async () => {
       await getUpcomingMeeting()
       await getNextLesson()
     })
 
     return {
+      videoLibrary,
       goToLibrary,
+      isIntroLesson,
+      lessonDay,
+      sections,
+      lesson,
       upcomingMeeting,
       closeDialog,
-      nextLessonData
+      nextLessonData,
+      goTo
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/scss/lesson-end.scss';
+
 .overlay-title,
 .overlay-subtitle {
   font-family: 'Quicksand', sans-serif;
