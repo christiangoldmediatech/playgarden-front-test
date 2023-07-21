@@ -43,7 +43,7 @@
     </v-container> -->
     <v-container
       :class="{
-        'dashboard-container': !$vuetify.breakpoint.smAndDown && !previewMode,
+        'dashboard-container': !$vuetify.breakpoint.smAndDown && !previewMode && ($route.name !== 'app-dashboard-lesson-completed'),
         'dashboard-container-preview': !$vuetify.breakpoint.smAndDown && previewMode,
         'pg-mt-[80px]': !previewMode
       }"
@@ -351,8 +351,8 @@ export default {
 .dashboard {
   &-container {
     @media screen and (min-width: 1025px) {
-      height: calc(100vh);
-      max-height: calc(100vh);
+      height: calc(100vh - 64px);
+      max-height: calc(100vh - 64px);
     }
   }
   &-container-preview {
