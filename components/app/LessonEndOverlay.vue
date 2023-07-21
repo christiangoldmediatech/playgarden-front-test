@@ -280,16 +280,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.card-container {
-  border-radius: 8px;
-}
-
-.card-description {
-  font-family: Quicksand;
-  font-weight: 600;
-  color: #F89838;
-  text-align: center;
-}
+@import '~/assets/scss/lesson-end.scss';
 
 .overlay-title,
 .overlay-subtitle-1,
@@ -330,57 +321,5 @@ export default defineComponent({
   top: -55px;
   right: -55px;
   background: #f6b7d2;
-}
-
-.sections-wrapper {
-  gap: 4rem;
-}
-
-.section {
-  width: 220px;
-}
-
-.section-img-container {
-  width: 100%;
-  border-radius: 8px;
-  background: white;
-
-  img {
-    width: 100%;
-    height: 125px;
-    object-fit: cover;
-    object-position: 0% 5%;
-    border-radius: 8px;
-  }
-}
-
-.section-title {
-  font-family: 'Quicksand';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 20px;
-  color: #f89838;
-}
-
-.small-title {
-  text-align: center;
-  font-size: 10px;
-}
-
-.position-bg {
-  object-position: 0% 70% !important;
-}
-
-.no-uppercase {
-  text-transform: unset !important;
-}
-
-.section-description {
-  font-family: 'Quicksand';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  text-align: center;
-  color: #ffffff;
 }
 </style>
