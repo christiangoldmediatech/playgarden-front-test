@@ -351,8 +351,8 @@ export default {
 .dashboard {
   &-container {
     @media screen and (min-width: 1025px) {
-      height: calc(100vh - 64px);
-      max-height: calc(100vh - 64px);
+      height: calc(100vh);
+      max-height: calc(100vh);
     }
   }
   &-container-preview {
