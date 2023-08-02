@@ -1,13 +1,13 @@
 <template>
-  <v-overlay :dark="false" :value="viewOverlay" z-index="4000">
+  <v-overlay :dark="false" :value="viewOverlay" z-index="4000" class="lesson-end-overlay">
     <div
-      class="d-flex flex-column align-center !pg-relative pg-overflow-y-auto pg-overflow-x-visible xl:pg-overflow-visible pg-max-h-screen pg-pb-16 pg-pt-5 lg:pg-pb-0 pg-max-w-[100vw]"
+      class="d-flex flex-column align-center !pg-relative pg-overflow-y-auto pg-overflow-x-visible xl:pg-overflow-visible pg-max-h-screen pg-pb-16 lg:pg-pb-0 pg-max-w-[100vw]"
     >
       <v-col class="!pg-relative" cols="12">
         <v-btn
           icon
           color="white"
-          class="pg-bg-[#F6B7D2] !pg-absolute pg-top-[-10px] pg-right-4 lg:pg-right-0 xl:pg-right-[-150px]"
+          class="pg-bg-[#F6B7D2] !pg-absolute pg-z-50 pg-top-[0px] pg-right-4 lg:pg-right-0 xl:pg-right-[-150px]"
           :large="$vuetify.breakpoint.mdAndDown"
           :x-large="$vuetify.breakpoint.mdAndUp"
           @click="closeOverlay"
@@ -19,60 +19,36 @@
       </v-col>
 
       <h2
-        class="overlay-title mb-2 pg-text-xl md:pg-text-5xl pg-pt-5 md:pg-mt-0"
-        :class="[ step === 1 ? 'color-1' : 'alternate-color-1' ]"
+        class="overlay-title mb-2 pg-text-xl md:pg-text-5xl md:pg-mt-0 color-1"
       >
         Congratulations! <br>
         {{ subtitle }}
       </h2>
 
       <h2
-        v-if="step === 1 || step === 3"
+        v-if="step === 1 || step === 2"
         class="overlay-subtitle-1 color-3 pg-mb-0 md:pg-mb-8 pg-text-lg md:pg-text-3xl"
       >
         If you still want more learning today you can:
       </h2>
 
       <h2
-        v-else
-        class="overlay-subtitle-1 color-2 pg-mb-0 md:pg-mb-8 pg-text-lg md:pg-text-3xl"
-      >
-        If the schedule doesn’t work for you, check out <br>
-        the recommended videos in the Library
-      </h2>
-
-      <h2
-        v-if="upcomingMeeting && (step === 1 || step === 3)"
+        v-if="upcomingMeeting && (step === 1 || step === 2)"
         class="overlay-subtitle-2 pg-mb-0 md:pg-mb-8 pg-text-lg md:pg-text-3xl"
       >
         Join us in our next live class!
       </h2>
 
-      <div v-if="step === 1 || step === 3">
+      <div v-if="upcomingMeeting && (step === 1 || step === 2)">
         <meeting-card
-          v-if="upcomingMeeting && $vuetify.breakpoint.mdAndUp"
+          v-if="$vuetify.breakpoint.mdAndUp"
           :meeting="upcomingMeeting"
         />
         <today-card
-          v-if="upcomingMeeting && $vuetify.breakpoint.mdAndDown"
+          v-else
           :entry="upcomingMeeting"
           mobile
         />
-      </div>
-
-      <div v-else class="d-flex justify-center">
-        <v-card width="40%" color="white" class="card-container" @click="goTo(videoLibrary.route)">
-          <SectionImageLAP
-            :section="videoLibrary"
-            :small="$vuetify.breakpoint.mdAndDown"
-            :block-hover="true"
-          />
-          <v-card-text class="py-1">
-            <p class="ma-0 card-description">
-              {{ videoLibrary.description }}
-            </p>
-          </v-card-text>
-        </v-card>
       </div>
 
       <h3
@@ -102,8 +78,27 @@
         </div>
       </div>
 
+      <h2
+        v-if="upcomingMeeting && (step === 3)"
+        class="overlay-subtitle-2 pg-mb-0 pg-mt-6 pg-text-lg"
+      >
+        Join us in our next live class!
+      </h2>
+
+      <div v-if="upcomingMeeting && (step === 3)">
+        <meeting-card
+          v-if="$vuetify.breakpoint.mdAndUp"
+          :meeting="upcomingMeeting"
+        />
+        <today-card
+          v-else
+          :entry="upcomingMeeting"
+          mobile
+        />
+      </div>
+
       <div v-if="step === 2 || step === 3">
-        <v-btn text color="#68C453" class="no-uppercase" @click="viewOverlay = false">
+        <v-btn text color="#68C453" class="no-uppercase mt-2" @click="viewOverlay = false">
           <v-icon>
             mdi-chevron-left
           </v-icon>
@@ -120,7 +115,6 @@ import {
   computed,
   defineComponent,
   onMounted,
-  ref,
   useRouter
 } from '@nuxtjs/composition-api'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
@@ -166,8 +160,6 @@ export default defineComponent({
       }
     })
 
-    const { lesson } = props.lesson
-
     const subtitle = computed(() => {
       if (props.step === 1) {
         return 'You\'ve completed your first day of video lessons.'
@@ -179,16 +171,6 @@ export default defineComponent({
     })
 
     const router = useRouter()
-
-    const videoLibrary = ref({
-      imageUrl: require('@/assets/png/virtual-preschool/sections-images/video_library.png'),
-      title: 'Video Library',
-      route: { name: 'app-library' },
-      description: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
-      color: '#BFBFF7',
-      textColor: '#8659C6',
-      bubbleText: '#8659C6'
-    })
 
     const downloadWorksheet = () => {
       const worksheet = props.lesson.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
@@ -210,10 +192,12 @@ export default defineComponent({
       } else if (props.step === 2) {
         return [
           {
-            title: 'Online Worksheets',
-            img: require('@/assets/png/onlineWorksheet.png'),
+            title: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
+            img: require('@/assets/svg/video-library.svg'),
+            extraTitleClass: 'small-title',
+            extraBgClass: 'position-bg',
             description: '',
-            action: () => goTo({ name: 'app-dashboard-online-worksheet' })
+            action: () => goTo({ name: 'app-library' })
           },
           {
             title: 'Print Worksheets',
@@ -235,14 +219,6 @@ export default defineComponent({
             img: require('@/assets/png/worksheet.png'),
             description: '',
             action: downloadWorksheet
-          },
-          {
-            title: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
-            img: require('@/assets/svg/video-library.svg'),
-            extraTitleClass: 'small-title',
-            extraBgClass: 'position-bg',
-            description: '',
-            action: () => goTo({ name: 'app-library' })
           }
         ]
       }
@@ -270,7 +246,6 @@ export default defineComponent({
       subtitle,
       sections,
       upcomingMeeting,
-      videoLibrary,
       goTo,
       downloadWorksheet,
       closeOverlay
@@ -282,6 +257,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '~/assets/scss/lesson-end.scss';
 
+.lesson-end-overlay >>> .v-overlay__content {
+  width: 100%;
+  height: 100%;
+}
+
 .overlay-title,
 .overlay-subtitle-1,
 .overlay-subtitle-2 {
@@ -292,15 +272,11 @@ export default defineComponent({
 }
 
 .color-1 {
-  color: #fec572;
+  color: #F89838;
 }
 
 .color-2 {
   color: #FFAB37;
-}
-
-.alternate-color-1 {
-  color: #F89838;
 }
 
 .overlay-subtitle-1 {

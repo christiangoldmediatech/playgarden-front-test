@@ -86,7 +86,7 @@
         <div
           v-for="section in sections"
           :key="section.name"
-          class="section clickable"
+          class="section-lesson-end clickable"
           @click="section.action"
         >
           <div
@@ -104,14 +104,14 @@
       </div>
 
       <v-card
-        v-if="nextLessonData && !(isIntroLesson && lessonDay === 3)"
+        v-if="nextLessonData"
         class="!pg-relative !pg-m-0 !pg-mb-5 !pg-p-0 !pg-rounded-xl pg-overflow-hidden !pg-cursor-pointer"
         max-width="220px"
         light
         @click="advance"
       >
         <div
-          class="pg-w-[220px] pg-flex pg-items-center pg-justify-center"
+          class="pg-w-[220px] pg-flex pg-items-center pg-justify-center pg-bg-[#FFF7F0]"
         >
           <pg-circle-letter-day
             :day="nextLessonData ? nextLessonData.day : null"
@@ -169,7 +169,7 @@
       </div>
 
       <v-card
-        v-if="nextLessonData && !(isIntroLesson && lessonDay === 3)"
+        v-if="nextLessonData"
         max-width="380"
         class="!pg-relative !pg-m-0 !pg-mb-5 !pg-p-0 !pg-rounded-xl pg-overflow-hidden !pg-flex !pg-items-center"
         light
@@ -313,10 +313,12 @@ export default defineComponent({
       } else if (lessonDay.value === 2) {
         return [
           {
-            title: 'Online Worksheets',
-            img: require('@/assets/png/onlineWorksheet.png'),
+            title: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
+            img: require('@/assets/svg/video-library.svg'),
+            extraTitleClass: 'small-title',
+            extraBgClass: 'position-bg',
             description: '',
-            action: () => goTo({ name: 'app-dashboard-online-worksheet' })
+            action: () => goTo({ name: 'app-library' })
           },
           {
             title: 'Print Worksheets',
@@ -338,14 +340,6 @@ export default defineComponent({
             img: require('@/assets/png/worksheet.png'),
             description: '',
             action: downloadWorksheet
-          },
-          {
-            title: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
-            img: require('@/assets/svg/video-library.svg'),
-            extraTitleClass: 'small-title',
-            extraBgClass: 'position-bg',
-            description: '',
-            action: () => goTo({ name: 'app-library' })
           }
         ]
       }
