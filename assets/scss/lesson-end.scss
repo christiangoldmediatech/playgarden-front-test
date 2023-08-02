@@ -13,8 +13,15 @@
   gap: 4rem;
 }
 
-.section {
+.section, .section-lesson-end {
   width: 220px;
+}
+
+.section {
+  height: 200px;
+}
+
+.section-lesson-end {
   height: 218px;
 }
 
@@ -26,7 +33,7 @@
 
   img {
     width: 100%;
-    height: 90%;
+    height: 80%;
     object-fit: cover;
     object-position: 0% 5%;
     border-radius: 8px;
@@ -37,7 +44,7 @@
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 18px;
   color: #f89838;
 }
 
