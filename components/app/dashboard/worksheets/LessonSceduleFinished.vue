@@ -212,7 +212,9 @@ export default defineComponent({
     async function getNextLesson() {
       if (!props.shouldAdvance) { return }
 
-      await getLessonById(nextLessonId.value)
+      if (nextLessonId.value) {
+        await getLessonById(nextLessonId.value)
+      }
     }
 
     onMounted(async () => {
