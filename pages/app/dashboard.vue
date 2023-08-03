@@ -200,6 +200,7 @@ export default {
         const lessonDay = this.lesson.day
         const curriculumName = this.lesson.curriculumType.name
         const shouldRedirect = this.$route.query.shouldRedirect !== 'false' // This is use to avoid redirection loops
+        const redirectToWorksheets = this.$route.query.redirectWorksheets === 'true'
         const wasProgressMade = this.videos.progress > 0
 
         if ((lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro' && shouldRedirect && !wasProgressMade) {
@@ -207,13 +208,13 @@ export default {
           return
         }
 
-        if ((lessonDay === 1 || lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro') {
-          this.$router.push(this.generateNuxtRoute('lesson-completed'))
+        if (redirectToWorksheets) {
+          this.$router.push({ name: 'app-dashboard-online-worksheet' })
           return
         }
 
-        if (this.$route.query['redirect-worksheet']) {
-          this.$router.push({ name: 'app-dashboard-offline-worksheet' })
+        if (((lessonDay === 1 || lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro') && !redirectToWorksheets) {
+          this.$router.push(this.generateNuxtRoute('lesson-completed'))
           return
         }
 

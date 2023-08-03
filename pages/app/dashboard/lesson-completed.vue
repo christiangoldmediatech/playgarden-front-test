@@ -313,14 +313,6 @@ export default defineComponent({
       } else if (lessonDay.value === 2) {
         return [
           {
-            title: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
-            img: require('@/assets/svg/video-library.svg'),
-            extraTitleClass: 'small-title',
-            extraBgClass: 'position-bg',
-            description: '',
-            action: () => goTo({ name: 'app-library' })
-          },
-          {
             title: 'Print Worksheets',
             img: require('@/assets/png/worksheet.png'),
             description: '',
@@ -333,7 +325,7 @@ export default defineComponent({
             title: 'Online Worksheets',
             img: require('@/assets/png/onlineWorksheet.png'),
             description: '',
-            action: () => goTo({ name: 'app-dashboard-online-worksheet' })
+            action: () => goTo({ name: 'app-dashboard-online-worksheet', query: { redirectWorksheets: 'true' } })
           },
           {
             title: 'Print Worksheets',
