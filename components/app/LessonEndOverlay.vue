@@ -1,5 +1,5 @@
 <template>
-  <v-overlay :dark="false" :value="viewOverlay" z-index="4000" class="lesson-end-overlay">
+  <v-overlay :dark="false" :value="viewOverlay" z-index="4000">
     <div
       class="d-flex flex-column align-center !pg-relative pg-overflow-y-auto pg-overflow-x-visible xl:pg-overflow-visible pg-max-h-screen pg-pb-16 lg:pg-pb-0 pg-max-w-[100vw]"
     >
@@ -212,7 +212,7 @@ export default defineComponent({
             title: 'Online Worksheets',
             img: require('@/assets/png/onlineWorksheet.png'),
             description: '',
-            action: () => goTo({ name: 'app-dashboard-online-worksheet' })
+            action: () => goTo({ name: 'app-dashboard-online-worksheet', query: { redirectWorksheets: 'true' } })
           },
           {
             title: 'Print Worksheets',
@@ -256,11 +256,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '~/assets/scss/lesson-end.scss';
-
-.lesson-end-overlay >>> .v-overlay__content {
-  width: 100%;
-  height: 100%;
-}
 
 .overlay-title,
 .overlay-subtitle-1,
