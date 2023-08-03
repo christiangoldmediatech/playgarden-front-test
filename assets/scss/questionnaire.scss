@@ -1,0 +1,224 @@
+.questionnaire {
+  @media screen and (min-width: 768px) {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: end;
+  }
+  .questionnaire-image {
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 60px;
+
+    @media screen and (min-width: 768px) {
+      position: absolute;
+      left: 0;
+      top: 0;
+      max-width: 41%;
+      min-width: 41%;
+      height: 100%;
+      margin-bottom: 0;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1.69;
+      object-fit: cover;
+      object-position: center;
+
+      @media screen and (min-width: 768px) {
+        height: 100%;
+        aspect-ratio: auto;
+      }
+    }
+  }
+
+  .questionnaire-card {
+    border-radius: 16px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, 0.15);
+    padding: 25px 25px 40px 25px;
+
+    @media screen and (min-width: 768px) {
+      position: relative;
+      width: 62%;
+      padding: 40px 20px 60px 50px;
+    }
+
+    @media screen and (min-width: 1024px) {
+      padding: 80px 40px 100px 90px;
+    }
+
+    .questionnaire-title {
+      color: #FE9923;
+      text-align: center;
+      font-family: Quicksand;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      letter-spacing: 4.5px;
+      text-transform: uppercase;
+      @media screen and (min-width: 1024px) {
+        text-align: left;
+        font-size: 32px;
+      }
+    }
+
+    .questionnaire-text {
+      color: #606060;
+      text-align: left;
+      font-family: Poppins;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      @media screen and (min-width: 1024px) {
+        font-size: 19px;
+      }
+    }
+
+    .questionnaire-answers {
+      &.questionnaire-answers--checkboxes {
+        &::v-deep {
+          .v-input__slot {
+            min-height: 0;
+            label {
+              color: #606060;
+              opacity: 1;
+              font-size: 14px;
+              font-weight: 500;
+              letter-spacing: 0.694px;
+              @media screen and (min-width: 1024px) {
+                font-size: 20px;
+              }
+            }
+
+            .v-input--selection-controls__input {
+              i {
+                font-size: 20px;
+                @media screen and (min-width: 1024px) {
+                  font-size: 29px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &.questionnaire-answers--radio {
+        &::v-deep {
+          .v-input__slot {
+            min-height: 0;
+            label {
+              color: #606060;
+              opacity: 1;
+              font-size: 16px;
+              font-weight: 500;
+              letter-spacing: 0.694px;
+              @media screen and (min-width: 1024px) {
+                font-size: 18px;
+              }
+            }
+
+            .v-input--selection-controls__input {
+              i {
+                font-size: 24px;
+                @media screen and (min-width: 1024px) {
+                  font-size: 28px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &.questionnaire-answers__days-per-week {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 36px;
+        row-gap: 18px;
+        max-width: 100%;
+
+        @media screen and (min-width: 1024px) {
+          grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+
+        .option-card {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+          border-radius: 9px;
+          background-color: #FFFFFF;
+          padding: 10px;
+          filter: drop-shadow(0px 9px 26px rgba(0, 0, 0, 0.25));
+          cursor: pointer;
+          color: #474747;
+          text-align: center;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 17.5px;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          user-select: none;
+          @media screen and (min-width: 1024px) {
+            font-size: 18px;
+          }
+          
+          img {
+            display: block;
+            width: 52%;
+            aspect-ratio: 1;
+            object-fit: contain;
+            position: center;
+            margin-bottom: 12px;
+          }
+
+          &.option-card--double {
+            img {
+              aspect-ratio: 2;
+              width: 74%;
+              margin-bottom: 0;
+            }
+          }
+
+          &.option-card--selected {
+            box-shadow: 0px -4.4px 4.4px 0px rgba(0, 0, 0, 0.15) inset, 0px 4.4px 4.4px 0px rgba(0, 0, 0, 0.25) inset;
+          }
+        }
+      }
+    }
+
+    .questionnaire-button {
+      display: flex;
+      justify-content: center;
+
+      ::v-deep {
+        .v-btn {
+          padding: 6px 78px;
+          span.v-btn__content {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.96px;
+            @media screen and (min-width: 1024px) {
+              padding-top: 12px !important;
+              padding-bottom: 12px !important;
+              font-size: 24px;
+            }
+          }
+          @media screen and (min-width: 768px) {
+            width: 100%;
+          }
+        }
+      }
+
+      &.questionnaire-button--final ::v-deep {
+        .v-btn {
+          padding: 6px 18px;
+        }
+      }
+    }
+  }
+}
