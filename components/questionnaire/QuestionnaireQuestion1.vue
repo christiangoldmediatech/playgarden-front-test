@@ -16,8 +16,8 @@
       <div class="questionnaire-answers questionnaire-answers--checkboxes pg-mb-5 lg:pg-mb-16">
         <v-checkbox
           v-model="questionnaireState.question1.answer"
-          v-for="(checkbox, checkboxIndex) in questionnaireState.question1.options"
-          :key="`checkbox-${checkboxIndex}`"
+          v-for="(checkbox, checkboxIndex) in checkboxOptions"
+          :key="`questionnaire-checkbox-${checkboxIndex}`"
           :value="checkbox"
           :label="checkbox"
           class="mt-0 pt-0 mb-3"
@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 import { useQuestionnaire } from '@/composables/questionnaire/useQuestionnaire.composable'
 
 export default defineComponent({
@@ -49,15 +49,17 @@ export default defineComponent({
 
   setup() {
     const { questionnaireState, goToNextPage } = useQuestionnaire()
+    const checkboxOptions = questionnaireState.question1.options || []
 
     return {
       questionnaireState,
+      checkboxOptions,
       goToNextPage
     }
   }
 })
 </script>
 
-<style lang="sass" scoped>
-@import '@/assets/scss/questionnaire'
+<style lang="scss" scoped>
+@import '@/assets/scss/questionnaire';
 </style>

@@ -31,7 +31,9 @@
         <v-btn
           color="#B2E68D"
           class="white--text"
+          :loading="isSaving"
           :disabled="!questionnaireState.question3.answer || !questionnaireState.question4.answer"
+          @click="onSave"
         >
           GO TO FIRST DAY OF LEARNING
         </v-btn>
@@ -41,22 +43,34 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
-import { useQuestionnaire } from '@/composables/questionnaire/useQuestionnaire.composable'
+import { defineComponent, useStore, useRouter } from '@nuxtjs/composition-api'
+import { useQuestionnaire, useQuestionnaireSave } from '@/composables/questionnaire/useQuestionnaire.composable'
 
 export default defineComponent({
   name: 'QuestionnaireQuestion3',
 
   setup() {
+    const store = useStore<unknown>()
+    const router = useRouter()
     const { questionnaireState } = useQuestionnaire()
+    const { isSaving, handleSave } = useQuestionnaireSave({ store })
+
+    async function onSave() {
+      try {
+        await handleSave()
+        router.push({ name: 'app-welcome' })
+      } catch {}
+    }
 
     return {
-      questionnaireState
+      questionnaireState,
+      isSaving,
+      onSave
     }
   }
 })
 </script>
 
-<style lang="sass" scoped>
-@import '@/assets/scss/questionnaire'
+<style lang="scss" scoped>
+@import '@/assets/scss/questionnaire';
 </style>

@@ -1,8 +1,10 @@
+import { Store } from 'vuex/types'
 import { ref, reactive } from '@nuxtjs/composition-api'
 
 const activeQuestionnairePage = ref(0)
+const isSaving = ref(false)
 
-type SurveyAnswer = {
+export type SurveyAnswer = {
   text: string
   type: 'CHECKBOX' | 'RADIO'
   options?: string[],
@@ -57,7 +59,38 @@ export const useQuestionnaire = () => {
   return {
     activeQuestionnairePage,
     questionnaireState,
+    isSaving,
     goToNextPage,
     goToPrevPage
+  }
+}
+
+export const useQuestionnaireSave = ({ store }:{ store: Store<unknown> }) => {
+  const handleSave = async () => {
+    const questionnaireId = 'POST-LOGIN-QUESTIONNAIRE'
+    try {
+      isSaving.value = true
+      const hasUserAnsweredSurvey = await store.dispatch('survey/checkUserSurvey', questionnaireId)
+
+      if (hasUserAnsweredSurvey) {
+        return
+      }
+
+      const questions = [
+        questionnaireState.question1,
+        questionnaireState.question2,
+        questionnaireState.question3,
+        questionnaireState.question4
+      ]
+
+      store.dispatch('survey/createUserSurveyGroup', questions.map((question) => ({ ...question, survey: questionnaireId })))
+    } finally {
+      isSaving.value = false
+    }
+  }
+
+  return {
+    isSaving,
+    handleSave
   }
 }
