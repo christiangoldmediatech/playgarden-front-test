@@ -257,6 +257,16 @@ export default defineComponent({
     const isIntroLesson = computed(() => lesson.value.curriculumType.letter === 'In')
     const lessonDay = computed(() => lesson.value.day)
 
+    const offlineWorksheetThumbnail = computed(() => {
+      const worksheets = lesson.value?.worksheets?.filter((worksheet) => worksheet.type === 'OFFLINE')
+
+      if (worksheets && (worksheets.length > 0)) {
+        return worksheets[0].pdfThumbnail
+      }
+
+      return require('@/assets/png/worksheet.png')
+    })
+
     const videoLibrary = ref({
       imageUrl: require('@/assets/png/virtual-preschool/sections-images/video_library.png'),
       title: 'Video Library',
@@ -268,7 +278,6 @@ export default defineComponent({
     })
 
     const {
-      loadingMeeting,
       upcomingMeeting,
       getUpcomingMeeting
     } = useRegisterFlow()
@@ -304,7 +313,7 @@ export default defineComponent({
         return [
           {
             title: 'Worksheet',
-            img: require('@/assets/png/worksheet.png'),
+            img: offlineWorksheetThumbnail.value,
             description:
               'Download the printable worksheets for the video lesson you just learned',
             action: downloadWorksheet
@@ -314,7 +323,7 @@ export default defineComponent({
         return [
           {
             title: 'Print Worksheets',
-            img: require('@/assets/png/worksheet.png'),
+            img: offlineWorksheetThumbnail.value,
             description: '',
             action: downloadWorksheet
           }
@@ -329,7 +338,7 @@ export default defineComponent({
           },
           {
             title: 'Print Worksheets',
-            img: require('@/assets/png/worksheet.png'),
+            img: offlineWorksheetThumbnail.value,
             description: '',
             action: downloadWorksheet
           }

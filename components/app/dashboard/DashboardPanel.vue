@@ -291,7 +291,7 @@
 
             <!-- WORKSHEET VIDEO -->
             <v-card
-              v-if="!displayMode && worksheets.OFFLINE"
+              v-if="!displayMode && worksheets.OFFLINE && worksheets.OFFLINE.videoDetail"
               :disabled="lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100 || noLinkMode"
               :to="generateNuxtRoute('offline-worksheet')"
               :ripple="false"

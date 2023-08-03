@@ -151,6 +151,18 @@ export default defineComponent({
       getUpcomingMeeting
     } = useRegisterFlow()
 
+    const { lesson } = props.lesson
+
+    const offlineWorksheetThumbnail = computed(() => {
+      const worksheets = lesson.worksheets.filter((worksheet) => worksheet.type === 'OFFLINE')
+
+      if (worksheets.length > 0) {
+        return worksheets[0].pdfThumbnail
+      }
+
+      return require('@/assets/png/worksheet.png')
+    })
+
     const viewOverlay = computed({
       get() {
         return props.value
@@ -183,7 +195,7 @@ export default defineComponent({
         return [
           {
             title: 'Worksheet',
-            img: require('@/assets/png/worksheet.png'),
+            img: offlineWorksheetThumbnail.value,
             description:
               'Download the printable worksheets for the video lesson you just learned',
             action: downloadWorksheet
@@ -201,7 +213,7 @@ export default defineComponent({
           },
           {
             title: 'Print Worksheets',
-            img: require('@/assets/png/worksheet.png'),
+            img: offlineWorksheetThumbnail.value,
             description: '',
             action: downloadWorksheet
           }
@@ -216,7 +228,7 @@ export default defineComponent({
           },
           {
             title: 'Print Worksheets',
-            img: require('@/assets/png/worksheet.png'),
+            img: offlineWorksheetThumbnail.value,
             description: '',
             action: downloadWorksheet
           }
