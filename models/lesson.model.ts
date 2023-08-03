@@ -68,6 +68,7 @@ export interface LessonWorksheet extends Entity {
   description: string
   name: string
   pdfUrl: null | string
+  pdfThumbnail: null | string
   completed: null | WorksheetCompleted
   videoDetail: null | Video
   worksheetTable: WorksheetTable
