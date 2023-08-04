@@ -1,11 +1,13 @@
 <template>
-  <div class="pg-w-full pg-mx-6">
-    <BackButton class="my-8" @click="goToPrevPage" />
+  <v-main class="!pg-px-6 lg:pg-mt-8">
+    <div class="pg-max-w-[1650px] pg-mx-auto">
+      <BackButton class="pg-my-8" :class="{ 'pg-invisible': activeQuestionnairePage === 0 }" @click="goToPrevPage" />
 
-    <QuestionnaireQuestion1 v-if="activeQuestionnairePage === 0" />
-    <QuestionnaireQuestion2 v-if="activeQuestionnairePage === 1" />
-    <QuestionnaireQuestion3 v-if="activeQuestionnairePage === 2" />
-  </div>
+      <QuestionnaireQuestion1 v-if="activeQuestionnairePage === 0" />
+      <QuestionnaireQuestion2 v-if="activeQuestionnairePage === 1" />
+      <QuestionnaireQuestion3 v-if="activeQuestionnairePage === 2" />
+    </div>
+  </v-main>
 </template>
 
 <script lang="ts">

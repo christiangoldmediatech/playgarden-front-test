@@ -1,35 +1,20 @@
 import { actionTree } from 'typed-vuex'
+import { CreateSurveyDto } from '@/composables/survey/useSurvey.composable'
 import { state, mutations, getters } from '.'
-
-type CreateSurveyDto = {
-  survey: string
-  text: string
-  type: 'CHECKBOX' | 'RADIO'
-  options?: string[],
-  answer: string[] | string
-}
 
 export default actionTree(
   { state, mutations, getters },
   {
-    async checkUserSurvey(_, survey: string) {
+    async checkUserSurvey(_, surveyKey: string) {
       const count = await this.$axios.$get('/users/survey-count', {
-        params: { survey }
+        params: { survey: surveyKey }
       })
       return count > 0
     },
 
-    async createUserSurvey(_, createSurveyDto: CreateSurveyDto) {
+    async saveUserSurvey(_, createSurveyDto: CreateSurveyDto) {
       const survey = await this.$axios.$post('/users/survey', createSurveyDto)
       return survey
-    },
-
-    async createUserSurveyGroup({ dispatch }, createSurveyGroupDto: CreateSurveyDto[]) {
-      const promises = createSurveyGroupDto.map((createSurveyDto) => {
-        return dispatch('createUserSurvey', createSurveyDto)
-      })
-      const result = await Promise.allSettled(promises)
-      return result
     }
   }
 )

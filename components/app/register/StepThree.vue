@@ -62,9 +62,9 @@ export default defineComponent({
       updateChild: 'update'
     }),
 
-    goToLessons() {
+    goToQuestionnaire() {
       this.$router.push({
-        name: 'app-welcome',
+        name: 'app-questionnaire',
         query: {
           step: 1,
           ...this.utmContent
