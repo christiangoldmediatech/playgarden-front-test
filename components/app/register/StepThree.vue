@@ -87,7 +87,7 @@ export default defineComponent({
         await this.fetchUserInfo()
 
         this.$toast.success('Child information has been saved!')
-        this.goToLessons()
+        this.goToQuestionnaire()
       } catch (e) {
       } finally {
         this.loading = false
