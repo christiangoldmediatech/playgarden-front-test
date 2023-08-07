@@ -65,7 +65,7 @@ export default defineComponent({
       setIsAccountInactiveModalVisible(false)
 
       router.push({
-        name: 'auth-paasword-reset'
+        name: 'auth-forgot-password'
       })
     }
 

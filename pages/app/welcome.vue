@@ -2,7 +2,7 @@
   <v-main class="watercolor-background">
     <v-row no-gutters class="fill-height sm:pg-pt-16 pg-pt-10">
       <v-col cols="12">
-        <days-selector-overlay v-model="viewDaySelectorOverlay" />
+        <!-- <days-selector-overlay v-model="viewDaySelectorOverlay" /> -->
         <welcome-overlay v-model="viewOverlay" />
         <lesson-end-overlay
           v-if="lesson"
@@ -84,15 +84,15 @@ import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { TypedStore } from '@/models'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
-import DaysSelectorOverlay from '@/components/app/DaysSelectorOverlay.vue'
+// import DaysSelectorOverlay from '@/components/app/DaysSelectorOverlay.vue'
 
 export default defineComponent({
   name: 'Welcome',
   components: {
     WelcomeOverlay,
     PgVideoPlayer,
-    LessonEndOverlay,
-    DaysSelectorOverlay
+    LessonEndOverlay
+    // DaysSelectorOverlay
   },
   setup() {
     const store = useStore<TypedStore>()
@@ -105,7 +105,7 @@ export default defineComponent({
     })
     const {
       viewOverlay,
-      viewDaySelectorOverlay,
+      /* viewDaySelectorOverlay, */
       loadingVideo,
       videoPlaylist,
       endLessonOverlay,
@@ -167,19 +167,19 @@ export default defineComponent({
       }
     })
 
-    watch(viewDaySelectorOverlay, () => {
-      if (!viewDaySelectorOverlay.value && isFirstDay.value) {
-        changeViewOverlayStatus()
-      }
-    })
+    // watch(viewDaySelectorOverlay, () => {
+    //   if (!viewDaySelectorOverlay.value && isFirstDay.value) {
+    //     changeViewOverlayStatus()
+    //   }
+    // })
 
     onMounted(async () => {
       endLessonOverlay.value = false
-      if (isFirstDay.value) {
-        viewDaySelectorOverlay.value = true
-      } else {
-        viewDaySelectorOverlay.value = false
-      }
+      // if (isFirstDay.value) {
+      //   viewDaySelectorOverlay.value = true
+      // } else {
+      //   viewDaySelectorOverlay.value = false
+      // }
       await getWelcomeVideo().finally(() => {
         createWelcomeLesson()
       })
@@ -195,7 +195,7 @@ export default defineComponent({
       viewOverlay,
       stepIntroductionVideo,
       endLessonOverlay,
-      viewDaySelectorOverlay,
+      /* viewDaySelectorOverlay, */
       loadingVideo,
       showPreview,
       onPlayerReady,

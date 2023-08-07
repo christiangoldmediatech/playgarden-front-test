@@ -47,8 +47,8 @@ export default getterTree(state, {
 
   getFinishNoCCFlow: (state) =>
     state.userInfo &&
-    state.userInfo.flow === Flow.NOCREDITCARD &&
     !state.userInfo.hasCreditCards &&
+    state.userInfo.flow === Flow.NOCREDITCARD &&
     dayjs().diff(dayjs(state.userInfo.createdAt), 'days') >= 3 &&
     !state.disableCreditCardNeededAlert
 
