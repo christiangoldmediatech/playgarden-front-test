@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, onBeforeMount } from '@nuxtjs/composition-api'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
 
 import { useQuestionnaire } from '@/composables/questionnaire/useQuestionnaire.composable'
@@ -30,7 +30,11 @@ export default defineComponent({
   },
 
   setup() {
-    const { activeQuestionnairePage, goToPrevPage } = useQuestionnaire()
+    const { activeQuestionnairePage, resetQuestionnaire, goToPrevPage } = useQuestionnaire()
+
+    onBeforeMount(() => {
+      resetQuestionnaire()
+    })
 
     return {
       activeQuestionnairePage,

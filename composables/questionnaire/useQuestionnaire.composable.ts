@@ -79,12 +79,21 @@ function goToPrevPage() {
   }
 }
 
+function resetQuestionnaire() {
+  activeQuestionnairePage.value = 0
+  questDataState.question1.answer = []
+  questDataState.question2.answer = ''
+  questDataState.question3.answer = ''
+  questDataState.question4.answer = ''
+}
+
 export const useQuestionnaire = () => {
   return {
     activeQuestionnairePage,
     questPageData,
     questDataState,
     isSaving,
+    resetQuestionnaire,
     goToNextPage,
     goToPrevPage
   }
