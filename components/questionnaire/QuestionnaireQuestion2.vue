@@ -63,6 +63,7 @@
         <v-btn
           color="#B2E68D"
           class="white--text"
+          depressed
           :disabled="!questDataState.question2.answer"
           @click.stop="onNextBtnClick"
         >
