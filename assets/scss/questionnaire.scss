@@ -197,14 +197,16 @@
 
       ::v-deep {
         .v-btn {
+          box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.16);
           padding: 6px 78px;
+          @media screen and (min-width: 1024px) {
+            height: 48px;
+          }
           span.v-btn__content {
             font-size: 16px;
             font-weight: 700;
             letter-spacing: 0.96px;
             @media screen and (min-width: 1024px) {
-              padding-top: 12px !important;
-              padding-bottom: 12px !important;
               font-size: 24px;
             }
           }
