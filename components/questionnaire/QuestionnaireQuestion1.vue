@@ -30,6 +30,7 @@
         <v-btn
           color="#B2E68D"
           class="white--text"
+          depressed
           :disabled="!questDataState.question1.answer.length"
           @click.stop="onNextBtnClick"
         >

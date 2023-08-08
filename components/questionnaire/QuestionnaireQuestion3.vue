@@ -31,6 +31,7 @@
         <v-btn
           color="#B2E68D"
           class="white--text"
+          depressed
           :loading="isSaving"
           :disabled="!questDataState.question3.answer || !questDataState.question4.answer"
           @click="onSave"
