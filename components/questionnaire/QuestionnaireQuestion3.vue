@@ -20,7 +20,7 @@
 
         <v-radio-group v-model="questDataState.question4.answer" hide-details>
           <div class="pg-mb-4 pg-text-[#606060] pg-font-bold pg-text-base pg-leading-[20px]">
-            {{ questDataState.question4.text }}
+            Would you like to assess your child's progress for free using our partner, <a class="warning--text !pg-underline" href="https://www.cognitivetoybox.com/">cognitive toybox</a>?
           </div>
           <v-radio off-icon="mdi-radiobox-blank primary--text" label="Yes" value="Yes" />
           <v-radio off-icon="mdi-radiobox-blank primary--text" label="No" value="No" />
