@@ -21,7 +21,7 @@
           >
             <v-col class="btnLesson">
               <v-tooltip
-                v-if="previousLessonId && !$vuetify.breakpoint.smAndDown"
+                v-if="(previousLessonId && !$vuetify.breakpoint.smAndDown) && !blockPreviousBtn"
                 top
                 class="pb-6"
               >
@@ -48,7 +48,7 @@
               </v-tooltip>
               <template v-else>
                 <v-btn
-                  v-if="previousLessonId"
+                  v-if="previousLessonId && !blockPreviousBtn"
                   class="ml-3"
                   icon
                   @click.stop="previousLesson"
@@ -654,6 +654,10 @@ export default defineComponent({
     getSelectedLetterId() {
       return (this.lesson && this.lesson.curriculumType && this.lesson.curriculumType) ? this.lesson.curriculumType.id : ''
      },
+
+    blockPreviousBtn() {
+      return this.lesson.day === 1 && this.lesson.curriculumType.letter === 'In'
+    },
 
     useLightTheme() {
       return (
