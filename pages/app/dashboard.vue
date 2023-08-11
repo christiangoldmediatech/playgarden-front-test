@@ -29,7 +29,8 @@ export default {
   data: () => {
     return {
       loading: false,
-      fileUpload: false
+      fileUpload: false,
+      progress: []
     }
   },
   computed: {
@@ -51,6 +52,14 @@ export default {
       return this.currentChild && this.currentChild.length
         ? this.currentChild[0].id
         : 0
+    },
+    highestProgress() {
+      return this.progress.reduce((acc, item) => {
+        if (item.enabled) {
+          return item.order
+        }
+        return acc
+      }, 0)
     },
     selectedChild: {
       get() {
@@ -92,6 +101,8 @@ export default {
     } else {
       await this.getAllChildren(this.$route)
     }
+    // Load course progress
+    this.progress = await this.getCourseProgressByChildId({ id: this.childrenIds })
     // Load current lesson
     await this.handleLesson(true)
     // Setup update listener
@@ -124,6 +135,7 @@ export default {
     this.resetChildren()
   },
   methods: {
+    ...mapActions('children/course-progress', ['getCourseProgressByChildId']),
     ...mapActions('children', { getAllChildren: 'get' }),
     ...mapActions('offline-worksheet', ['getOfflineWorksheetsByChildrenAndLesson']),
     ...mapActions('children/lesson', [
@@ -201,9 +213,10 @@ export default {
         const curriculumName = this.lesson.curriculumType.name
         const shouldRedirect = this.$route.query.shouldRedirect !== 'false' // This is use to avoid redirection loops
         const redirectToWorksheets = this.$route.query.redirectWorksheets === 'true'
+        const cancelWelcomePage = this.highestProgress > 1
         const wasProgressMade = this.videos.progress > 0
 
-        if ((lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro' && shouldRedirect && !wasProgressMade) {
+        if ((lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro' && shouldRedirect && !wasProgressMade && !cancelWelcomePage) {
           this.$router.push({ name: 'app-welcome', query: { step: lessonDay } })
           return
         }
