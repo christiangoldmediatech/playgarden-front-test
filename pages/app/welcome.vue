@@ -2,6 +2,7 @@
   <v-main class="watercolor-background">
     <v-row no-gutters class="fill-height sm:pg-pt-16 pg-pt-10">
       <v-col cols="12">
+        <PostQuestionnaireDialog v-model="showPostQuestionnaireDialog" />
         <welcome-overlay v-model="viewOverlay" />
         <lesson-end-overlay
           v-if="lesson"
@@ -89,15 +90,18 @@ import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { TypedStore } from '@/models'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
+import PostQuestionnaireDialog from '@/components/questionnaire/PostQuestionnaireDialog.vue'
 
 export default defineComponent({
   name: 'Welcome',
   components: {
     WelcomeOverlay,
     PgVideoPlayer,
-    LessonEndOverlay
+    LessonEndOverlay,
+    PostQuestionnaireDialog
   },
   setup() {
+    const showPostQuestionnaireDialog = ref(true)
     const store = useStore<TypedStore>()
     const isFullscreen = ref(false)
     const showPreview = ref(true)
@@ -180,6 +184,7 @@ export default defineComponent({
       viewOverlay,
       stepIntroductionVideo,
       endLessonOverlay,
+      showPostQuestionnaireDialog,
       loadingVideo,
       showPreview,
       onPlayerReady,
