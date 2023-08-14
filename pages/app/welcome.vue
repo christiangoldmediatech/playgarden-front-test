@@ -2,7 +2,6 @@
   <v-main class="watercolor-background">
     <v-row no-gutters class="fill-height sm:pg-pt-16 pg-pt-10">
       <v-col cols="12">
-        <!-- <days-selector-overlay v-model="viewDaySelectorOverlay" /> -->
         <welcome-overlay v-model="viewOverlay" />
         <lesson-end-overlay
           v-if="lesson"
@@ -10,15 +9,21 @@
           :lesson="lesson"
           :step="stepIntroductionVideo"
         />
-        <v-row no-gutters>
+        <v-row no-gutters class="pb-16">
           <v-col cols="12">
-            <v-row no-gutters justify="center" class="mb-6">
-              <h2 class="welcome-title pg-text-xl md:pg-text-3xl lg:pg-text-5xl">
+            <v-row no-gutters justify="center" class="mb-6 !pg-relative">
+              <h2 class="pg-w-[60%] welcome-title pg-text-xl md:pg-text-3xl lg:pg-text-4xl">
                 {{ pageTitle }}
               </h2>
+
+              <div class="btn-container-wrapper">
+                <v-btn color="transparent elevation-0" class="btn-container" @click="goHome()">
+                  <img src="@/assets/svg/goHome.svg" />
+                </v-btn>
+              </div>
             </v-row>
 
-            <v-row justify="center">
+            <v-row justify="center pb-16">
               <v-card
                 class="d-flex flex-column player-content-card elevation-0"
               >
@@ -72,10 +77,10 @@ import {
   defineComponent,
   onMounted,
   ref,
-  watch,
   useStore,
   onUnmounted,
-  useRoute
+  useRoute,
+  useRouter
 } from '@nuxtjs/composition-api'
 import WelcomeOverlay from '@/components/app/WelcomeOverlay.vue'
 import LessonEndOverlay from '@/components/app/LessonEndOverlay.vue'
@@ -84,7 +89,6 @@ import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { TypedStore } from '@/models'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
-// import DaysSelectorOverlay from '@/components/app/DaysSelectorOverlay.vue'
 
 export default defineComponent({
   name: 'Welcome',
@@ -92,24 +96,22 @@ export default defineComponent({
     WelcomeOverlay,
     PgVideoPlayer,
     LessonEndOverlay
-    // DaysSelectorOverlay
   },
   setup() {
     const store = useStore<TypedStore>()
     const isFullscreen = ref(false)
     const showPreview = ref(true)
     const route = useRoute()
+    const router = useRouter()
     const player = ref<PlayerInstance | null>(null)
     const stepIntroductionVideo = computed(() => {
       return Number(route.value.query?.step || 1)
     })
     const {
       viewOverlay,
-      /* viewDaySelectorOverlay, */
       loadingVideo,
       videoPlaylist,
       endLessonOverlay,
-      changeViewOverlayStatus,
       playerEvents,
       getWelcomeVideo,
       lesson
@@ -130,11 +132,9 @@ export default defineComponent({
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
       player.value.loadPlaylist(videoPlaylist.value)
-      if (!isFirstDay.value) {
-        handlePlay(() => {
-          player.value?.play()
-        })
-      }
+      handlePlay(() => {
+        player.value?.play()
+      })
     }
 
     const handleFullscreenChange = (val: boolean): void => {
@@ -159,27 +159,12 @@ export default defineComponent({
       })
     }
 
-    watch(viewOverlay, () => {
-      if (!viewOverlay.value && !loadingVideo.value) {
-        handlePlay(() => {
-          player.value?.play()
-        })
-      }
-    })
-
-    // watch(viewDaySelectorOverlay, () => {
-    //   if (!viewDaySelectorOverlay.value && isFirstDay.value) {
-    //     changeViewOverlayStatus()
-    //   }
-    // })
+    const goHome = () => {
+      router.push({ name: 'app-virtual-preschool' })
+    }
 
     onMounted(async () => {
       endLessonOverlay.value = false
-      // if (isFirstDay.value) {
-      //   viewDaySelectorOverlay.value = true
-      // } else {
-      //   viewDaySelectorOverlay.value = false
-      // }
       await getWelcomeVideo().finally(() => {
         createWelcomeLesson()
       })
@@ -195,16 +180,17 @@ export default defineComponent({
       viewOverlay,
       stepIntroductionVideo,
       endLessonOverlay,
-      /* viewDaySelectorOverlay, */
       loadingVideo,
       showPreview,
       onPlayerReady,
+      isFirstDay,
       handlePlay,
       playerEvents,
       getWelcomeVideo,
       handleFullscreenChange,
       pageTitle,
-      lesson
+      lesson,
+      goHome
     }
   }
 })
@@ -219,5 +205,41 @@ export default defineComponent({
   font-weight: 700;
   color: #68c453;
   text-align: center;
+}
+
+.btn-container {
+  img {
+    width: 70px;
+  }
+
+  @media screen and (min-width: 1025px) {
+    img {
+      width: 100px;
+    }
+  }
+}
+
+.btn-container-wrapper {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  @media screen and (min-width: $breakpoint-xs) {
+    margin-top: 0;
+    width: unset;
+    position: absolute;
+    right: 10%;
+    bottom: 0;
+  }
+
+  @media screen and (min-width: 1025px) {
+    bottom: 10px;
+  }
+  
+}
+
+.btn-container::before {
+  background-color: transparent !important;
 }
 </style>

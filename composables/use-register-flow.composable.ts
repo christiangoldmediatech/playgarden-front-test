@@ -27,7 +27,6 @@ const upcomingMeeting = ref<Meeting | null>(null)
 
 export const useRegisterFlow = (step = 1) => {
   const store = useStore<TypedStore>()
-  const router = useRouter()
   const { videoToMediaObject, lessonVideoToMediaObject } = useLibraryHelpers()
   const { saveVideoProgress } = useChildLesson({ store, axios })
   const lesson = ref()
@@ -37,13 +36,6 @@ export const useRegisterFlow = (step = 1) => {
   )
 
   const lessonApi = useLessonApi({ child: currentChild })
-
-  const changeViewOverlayStatus = () => {
-    viewOverlay.value = true
-    setTimeout(() => {
-      viewOverlay.value = false
-    }, OVERLAY_TIMEOUT)
-  }
 
   const getWelcomeVideo = async () => {
     loadingVideo.value = true
@@ -108,7 +100,6 @@ export const useRegisterFlow = (step = 1) => {
     loadingMeeting,
     videoPlaylist,
     upcomingMeeting,
-    changeViewOverlayStatus,
     getWelcomeVideo,
     getUpcomingMeeting,
     playerEvents,
