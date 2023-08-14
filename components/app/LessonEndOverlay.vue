@@ -62,7 +62,8 @@
               <div
                 v-for="section in sections"
                 :key="section.name"
-                class="overlay-section d-flex pg-flex-col md:pg-flex-row"
+                class="overlay-section clickable d-flex pg-flex-col md:pg-flex-row"
+                @click="section.action"
               >
                 <div
                   class="section-img-container"
@@ -85,7 +86,6 @@
                     color="#68C453"
                     fab
                     small
-                    @click="section.action"
                   >
                     <v-icon color="white" small>
                       mdi-tray-arrow-down
@@ -98,7 +98,6 @@
                     color="#68C453"
                     text
                     small
-                    @click="section.action"
                   >
                     Go to Library
                     <v-icon>
@@ -112,7 +111,6 @@
                     color="#68C453"
                     text
                     small
-                    @click="section.action"
                   >
                     Go to Online Worksheets
                     <v-icon>
