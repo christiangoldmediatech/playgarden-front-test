@@ -241,7 +241,7 @@
                   type="submit"
                   x-large
                 >
-                  CHOOSE YOUR PLAN
+                  START LEARNING
                 </v-btn>
               </v-col>
             </v-row>
