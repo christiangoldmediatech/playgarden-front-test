@@ -3,108 +3,160 @@
     <div
       class="d-flex flex-column align-center !pg-relative pg-overflow-y-auto pg-overflow-x-visible xl:pg-overflow-visible pg-max-h-screen pg-pb-16 lg:pg-pb-0 pg-max-w-[100vw]"
     >
-      <v-col class="!pg-relative" cols="12">
-        <v-btn
-          icon
-          color="white"
-          class="pg-bg-[#F6B7D2] !pg-absolute pg-z-50 pg-top-[0px] pg-right-4 lg:pg-right-0 xl:pg-right-[-150px]"
-          :large="$vuetify.breakpoint.mdAndDown"
-          :x-large="$vuetify.breakpoint.mdAndUp"
-          @click="closeOverlay"
-        >
-          <v-icon>
-            mdi-close
-          </v-icon>
-        </v-btn>
-      </v-col>
-
-      <h2
-        class="overlay-title mb-2 pg-text-xl md:pg-text-5xl md:pg-mt-0 color-1"
-      >
-        Congratulations! <br>
-        {{ subtitle }}
-      </h2>
-
-      <h2
-        v-if="step === 1 || step === 2"
-        class="overlay-subtitle-1 color-3 pg-mb-0 md:pg-mb-8 pg-text-lg md:pg-text-3xl"
-      >
-        If you still want more learning today you can:
-      </h2>
-
-      <h2
-        v-if="upcomingMeeting && (step === 1 || step === 2)"
-        class="overlay-subtitle-2 pg-mb-0 md:pg-mb-8 pg-text-lg md:pg-text-3xl"
-      >
-        Join us in our next live class!
-      </h2>
-
-      <div v-if="upcomingMeeting && (step === 1 || step === 2)">
-        <meeting-card
-          v-if="$vuetify.breakpoint.mdAndUp"
-          :meeting="upcomingMeeting"
-        />
-        <today-card
-          v-else
-          :entry="upcomingMeeting"
-          mobile
-        />
-      </div>
-
-      <h3
-        class="overlay-subtitle-2 pg-my-4 md:pg-my-8 pg-text-lg md:pg-text-3xl"
-      >
-        For more daily learning, check out our other features:
-      </h3>
-
-      <div class="pg-flex pg-flex-col md:pg-flex-row pg-gap-1 md:pg-gap-16">
-        <div
-          v-for="section in sections"
-          :key="section.name"
-          class="section clickable"
-          @click="section.action"
-        >
-          <div
-            class="section-img-container d-flex flex-column align-center mb-2"
+      <v-card color="white" class="overlay-card">
+        <div class="d-flex flex-column align-center !pg-relative">
+          <v-col cols="12" class="px-16 pt-2">
+            <v-btn
+              icon
+              color="white"
+              class="pg-bg-[#F6B7D2] !pg-absolute pg-z-50 pg-top-[10px] pg-right-[15px]"
+              :large="$vuetify.breakpoint.mdAndDown"
+              :x-large="$vuetify.breakpoint.mdAndUp"
+              @click="closeOverlay"
+            >
+              <v-icon>
+                mdi-close
+              </v-icon>
+            </v-btn>
+          </v-col>
+          <h2
+            class="overlay-title mb-2 pg-text-xl md:pg-text-4xl md:pg-mt-0 color-1 px-16 pt-2"
           >
-            <img :src="section.img" :class="[ section.extraBgClass ? section.extraBgClass : '' ]" />
-            <h4 class="section-title py-3" :class="[ section.extraTitleClass ? section.extraTitleClass : '' ]">
-              {{ section.title }}
-            </h4>
+            Congratulations! <br>
+            {{ subtitle }}
+          </h2>
+          <h2
+            v-if="step === 1 || step === 2"
+            class="overlay-subtitle-1 color-3 pg-mb-0 md:pg-mb-6 pg-text-lg md:pg-text-2xl"
+          >
+            If you still want more learning today you can:
+          </h2>
+          <h2
+            v-if="upcomingMeeting && (step === 1 || step === 2)"
+            class="overlay-subtitle-2 color-2 pg-mb-0 md:pg-mb-6 pg-text-lg md:pg-text-2xl"
+          >
+            Join us in our next live class!
+          </h2>
+          <div v-if="upcomingMeeting && (step === 1 || step === 2)">
+            <meeting-card
+              v-if="$vuetify.breakpoint.mdAndUp"
+              :meeting="upcomingMeeting"
+            />
+            <today-card
+              v-else
+              :entry="upcomingMeeting"
+              mobile
+            />
           </div>
-          <p class="section-description">
-            {{ section.description }}
-          </p>
+
+          <div
+            class="pg-w-full d-flex flex-column align-center pg-mt-4 md:pg-mt-8"
+            :class="[step !== 3 ? 'last-section px-3' : '']"
+          >
+            <h3
+              class="overlay-subtitle-2 color-3 pg-mb-4 md:pg-mb-6 pg-mt-2 md:pg-mt-4 pg-text-lg md:pg-text-2xl"
+            >
+              For more daily learning, check out our other features:
+            </h3>
+            <div class="pg-w-full pg-flex justify-center align-center pg-flex-col md:pg-flex-row pg-gap-1 md:pg-gap-16" :class="[step === 3 ? 'px-3' : '']">
+              <div
+                v-for="section in sections"
+                :key="section.name"
+                class="overlay-section d-flex pg-flex-col md:pg-flex-row"
+              >
+                <div
+                  class="section-img-container"
+                >
+                  <img :src="section.img" :class="[ section.extraBgClass ? section.extraBgClass : '' ]" />
+                </div>
+                <div class="pg-w-full d-flex flex-column justify-center !pg-relative pa-2">
+                  <h4 class="section-title mb-2" :class="[ section.extraTitleClass ? section.extraTitleClass : '' ]">
+                    {{ section.title }}
+                  </h4>
+                  <h2 v-if="section.type === 'offline-worksheet'" class="section-type">
+                    Worksheet
+                  </h2>
+                  <h2 v-if="section.type === 'online-worksheet'" class="section-type">
+                    Online Worksheet
+                  </h2>
+                  <v-btn
+                    v-if="section.type === 'offline-worksheet'"
+                    class="custom-section-btn !pg-absolute pg-right-[15px] pg-bottom-[15px]"
+                    color="#68C453"
+                    fab
+                    small
+                    @click="section.action"
+                  >
+                    <v-icon color="white" small>
+                      mdi-tray-arrow-down
+                    </v-icon>
+                  </v-btn>
+                  <v-btn
+                    v-if="section.type === 'video-library'"
+                    class="no-uppercase"
+                    :class="[ $vuetify.breakpoint.mdAndUp ? '!pg-absolute pg-right-[15px] pg-bottom-[15px]' : '' ]"
+                    color="#68C453"
+                    text
+                    small
+                    @click="section.action"
+                  >
+                    Go to Library
+                    <v-icon>
+                      mdi-chevron-right
+                    </v-icon>
+                  </v-btn>
+                  <v-btn
+                    v-if="section.type === 'online-worksheet'"
+                    class="no-uppercase"
+                    :class="[ $vuetify.breakpoint.mdAndUp ? '!pg-absolute pg-right-[15px] pg-bottom-[15px]' : '' ]"
+                    color="#68C453"
+                    text
+                    small
+                    @click="section.action"
+                  >
+                    Go to Online Worksheets
+                    <v-icon>
+                      mdi-chevron-right
+                    </v-icon>
+                  </v-btn>
+                </div>
+              </div>
+            </div>
+
+            <div class="pg-w-full pg-mt-6 pg-flex justify-center align-center pg-flex-col" :class="[step === 3 ? 'last-section' : '']">
+              <h2
+                v-if="upcomingMeeting && (step === 3)"
+                class="overlay-subtitle-2 color-2 pg-my-2 pg-text-lg"
+              >
+                Join us in our next live class!
+              </h2>
+              <div v-if="upcomingMeeting && (step === 3)">
+                <meeting-card
+                  v-if="$vuetify.breakpoint.mdAndUp"
+                  :meeting="upcomingMeeting"
+                />
+                <today-card
+                  v-else
+                  :entry="upcomingMeeting"
+                  mobile
+                />
+              </div>
+              <div>
+                <v-btn text color="#68C453" class="no-uppercase mt-2" @click="viewOverlay = false">
+                  <v-icon>
+                    mdi-chevron-left
+                  </v-icon>
+                  Watch video again
+                </v-btn>
+              </div>
+              <img
+                src="@/assets/svg/color-dashes.svg"
+                class="pg-w-[75%] px-4"
+              />
+            </div>
+          </div>
         </div>
-      </div>
-
-      <h2
-        v-if="upcomingMeeting && (step === 3)"
-        class="overlay-subtitle-2 pg-mb-0 pg-mt-6 pg-text-lg"
-      >
-        Join us in our next live class!
-      </h2>
-
-      <div v-if="upcomingMeeting && (step === 3)">
-        <meeting-card
-          v-if="$vuetify.breakpoint.mdAndUp"
-          :meeting="upcomingMeeting"
-        />
-        <today-card
-          v-else
-          :entry="upcomingMeeting"
-          mobile
-        />
-      </div>
-
-      <div v-if="step === 2 || step === 3">
-        <v-btn text color="#68C453" class="no-uppercase mt-2" @click="viewOverlay = false">
-          <v-icon>
-            mdi-chevron-left
-          </v-icon>
-          Watch video again
-        </v-btn>
-      </div>
+      </v-card>
     </div>
   </v-overlay>
 </template>
@@ -194,42 +246,40 @@ export default defineComponent({
       if (props.step === 1) {
         return [
           {
-            title: 'Worksheet',
+            type: 'offline-worksheet',
+            title: 'Download worksheet of the day!',
             img: offlineWorksheetThumbnail.value,
-            description:
-              'Download the printable worksheets for the video lesson you just learned',
             action: downloadWorksheet
           }
         ]
       } else if (props.step === 2) {
         return [
           {
+            type: 'video-library',
             title: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
             img: require('@/assets/svg/video-library.svg'),
-            extraTitleClass: 'small-title',
             extraBgClass: 'position-bg',
-            description: '',
             action: () => goTo({ name: 'app-library' })
           },
           {
-            title: 'Print Worksheets',
+            type: 'offline-worksheet',
+            title: 'Download worksheet of the day!',
             img: offlineWorksheetThumbnail.value,
-            description: '',
             action: downloadWorksheet
           }
         ]
       } else {
         return [
           {
-            title: 'Online Worksheets',
+            type: 'online-worksheet',
+            title: 'Go to Online Worksheets',
             img: require('@/assets/png/onlineWorksheet.png'),
-            description: '',
             action: () => goTo({ name: 'app-dashboard-online-worksheet', query: { redirectWorksheets: 'true' } })
           },
           {
-            title: 'Print Worksheets',
+            type: 'offline-worksheet',
+            title: 'Download worksheet of the day!',
             img: offlineWorksheetThumbnail.value,
-            description: '',
             action: downloadWorksheet
           }
         ]
@@ -269,6 +319,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '~/assets/scss/lesson-end.scss';
 
+.overlay-card {
+  border-radius: 20px;
+}
+
 .overlay-title,
 .overlay-subtitle-1,
 .overlay-subtitle-2 {
@@ -283,7 +337,7 @@ export default defineComponent({
 }
 
 .color-2 {
-  color: #FFAB37;
+  color: #68C453;
 }
 
 .overlay-subtitle-1 {
@@ -291,12 +345,17 @@ export default defineComponent({
 }
 
 .color-3 {
-  color: #dce7b5;
+  color: #F6B7D2;
 }
 
 .overlay-subtitle-2 {
   text-align: center;
-  color: #fcf394;
+}
+
+.last-section {
+  border: 2px dashed #F89838;
+  border-bottom: 0;
+  border-radius: 20px;
 }
 
 .btn-close {
@@ -304,5 +363,79 @@ export default defineComponent({
   top: -55px;
   right: -55px;
   background: #f6b7d2;
+}
+
+.sections-wrapper {
+  gap: 4rem;
+}
+
+.overlay-section {
+  max-width: 490px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.1608);
+  width: 70%;
+
+  @media screen and (min-width: 1025px) {
+    width: 50%;
+  }
+}
+
+.section-lesson-end {
+  width: 220px;
+}
+
+.section-lesson-end {
+  height: 218px;
+}
+
+.section-img-container {
+  width: 100%;
+  height: 150px;
+  border-radius: 8px;
+  background: white;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 0% 5%;
+    border-radius: 8px;
+  }
+
+  @media screen and (min-width: 769px) {
+    width: 200px;
+  }
+}
+
+.section-title {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  color: #f89838;
+}
+
+.section-type {
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(189, 189, 189, 1);
+}
+
+.small-title {
+  text-align: center;
+  font-size: 10px;
+}
+
+.position-bg {
+  object-position: 0% 4% !important;
+
+  @media screen and (min-width: 769px) {
+    object-position: 0% 70% !important;
+  }
+}
+
+.custom-section-btn {
+  border: 5px solid rgba(178, 230, 141, 0.5) !important;
 }
 </style>

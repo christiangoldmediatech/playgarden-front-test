@@ -2,7 +2,6 @@
   <v-main class="watercolor-background">
     <v-row no-gutters class="fill-height sm:pg-pt-16 pg-pt-10">
       <v-col cols="12">
-        <!-- <days-selector-overlay v-model="viewDaySelectorOverlay" /> -->
         <welcome-overlay v-model="viewOverlay" />
         <lesson-end-overlay
           v-if="lesson"
@@ -13,11 +12,11 @@
         <v-row no-gutters class="pb-16">
           <v-col cols="12">
             <v-row no-gutters justify="center" class="mb-6 !pg-relative">
-              <h2 class="welcome-title pg-text-xl md:pg-text-3xl lg:pg-text-5xl">
+              <h2 class="pg-w-[60%] welcome-title pg-text-xl md:pg-text-3xl lg:pg-text-4xl">
                 {{ pageTitle }}
               </h2>
 
-              <div class="btn-container-wrapper" v-if="isFirstDay">
+              <div class="btn-container-wrapper">
                 <v-btn color="transparent elevation-0" class="btn-container" @click="goHome()">
                   <img src="@/assets/svg/goHome.svg" />
                 </v-btn>
@@ -90,7 +89,6 @@ import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import { PlayerInstance } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
 import { TypedStore } from '@/models'
 import { useRegisterFlow } from '@/composables/use-register-flow.composable'
-// import DaysSelectorOverlay from '@/components/app/DaysSelectorOverlay.vue'
 
 export default defineComponent({
   name: 'Welcome',
@@ -98,7 +96,6 @@ export default defineComponent({
     WelcomeOverlay,
     PgVideoPlayer,
     LessonEndOverlay
-    // DaysSelectorOverlay
   },
   setup() {
     const store = useStore<TypedStore>()
@@ -112,7 +109,6 @@ export default defineComponent({
     })
     const {
       viewOverlay,
-      /* viewDaySelectorOverlay, */
       loadingVideo,
       videoPlaylist,
       endLessonOverlay,
@@ -163,24 +159,12 @@ export default defineComponent({
       })
     }
 
-    // watch(viewDaySelectorOverlay, () => {
-    //   if (!viewDaySelectorOverlay.value && isFirstDay.value) {
-    //     changeViewOverlayStatus()
-    //   }
-    // })
-
-
     const goHome = () => {
-      router.push({ name: 'app-dashboard' })
+      router.push({ name: 'app-virtual-preschool' })
     }
 
     onMounted(async () => {
       endLessonOverlay.value = false
-      // if (isFirstDay.value) {
-      //   viewDaySelectorOverlay.value = true
-      // } else {
-      //   viewDaySelectorOverlay.value = false
-      // }
       await getWelcomeVideo().finally(() => {
         createWelcomeLesson()
       })
@@ -196,7 +180,6 @@ export default defineComponent({
       viewOverlay,
       stepIntroductionVideo,
       endLessonOverlay,
-      /* viewDaySelectorOverlay, */
       loadingVideo,
       showPreview,
       onPlayerReady,

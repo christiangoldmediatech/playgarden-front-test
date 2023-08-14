@@ -226,11 +226,6 @@ export default {
           return
         }
 
-        if (((lessonDay === 1 || lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro') && !redirectToWorksheets) {
-          this.$router.push(this.generateNuxtRoute('lesson-completed'))
-          return
-        }
-
         if (this.videos.progress < 100 && this.videos.items.length) {
           const route = this.generateNuxtRoute('lesson-videos', {
             id: this.getNextId(this.videos.items)
