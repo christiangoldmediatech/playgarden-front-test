@@ -17,7 +17,7 @@
                 {{ pageTitle }}
               </h2>
 
-              <div class="btn-container-wrapper">
+              <div class="btn-container-wrapper" v-if="isFirstDay">
                 <v-btn color="transparent elevation-0" class="btn-container" @click="goHome()">
                   <img src="@/assets/svg/goHome.svg" />
                 </v-btn>
@@ -200,6 +200,7 @@ export default defineComponent({
       loadingVideo,
       showPreview,
       onPlayerReady,
+      isFirstDay,
       handlePlay,
       playerEvents,
       getWelcomeVideo,
