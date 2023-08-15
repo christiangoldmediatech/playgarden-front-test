@@ -101,7 +101,21 @@ export default defineComponent({
     PostQuestionnaireDialog
   },
   setup() {
-    const showPostQuestionnaireDialog = ref(true)
+    const isDialogOpen = ref(true)
+    const showPostQuestionnaireDialog = computed({
+      get() {
+        return isDialogOpen.value
+      },
+      set(val: boolean) {
+        isDialogOpen.value = val
+        if (!val) {
+          handlePlay(() => {
+            player.value?.play()
+          })
+        }
+      }
+    })
+
     const store = useStore<TypedStore>()
     const isFullscreen = ref(false)
     const showPreview = ref(true)
@@ -136,9 +150,6 @@ export default defineComponent({
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
       player.value.loadPlaylist(videoPlaylist.value)
-      handlePlay(() => {
-        player.value?.play()
-      })
     }
 
     const handleFullscreenChange = (val: boolean): void => {
