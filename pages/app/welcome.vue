@@ -13,12 +13,18 @@
         <v-row no-gutters class="pb-16">
           <v-col cols="12">
             <v-row no-gutters justify="center" class="mb-6 !pg-relative">
-              <h2 class="pg-w-[60%] welcome-title pg-text-xl md:pg-text-3xl lg:pg-text-4xl">
+              <h2
+                class="pg-w-[60%] welcome-title pg-text-xl md:pg-text-3xl lg:pg-text-4xl"
+              >
                 {{ pageTitle }}
               </h2>
 
               <div class="btn-container-wrapper">
-                <v-btn color="transparent elevation-0" class="btn-container" @click="goHome()">
+                <v-btn
+                  color="transparent elevation-0"
+                  class="btn-container"
+                  @click="goHome()"
+                >
                   <img src="@/assets/svg/goHome.svg" />
                 </v-btn>
               </div>
@@ -252,7 +258,6 @@ export default defineComponent({
   @media screen and (min-width: 1025px) {
     bottom: 10px;
   }
-  
 }
 
 .btn-container::before {
