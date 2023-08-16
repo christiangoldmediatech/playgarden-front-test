@@ -84,7 +84,7 @@ export default defineComponent({
     const lessonProgressMessage = computed(() =>
       isProgressCompleted.value
         ? 'You earned a puzzle piece'
-        : 'Win a puzzle piece!'
+        : 'Do the worksheet to Win a Puzzle Piece!'
     )
 
     const dashboardProgressBar1Percentage = computed(() => `${props.progress}%`)
@@ -137,32 +137,35 @@ export default defineComponent({
 <style lang="scss" scoped>
 .dashboard-progress {
   position: relative;
+  display: flex;
+  align-items: center;
   margin: 16px 12px;
-  height:61px;
+  min-height:61px;
   box-shadow: var(--lp-bar-border-type) !important;
   border: var(--lp-bar-border-width) solid #C3C6FF;
   border-radius: 8px !important;
 
   &-icon {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate(10%, -35%);
+    padding-left: 5%;
+    padding-right: 5%;
     z-index: 1;
+    img {
+      margin-bottom: -5px;
+    }
   }
 
   &-title {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate(25%, -50%);
+    padding-right: 20%;
     z-index: 1;
     text-shadow: 1px 1px rgba(255, 255, 255, 0.75);
     color: var(--lp-text-color);
     font-weight: bold;
-    font-size: 18px;
+    font-size: 16px;
     letter-spacing: 1.5px;
     text-transform: uppercase;
+    @media screen and (min-width: 768px) {
+      font-size: 18px;
+    }
   }
 
   &-tasks {

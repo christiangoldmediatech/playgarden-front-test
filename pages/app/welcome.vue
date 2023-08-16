@@ -107,7 +107,8 @@ export default defineComponent({
     PostQuestionnaireDialog
   },
   setup() {
-    const isDialogOpen = ref(true)
+    const isDialogOpen = ref(false)
+    const isFromQuestionnaire = computed(() => route.value.query.fromQuestionnaire === 'true')
     const showPostQuestionnaireDialog = computed({
       get() {
         return isDialogOpen.value
@@ -186,6 +187,7 @@ export default defineComponent({
 
     onMounted(async () => {
       endLessonOverlay.value = false
+      isDialogOpen.value = isFromQuestionnaire.value
       await getWelcomeVideo().finally(() => {
         createWelcomeLesson()
       })
