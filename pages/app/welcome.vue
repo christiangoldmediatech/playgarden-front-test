@@ -157,6 +157,11 @@ export default defineComponent({
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
       player.value.loadPlaylist(videoPlaylist.value)
+      if (!isFirstDay.value) {
+        handlePlay(() => {
+          player.value?.play()
+        })  
+      }
     }
 
     const handleFullscreenChange = (val: boolean): void => {
