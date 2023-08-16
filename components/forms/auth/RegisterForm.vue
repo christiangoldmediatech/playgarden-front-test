@@ -247,58 +247,78 @@
             </v-row>
 
             <!-- or -->
-            <v-row no-gutters class="my-6">
-              <v-col class="hr-line">
-                <v-divider />
-              </v-col>
+            <template v-if="!hasValidLibraryCard">
+              <v-row no-gutters class="my-6">
+                <v-col class="hr-line">
+                  <v-divider />
+                </v-col>
 
-              <v-col class="text-center">
-                or
-              </v-col>
+                <v-col class="text-center">
+                  or
+                </v-col>
 
-              <v-col class="hr-line">
-                <v-divider />
-              </v-col>
-            </v-row>
+                <v-col class="hr-line">
+                  <v-divider />
+                </v-col>
+              </v-row>
 
-            <!-- Social buttons -->
-            <v-row no-gutters>
-              <!-- FACEBOOK -->
-              <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
-                <v-btn
-                  block
-                  height="45"
-                  class="social-btn"
-                  @click="facebookSignIn"
-                >
-                  <img
-                    alt="Facebook"
-                    class="mr-1"
-                    src="@/assets/svg/facebook_icon.svg"
-                  />
+              <!-- Social buttons -->
+              <v-row no-gutters>
+                <!-- LIBRARY CARD -->
+                <v-col class="mb-6 mb-md-4" cols="12" order="2" order-md="0">
+                  <v-btn
+                    block
+                    height="45"
+                    class="social-btn"
+                    @click="goToLibraryCardValidator"
+                  >
+                    <img
+                      alt="Facebook"
+                      class="mr-1"
+                      src="@/assets/svg/library-card-signup.svg"
+                    />
 
-                  <span class="spanSocialNetwork">Continue with Facebook</span>
-                </v-btn>
-              </v-col>
+                    <span class="spanSocialNetwork">Continue with your library card number</span>
+                  </v-btn>
+                </v-col>
 
-              <!-- GOOGLE -->
-              <v-col class="mb-6 mb-md-0 pl-md-4" cols="12" md="6">
-                <v-btn
-                  block
-                  height="45"
-                  class="social-btn"
-                  @click="googleSignIn"
-                >
-                  <img
-                    alt="Google"
-                    class="mr-1"
-                    src="@/assets/svg/google_icon.svg"
-                  />
+                <!-- FACEBOOK -->
+                <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
+                  <v-btn
+                    block
+                    height="45"
+                    class="social-btn"
+                    @click="facebookSignIn"
+                  >
+                    <img
+                      alt="Facebook"
+                      class="mr-1"
+                      src="@/assets/svg/facebook_icon.svg"
+                    />
 
-                  <span class="spanSocialNetwork">Continue with Google</span>
-                </v-btn>
-              </v-col>
-            </v-row>
+                    <span class="spanSocialNetwork">Continue with Facebook</span>
+                  </v-btn>
+                </v-col>
+
+                <!-- GOOGLE -->
+                <v-col class="mb-4 mb-md-0 pl-md-4" cols="12" md="6">
+                  <v-btn
+                    block
+                    height="45"
+                    class="social-btn"
+                    @click="googleSignIn"
+                  >
+                    <img
+                      alt="Google"
+                      class="mr-1"
+                      src="@/assets/svg/google_icon.svg"
+                    />
+
+                    <span class="spanSocialNetwork">Continue with Google</span>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </template>
           </v-col>
         </v-row>
       </v-container>
@@ -379,6 +399,7 @@ export default {
 
   computed: {
     ...mapGetters('auth', ['getUserInfo', 'isUserLoggedIn']),
+    ...mapGetters('auth/signup', ['hasValidLibraryCard']),
 
     hasInvitationEmail() {
       return Boolean(
@@ -625,6 +646,10 @@ export default {
     socialSignIn(nameSocialNetwork, provider) {
       const fireAuthObj = this.$fireAuthObj()
       fireAuthObj.signInWithRedirect(provider)
+    },
+
+    async goToLibraryCardValidator() {
+      await this.$router.push({ name: 'auth-preschool-library-card' })
     }
   }
 }
