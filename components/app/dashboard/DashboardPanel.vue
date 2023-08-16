@@ -863,6 +863,7 @@ export default defineComponent({
     handleDownloadWorksheetClick() {
       if (!this.noLinkMode) {
         this.openPdf()
+        this.$router.push({ name: 'app-dashboard-offline-worksheet' })
       }
     }
   }
