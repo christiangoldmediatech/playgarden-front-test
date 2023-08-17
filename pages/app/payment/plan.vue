@@ -35,10 +35,9 @@
           >
             <div>Choose the plan that works best for your family!</div>
             <div>
-              All of our plans are monthly subscriptions offering different
-              access to Playgarden Prep's curriculum and teachers.
+              All our plans are <strong>FREE for the first 15 days</strong> followed by monthly payments, which you can cancel anytime.
             </div>
-            <div>You can also pay annually for important savings!</div>
+            <div>We offer important discounts to those families that commit for a semester of school.</div>
           </div>
         </v-col>
 

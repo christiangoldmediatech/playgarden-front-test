@@ -714,11 +714,13 @@ export default {
       return this.billing.status === 'trialing'
     },
     membershipInterval() {
-      switch (this.billing.membershipInterval) {
-        case 'month':
+      switch (this.billing.billingType) {
+        case 'MONTHLY':
           return 'monthly'
-        case 'year':
+        case 'ANNUAL':
           return 'yearly'
+        case 'BIANNUAL':
+          return 'by semester'
       }
       return null
     },

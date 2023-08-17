@@ -7,8 +7,8 @@
           <div class="pg-flex pg-justify-center">
             <div class="pg-flex pg-items-center">
               <span class="pg-mr-3 pg-text-xl pg-font-semibold">Bill Monthly</span>
-              <v-switch v-model="billAnnually" color="#FFA0C8" inset />
-              <span class="pg-text-xl pg-font-semibold">Bill Annually</span>
+              <v-switch v-model="billBiannually" color="#FFA0C8" inset />
+              <span class="pg-text-xl pg-font-semibold">Bill by Semester <span class="pg-font-normal">(6 months)</span></span>
             </div>
           </div>
 
@@ -53,9 +53,9 @@
                     class="pg-text-center pg-my-4 pg-px-4 pg-text-4xl pg-font-semibold v2-font"
                     :style="{ color: plan.color }"
                   >
-                    <template v-if="billAnnually">
-                      ${{ plan.priceAnnual.toFixed(2) }}
-                      <span class="pg-text-2xl">/year</span>
+                    <template v-if="billBiannually">
+                      ${{ plan.priceBiannual.toFixed(2) }}
+                      <span class="pg-text-2xl">/semester</span>
                     </template>
                     <template v-else>
                       ${{ plan.priceMonthly.toFixed(2) }}
@@ -65,7 +65,14 @@
 
                   <!-- Subtitle -->
                   <div
-                    class="pg-px-8 pg-py-1 pg-text-[#FFA0C8] pg-text-lg pg-font-medium v2-font"
+                    class="pg-px-8 pg-py-1 pg-text-[#FFA0C8] pg-text-lg pg-text-center pg-font-medium v2-font"
+                  >
+                    Best for families that want: <br />
+                    {{ plan.commonBenefits.bestFor }}
+                  </div>
+
+                  <div
+                    class="pg-px-8 pg-py-1 pg-text-[#BA89EB] pg-text-lg pg-font-medium v2-font"
                   >
                     {{ plan.commonBenefits.title || "What's included:" }}
                   </div>
@@ -129,7 +136,7 @@ export default defineComponent({
     /** @type {import('@/models').Plan[]} */
     plans: [],
     loading: false,
-    billAnnually: false
+    billBiannually: false
   }),
 
   methods: {
@@ -141,7 +148,7 @@ export default defineComponent({
     ]),
 
     planIsSelected(plan) {
-      const type = this.billAnnually ? 'year' : 'month'
+      const type = this.billBiannually ? 'semester' : 'month'
       if (this.getUserInfo && this.getUserInfo.planSelected && plan && plan.name) {
         return this.getUserInfo.planSelected.name === plan.name && this.getUserInfo.subscription.plan.interval === type
       }
@@ -165,7 +172,7 @@ export default defineComponent({
       const isLoggedIn = this.$route.query.isLogged
 
       if (isLoggedIn) {
-        window.open(`https://playgardenonline.com/school/app/payment/plan?planId=${plan.id}&annually=${this.billAnnually ? 'yes' : 'no'}`, '_parent')
+        window.open(`https://playgardenonline.com/school/app/payment/plan?planId=${plan.id}&biannually=${this.billBiannually ? 'yes' : 'no'}`, '_parent')
       } else {
         window.open('https://playgardenonline.com/school/auth/preschool/normal', '_parent')
       }

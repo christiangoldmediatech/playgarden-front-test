@@ -163,7 +163,7 @@ export default defineComponent({
       loading.value = true
       const plan = { ...props.draft }
       plan.id = props.plan.id
-      plan.type = props.billAnnually ? 'annual' : 'monthly'
+      plan.type = props.billAnnually ? 'biannual' : 'monthly'
       plan.fromPlaydates = props.fromPlaydates
       try {
         if (userCards.value?.length === 0) {
