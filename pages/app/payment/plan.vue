@@ -60,6 +60,7 @@
 
           <!-- TEXT -->
           <div
+            v-if="userInfo"
             class="mt-8 mb-6 text-body-1 text-md-h5 pg-m-auto pg-max-w-[900px]"
           >
             Your trial period
