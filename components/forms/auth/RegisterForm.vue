@@ -247,6 +247,13 @@
             </v-row>
 
             <!-- or -->
+            <template v-if="hasValidLibraryCard">
+              <v-row no-gutters class="pg-mt-3 pg-mb-6">
+                <v-col class="pg-text-center" cols="12">
+                  Personal information is needed in order to receive individualized educational content and to ensure the <span class="pg-font-[700]">SAFETY</span> of all participating children, Playgarden does <span class="pg-font-[700]">NOT</span> disclose this information to any third party, including Libraries. You can opt out of any communication in your <span class="pg-text-[#F89838] pg-font-[700]">Account</span>.
+                </v-col>
+              </v-row>
+            </template>
             <template v-if="!hasValidLibraryCard">
               <v-row no-gutters class="my-6">
                 <v-col class="hr-line">
