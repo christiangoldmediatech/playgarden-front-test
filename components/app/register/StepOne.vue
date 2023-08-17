@@ -28,7 +28,7 @@
         />
       </div>
 
-      <div class="pg-text-xl pg-text-black pg-opacity-50">
+      <div class="pg-text-xl pg-text-[rgba(96,96,96,0.5)]">
         Are you excited for a fun-filled day of learning?
         <span v-if="!isCreditCardRequired && !hasValidLibraryCard"> NO CREDIT CARD REQUIRED!</span>
 
