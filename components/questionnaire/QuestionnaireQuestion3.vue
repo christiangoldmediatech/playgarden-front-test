@@ -69,7 +69,7 @@ export default defineComponent({
         const totalTime = endTime.diff(startTime, 'seconds')
         questPageData[2].pageTime = totalTime
         await handleSave()
-        router.push({ name: 'app-welcome' })
+        router.push({ name: 'app-welcome', query: { fromQuestionnaire: 'true', step: '1' } })
       } catch {}
     }
 

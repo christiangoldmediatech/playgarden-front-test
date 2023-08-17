@@ -28,6 +28,7 @@ export default {
   mixins: [DashboardMixin],
   data: () => {
     return {
+      prevRoute: '',
       loading: false,
       fileUpload: false,
       progress: []
@@ -79,6 +80,11 @@ export default {
     '$route.query'() {
       this.$nuxt.$emit('close-curriculum-progress')
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.prevRoute = from.name
+    })
   },
   async created() {
     if (this.playdateInvitationToken) {
@@ -207,14 +213,18 @@ export default {
         this.loading = false
       }
     },
-    redirectDashboard() {
+    async redirectDashboard() {
       if (this.lesson) {
         const lessonDay = this.lesson.day
+        const goToVideos = this.prevRoute === 'app-welcome'
         const curriculumName = this.lesson.curriculumType.name
         const shouldRedirect = this.$route.query.shouldRedirect !== 'false' // This is use to avoid redirection loops
         const redirectToWorksheets = this.$route.query.redirectWorksheets === 'true'
         const cancelWelcomePage = this.highestProgress > 1
         const wasProgressMade = this.videos.progress > 0
+
+        // We set this to avoid re-directions to lesson videos
+        this.prevRoute = ''
 
         if ((lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro' && shouldRedirect && !wasProgressMade && !cancelWelcomePage) {
           this.$router.push({ name: 'app-welcome', query: { step: lessonDay } })
@@ -226,8 +236,10 @@ export default {
           return
         }
 
-        if (((lessonDay === 1 || lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro') && !redirectToWorksheets) {
-          this.$router.push(this.generateNuxtRoute('lesson-completed'))
+        if (((lessonDay === 1 || lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro') && !redirectToWorksheets && goToVideos) {
+          this.$router.push(this.generateNuxtRoute('lesson-videos', {
+            id: this.getNextId(this.videos.items)
+          }))
           return
         }
 
@@ -244,7 +256,13 @@ export default {
         } else if (curriculumName === 'Intro') {
           const offlineWorksheets = this.lesson.worksheets.filter((worksheet) => worksheet.type === 'OFFLINE')
           this.fileUpload = (offlineWorksheets && offlineWorksheets.length > 0)
-          const pathPage = this.fileUpload ? this.generateNuxtRoute('offline-worksheet', { ...this.$route.query }) : this.generateNuxtRoute('lesson-completed')
+          const uploadedFiles = await this.getUploadedFiles()
+          let pathPage = this.fileUpload ? this.generateNuxtRoute('offline-worksheet', { ...this.$route.query }) : this.generateNuxtRoute('lesson-completed')
+
+          if (uploadedFiles && uploadedFiles.length > 0) {
+            pathPage = this.generateNuxtRoute('lesson-completed')
+          }
+
           this.$router.push(pathPage)
         } else if (
           this.activities.progress < 100 &&
@@ -277,6 +295,9 @@ export default {
           })
         }
       }
+    },
+    async getUploadedFiles() {
+      return await this.$axios.$get(`/worksheets/children/${this.childrenIds}/lesson/${this.lesson.id}`)
     },
     resetChildren() {
       if (Array.isArray(this.selectedChild)) {

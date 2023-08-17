@@ -107,7 +107,8 @@ export default defineComponent({
     PostQuestionnaireDialog
   },
   setup() {
-    const isDialogOpen = ref(true)
+    const isDialogOpen = ref(false)
+    const isFromQuestionnaire = computed(() => route.value.query.fromQuestionnaire === 'true')
     const showPostQuestionnaireDialog = computed({
       get() {
         return isDialogOpen.value
@@ -156,6 +157,11 @@ export default defineComponent({
     const onPlayerReady = (playerInstance: PlayerInstance) => {
       player.value = playerInstance
       player.value.loadPlaylist(videoPlaylist.value)
+      if (!isFirstDay.value) {
+        handlePlay(() => {
+          player.value?.play()
+        })  
+      }
     }
 
     const handleFullscreenChange = (val: boolean): void => {
@@ -186,6 +192,7 @@ export default defineComponent({
 
     onMounted(async () => {
       endLessonOverlay.value = false
+      isDialogOpen.value = isFromQuestionnaire.value
       await getWelcomeVideo().finally(() => {
         createWelcomeLesson()
       })

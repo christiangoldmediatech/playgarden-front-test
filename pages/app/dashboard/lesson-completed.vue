@@ -303,7 +303,7 @@ export default defineComponent({
     }
 
     const downloadWorksheet = () => {
-      const worksheet = props.lesson.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
+      const worksheet = lesson.value.worksheets.find(({ type }) => type === 'OFFLINE')
       const url = worksheet?.pdfUrl || ''
       window.open(url, '_blank')
     }
