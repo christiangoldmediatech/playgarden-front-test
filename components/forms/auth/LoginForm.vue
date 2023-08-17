@@ -29,9 +29,9 @@
 
     <v-btn
       block
-      color="green2"
+      color="#B2E68D"
       min-height="60"
-      class="main-btn main-btn--black-base"
+      class="main-btn !pg-text-white"
       :disabled="isButtonDisabled"
       :loading="loading"
       type="submit"

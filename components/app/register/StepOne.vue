@@ -30,7 +30,12 @@
 
       <div class="pg-text-xl pg-text-black pg-opacity-50">
         Are you excited for a fun-filled day of learning?
-        <span v-if="!isCreditCardRequired"> NO CREDIT CARD REQUIRED!</span>
+        <span v-if="!isCreditCardRequired && !hasValidLibraryCard"> NO CREDIT CARD REQUIRED!</span>
+
+        <div v-if="hasValidLibraryCard" class="pg-font-semibold pg-mt-5">
+          Your library card number:
+          <span class="pg-text-[#68C453] pg-font-bold">{{ libraryCardNumber }}</span>
+        </div>
       </div>
 
       <!-- CONTENT -->
@@ -86,7 +91,7 @@ import {
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
-import { useToastHelper } from '@/composables'
+import { useToastHelper, useAccessorHelper } from '@/composables'
 import { useUTM } from '@/composables/web/utm'
 import { useModal } from '@/composables/web/modal'
 import {
@@ -128,6 +133,10 @@ export default defineComponent({
     const Modal = useModal()
     const Utm = useUTM({ route: route.value })
     const SignupInvitation = useSignupInvitation({ route: route.value })
+
+    const signupStore = useAccessorHelper().auth.signup
+    const hasValidLibraryCard = signupStore.hasValidLibraryCard
+    const libraryCardNumber = signupStore.libraryCardNumber
 
     const SignupFlow = useSignupFlow({
       route: route.value
@@ -197,6 +206,8 @@ export default defineComponent({
       token,
       isCreditCardRequired: SignupFlow.isCreditCardRequired,
       inInvitationProcess: SignupInvitation.inInvitationProcess,
+      hasValidLibraryCard,
+      libraryCardNumber,
       handleGoBack,
       goToNextStep,
       handleSubmit

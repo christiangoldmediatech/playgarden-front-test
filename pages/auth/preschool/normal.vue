@@ -40,6 +40,10 @@ export default defineComponent({
     })
 
     onMounted(() => {
+      if (store.hasValidLibraryCard) {
+        return
+      }
+
       const options = ['CREDITACARD', 'NOCREDITCARD']
       const randomOption = options[Math.floor(Math.random() * options.length)]
       switch (randomOption) {
