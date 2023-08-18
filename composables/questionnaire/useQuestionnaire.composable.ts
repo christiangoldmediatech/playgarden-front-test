@@ -61,7 +61,7 @@ const questDataState = reactive<Record<string, SurveyQuestion>>({
     text: 'Would you like to assess your child\'s progress for free using our partner, Cognitive Toybox?',
     instructions: '',
     type: 'RADIO',
-    options: ['Yes', 'No'],
+    options: ['Yes', 'No', 'Not sure, reminde me later'],
     answer: '',
     order: 1
   }
