@@ -9,21 +9,49 @@
         One last thing before you get started!
       </div>
 
-      <div class="questionnaire-answers questionnaire-answers--radio pg-mb-5 lg:pg-mb-16">
-        <v-radio-group v-model="questDataState.question3.answer" hide-details class="pg-mt-0 !pg-mb-10">
-          <div class="pg-mb-4 pg-text-[#606060] pg-font-bold pg-text-base pg-leading-[20px]">
+      <div
+        class="questionnaire-answers questionnaire-answers--radio pg-mb-5 lg:pg-mb-16"
+      >
+        <v-radio-group
+          v-model="questDataState.question3.answer"
+          hide-details
+          class="pg-mt-0 !pg-mb-10"
+        >
+          <div
+            class="pg-mb-4 pg-text-[#606060] pg-font-bold pg-text-base pg-leading-[20px]"
+          >
             {{ questDataState.question3.text }}
           </div>
-          <v-radio off-icon="mdi-radiobox-blank primary--text" label="Yes" value="Yes" />
-          <v-radio off-icon="mdi-radiobox-blank primary--text" label="No" value="No" />
+          <v-radio
+            v-for="(option, index) in questDataState.question3.options"
+            :key="`question-3-option-${index + 1}`"
+            off-icon="mdi-radiobox-blank primary--text"
+            :label="option"
+            :value="option"
+          />
         </v-radio-group>
 
         <v-radio-group v-model="questDataState.question4.answer" hide-details>
-          <div class="pg-mb-4 pg-text-[#606060] pg-font-bold pg-text-base pg-leading-[20px]">
-            Would you like to assess your child's progress for free using our partner, <a class="warning--text !pg-underline" target="_blank" href="https://www.cognitivetoybox.com/">cognitive toybox</a>?
+          <div
+            class="pg-mb-4 pg-text-[#606060] pg-font-bold pg-text-base pg-leading-[20px]"
+          >
+            Would you like to assess your child's progress for free using our
+            partner,
+            <a
+              class="warning--text !pg-underline"
+              target="_blank"
+              href="https://www.cognitivetoybox.com/"
+            >
+              cognitive toybox
+            </a>?
           </div>
-          <v-radio off-icon="mdi-radiobox-blank primary--text" label="Yes" value="Yes" />
-          <v-radio off-icon="mdi-radiobox-blank primary--text" label="No" value="No" />
+          <v-radio
+            v-for="(option, index) in questDataState.question4.options"
+            :key="`question-4-option-${index + 1}`"
+            off-icon="mdi-radiobox-blank primary--text"
+            :label="option"
+            :value="option"
+          />
         </v-radio-group>
       </div>
 
@@ -33,7 +61,9 @@
           class="white--text"
           depressed
           :loading="isSaving"
-          :disabled="!questDataState.question3.answer || !questDataState.question4.answer"
+          :disabled="
+            !questDataState.question3.answer || !questDataState.question4.answer
+          "
           @click="onSave"
         >
           GO TO FIRST DAY OF LEARNING
@@ -45,8 +75,16 @@
 
 <script lang="ts">
 import dayjs from 'dayjs'
-import { defineComponent, onMounted, useStore, useRouter } from '@nuxtjs/composition-api'
-import { useQuestionnaire, useQuestionnaireSave } from '@/composables/questionnaire/useQuestionnaire.composable'
+import {
+  defineComponent,
+  onMounted,
+  useStore,
+  useRouter
+} from '@nuxtjs/composition-api'
+import {
+  useQuestionnaire,
+  useQuestionnaireSave
+} from '@/composables/questionnaire/useQuestionnaire.composable'
 
 export default defineComponent({
   name: 'QuestionnaireQuestion3',
@@ -69,7 +107,10 @@ export default defineComponent({
         const totalTime = endTime.diff(startTime, 'seconds')
         questPageData[2].pageTime = totalTime
         await handleSave()
-        router.push({ name: 'app-welcome', query: { fromQuestionnaire: 'true', step: '1' } })
+        router.push({
+          name: 'app-welcome',
+          query: { fromQuestionnaire: 'true', step: '1' }
+        })
       } catch {}
     }
 
