@@ -90,7 +90,7 @@
           </div>
         </v-col>
 
-        <v-col cols="12" class="mt-16">
+        <v-col cols="12" class="mt-2">
           <SubscriptionPlanSelection
             class="mt-md-n6"
             :in-sign-up-process="inSignUpProcess"
