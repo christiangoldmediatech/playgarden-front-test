@@ -94,6 +94,7 @@
           <SubscriptionPlanSelection
             class="mt-md-n6"
             :in-sign-up-process="inSignUpProcess"
+            :is-trialing="!isTrialExpired"
             @click:submit="handleSubmit"
             @initialized="initialized = true"
           />

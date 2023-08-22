@@ -102,7 +102,7 @@
               {{ !planIsSelected(plan) ? 'Choose plan' : 'Current Plan' }}
             </v-btn>
 
-            <p class="pg-text-center pg-text-sm pg-mt-4">
+            <p v-if="isTrialing" class="pg-text-center pg-text-sm pg-mt-4">
               Playgarden Prep Online is COMPLETELY FREE for the first 15 days.
             </p>
           </div>
@@ -162,6 +162,11 @@ export default defineComponent({
     },
 
     inSignUpProcess: {
+      type: Boolean,
+      default: false
+    },
+
+    isTrialing: {
       type: Boolean,
       default: false
     },
