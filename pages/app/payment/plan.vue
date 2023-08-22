@@ -20,7 +20,7 @@
           </v-btn>
         </v-col>
 
-        <v-col cols="12" class="text-center mt-4">
+        <v-col v-if="inSignUpProcess" cols="12" class="text-center mt-4">
           <!-- TITLE -->
           <div
             class="pg-text-4xl pg-text-accent pg-font-bold pg-tracking-[1px] v2-font"
@@ -40,7 +40,57 @@
           </div>
         </v-col>
 
-        <v-col cols="12" class="mt-6">
+        <!-- TRIAL ENDED NO MORE THAN 30 DAYS AGO -->
+        <v-col
+          v-else-if="!trialEndedTooLongAgo"
+          cols="12"
+          class="text-center mt-4"
+        >
+          <!-- TITLE -->
+          <div
+            v-if="!isTrialExpired"
+            class="pg-text-4xl pg-text-primary pg-font-bold pg-tracking-[1px] v2-font"
+          >
+            {{
+              isTrialExpired
+                ? 'YOUR TRIAL PERIOD HAS EXPIRED'
+                : 'YOUR TRIAL PERIOD IS EXPIRING'
+            }}
+          </div>
+
+          <div
+            v-else
+            class="pg-text-4xl pg-text-[#BA89EB] pg-font-bold pg-tracking-[1px] v2-font"
+          >
+            Change Plan
+          </div>
+
+          <!-- TEXT -->
+          <div
+            v-if="!isTrialExpired"
+            class="mt-8 mb-6 text-body-1 text-md-h5 pg-m-auto pg-max-w-[900px]"
+          >
+            Your trial period
+            {{ isTrialExpired ? 'ended' : 'will end' }} on
+            <span class="pg-text-primary pg-font-semibold v2-font">
+              {{ lastDayOfTrial }}.
+            </span>
+            You {{ isTrialExpired ? 'were' : 'are currently' }} trialing the
+            <span class="accent--text font-weight-bold">
+              {{ userInfo.planSelected.name }}
+            </span>
+            plan. After your trial {{ isTrialExpired ? 'ended' : 'ends' }} you
+            {{ isTrialExpired ? 'were' : 'will be' }} automatically placed into
+            the
+            <span class="accent--text font-weight-bold">
+              {{ userInfo.planSelected.name }}
+            </span>
+            monthly plan. If you would like to trial a different plan, you may
+            do so below!
+          </div>
+        </v-col>
+
+        <v-col cols="12" class="mt-16">
           <SubscriptionPlanSelection
             class="mt-md-n6"
             :in-sign-up-process="inSignUpProcess"
