@@ -332,7 +332,7 @@
               color="#D9B4FF"
               width="50%"
               x-large
-              @click="learningKitsPopup = true"
+              @click="goToSummerPage"
             >
               View More
             </v-btn>
@@ -807,6 +807,10 @@ export default {
       this.resetCancellationFlowsControls()
       this.leaveMotive = ''
       this.removeSubscriptionModal = true
+    },
+
+    goToSummerPage() {
+      window.open('https://playgardenprep.com/pdp/summer', '_blank')
     },
 
     async loadData() {
