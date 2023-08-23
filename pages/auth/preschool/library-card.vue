@@ -75,8 +75,12 @@
               type="submit"
               x-large
             >
-              Check library card number
+              SUBMIT
             </v-btn>
+
+            <p class="pg-mt-6 mt-md-4 pg-text-center md:pg-text-left">
+              Your library card number (also called patron ID or account number) is the 14-digit number found on the library card, near the barcode.
+            </p>
 
             <!-- Hidden until link is provided -->
             <p class="pg-hidden pg-mt-6 mt-md-4 pg-text-center md:pg-text-left">

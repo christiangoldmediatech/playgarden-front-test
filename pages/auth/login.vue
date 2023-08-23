@@ -77,7 +77,7 @@
           <!-- Social buttons -->
           <v-row no-gutters>
             <!-- LIBRARY CARD -->
-            <v-col class="mb-6 mb-md-4" cols="12" order="2" order-md="0">
+            <!-- <v-col class="mb-6 mb-md-4" cols="12" order="2" order-md="0">
               <v-btn
                 block
                 height="45"
@@ -92,7 +92,7 @@
 
                 <span class="spanSocialNetwork">Continue with your library card number</span>
               </v-btn>
-            </v-col>
+            </v-col> -->
 
             <!-- FACEBOOK -->
             <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
