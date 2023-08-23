@@ -19,9 +19,9 @@
     <div>
       <template>
         <NormalTitle
-          text="It's the easiest way to give your child an immersive education at home!"
-          font-size="24px"
-          font-size-mobile="20px"
+          text="The easiest and most effective way to give your child an immersive education outside of school!"
+          font-size="20px"
+          font-size-mobile="17px"
         />
       </template>
     </div>
