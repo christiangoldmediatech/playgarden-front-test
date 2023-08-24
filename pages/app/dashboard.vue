@@ -219,6 +219,8 @@ export default {
         const goToVideos = this.prevRoute === 'app-welcome'
         const curriculumName = this.lesson.curriculumType.name
         const shouldRedirect = this.$route.query.shouldRedirect !== 'false' // This is use to avoid redirection loops
+        const { tutorial, tutorialStep } = this.$route.query
+        const tutorialQueryParams = { tutorial, tutorialStep }
         const redirectToWorksheets = this.$route.query.redirectWorksheets === 'true'
         const cancelWelcomePage = this.highestProgress > 1
         const wasProgressMade = this.videos.progress > 0
@@ -227,30 +229,33 @@ export default {
         this.prevRoute = ''
 
         if ((lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro' && shouldRedirect && !wasProgressMade && !cancelWelcomePage) {
-          this.$router.push({ name: 'app-welcome', query: { step: lessonDay } })
+          this.$router.push({ name: 'app-welcome', query: { step: lessonDay, ...tutorialQueryParams } })
           return
         }
 
         if (redirectToWorksheets) {
-          this.$router.push({ name: 'app-dashboard-online-worksheet' })
+          this.$router.push({ name: 'app-dashboard-online-worksheet', query: tutorialQueryParams })
           return
         }
 
         if (((lessonDay === 1 || lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro') && !redirectToWorksheets && goToVideos) {
           this.$router.push(this.generateNuxtRoute('lesson-videos', {
-            id: this.getNextId(this.videos.items)
+            id: this.getNextId(this.videos.items),
+            ...tutorialQueryParams
           }))
           return
         }
 
         if (this.videos.progress < 100 && this.videos.items.length) {
           const route = this.generateNuxtRoute('lesson-videos', {
-            id: this.getNextId(this.videos.items)
+            id: this.getNextId(this.videos.items),
+            ...tutorialQueryParams
           })
           this.$router.push(route)
         } else if ((this.worksheets.progress < 100 && !this.worksheets.isEmpty) && this.worksheets.ONLINE) {
           const route = this.generateNuxtRoute('online-worksheet', {
-            id: this.getNextId(this.worksheets.ONLINE)
+            id: this.getNextId(this.worksheets.ONLINE),
+            ...tutorialQueryParams
           })
           this.$router.push(route)
         } else if (curriculumName === 'Intro') {
@@ -269,14 +274,16 @@ export default {
           this.activities.items.length
         ) {
           const route = this.generateNuxtRoute('lesson-activities', {
-            id: this.getNextId(this.activities.items)
+            id: this.getNextId(this.activities.items),
+            ...tutorialQueryParams
           })
           this.$router.push(route)
         } else if (this.lesson.id === this.currentLessonId) {
           this.$router.push(this.generateNuxtRoute('lesson-completed'))
         } else {
           const route = this.generateNuxtRoute('lesson-videos', {
-            id: this.videos.items[0].id
+            id: this.videos.items[0].id,
+            ...tutorialQueryParams
           })
           this.$router.push(route)
         }

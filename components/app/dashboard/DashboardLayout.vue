@@ -59,6 +59,7 @@
           xl="3"
         >
           <dashboard-panel
+            id="lesson-dashboard-panel"
             v-bind="{ lesson, childId, loading }"
             :next-button="canAdvance"
           />
@@ -99,6 +100,7 @@
                 justify="center"
               >
                 <carousel-letter
+                  id="lesson-letter-carousel"
                   ref="CarouselLetter"
                   :value="curriculumTypeId"
                   :preview-mode="previewMode"

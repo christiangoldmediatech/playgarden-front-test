@@ -80,6 +80,7 @@ export default {
               openInNewTab: false
             },
             {
+              id: 'student-cubby-button',
               title: 'Student Cubby',
               dataTestId: 'app-student-cubby',
               to: {

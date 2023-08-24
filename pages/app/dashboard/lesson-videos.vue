@@ -19,6 +19,7 @@
       </v-btn>
       <LessonPuzzlePieces v-else v-bind="{ puzzlePiece }" />
     </v-list-item-action>
+    <LessonVideosTutorial />
   </lesson-videos-card>
 </template>
 
@@ -29,13 +30,15 @@ import { isArray } from 'lodash'
 import { TypedStore } from '@/models'
 import LessonVideosCard from '@/components/app/dashboard/LessonVideosCard.vue'
 import LessonPuzzlePieces from '@/components/app/dashboard/LessonPuzzlePieces.vue'
+import LessonVideosTutorial from '@/components/tutorial/pages/LessonVideosTutorial.vue'
 
 export default defineComponent({
   name: 'LessonVideos',
 
   components: {
     LessonVideosCard,
-    LessonPuzzlePieces
+    LessonPuzzlePieces,
+    LessonVideosTutorial
   },
 
   setup () {
