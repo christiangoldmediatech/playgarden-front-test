@@ -111,6 +111,9 @@ export default defineComponent({
             attachTo: {
               element: '#lesson-activities',
               on: 'right'
+            },
+            showOn() {
+              return !!document.querySelector('#lesson-activities')
             }
           },
           alternateOpeningTarget: '#lesson-dashboard-panel',
