@@ -25,7 +25,7 @@
             <slot />
           </div>
 
-          <div class="pg-mb-4">
+          <div class="sm:pg-mb-4">
             <div v-if="finishButtons" class="pg-flex pg-justify-center">
               <div class="pg-w-full pg-max-w-[128px]">
                 <VBtn color="#F58E00" class="!pg-text-white" elevation="0" block @click="onClickNext">
@@ -33,11 +33,12 @@
                 </VBtn>
               </div>
             </div>
-            <div v-else class="pg-grid pg-grid-cols-2 pg-gap-6 pg-px-6">
-              <VBtn color="#F89838" text block @click="onClickSkip">
+
+            <div v-else class="pg-grid pg-grid-cols-1 sm:pg-grid-cols-2 pg-gap-3 sm:pg-gap-6 pg-px-6">
+              <VBtn class="pg-order-2 sm:pg-order-1" color="#F89838" text block @click="onClickSkip">
                 Skip
               </VBtn>
-              <VBtn color="#68C453" class="!pg-text-white" elevation="0" block @click="onClickNext">
+              <VBtn color="#68C453" class="!pg-text-white sm:pg-order-2" elevation="0" block @click="onClickNext">
                 {{ currentTutorialStep && currentTutorialStep.advanceText || 'Next' }}
               </VBtn>
             </div>
@@ -46,7 +47,7 @@
         <img
           loading="lazy"
           src="@/assets/svg/color-dashes.svg"
-          class="pg-w-full pg-max-h-[13px] pg-mb-[-4px] pg-object-cover pg-px-4 sm:pg-px-11"
+          class="pg-w-full pg-max-h-[13px] pg-mb-[-4px] pg-object-cover pg-px-5 sm:pg-px-9"
         />
       </VCard>
     </MountingPortal>

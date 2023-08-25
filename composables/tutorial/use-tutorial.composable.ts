@@ -11,6 +11,7 @@ export type TutorialStep = {
   onAdvance?: () => void
   onShow?: (this: Shepherd.Step) => void
   onHide?: (this: Shepherd.Step) => void
+  onBeforeShowPromise?: (this: Shepherd.Step.StepOptions) => Promise<any>
 }
 
 export type TutorialQueryParams ={
@@ -34,7 +35,7 @@ function createTutorial() {
   let targetStyles: Record<any, any> = {}
   let oldStyle: any = ''
 
-  const pullTargetElementOut = () => {
+  const pullTargetElementOut = (borderRadius = 6) => {
     if (!targetEl) {
       return
     }
@@ -46,7 +47,7 @@ function createTutorial() {
     }
 
     targetEl.style.setProperty('z-index', '9000', 'important')
-    targetEl.style.setProperty('border-radius', '6px', 'important')
+    targetEl.style.setProperty('border-radius', `${borderRadius}px`, 'important')
 
     Object.keys(targetStyles).forEach((cssKey) => {
       targetEl.style[cssKey] = targetStyles[cssKey]
@@ -87,7 +88,8 @@ function createTutorial() {
       },
       beforeShowPromise() {
         currentTutorialStepId.value = this.id || ''
-        return new Promise((resolve) => {
+        const tutorialStep = tutorialSteps.value.find((tutStep) => tutStep.step.id === this.id)
+        return tutorialStep?.onBeforeShowPromise?.call(this) || new Promise((resolve) => {
           resolve(true)
         })
       },
@@ -117,7 +119,7 @@ function createTutorial() {
           targetStyles = alternateOpeningTargetStyles
 
           // Set the z-index of the target element to avoid being obscured by other UI elements
-          pullTargetElementOut()
+          pullTargetElementOut(typeof this.options.modalOverlayOpeningRadius === 'number' ? this.options.modalOverlayOpeningRadius : undefined)
 
           // Call custom onShow callback if supplied
           tutorialStep && tutorialStep.onShow && tutorialStep.onShow.call(this)
@@ -218,10 +220,16 @@ export const useTutorialQuery = ({ route, router }: { route: ComputedRef<Route>,
     router.push({ name, params, query } as unknown as RawLocation)
   }
 
+  function getTutorialQueryParams() {
+    const { tutorial, tutorialStep } = route.value.query
+    return { tutorial, tutorialStep }
+  }
+
   return {
     shouldStartTutorial,
     isTutorial,
     tutorialStartStep,
+    getTutorialQueryParams,
     clearTutorialRouteParams
   }
 }
