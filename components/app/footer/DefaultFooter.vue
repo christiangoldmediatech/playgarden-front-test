@@ -27,7 +27,7 @@
       >
         <!-- LOGO -->
         <div class="pg-flex pg-justify-center pg-items-center">
-          <img src="@/assets/png/rainbow-logo.png" class="pg-h-[120px]">
+          <img src="@/assets/png/rainbow-logo.png" class="pg-h-[160px]">
         </div>
 
         <!-- LINKS -->
