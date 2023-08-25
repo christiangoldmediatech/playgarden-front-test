@@ -36,7 +36,7 @@
         >
           <a v-for="link in links" :key="link.name" :href="link.href">
             <span
-              class="pg-inline-block pg-text-lg pg-text-black pg-text-sm"
+              class="pg-inline-block pg-text-lg pg-text-black pg-text-sm font-bold"
             >
               {{ link.name }}
             </span>
@@ -55,20 +55,20 @@
 
           <a
             href="mailto:hello@playgardenprep.com"
-            class="pg-text-sm !pg-text-[#707070]"
+            class="pg-text-sm font-bold !pg-text-[#707070]"
           >
             hello@playgardenprep.com
           </a>
 
-          <a href="tel:646-504-4716" class="pg-text-sm !pg-text-[#707070]">
+          <a href="tel:646-504-4716" class="pg-text-sm font-bold !pg-text-[#707070]">
             <div>646-504-4716</div>
           </a>
 
-          <div class="pg-text-sm pg-text-black">
+          <div class="pg-text-sm font-bold pg-text-black">
             95 Franklin Street
           </div>
 
-          <div class="pg-text-sm pg-text-black">
+          <div class="pg-text-sm font-bold pg-text-black">
             New York, NY 10013
           </div>
         </div>
@@ -85,20 +85,20 @@
 
           <a
             href="mailto:ues@playgardenprep.com"
-            class="pg-text-sm !pg-text-[#707070]"
+            class="pg-text-sm font-bold !pg-text-[#707070]"
           >
             ues@playgardenprep.com
           </a>
 
-          <a href="tel:212-965-9718" class="pg-text-sm !pg-text-[#707070]">
+          <a href="tel:212-965-9718" class="pg-text-sm font-bold !pg-text-[#707070]">
             <div>212-965-9718</div>
           </a>
 
-          <div class="pg-text-sm pg-text-black">
+          <div class="pg-text-sm font-bold pg-text-black">
             1366 Madison Avenue
           </div>
 
-          <div class="pg-text-sm pg-text-black">
+          <div class="pg-text-sm font-bold pg-text-black">
             New York, NY 10128
           </div>
         </div>
@@ -115,20 +115,20 @@
 
           <a
             href="mailto:lab@playgardenprep.com"
-            class="pg-text-sm !pg-text-[#707070]"
+            class="pg-text-sm font-bold !pg-text-[#707070]"
           >
             lab@playgardenprep.com
           </a>
 
-          <a href="tel:646- 504-4716" class="pg-text-sm !pg-text-[#707070]">
+          <a href="tel:646- 504-4716" class="pg-text-sm font-bold !pg-text-[#707070]">
             <div>646- 504-4716</div>
           </a>
 
-          <div class="pg-text-sm pg-text-black">
+          <div class="pg-text-sm font-bold pg-text-black">
             106 East 86th Street
           </div>
 
-          <div class="pg-text-sm pg-text-black">
+          <div class="pg-text-sm font-bold pg-text-black">
             New York, NY 10128
           </div>
         </div>
@@ -145,20 +145,20 @@
 
           <a
             href="mailto:tribeca@playgardenprep.com"
-            class="pg-text-sm !pg-text-[#707070]"
+            class="pg-text-sm font-bold !pg-text-[#707070]"
           >
             tribeca@playgardenprep.com
           </a>
 
-          <a href="tel:212-965-9717" class="pg-text-sm !pg-text-[#707070]">
+          <a href="tel:212-965-9717" class="pg-text-sm font-bold !pg-text-[#707070]">
             <div>212-965-9717</div>
           </a>
 
-          <div class="pg-text-sm pg-text-black">
+          <div class="pg-text-sm font-bold pg-text-black">
             95 Franklin Street
           </div>
 
-          <div class="pg-text-sm pg-text-black">
+          <div class="pg-text-sm font-bold pg-text-black">
             New York, NY 10013
           </div>
         </div>
@@ -213,3 +213,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+.font-bold {
+  font-weight: 500 !important;
+}
+</style>
