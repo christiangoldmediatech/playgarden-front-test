@@ -173,7 +173,9 @@ export default defineComponent({
 
     const additionalVideos = computed(() => {
       const curatedVideos = curatedPlaylist.value.length ? curatedPlaylist.value.slice(1) : []
-      const formattedKidsCorner = kidsCornerVideos.value.map(video => getMediaObjectFromVideoData(video))
+      const formattedKidsCorner = kidsCornerVideos.value
+        .filter((videoData) => videoData.video)
+        .map(video => getMediaObjectFromVideoData(video))
       return [...curatedVideos, ...formattedKidsCorner]
     })
 

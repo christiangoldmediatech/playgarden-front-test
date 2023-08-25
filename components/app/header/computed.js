@@ -73,6 +73,7 @@ export default {
               dataTestId: 'app-music'
             },
             {
+              id: 'kids-corner-button',
               title: 'Kids Corner',
               dataTestId: 'app-kids-corner',
               external: true,

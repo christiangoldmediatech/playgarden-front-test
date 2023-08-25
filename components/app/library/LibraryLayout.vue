@@ -32,7 +32,9 @@
             order="2"
             order-sm="1"
           >
-            <search-text-field @search="handleSearch" />
+            <div id="library-search">
+              <search-text-field @search="handleSearch" />
+            </div>
           </v-col>
 
           <library-links
@@ -51,7 +53,6 @@
             <library-back-btn @click="goBack" />
           </v-col>
         </v-row>
-
         <slot />
       </v-container>
     </template>

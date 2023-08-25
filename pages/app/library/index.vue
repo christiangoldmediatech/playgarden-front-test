@@ -32,6 +32,7 @@
         />
       </template>
     </library-content-section>
+    <LibraryTutorial v-if="!isLoadingInitialData" />
   </library-layout>
 </template>
 
@@ -54,6 +55,7 @@ import LibraryContentSection from '@/components/app/library/LibraryContentSectio
 import LibraryInlinePlayer from '@/components/app/library/LibraryInlinePlayer.vue'
 import LibraryLetterVideoBrowser from '@/components/app/library/LibraryLetterVideoBrowser.vue'
 import CategoryVideoCard from '@/components/app/library/CategoryVideoCard.vue'
+import LibraryTutorial from '@/components/tutorial/pages/LibraryTutorial.vue'
 
 import {
   TypedStore
@@ -67,7 +69,8 @@ export default defineComponent({
     LibraryContentSection,
     LibraryInlinePlayer,
     LibraryLetterVideoBrowser,
-    CategoryVideoCard
+    CategoryVideoCard,
+    LibraryTutorial
   },
 
   setup() {
