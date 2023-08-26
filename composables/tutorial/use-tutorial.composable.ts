@@ -46,7 +46,7 @@ function createTutorial() {
       targetEl.style.setProperty('position', 'relative', 'important')
     }
 
-    targetEl.style.setProperty('z-index', '9000', 'important')
+    targetEl.style.setProperty('z-index', '14000', 'important')
     targetEl.style.setProperty('border-radius', `${borderRadius}px`, 'important')
 
     Object.keys(targetStyles).forEach((cssKey) => {

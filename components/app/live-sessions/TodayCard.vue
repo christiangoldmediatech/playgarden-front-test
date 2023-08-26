@@ -15,7 +15,9 @@
         :class="{
           'lsess-card-scaled': hover,
           'lsess-card-active': isLive,
-          'lsess-card-cancelled': entry.cancelled
+          'lsess-card-cancelled': entry.cancelled,
+          'today-liveclass-card': entry.type === 'LiveClass',
+          'today-playdate-card': entry.type === 'Playdate'
         }"
         :disabled="block"
         @click.stop="openLink"

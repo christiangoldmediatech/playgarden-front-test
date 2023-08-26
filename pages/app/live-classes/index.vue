@@ -112,7 +112,7 @@
 
             <v-row>
               <v-col cols="12">
-                <span class="font-weight-bold">
+                <span id="time-zone-changer" class="font-weight-bold">
                   *Hours are in {{ getAcronymCurrent }}, you can change your
                   time zone by clicking
                   <span
@@ -133,6 +133,7 @@
             />
           </v-col>
         </v-row>
+        <live-classes-tutorial />
       </v-container>
 
       <v-container
@@ -191,6 +192,8 @@
             </v-card>
           </v-col>
         </v-row>
+
+        <live-classes-tutorial />
       </v-container>
     </pg-loading>
 
@@ -342,6 +345,7 @@ import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
 import { jsonCopy } from '@/utils'
 import dayjs from 'dayjs'
 import HolidayCard from '@/components/app/live-sessions/HolidayCard.vue'
+import LiveClassesTutorial from '@/components/tutorial/pages/LiveClassesTutorial.vue'
 
 export default {
   name: 'Index',
@@ -355,7 +359,8 @@ export default {
     WeekSelector,
     DaySelector,
     UnlockPrompt,
-    HolidayCard
+    HolidayCard,
+    LiveClassesTutorial
   },
 
   data: () => {
@@ -531,6 +536,15 @@ export default {
       this.getFilteredHolidays()
       this.setCurrentTimezone()
     }
+
+    // tutorial
+    this.$appEventBus.$on('tutorial-open-drawer', () => {
+      this.drawer = false
+    })
+
+    this.$appEventBus.$on('tutorial-close-drawer', () => {
+      this.drawer = true
+    })
   },
 
   methods: {
