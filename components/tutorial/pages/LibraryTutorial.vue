@@ -77,7 +77,7 @@ export default defineComponent({
             }
           },
           onAdvance() {
-            window.open(`${process.env.kidsCornerUrl}?atoken=${store.getters['auth/getAccessToken']}&tutorial=true&tutorialStep=step1`)
+            window.open(`${process.env.kidsCornerUrl}?atoken=${store.getters['auth/getAccessToken']}&tutorial=true&tutorialStep=step1`, '_self')
           }
         }
       ])

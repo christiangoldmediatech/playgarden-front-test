@@ -1,7 +1,7 @@
 import Shepherd from 'shepherd.js'
-import { Route, RawLocation } from 'vue-router'
 import { ComputedRef, ref, computed, useRouter } from '@nuxtjs/composition-api'
 import { flip, shift, limitShift, offset } from '@floating-ui/dom'
+import type { Route, RawLocation } from 'vue-router'
 
 export type TutorialStep = {
   step: Shepherd.Step.StepOptions
