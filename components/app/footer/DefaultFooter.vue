@@ -18,7 +18,7 @@
           'pg-flex',
           'pg-flex-col',
           'pg-justify-between',
-          'pg-max-w-[1150px]',
+          'pg-max-w-[1550px]',
           'pg-mt-48',
           'pg-mx-auto',
           'lg:pg-mt-36',
