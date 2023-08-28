@@ -75,10 +75,10 @@
                     {{ section.title }}
                   </h4>
                   <h2 v-if="section.type === 'offline-worksheet'" class="section-type">
-                    {{ $t('lessonEnd.overlay.sectionWorksheet ')}}
+                    {{ $t('lessonEnd.overlay.sectionWorksheet ') }}
                   </h2>
                   <h2 v-if="section.type === 'online-worksheet'" class="section-type">
-                    {{ $t('lessonEnd.overlay.sectionOnlineWorksheet ')}}
+                    {{ $t('lessonEnd.overlay.sectionOnlineWorksheet ') }}
                   </h2>
                   <v-btn
                     v-if="section.type === 'offline-worksheet'"
@@ -99,7 +99,7 @@
                     text
                     small
                   >
-                    {{ $t('lessonEnd.overlay.goToLibrary ')}}
+                    {{ $t('lessonEnd.overlay.goToLibrary ') }}
                     <v-icon>
                       mdi-chevron-right
                     </v-icon>
@@ -112,7 +112,7 @@
                     text
                     small
                   >
-                    {{ $t('lessonEnd.overlay.goToOnlineWorksheets ')}}
+                    {{ $t('lessonEnd.overlay.goToOnlineWorksheets ') }}
                     <v-icon>
                       mdi-chevron-right
                     </v-icon>
@@ -144,7 +144,7 @@
                   <v-icon>
                     mdi-chevron-left
                   </v-icon>
-                  {{ $t('lessonEnd.overlay.watchVideoAgain ')}}
+                  {{ $t('lessonEnd.overlay.watchVideoAgain ') }}
                 </v-btn>
               </div>
               <img
