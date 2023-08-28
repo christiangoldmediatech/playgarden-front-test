@@ -1,6 +1,7 @@
 <template>
   <v-main>
     <dashboard-layout
+      v-if="lesson"
       v-model="selectedChild"
       v-bind="{ lesson, loading }"
       preview-mode
@@ -32,7 +33,7 @@ export default {
 
   data: () => {
     return {
-      selectedChild: null,
+      selectedChild: previewChild,
       lesson: null,
       loading: true
     }
@@ -46,7 +47,9 @@ export default {
 
   async mounted() {
     const { token } = this.$route.query
-    this.$axios.setToken(`Bearer ${token}`)
+    if (token) {
+      this.$axios.setToken(`Bearer ${token}`)
+    }
 
     await this.$store.dispatch('setChild', {
       value: [previewChild],
@@ -54,6 +57,7 @@ export default {
     })
 
     this.lesson = await this.getLessonPreview(this.lessonId)
+
     this.loading = false
     if (this.$route.name === 'admin-curriculum-management-lessonId-preview') {
       this.$router.push(

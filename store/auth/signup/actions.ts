@@ -1,13 +1,16 @@
 import { actionTree } from 'typed-vuex'
 import { toastError } from '@/utils/vuex'
-import { Flow } from '@/composables/users/enums/flow.enum'
+import { AuthFlow, Flow } from '@/composables/users/enums/flow.enum'
 import { ParentSignupPayload } from '@/composables/web/signup/types/parent-signup-payload.type'
 import { state, getters, mutations } from './'
 
 export default actionTree(
   { state, getters, mutations },
   {
-    async signup({ dispatch, getters }, data: ParentSignupPayload) {
+    async signup(
+      { state, commit, dispatch, getters },
+      data: ParentSignupPayload
+    ) {
       const user = { ...data }
 
       if (user.password) {
@@ -31,6 +34,14 @@ export default actionTree(
       await dispatch('auth/setToken', accessToken, {
         root: true
       })
+
+      if (getters.hasValidLibraryCard) {
+        await this.$axios.$post('/user-library-cards', {
+          libraryId: state.libraryId,
+          libraryCardNumber: state.libraryCardNumber.slice(5)
+        })
+        commit('RESET_LIBRARY_CARD_PARAMS')
+      }
 
       return dispatch('auth/fetchUserInfo', null, { root: true })
     },
@@ -66,6 +77,30 @@ export default actionTree(
       )
 
       return response.flow
+    },
+
+    async setLibraryCardNumber(
+      { commit },
+      libraryCardNumber: string
+    ): Promise<Boolean> {
+      const prefix = libraryCardNumber.slice(0, 5)
+
+      const response = await this.$axios.$get('/user-library-cards/is-valid', {
+        params: {
+          prefix
+        }
+      })
+
+      if (!response) {
+        return false
+      }
+
+      commit('SET_LIBRARY_ID', response.id)
+      commit('SET_LIBRARY_CARD_NUMBER', libraryCardNumber)
+      commit('SET_AB_FLOW', Flow.NOCREDITCARD)
+      commit('SET_AUTH_FLOW', AuthFlow.PRESCHOOL)
+
+      return true
     }
   }
 )

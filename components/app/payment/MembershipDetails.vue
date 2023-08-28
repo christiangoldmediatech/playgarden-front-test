@@ -331,7 +331,7 @@
               color="#D9B4FF"
               width="50%"
               x-large
-              @click="learningKitsPopup = true"
+              @click="goToSummerPage"
             >
               {{ $t('commonWords.viewMore') }}
             </v-btn>
@@ -716,11 +716,13 @@ export default {
       return this.billing.status === 'trialing'
     },
     membershipInterval() {
-      switch (this.billing.membershipInterval) {
+      switch (this.billing.billingType) {
         case 'month':
           return this.$i18n.t('account.membership.monthly')
         case 'year':
           return this.$i18n.t('account.membership.yearly')
+        case 'BIANNUAL':
+          return this.$i18n.t('account.membership.biannual')
       }
       return null
     },
@@ -807,6 +809,10 @@ export default {
       this.resetCancellationFlowsControls()
       this.leaveMotive = ''
       this.removeSubscriptionModal = true
+    },
+
+    goToSummerPage() {
+      window.open('https://playgardenprep.com/pdp/summer', '_blank')
     },
 
     async loadData() {

@@ -18,7 +18,7 @@
           'pg-flex',
           'pg-flex-col',
           'pg-justify-between',
-          'pg-max-w-[1150px]',
+          'pg-max-w-[1550px]',
           'pg-mt-48',
           'pg-mx-auto',
           'lg:pg-mt-36',
@@ -27,7 +27,7 @@
       >
         <!-- LOGO -->
         <div class="pg-flex pg-justify-center pg-items-center">
-          <img src="@/assets/png/rainbow-logo.png" class="pg-h-[180px]">
+          <img src="@/assets/png/rainbow-logo.png" class="pg-h-[160px]">
         </div>
 
         <!-- LINKS -->
@@ -36,7 +36,7 @@
         >
           <a v-for="link in links" :key="link.name" :href="link.href">
             <span
-              class="pg-inline-block pg-text-lg pg-text-black pg-font-medium"
+              class="pg-inline-block pg-text-lg pg-text-black pg-text-sm font-bold"
             >
               {{ link.name }}
             </span>
@@ -48,57 +48,87 @@
           class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0"
         >
           <div
-            class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold"
+            class="pg-text-base pg-leading-9 pg-text-[#68C453] pg-font-semibold"
           >
             {{ $t('menus.footer.onlineSchool') }}
           </div>
 
           <a
             href="mailto:hello@playgardenprep.com"
-            class="pg-font-medium !pg-text-[#707070]"
+            class="pg-text-sm font-bold !pg-text-[#707070]"
           >
             hello@playgardenprep.com
           </a>
 
-          <a href="tel:646-504-4716" class="pg-font-medium !pg-text-[#707070]">
+          <a href="tel:646-504-4716" class="pg-text-sm font-bold !pg-text-[#707070]">
             <div>646-504-4716</div>
           </a>
 
-          <div class="pg-font-medium pg-text-black">
+          <div class="pg-text-sm font-bold pg-text-black">
             95 Franklin Street
           </div>
 
-          <div class="pg-font-medium pg-text-black">
+          <div class="pg-text-sm font-bold pg-text-black">
             New York, NY 10013
           </div>
         </div>
 
-        <!-- UPPER EAST SIDE -->
+        <!-- Madison Avenue - UES -->
         <div
           class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0"
         >
           <div
-            class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold"
+            class="pg-text-base pg-leading-9 pg-text-[#68C453] pg-font-semibold"
           >
-            Upper East Side
+            Madison Avenue - UES
           </div>
 
           <a
             href="mailto:ues@playgardenprep.com"
-            class="pg-font-medium !pg-text-[#707070]"
+            class="pg-text-sm font-bold !pg-text-[#707070]"
           >
             ues@playgardenprep.com
           </a>
 
-          <a href="tel:212-965-9718" class="pg-font-medium !pg-text-[#707070]">
+          <a href="tel:212-965-9718" class="pg-text-sm font-bold !pg-text-[#707070]">
             <div>212-965-9718</div>
           </a>
 
-          <div class="pg-font-medium pg-text-black">
+          <div class="pg-text-sm font-bold pg-text-black">
             1366 Madison Avenue
           </div>
 
-          <div class="pg-font-medium pg-text-black">
+          <div class="pg-text-sm font-bold pg-text-black">
+            New York, NY 10128
+          </div>
+        </div>
+
+        <!-- Park Avenue Learning Lab -->
+        <div
+          class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0"
+        >
+          <div
+            class="pg-text-base pg-leading-9 pg-text-[#68C453] pg-font-semibold"
+          >
+            Park avenue Learning Lab
+          </div>
+
+          <a
+            href="mailto:lab@playgardenprep.com"
+            class="pg-text-sm font-bold !pg-text-[#707070]"
+          >
+            lab@playgardenprep.com
+          </a>
+
+          <a href="tel:646- 504-4716" class="pg-text-sm font-bold !pg-text-[#707070]">
+            <div>646- 504-4716</div>
+          </a>
+
+          <div class="pg-text-sm font-bold pg-text-black">
+            106 East 86th Street
+          </div>
+
+          <div class="pg-text-sm font-bold pg-text-black">
             New York, NY 10128
           </div>
         </div>
@@ -108,27 +138,27 @@
           class="pg-grid pg-grid-cols-1 pg-gap-2 lg:pg-gap-0 pg-text-center pg-mt-12 lg:pg-mt-0"
         >
           <div
-            class="pg-text-2xl pg-leading-9 pg-text-[#68C453] pg-font-semibold"
+            class="pg-text-base pg-leading-9 pg-text-[#68C453] pg-font-semibold"
           >
             Tribeca
           </div>
 
           <a
             href="mailto:tribeca@playgardenprep.com"
-            class="pg-font-medium !pg-text-[#707070]"
+            class="pg-text-sm font-bold !pg-text-[#707070]"
           >
             tribeca@playgardenprep.com
           </a>
 
-          <a href="tel:212-965-9717" class="pg-font-medium !pg-text-[#707070]">
+          <a href="tel:212-965-9717" class="pg-text-sm font-bold !pg-text-[#707070]">
             <div>212-965-9717</div>
           </a>
 
-          <div class="pg-font-medium pg-text-black">
+          <div class="pg-text-sm font-bold pg-text-black">
             95 Franklin Street
           </div>
 
-          <div class="pg-font-medium pg-text-black">
+          <div class="pg-text-sm font-bold pg-text-black">
             New York, NY 10013
           </div>
         </div>
@@ -183,3 +213,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+.font-bold {
+  font-weight: 500 !important;
+}
+</style>

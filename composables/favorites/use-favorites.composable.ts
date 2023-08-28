@@ -10,10 +10,17 @@ const favoriteVideoIds = ref<FavoriteId[]>([])
 const isLoadingFavorites = ref(false)
 
 async function getAllFavorites(): Promise<void> {
-  const response = await axios.$get('/videos-favorites/children') as VideosFavoritesChildrenResponse[]
-  favoriteVideoIds.value = response.map(
-    favorite => ({ favoriteId: favorite.id, videoId: favorite.video.id })
-  )
+  try {
+    const response = await axios.$get('/videos-favorites/children') as VideosFavoritesChildrenResponse[]
+    favoriteVideoIds.value = response
+      .filter(favorite => favorite && favorite.id && favorite.video && favorite.video.id)
+      .map(favorite => ({
+        favoriteId: favorite.id,
+        videoId: favorite.video.id
+      }))
+  } catch (error) {
+    console.error('Error fetching favorites:', error)
+  }
 }
 
 function getFavoriteVideo(videoId: number): FavoriteId | undefined {

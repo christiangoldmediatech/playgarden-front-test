@@ -17,6 +17,7 @@ export default () => ({
 
   fullWidthPages: {
     'app-welcome': 1,
+    'app-questionnaire': 1,
     'app-lesson-end': 1,
     'app-account-index': 1,
     'app-account-index-caregiver': 1,

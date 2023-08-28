@@ -18,5 +18,18 @@ export default mutationTree(state, {
 
   SET_AUTH_FLOW(state, authFlow: AuthFlow) {
     state.authFlow = authFlow
+  },
+
+  SET_LIBRARY_ID(state, libraryId: number) {
+    state.libraryId = libraryId
+  },
+
+  SET_LIBRARY_CARD_NUMBER(state, libraryCardNumber: string) {
+    state.libraryCardNumber = libraryCardNumber
+  },
+
+  RESET_LIBRARY_CARD_PARAMS(state) {
+    state.libraryId = null
+    state.libraryCardNumber = ''
   }
 })

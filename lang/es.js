@@ -122,12 +122,14 @@ export default async (context, locale) => {
         termsAndConditionsPart1: 'Acepto los',
         termsAndConditionsPart2: 'Términos y Condiciones',
         choosePlan: 'ELIGE TU PLAN',
+        startLearning: 'INICIAR APRENDIZAJE',
         registerWithFb: 'Continuar con Facebook',
-        registerWithGoogle: 'Continuar con Google'
+        registerWithGoogle: 'Continuar con Google',
+        registerWithLibraryCard: 'Continuar con el número de su tarjeta bibliotecaria'
       },
       cardInfo: {
         title:
-          '¡Es la forma más fácil de darle a tu hijo una educación inmersiva en casa!',
+          '¡Es la forma más fácil y efectiva de darle a tu hijo/a una educación inmersiva por fuera de la escuela!',
         subtitle: '¡Niños comprometidos y resultados comprobados!'
       }
     },
@@ -205,6 +207,7 @@ export default async (context, locale) => {
         nextBilling: 'Tu siguiente pago es el:',
         monthly: 'mensual',
         yearly: 'anual',
+        biannual: 'por semestre',
         feeDescription: 'Tu membresia %{type} es de:',
         plan: 'Tu plan es:',
         billing: 'Historial de pagos',
@@ -311,11 +314,22 @@ export default async (context, locale) => {
       emailText2:
         'Haz clic aquí para actualizar tu configuración de notificación por email.',
       overlay: {
+        congratulations: '¡Felicidades!',
         title: 'Has completado tu primer día de lecciones de video.',
-        subtitle: '¡Únete a nosotros en nuestra próxima clase en vivo!',
-        footer:
-          'Para más aprendizaje diario, revisa nuestras otras características:',
-        sectionTitle: 'Worksheet',
+        title1stDay: 'Has completado tu primer día de lecciones de video',
+        title2ndDay: 'Has completado el segundo día de lecciones de video',
+        title3rdDay: 'Has completado el tercer día de lecciones de video',
+        subtitle1: 'Si aún quieres aprender más, hoy puedes:',
+        subtitle2: '¡Unéte a nuestro próximo clase en vivo!',
+        subtitle3: 'Para obtenere más aprendizaje diario, consulte nuestras otras funciones:',
+        sectionTitle: 'Hoja de Trabajo',
+        sectionWorksheet: 'Hoja de Trabajo',
+        sectionOnlineWorksheet: 'Hoja de Trabajo en Línea',
+        goToLibrary: 'Ir a Bibliotexa',
+        goToOnlineWorksheets: 'Ir a hojas de trabajo en línea',
+        downloadWorksheet: 'Descargar la hoja del trabajo del día!',
+        exploreLibrary: '¡Explore nuestra biblioteca, crea listas de reproducción y mira tus videos favoritos para atraer a los pequeños!',
+        watchVideoAgain: 'Ver video nuevamente',
         sectionDescription:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
       },
@@ -733,8 +747,11 @@ export default async (context, locale) => {
       subscriptionPlan: {
         billMonthly: 'Facturado Mensualmente',
         billAnnually: 'Facturado Anualmente',
+        billBiannually: 'Facturado Semestralmente',
+        sixMonths: '(6 meses)',
         year: '/año',
         month: '/mes',
+        biannual: '/semestre',
         subtitle: 'Incluye:',
         choose: 'Elegir plan',
         current: 'Plan Actual',

@@ -181,11 +181,13 @@ export default defineComponent({
     const router = useRouter()
 
     const membershipInterval = computed(() => {
-      switch (billing.value?.membershipInterval) {
+      switch (billing.value?.billingType) {
         case 'month':
           return language.t('account.membership.monthly')
         case 'year':
           return language.t('account.membership.yearly')
+        case 'BIANNUAL':
+          return language.t('account.membership.biannual')
       }
       return null
     })

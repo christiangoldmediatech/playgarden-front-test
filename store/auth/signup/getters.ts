@@ -9,5 +9,8 @@ export default getterTree(state, {
     utmTerm: state.utmTerm,
     utmName: state.utmName,
     gc1Id: state.gc1Id
-  })
+  }),
+  hasValidLibraryCard(state) {
+    return Boolean(state.libraryId && state.libraryCardNumber)
+  }
 })
