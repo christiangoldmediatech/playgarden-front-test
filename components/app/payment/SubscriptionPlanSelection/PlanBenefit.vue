@@ -21,11 +21,9 @@
 
     <!-- Benefit -->
     <span
-      class="pg-leading-5"
       :class="{ 'pg-text-sm': !large, 'pg-text-base': large }"
-    >
-      {{ benefit }}
-    </span>
+      v-html="benefit"
+    ></span>
   </div>
 </template>
 

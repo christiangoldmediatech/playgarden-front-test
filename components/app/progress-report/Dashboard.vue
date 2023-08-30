@@ -289,6 +289,7 @@ export default {
       const data = await this.getCourseProgressByChildId({
         id: this.selectedChild
       })
+
       this.letters = data
     },
 

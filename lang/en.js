@@ -122,12 +122,15 @@ export default async (context, locale) => {
         termsAndConditionsPart1: 'I agree to the',
         termsAndConditionsPart2: 'Terms & Conditions',
         choosePlan: 'CHOOSE YOUR PLAN',
+        startLearning: 'START LEARNING',
         registerWithFb: 'Continue with Facebook',
-        registerWithGoogle: 'Continue with Google'
+        registerWithGoogle: 'Continue with Google',
+        registerWithLibraryCard: 'Continue with your library card number',
+        acknowledgement: 'I acknowledge and agree that participation in Live Zoom classes is limited to children aged 2 - 6 yrs old.'
       },
       cardInfo: {
         title:
-          "It's the easiest way to give your child an immersive education at home!",
+          'The easiest and most effective way to give your child an immersive education outside of school!',
         subtitle: 'Engaged children and proven outcomes!'
       }
     },
@@ -205,6 +208,7 @@ export default async (context, locale) => {
         nextBilling: 'Your next billing date is:',
         monthly: 'monthly',
         yearly: 'yearly',
+        biannual: 'by semester',
         feeDescription: 'Your %{type} membership fee is:',
         plan: 'Your plan is:',
         billing: 'Billing history',
@@ -310,10 +314,22 @@ export default async (context, locale) => {
         'Want to receive an email with all of the things you did today?',
       emailText2: 'Click here to update your Email Notification Settings.',
       overlay: {
+        congratulations: 'Congratulations!',
         title: "You've completed your first day of video lessons.",
-        subtitle: 'Join us in our next live class!',
-        footer: 'For more daily learning, check out our other features:',
+        title1stDay: "You've completed your first day of video lessons.",
+        title2ndDay: "You've completed the second day of video lessons.",
+        title3rdDay: "You've completed the third day of video lessons.",
+        subtitle1: 'If you still want more learning today you can:',
+        subtitle2: 'Join us in our next live class!',
+        subtitle3: 'For more daily learning, check out our other features:',
         sectionTitle: 'Worksheet',
+        sectionWorksheet: 'Worksheet',
+        sectionOnlineWorksheet: 'Online Worksheet',
+        goToLibrary: 'Go to Library',
+        goToOnlineWorksheets: 'Go to Online Worksheets',
+        downloadWorksheet: 'Download worksheet of the day!',
+        exploreLibrary: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
+        watchVideoAgain: 'Watch video again',
         sectionDescription:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '
       },
@@ -723,8 +739,11 @@ export default async (context, locale) => {
       subscriptionPlan: {
         billMonthly: 'Billed Monthly',
         billAnnually: 'Billed Annually',
+        billBiannually: 'Billed by semester',
+        sixMonths: '(6 months)',
         year: '/year',
         month: '/month',
+        biannual: '/semester',
         subtitle: 'What\'s included:',
         choose: 'Choose plan',
         current: 'Current Plan',

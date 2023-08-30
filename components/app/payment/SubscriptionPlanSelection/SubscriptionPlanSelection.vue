@@ -3,16 +3,19 @@
     <!-- Bill monthly/anually switch -->
     <div class="pg-flex pg-justify-center">
       <div class="pg-flex pg-items-center">
-        <span class="pg-mr-3 pg-text-xl pg-font-semibold">{{ $t('paymentPlan.subscriptionPlan.billMonthly') }}</span>
-        <v-switch v-model="billAnnually" color="#FFA0C8" inset />
-        <span class="pg-text-xl pg-font-semibold">{{ $t('paymentPlan.subscriptionPlan.billAnnually') }}</span>
+        <span class="pg-mr-3 pg-text-[14px] sm:pg-text-xl pg-font-semibold">{{ $t('paymentPlan.subscriptionPlan.billMonthly') }}</span>
+        <v-switch v-model="billBiannually" color="#FFA0C8" inset />
+        <span class="pg-block pg-mt-[15px] sm:pg-mt-0 pg-text-[14px] sm:pg-text-xl pg-font-semibold">
+          {{ $t('paymentPlan.subscriptionPlan.billBiannually') }} <br v-if="$vuetify.breakpoint.xs" />
+          <span class="pg-font-normal pg-text-[12px] sm:pg-text-xl">{{ $t('paymentPlan.subscriptionPlan.sixMonths') }}</span>
+        </span>
       </div>
     </div>
 
     <payment-information-dialog
       v-model="paymentInfoDialog"
       :plan="selectedPlan"
-      :bill-annually="billAnnually"
+      :bill-annually="billBiannually"
       :from-playdates="fromPlaydates"
       :draft="draft"
     />
@@ -60,7 +63,7 @@
             >
               <template v-if="billAnnually">
                 ${{ plan.priceAnnual.toFixed(2) }}
-                <span class="pg-text-2xl">{{ $t('paymentPlan.subscriptionPlan.year') }}</span>
+                <span class="pg-text-2xl">{{ $t('paymentPlan.subscriptionPlan.biannual') }}</span>
               </template>
               <template v-else>
                 ${{ plan.priceMonthly.toFixed(2) }}
@@ -70,7 +73,14 @@
 
             <!-- Subtitle -->
             <div
-              class="pg-px-8 pg-py-1 pg-text-[#FFA0C8] pg-text-lg pg-font-medium v2-font"
+              class="pg-px-8 pg-py-1 pg-text-[#FFA0C8] pg-text-lg pg-text-center pg-font-medium v2-font"
+            >
+              Best for families that want: <br />
+              {{ plan.commonBenefits.bestFor }}
+            </div>
+
+            <div
+              class="pg-px-8 pg-py-1 pg-text-[#BA89EB] pg-text-lg pg-font-medium v2-font"
             >
               {{ plan.commonBenefits.title || $t('paymentPlan.subscriptionPlan.subtitle') }}
             </div>
@@ -91,8 +101,7 @@
             >
               {{ !planIsSelected(plan) ? $t('paymentPlan.subscriptionPlan.choose') : $t('paymentPlan.subscriptionPlan.current') }}
             </v-btn>
-
-            <p class="pg-text-center pg-text-sm pg-mt-4">
+            <p v-if="isTrialing" class="pg-text-center pg-text-sm pg-mt-4">
               {{ $t('paymentPlan.subscriptionPlan.footer') }}
             </p>
           </div>
@@ -156,6 +165,11 @@ export default defineComponent({
       default: false
     },
 
+    isTrialing: {
+      type: Boolean,
+      default: false
+    },
+
     noAddress: Boolean,
 
     noPayment: Boolean,
@@ -203,7 +217,7 @@ export default defineComponent({
     loading: false,
     initialized: false,
     isCreditCardModalVisible: false,
-    billAnnually: false,
+    billBiannually: false,
     paymentInfoDialog: false
   }),
 
@@ -222,13 +236,13 @@ export default defineComponent({
     }
 
     const planId = this.$route.query.planId
-    const annually = this.$route.query.annually
-    if (planId && annually) {
+    const biannually = this.$route.query.biannually
+    if (planId && biannually) {
       const plan = this.plans.find(plan => plan.id.toString() === planId)
       if (plan) {
         setTimeout(() => {
           this.openDialog(plan)
-          this.billAnnually = annually === 'yes'
+          this.billBiannually = biannually === 'yes'
         }, 1000)
       }
     }
@@ -245,7 +259,7 @@ export default defineComponent({
     ]),
 
     planIsSelected(plan) {
-      const type = this.billAnnually ? 'year' : 'month'
+      const type = this.billBiannually ? 'year' : 'month'
       if (!this.getUserInfo.accountCancelled) {
         return this.getUserInfo.planSelected.name === plan.name && this.getUserInfo.subscription.plan.interval === type
       }
@@ -271,12 +285,12 @@ export default defineComponent({
         this.plans.forEach(({ id, plusBenefits, homeDeliveryBenefits }) => {
           this.draft = {
             id,
-            type: this.isAnnualSubscriptionEnabled ? 'annual' : 'monthly',
+            type: this.isAnnualSubscriptionEnabled ? 'biannual' : 'monthly',
             requireAddress: Boolean(homeDeliveryBenefits || plusBenefits)
           }
         })
 
-        this.billAnnually = this.isAnnualSubscriptionEnabled
+        this.billBiannually = this.isAnnualSubscriptionEnabled
       } catch (e) {
       } finally {
         this.enableAxiosGlobal()
@@ -304,7 +318,7 @@ export default defineComponent({
       this.loading = true
       const plan = this.getSubmittableData()
       plan.id = this.selectedPlan.id
-      plan.type = this.billAnnually ? 'annual' : 'monthly'
+      plan.type = this.billBiannually ? 'biannual' : 'monthly'
       plan.fromPlaydates = this.fromPlaydates
       try {
         if (this.inSignUpProcess) {

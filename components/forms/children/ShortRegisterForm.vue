@@ -20,7 +20,38 @@
         </v-col>
       </v-row>
 
-      <v-row class="mt-6">
+      <v-row no-gutters>
+        <v-col
+          cols="12"
+          lg="7"
+          order="2"
+          order-lg="1"
+        >
+          <validation-provider
+            v-slot="{ errors }"
+            name="Disclaimer"
+            rules="required"
+          >
+            <VCheckbox
+              v-model="hasAcceptedDisclaimer"
+              off-icon="mdi-checkbox-blank !pg-text-white !pg-text-[32px] !pg-shadow-[0px_3px_6px_0px_rgba(0,0,0,0.16)]"
+              on-icon="mdi-checkbox-marked !pg-text-[32px] !pg-pa-0 !pg-shadow-[0px_3px_6px_0px_rgba(0,0,0,0.16)]"
+              :disabled="isLoading"
+              :error-messages="errors"
+              :true-value="true"
+              :false-value="null"
+            >
+              <template #label>
+                <span class="pg-text-sm pg-text-[#606060] pg-font-[400] pg-pl-4">
+                  {{ $t('register.registerForm.acknowledgement') }}
+                </span>
+              </template>
+            </VCheckbox>
+          </validation-provider>
+        </v-col>
+      </v-row>
+
+      <v-row>
         <v-col>
           <v-btn
             block
@@ -81,7 +112,8 @@ export default {
     genders: ['MALE', 'FEMALE'],
     dataLoading: false,
     menuTest: false,
-    date: null
+    date: null,
+    hasAcceptedDisclaimer: null
   }),
 
   computed: {

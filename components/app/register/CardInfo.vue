@@ -20,8 +20,8 @@
       <template>
         <NormalTitle
           :text="$t('register.cardInfo.title')"
-          font-size="24px"
-          font-size-mobile="20px"
+          font-size="20px"
+          font-size-mobile="17px"
         />
       </template>
     </div>

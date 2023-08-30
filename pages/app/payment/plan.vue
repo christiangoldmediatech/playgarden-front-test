@@ -20,7 +20,6 @@
           </v-btn>
         </v-col>
 
-        <!-- IN SIGNUP PROCESS -->
         <v-col v-if="inSignUpProcess" cols="12" class="text-center mt-4">
           <!-- TITLE -->
           <div
@@ -31,7 +30,7 @@
 
           <!-- TEXT -->
           <div
-            class="mt-8 mb-6 text-body-1 text-md-h5 pg-m-auto pg-max-w-[900px]"
+            class="mt-8 mb-0 text-body-1 text-md-h5 pg-m-auto pg-max-w-[900px]"
           >
             <div>{{ $t('paymentPlan.description1') }}</div>
             <div>
@@ -49,6 +48,7 @@
         >
           <!-- TITLE -->
           <div
+            v-if="!isTrialExpired"
             class="pg-text-4xl pg-text-primary pg-font-bold pg-tracking-[1px] v2-font"
           >
             {{
@@ -58,8 +58,16 @@
             }}
           </div>
 
+          <div
+            v-else
+            class="pg-text-4xl pg-text-[#BA89EB] pg-font-bold pg-tracking-[1px] v2-font"
+          >
+            Change Plan
+          </div>
+
           <!-- TEXT -->
           <div
+            v-if="!isTrialExpired"
             class="mt-8 mb-6 text-body-1 text-md-h5 pg-m-auto pg-max-w-[900px]"
           >
             {{ $t('paymentPlan.trialPeriod1') }}
@@ -80,10 +88,11 @@
           </div>
         </v-col>
 
-        <v-col cols="12" class="mt-16">
+        <v-col cols="12" class="mt-2">
           <SubscriptionPlanSelection
             class="mt-md-n6"
             :in-sign-up-process="inSignUpProcess"
+            :is-trialing="!isTrialExpired"
             @click:submit="handleSubmit"
             @initialized="initialized = true"
           />
