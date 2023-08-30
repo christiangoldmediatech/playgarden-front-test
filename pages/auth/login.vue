@@ -90,7 +90,7 @@
                   src="@/assets/svg/library-card-signup.svg"
                 />
 
-                <span class="spanSocialNetwork">Continue with your library card number</span>
+                <span class="spanSocialNetwork">{{ $t('register.registerForm.registerWithLibraryCard') }}</span>
               </v-btn>
             </v-col> -->
 

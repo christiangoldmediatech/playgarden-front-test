@@ -249,8 +249,11 @@
             <!-- or -->
             <template v-if="hasValidLibraryCard">
               <v-row no-gutters class="pg-mt-3 pg-mb-6">
-                <v-col class="pg-text-center" cols="12">
-                  Personal information is needed in order to receive individualized educational content and to ensure the <span class="pg-font-[700]">SAFETY</span> of all participating children, Playgarden does <span class="pg-font-[700]">NOT</span> disclose this information to any third party, including Libraries. You can opt out of any communication in your <span class="pg-text-[#F89838] pg-font-[700]">Account</span>.
+                <v-col cols="12">
+                  <ui-msg
+                    class="pg-text-center"
+                    :message="`${$t('register.libraryCard.notice')}`"
+                  />
                 </v-col>
               </v-row>
             </template>
@@ -337,12 +340,14 @@ import { mapGetters, mapActions } from 'vuex'
 import debounce from 'lodash/debounce'
 import { jsonCopy } from '@/utils/objectTools'
 import SearchAddressAutocomplete from '@/components/SearchAddressAutocomplete.vue'
+import UiMsg from '~/components/ui/lang/UiMsg.vue'
 
 export default {
   name: 'RegisterForm',
 
   components: {
-    SearchAddressAutocomplete
+    SearchAddressAutocomplete,
+    UiMsg
   },
 
   props: {

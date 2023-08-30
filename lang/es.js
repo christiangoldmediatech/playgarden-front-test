@@ -132,6 +132,19 @@ export default async (context, locale) => {
         title:
           '¡Es la forma más fácil y efectiva de darle a tu hijo/a una educación inmersiva por fuera de la escuela!',
         subtitle: '¡Niños comprometidos y resultados comprobados!'
+      },
+      libraryCard: {
+        title: 'Revise su Tarjeta de Biblioteca',
+        invalidCard: 'Debes ingresar un número de tarjeta de biblioteca válido de 14 dígitos.',
+        badCard: 'El número de tarjeta de biblioteca no es válido o no existe',
+        header: 'Registrese con su número de tarjeta de biblioteca',
+        label: 'Número de tarjeta de biblioteca',
+        submit: 'INGRESAR',
+        info: 'Tu número de tarjeta de biblioteca (también llamado "patron ID" ó número de cuenta) es el numero de 14 digitos que se encuentra en su tarjeta de biblioteca, cercas del código de barras.',
+        whatIsALibraryCard: '¿Qué es un número de tarjeta de biblioteca?',
+        clickHere: 'HAGA CLIC AQUÍ',
+        yourLibraryCardNum: 'Su número de tarjeta de biblioteca:',
+        notice: 'Se require de información personal para recibir contenido educativo individualizado y para garantizar la <span class="pg-font-bold">SEGURIDAD</span> de todos los niños participantes. Playgarden <span class="pg-font-bold">NO</span> divulga esta información a ningún tercero, incluidas las Bibliotecas. Puede optar por no recibir ninguna comunicación en su <span class="pg-text-[#F89838] pg-font-bold">Cuenta</span>.'
       }
     },
     account: {
