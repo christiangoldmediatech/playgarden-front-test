@@ -125,7 +125,8 @@ export default async (context, locale) => {
         startLearning: 'START LEARNING',
         registerWithFb: 'Continue with Facebook',
         registerWithGoogle: 'Continue with Google',
-        registerWithLibraryCard: 'Continue with your library card number'
+        registerWithLibraryCard: 'Continue with your library card number',
+        acknowledgement: 'I acknowledge and agree that participation in Live Zoom classes is limited to children aged 2 - 6 yrs old.'
       },
       cardInfo: {
         title:

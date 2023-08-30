@@ -125,7 +125,8 @@ export default async (context, locale) => {
         startLearning: 'INICIAR APRENDIZAJE',
         registerWithFb: 'Continuar con Facebook',
         registerWithGoogle: 'Continuar con Google',
-        registerWithLibraryCard: 'Continuar con el número de su tarjeta bibliotecaria'
+        registerWithLibraryCard: 'Continuar con el número de su tarjeta bibliotecaria',
+        acknowledgement: 'Reconozco y acepto que la participación en las clases en vivo está limitada a niños de 2 a 6 años.'
       },
       cardInfo: {
         title:

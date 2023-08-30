@@ -43,7 +43,7 @@
             >
               <template #label>
                 <span class="pg-text-sm pg-text-[#606060] pg-font-[400] pg-pl-4">
-                  I acknowledge and agree that participation in LIve Zoom classes is limited to children aged 2 - 6 yrs old.
+                  {{ $t('register.registerForm.acknowledgement') }}
                 </span>
               </template>
             </VCheckbox>
