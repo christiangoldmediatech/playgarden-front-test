@@ -1,6 +1,13 @@
 <template>
   <pg-loading :loading="isLoading">
     <v-row no-gutters data-test-id="account-content" class="pa-4 pa-md-0">
+      <v-col cols="12">
+        <v-row no-gutters class="d-flex mt-2">
+          <v-col cols="8" md="3" class="ml-auto">
+            <language-select />
+          </v-col>
+        </v-row>
+      </v-col>
       <v-col cols="12" md="6" class="mb-10 pr-md-8 mb-md-0">
         <v-card class="pa-4 pa-sm-8 d-flex flex-column align-start account-card-border" :style="{ '--card-custom-color': generalInfoColor }">
           <!-- Desktop Title -->
@@ -98,17 +105,19 @@
 <script lang="ts">
 import { mapGetters } from 'vuex'
 
-import GeneralInfo from '@/components/app/user/GeneralInfo.vue'
-import ShippingAddressDetails from '@/components/app/payment/ShippingAddressDetails.vue'
 import { defineComponent, onMounted, ref, useRoute } from '@nuxtjs/composition-api'
 import { useShippingAddress, useToastHelper } from '@/composables'
+import GeneralInfo from '@/components/app/user/GeneralInfo.vue'
+import ShippingAddressDetails from '@/components/app/payment/ShippingAddressDetails.vue'
+import LanguageSelect from '@/components/app/user/LanguageSelect.vue'
 
 export default defineComponent({
   name: 'Personal',
 
   components: {
     GeneralInfo,
-    ShippingAddressDetails
+    ShippingAddressDetails,
+    LanguageSelect
   },
 
   setup () {
