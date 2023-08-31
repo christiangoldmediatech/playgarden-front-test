@@ -61,7 +61,7 @@
               class="pg-text-center pg-my-4 pg-px-4 pg-text-4xl pg-font-semibold v2-font"
               :style="{ color: plan.color }"
             >
-              <template v-if="billAnnually">
+              <template v-if="billBiannually">
                 ${{ plan.priceAnnual.toFixed(2) }}
                 <span class="pg-text-2xl">{{ $t('paymentPlan.subscriptionPlan.biannual') }}</span>
               </template>

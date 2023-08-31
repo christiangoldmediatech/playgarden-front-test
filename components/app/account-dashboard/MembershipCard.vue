@@ -182,9 +182,9 @@ export default defineComponent({
 
     const membershipInterval = computed(() => {
       switch (billing.value?.billingType) {
-        case 'month':
+        case 'MONTHLY':
           return language.t('account.membership.monthly')
-        case 'year':
+        case 'ANNUAL':
           return language.t('account.membership.yearly')
         case 'BIANNUAL':
           return language.t('account.membership.biannual')

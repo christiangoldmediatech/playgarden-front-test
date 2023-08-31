@@ -33,7 +33,7 @@
         <span v-if="!isCreditCardRequired && !hasValidLibraryCard"> {{ $t('register.subtitle2') }}</span>
 
         <div v-if="hasValidLibraryCard" class="pg-font-semibold pg-mt-5">
-          Your library card number:
+          {{ $t('register.libraryCard.yourLibraryCardNum') }}
           <span class="pg-text-[#68C453] pg-font-bold">{{ libraryCardNumber }}</span>
         </div>
       </div>
