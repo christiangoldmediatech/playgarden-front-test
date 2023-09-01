@@ -8,19 +8,20 @@
     item-value="id"
     item-text="language"
     class="elevation-0"
-    background-color="#F6F6F6"
+    :background-color="small ? 'transparent' : '#F6F6F6'"
     solo
     dense
     flat
+    hide-details
     @input="changeLang($event)"
   >
     <template v-slot:selection="{ item }">
-      <v-list-item class="pa-0 w-100">
+      <v-list-item class="pa-0" :class="{ 'w-100': !small }">
         <v-list-item-avatar>
           <v-img :src="item.icon" />
         </v-list-item-avatar>
 
-        <v-list-item-content>
+        <v-list-item-content v-if="!small">
           <v-list-item-title class="text-truncate">
             {{ item.language }}
           </v-list-item-title>
@@ -29,12 +30,12 @@
     </template>
 
     <template v-slot:item="{ item, on, attrs }">
-      <v-list-item v-bind="attrs" class="w-100" v-on="on">
+      <v-list-item v-bind="attrs" :class="{ 'w-100': !small }" v-on="on">
         <v-list-item-avatar>
           <v-img :src="item.icon" />
         </v-list-item-avatar>
 
-        <v-list-item-content>
+        <v-list-item-content v-if="!small">
           <v-list-item-title>
             {{ item.language }}
           </v-list-item-title>
@@ -50,6 +51,12 @@ import { computed, defineComponent, onMounted, ref, useStore } from '@nuxtjs/com
 
 export default defineComponent({
   name: 'LanguageSelect',
+  props: {
+    small: {
+      type: Boolean,
+      default: false
+    }
+  },
   setup() {
     const loading = ref(false)
     const store = useStore()

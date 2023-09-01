@@ -2,7 +2,7 @@
   <pg-loading :loading="isLoading">
     <v-row no-gutters data-test-id="account-content" class="pa-4 pa-md-0">
       <v-col cols="12">
-        <v-row no-gutters class="d-flex mt-2">
+        <v-row no-gutters class="d-flex mt-2 mb-4">
           <v-col cols="8" md="3" class="ml-auto">
             <language-select />
           </v-col>

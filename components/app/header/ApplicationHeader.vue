@@ -134,7 +134,7 @@
 
         <!--Profile/help/Tutorial Menu-->
         <div v-if="isUserLoggedIn && !isUserInSignupProcess && getVerifyEmail">
-          <v-menu open-on-hover offset-y>
+          <v-menu offset-y :close-on-content-click="false">
             <template v-slot:activator="{ on }">
               <v-img
                 class="mx-2 clickable account-btn pg-app-bar-buttons hidden-md-and-down auth-buttons"
@@ -144,7 +144,7 @@
             </template>
 
             <v-card>
-              <v-list dense>
+              <v-list dense max-width="110px" class="px-2">
                 <!-- Hidden by ticket: https://app.shortcut.com/gold-media-tech/story/4106/hide-video-tutorial-option -->
 
                 <!-- <v-list-item>
@@ -171,7 +171,7 @@
                   <v-divider />
                 </div> -->
 
-                <v-list-item>
+                <v-list-item class="mb-1 pa-0">
                   <v-btn
                     class="btn-register text--disabled"
                     :ripple="false"
@@ -186,6 +186,10 @@
                     />
                     FAQ
                   </v-btn>
+                </v-list-item>
+                <v-divider />
+                <v-list-item class="pa-0">
+                  <language-select small />
                 </v-list-item>
               </v-list>
             </v-card>
@@ -230,13 +234,15 @@
 <script>
 import unauthenticatedRoutes from '@/utils/consts/unauthenticatedRoutes.json'
 import MenuLandingPage from '@/components/app/header/MenuLandingPage.vue'
+import LanguageSelect from '../user/LanguageSelect.vue'
 import computedMixin from './computed'
 
 export default {
   name: 'ApplicationHeader',
 
   components: {
-    MenuLandingPage
+    MenuLandingPage,
+    LanguageSelect
   },
 
   mixins: [computedMixin],
