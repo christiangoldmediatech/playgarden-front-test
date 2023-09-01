@@ -132,6 +132,19 @@ export default async (context, locale) => {
         title:
           'The easiest and most effective way to give your child an immersive education outside of school!',
         subtitle: 'Engaged children and proven outcomes!'
+      },
+      libraryCard: {
+        title: 'Check your Library Card',
+        invalidCard: 'You must enter a valid 14 digit library card number',
+        badCard: 'The library card number is not valid or does not exist',
+        header: 'Register with your library card number',
+        label: 'Library card number',
+        submit: 'SUBMIT',
+        info: 'Your library card number (also called patron ID or account number) is the 14-digit number found on the library card, near the barcode.',
+        whatIsALibraryCard: 'What is a library card number?',
+        clickHere: 'CLICK HERE',
+        yourLibraryCardNum: 'Your library card number:',
+        notice: 'Personal information is needed in order to receive individualized educational content and to ensure the <span class="pg-font-bold">SAFETY</span> of all participating children, Playgarden does <span class="pg-font-bold">NOT</span> disclose this information to any third party, including Libraries. You can opt out of any communication in your <span class="pg-text-[#F89838] pg-font-bold">Account</span>.'
       }
     },
     account: {
