@@ -218,7 +218,7 @@ export const useTutorialQuery = ({ route, router }: { route: ComputedRef<Route>,
   })
 
   function clearTutorialRouteParams() {
-    const { tutorial, tutorialStep, name, params, ...query } = route.value.query
+    const { tutorial, tutorialStep, tutorialWelcome, tutorialIntroDaysRedirect, name, params, ...query } = route.value.query
     router.push({ name, params, query } as unknown as RawLocation)
   }
 
@@ -294,9 +294,18 @@ export const useTutorialQuiz = ({ store }: { store: Store<unknown> }) => {
     quizResult.educationalVideos = answer.includes('Educational videos to replace TV')
   }
 
+  function turnOffQuiz() {
+    quizResult.structuredLessons = false
+    quizResult.liveClasses = false
+    quizResult.printableWorksheets = false
+    quizResult.educationalVideos = false
+  }
+
   return {
     quizResult,
-    getQuizResults
+    getQuizResults,
+    resetQuizResults,
+    turnOffQuiz
   }
 }
 

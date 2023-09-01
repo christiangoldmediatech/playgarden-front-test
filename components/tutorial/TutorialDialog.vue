@@ -79,7 +79,7 @@ export default defineComponent({
 
   emits: ['close', 'remind', 'start'],
 
-  setup(_, { attrs, listeners }) {
+  setup(_, { listeners }) {
     const { shouldShowTutorialDialog, closeTutorialDialog, dialogLoading } = useTutorialDialog()
 
     async function onClose() {

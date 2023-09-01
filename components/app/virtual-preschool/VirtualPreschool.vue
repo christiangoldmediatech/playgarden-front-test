@@ -1,7 +1,10 @@
 <template>
   <v-main>
-    <div class="pg-w-[90%] pg-mx-auto pg-my-5">
-      <div class="pg-grid pg-grid-cols-1 md:pg-grid-cols-2 pg-gap-5">
+    <div class="pg-w-[90%] pg-mx-auto">
+      <div class="pg-flex pg-justify-center sm:pg-justify-end pg-my-5">
+        <TutorialBtn @click="onClickTutorialBtn" />
+      </div>
+      <div class="pg-grid pg-grid-cols-1 md:pg-grid-cols-2 pg-gap-5 pg-my-5">
         <section-image
           id="pg-tutorial__step-1"
           :section="section.dashboard"
@@ -59,6 +62,7 @@
     </div>
     <BirthdayVideoDialog />
     <VirtualPreschoolTutorial />
+    <TutorialDialog @start="startTutorial" />
   </v-main>
 </template>
 
@@ -78,8 +82,12 @@ import { TypedStore, Child } from '@/models'
 
 import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
 import SectionImage from '@/components/app/virtual-preschool/SectionImage.vue'
-import { useTutorialQuery, TutorialQueryParams } from '@/composables/tutorial/use-tutorial.composable'
+import { useTutorialQuery, TutorialQueryParams, useTutorialDialog, useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
 import VirtualPreschoolTutorial from '@/components/tutorial/pages/VirtualPreschoolTutorial.vue'
+import TutorialDialog from '@/components/tutorial/TutorialDialog.vue'
+import TutorialBtn from '@/components/tutorial/TutorialBtn.vue'
+
+import type { RawLocation } from 'vue-router'
 
 export default defineComponent({
   name: 'VirtualPreschoolChild',
@@ -87,12 +95,15 @@ export default defineComponent({
   components: {
     BirthdayVideoDialog,
     SectionImage,
-    VirtualPreschoolTutorial
+    VirtualPreschoolTutorial,
+    TutorialDialog,
+    TutorialBtn
   },
 
   setup() {
     const store = useStore<TypedStore>()
     const router = useRouter()
+    const route = useRoute()
     const { accessToken } = useAuth({ store })
     const baseRoute =
       process.env.testEnv === 'production'
@@ -116,7 +127,7 @@ export default defineComponent({
       window.open(url.href, '_self')
     }
 
-    const { isTutorial } = useTutorialQuery({ route: useRoute(), router })
+    const { isTutorial } = useTutorialQuery({ route, router })
     const section = computed(() => {
       // Tutorial query parameters
       const dashboardQueryParams: TutorialQueryParams = {}
@@ -246,12 +257,41 @@ export default defineComponent({
       }
     }
 
+    // Tutorial Dialog
+    const { resetQuizResults } = useTutorialQuiz({ store })
+    const { showTutorialDialog, dialogLoading } = useTutorialDialog()
+    function onClickTutorialBtn() {
+      showTutorialDialog()
+    }
+
+    async function startTutorial() {
+      try {
+        dialogLoading.value = true
+        resetQuizResults()
+
+        await router.push({
+          name: 'app-virtual-preschool',
+          query: {
+            tutorial: true,
+            tutorialStep: 'step1',
+            tutorialWelcome: true
+          }
+        } as unknown as RawLocation, () => {
+          window.open(route.value.fullPath, '_self')
+        })
+      } finally {
+        dialogLoading.value = false
+      }
+    }
+
     return {
       section,
       goToKidsCorner,
       handleAudioPlay,
       handleClick,
-      isBirthdayModalVisible
+      isBirthdayModalVisible,
+      onClickTutorialBtn,
+      startTutorial
     }
   }
 })

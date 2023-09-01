@@ -108,6 +108,8 @@
                   />
                 </template>
               </v-col>
+
+              <tutorial-btn-wrapper class="!pg-absolute pg-right-0" />
             </v-row>
 
             <v-row>
@@ -161,6 +163,10 @@
           @prev-week="removeWeek"
           @next-week="addWeek"
         />
+
+        <div class="pg-text-center">
+          <tutorial-btn-wrapper />
+        </div>
 
         <v-row class="mt-4 px-4" justify="space-around">
           <div
@@ -324,6 +330,8 @@
         </v-row>
       </v-card>
     </pg-dialog>
+
+    <live-classes-tutorial-dialog />
   </v-main>
 </template>
 
@@ -346,6 +354,8 @@ import { jsonCopy } from '@/utils'
 import dayjs from 'dayjs'
 import HolidayCard from '@/components/app/live-sessions/HolidayCard.vue'
 import LiveClassesTutorial from '@/components/tutorial/pages/LiveClassesTutorial.vue'
+import TutorialBtnWrapper from '@/components/tutorial/wrappers/TutorialBtnWrapper.vue'
+import LiveClassesTutorialDialog from '@/components/tutorial/wrappers/LiveClassesTutorialDialog.vue'
 
 export default {
   name: 'Index',
@@ -360,7 +370,9 @@ export default {
     DaySelector,
     UnlockPrompt,
     HolidayCard,
-    LiveClassesTutorial
+    LiveClassesTutorial,
+    TutorialBtnWrapper,
+    LiveClassesTutorialDialog
   },
 
   data: () => {
