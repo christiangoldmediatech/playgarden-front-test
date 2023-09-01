@@ -18,9 +18,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, useRouter, onMounted, onUnmounted } from '@nuxtjs/composition-api'
-import { useTutorial, useTutorialQuery, useTutorialSteps } from '@/composables/tutorial/use-tutorial.composable'
+import { defineComponent, computed, useRoute, useRouter, onMounted, onUnmounted, useStore } from '@nuxtjs/composition-api'
+import { useTutorial, useTutorialQuery, useTutorialSteps, useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
 import TutorialCard from '@/components/tutorial/TutorialCard.vue'
+import type { RawLocation } from 'vue-router'
 
 export default defineComponent({
   name: 'StudentPortfolioTutorial',
@@ -32,9 +33,18 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const route = useRoute()
+    const store = useStore()
     const { createTutorial, getTutorial, destroyTutorial } = useTutorial()
     const { addTutorialSteps, currentTutorialStep } = useTutorialSteps()
-    const { shouldStartTutorial } = useTutorialQuery({ route, router })
+    const { shouldStartTutorial, isInitialTutorial } = useTutorialQuery({ route, router })
+    const { quizResult } = useTutorialQuiz({ store })
+
+    const doesTutorialEndHere = computed(() => {
+      return (
+        !quizResult.liveClasses &&
+        !quizResult.educationalVideos
+      )
+    })
 
     onMounted(() => {
       if (!shouldStartTutorial.value) {
@@ -51,6 +61,23 @@ export default defineComponent({
             attachTo: {
               element: '#student-portfolio-worksheet-cards',
               on: 'right'
+            }
+          },
+          onAdvance: () => {
+            if (isInitialTutorial.value && !doesTutorialEndHere.value) {
+              if (quizResult.liveClasses) {
+                router.push({
+                  name: 'app-virtual-preschool',
+                  query: { tutorial: true, tutorialStep: 'step2', tutorialIntroDaysRedirect: true }
+                } as unknown as RawLocation)
+              } else if (quizResult.educationalVideos) {
+                router.push({
+                  name: 'app-virtual-preschool',
+                  query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: true }
+                } as unknown as RawLocation)
+              }
+            } else {
+              getTutorial()?.next()
             }
           }
         },

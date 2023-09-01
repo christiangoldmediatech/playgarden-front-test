@@ -1,6 +1,8 @@
 import Shepherd from 'shepherd.js'
-import { ComputedRef, ref, computed, useRouter } from '@nuxtjs/composition-api'
+import { ComputedRef, ref, reactive, computed, useRouter } from '@nuxtjs/composition-api'
+import { Store } from 'vuex/types'
 import { flip, shift, limitShift, offset } from '@floating-ui/dom'
+import { useSurvey } from '@/composables/survey/useSurvey.composable'
 import type { Route, RawLocation } from 'vue-router'
 
 export type TutorialStep = {
@@ -221,39 +223,98 @@ export const useTutorialQuery = ({ route, router }: { route: ComputedRef<Route>,
   }
 
   function getTutorialQueryParams() {
-    const { tutorial, tutorialStep } = route.value.query
-    return { tutorial, tutorialStep }
+    const { tutorial, tutorialStep, tutorialIntroDaysRedirect } = route.value.query
+    return { tutorial, tutorialStep, tutorialIntroDaysRedirect }
+  }
+
+  const isInitialTutorial = computed(() => {
+    return !!route.value.query.tutorialIntroDaysRedirect
+  })
+
+  function startIntroDays() {
+    router.push({
+      name: 'app-welcome',
+      query: { fromQuestionnaire: 'true', step: '1' }
+    })
   }
 
   return {
     shouldStartTutorial,
     isTutorial,
     tutorialStartStep,
+    isInitialTutorial,
     getTutorialQueryParams,
-    clearTutorialRouteParams
+    clearTutorialRouteParams,
+    startIntroDays
   }
 }
 
-// NOTE: The follow code has been removed, but testing is still be done to ensure it is no longer needed.
-// shepherd js is always creating and destroying the .shepherd-element HTMLElement
-// this detects the changes and moves it so that it is positioned under .v-application
-// that way our card is correctly styled
-// let observer: MutationObserver | undefined
-// const observerCallback = () => {
-//   const shepEl = document.querySelector('body > .shepherd-element')
-//   const vApp = document.querySelector('.v-application')
-//   if (!shepEl || !vApp) {
-//     return
-//   }
+const quizResult = reactive({
+  structuredLessons: true,
+  liveClasses: true,
+  printableWorksheets: true,
+  educationalVideos: true
+})
 
-//   const oldShepEl = vApp?.querySelector('.shepherd-element')
-//   if (oldShepEl) {
-//     oldShepEl.remove()
-//   }
+export const useTutorialQuiz = ({ store }: { store: Store<unknown> }) => {
+  const survey = useSurvey({ store })
 
-//   vApp.appendChild(shepEl)
-//   window.setTimeout(() => {}, 0)
-//   shouldCardExist.value = true
-// }
-// observer = new MutationObserver(observerCallback)
-// observer.observe(document.body, { childList: true, attributes: false, subtree: false })
+  function resetQuizResults() {
+    quizResult.structuredLessons = true
+    quizResult.liveClasses = true
+    quizResult.printableWorksheets = true
+    quizResult.educationalVideos = true
+  }
+
+  async function getQuizResults() {
+    resetQuizResults()
+    const result = await survey.getUserSurvey('POST-LOGIN-QUESTIONNAIRE')
+    if (!result) {
+      return
+    }
+
+    const page = result.surveyData.find((page: any) => page.order === 0)
+    if (!page) {
+      return
+    }
+
+    const question = page.questions[0]
+    if (!question) {
+      return
+    }
+
+    const answer = question.answer as string[]
+    if (!answer || !answer.length) {
+      return
+    }
+
+    quizResult.structuredLessons = answer.includes('Structured Online Preschool Lessons')
+    quizResult.liveClasses = answer.includes('Live Zoom Classes')
+    quizResult.printableWorksheets = answer.includes('Printable Worksheets')
+    quizResult.educationalVideos = answer.includes('Educational videos to replace TV')
+  }
+
+  return {
+    quizResult,
+    getQuizResults
+  }
+}
+
+const shouldShowTutorialDialog = ref(false)
+const dialogLoading = ref(false)
+export const useTutorialDialog = () => {
+  function showTutorialDialog() {
+    shouldShowTutorialDialog.value = true
+  }
+
+  function closeTutorialDialog() {
+    shouldShowTutorialDialog.value = false
+  }
+
+  return {
+    shouldShowTutorialDialog,
+    dialogLoading,
+    showTutorialDialog,
+    closeTutorialDialog
+  }
+}

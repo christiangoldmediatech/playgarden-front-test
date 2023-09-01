@@ -35,7 +35,7 @@ export default defineComponent({
     const route = useRoute()
     const { createTutorial, getTutorial, destroyTutorial } = useTutorial()
     const { addTutorialSteps, currentTutorialStep } = useTutorialSteps()
-    const { shouldStartTutorial } = useTutorialQuery({ route, router })
+    const { shouldStartTutorial, isInitialTutorial } = useTutorialQuery({ route, router })
 
     onMounted(() => {
       if (!shouldStartTutorial.value) {
@@ -77,7 +77,7 @@ export default defineComponent({
             }
           },
           onAdvance() {
-            window.open(`${process.env.kidsCornerUrl}?atoken=${store.getters['auth/getAccessToken']}&tutorial=true&tutorialStep=step1`, '_self')
+            window.open(`${process.env.kidsCornerUrl}?atoken=${store.getters['auth/getAccessToken']}&tutorial=true&tutorialStep=step1${isInitialTutorial.value ? '&tutorialIntroDaysRedirect=true' : ''}`, '_self')
           }
         }
       ])

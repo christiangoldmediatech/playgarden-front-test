@@ -38,10 +38,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, useRoute, useRouter, onMounted, onUnmounted } from '@nuxtjs/composition-api'
-import { useTutorial, useTutorialQuery, useTutorialSteps } from '@/composables/tutorial/use-tutorial.composable'
+import { defineComponent, computed, useStore, useRoute, useRouter, onMounted, onUnmounted } from '@nuxtjs/composition-api'
+import { useTutorial, useTutorialQuery, useTutorialSteps, useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
 import { useAppEventBusHelper } from '@/composables'
 import TutorialCard from '@/components/tutorial/TutorialCard.vue'
+import type { RawLocation } from 'vue-router'
 
 export default defineComponent({
   name: 'LiveClassesTutorial',
@@ -56,8 +57,13 @@ export default defineComponent({
     const route = useRoute()
     const { createTutorial, getTutorial, destroyTutorial } = useTutorial()
     const { addTutorialSteps, currentTutorialStep } = useTutorialSteps()
-    const { shouldStartTutorial } = useTutorialQuery({ route, router })
+    const { shouldStartTutorial, isInitialTutorial } = useTutorialQuery({ route, router })
     const appEventBus = useAppEventBusHelper()
+    const { quizResult } = useTutorialQuiz({ store })
+
+    const doesTutorialEndHere = computed(() => {
+      return !quizResult.educationalVideos
+    })
 
     onMounted(() => {
       if (!shouldStartTutorial.value) {
@@ -86,7 +92,7 @@ export default defineComponent({
                 attempts++
                 if (document.querySelector('.today-liveclass-card') || attempts === 10) {
                   window.clearInterval(checkInterval)
-                  resolve(true)
+                  resolve(!!document.querySelector('.today-liveclass-card'))
                 }
               }, 33)
             })
@@ -164,7 +170,17 @@ export default defineComponent({
               resolve(true)
             })
           },
-          alternateOpeningTargetStyles: { backgroundColor: '#FFFFFF' }
+          alternateOpeningTargetStyles: { backgroundColor: '#FFFFFF' },
+          onAdvance: () => {
+            if (isInitialTutorial.value && !doesTutorialEndHere.value) {
+              router.push({
+                name: 'app-virtual-preschool',
+                query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: true }
+              } as unknown as RawLocation)
+            } else {
+              getTutorial()?.next()
+            }
+          }
         },
         {
           step: {

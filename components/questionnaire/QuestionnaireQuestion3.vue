@@ -85,6 +85,7 @@ import {
   useQuestionnaire,
   useQuestionnaireSave
 } from '@/composables/questionnaire/useQuestionnaire.composable'
+import { useTutorialDialog } from '@/composables/tutorial/use-tutorial.composable'
 
 export default defineComponent({
   name: 'QuestionnaireQuestion3',
@@ -101,16 +102,14 @@ export default defineComponent({
       startTime = dayjs()
     })
 
+    const { showTutorialDialog } = useTutorialDialog()
     async function onSave() {
       try {
         const endTime = dayjs()
         const totalTime = endTime.diff(startTime, 'seconds')
         questPageData[2].pageTime = totalTime
         await handleSave()
-        router.push({
-          name: 'app-welcome',
-          query: { fromQuestionnaire: 'true', step: '1' }
-        })
+        showTutorialDialog()
       } catch {}
     }
 

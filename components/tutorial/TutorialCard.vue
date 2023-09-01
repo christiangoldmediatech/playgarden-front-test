@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, computed, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { MountingPortal } from 'portal-vue'
 import { useTutorial, useTutorialSteps, useTutorialQuery } from '@/composables/tutorial/use-tutorial.composable'
 
@@ -79,11 +79,18 @@ export default defineComponent({
 
     const { shouldCardExist, getTutorial, finishTutorial } = useTutorial()
     const { currentTutorialStep } = useTutorialSteps()
-    const { clearTutorialRouteParams } = useTutorialQuery({ route, router })
+    const { clearTutorialRouteParams, startIntroDays } = useTutorialQuery({ route, router })
+
+    const introDaysRedirect = computed(() => {
+      return !!route.value.query.tutorialIntroDaysRedirect
+    })
 
     function onClickSkip() {
       clearTutorialRouteParams()
       finishTutorial()
+      if (introDaysRedirect.value) {
+        startIntroDays()
+      }
     }
 
     function onClickNext() {

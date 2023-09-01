@@ -1,32 +1,67 @@
 <template>
-  <TutorialCard :finish-buttons="currentTutorialStep && currentTutorialStep.step.id === 'step8'">
+  <TutorialCard
+    :finish-buttons="
+      currentTutorialStep && currentTutorialStep.step.id === 'step8'
+    "
+  >
     <template v-if="currentTutorialStep">
       <div class="pg-text-center">
-        <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-pt-4">
+        <div
+          class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-pt-4"
+        >
           <template v-if="currentTutorialStep.step.id === 'step1'">
-            Your teachers have prepared lesson videos, worksheets, and activities that your child can complete each day, similarly to in-person school. You are welcome to take things at your own pace, moving as slowly or quickly as your child needs
+            Your teachers have prepared lesson videos, worksheets, and
+            activities that your child can complete each day, similarly to
+            in-person school. You are welcome to take things at your own pace,
+            moving as slowly or quickly as your child needs
           </template>
           <template v-if="currentTutorialStep.step.id === 'step2'">
-            Watch all of your Lesson videos to move on to your daily Worksheets. You can print these by clicking <span class="pg-text-[#F89838] pg-font-bold">DOWNLOAD WORKSHEETS</span>, or you can use the pages in your workbook. You will receive your workbook once your free trial has ended.
+            Watch all of your Lesson videos to move on to your daily Worksheets.
+            You can print these by clicking
+            <span class="pg-text-[#F89838] pg-font-bold">
+              DOWNLOAD WORKSHEETS
+            </span>, or you can use the pages in your workbook. You will receive your
+            workbook once your free trial has ended.
           </template>
           <template v-if="currentTutorialStep.step.id === 'step3'">
-            Once your child has completed their worksheets, you may upload them by clicking <span class="pg-text-[#F89838] pg-font-bold">DOWNLOAD WORKSHEET</span>. Once uploaded, a Playgarden Prep teacher will take a look and provide feedback on your little one's progress!
+            Once your child has completed their worksheets, you may upload them
+            by clicking
+            <span class="pg-text-[#F89838] pg-font-bold">
+              DOWNLOAD WORKSHEET</span>. Once uploaded, a Playgarden Prep teacher will take a look and
+            provide feedback on your little one's progress!
           </template>
           <template v-if="currentTutorialStep.step.id === 'step4'">
-            You will be notified about this teacher feedback via email, and you may see all feedback at once in the <span class="pg-text-[#68C453] pg-font-bold">STUDENT CUBBY</span>.
+            You will be notified about this teacher feedback via email, and you
+            may see all feedback at once in the
+            <span class="pg-text-[#68C453] pg-font-bold">STUDENT CUBBY</span>.
           </template>
           <template v-if="currentTutorialStep.step.id === 'step5'">
-            Once you've uploaded your child's worksheets, watch the activity videos to complete the day.
+            Once you've uploaded your child's worksheets, watch the activity
+            videos to complete the day.
           </template>
           <template v-if="currentTutorialStep.step.id === 'step6'">
-            After each section of the Daily Lessons, your little one will earn a Puzzle Piece. At the end of each week, you'll complete a puzzle, which will turn into a printable for your little one! You can find all the puzzles in the <span class="pg-text-[#68C453] pg-font-bold">STUDENT CUBBY</span>.
+            After each section of the Daily Lessons, your little one will earn a
+            Puzzle Piece. At the end of each week, you'll complete a puzzle,
+            which will turn into a printable for your little one! You can find
+            all the puzzles in the
+            <span class="pg-text-[#68C453] pg-font-bold">STUDENT CUBBY</span>.
           </template>
           <template v-if="currentTutorialStep.step.id === 'step7'">
-            To unlock the next day's lessons, you must complete the full day. Our Daily Lessons are structured to build on each other, so it's important that your little one finishes one day to move onto the next.
+            To unlock the next day's lessons, you must complete the full day.
+            Our Daily Lessons are structured to build on each other, so it's
+            important that your little one finishes one day to move onto the
+            next.
           </template>
           <template v-if="currentTutorialStep.step.id === 'step8'">
-            For more information on how to use your <span class="pg-text-[#359645] pg-font-bold">Daily Lessons</span>, visit our FAQ page, or email us at<br />
-            <a class="!pg-text-[#F89838] !pg-font-bold" href="mailto:Hello@PlaygardenPrep.com">Hello@PlaygardenPrep.com</a>
+            For more information on how to use your
+            <span class="pg-text-[#359645] pg-font-bold">Daily Lessons</span>,
+            visit our FAQ page, or email us at<br />
+            <a
+              class="!pg-text-[#F89838] !pg-font-bold"
+              href="mailto:Hello@PlaygardenPrep.com"
+            >
+              Hello@PlaygardenPrep.com
+            </a>
           </template>
         </div>
       </div>
@@ -35,9 +70,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, useRouter, onMounted, onUnmounted } from '@nuxtjs/composition-api'
-import { useTutorial, useTutorialQuery, useTutorialSteps } from '@/composables/tutorial/use-tutorial.composable'
+import {
+  defineComponent,
+  computed,
+  useRoute,
+  useRouter,
+  onMounted,
+  onUnmounted,
+  useStore
+} from '@nuxtjs/composition-api'
+import {
+  useTutorial,
+  useTutorialQuery,
+  useTutorialSteps,
+  useTutorialQuiz
+} from '@/composables/tutorial/use-tutorial.composable'
 import TutorialCard from '@/components/tutorial/TutorialCard.vue'
+import type { RawLocation } from 'vue-router'
 
 export default defineComponent({
   name: 'LessonVideosTutorial',
@@ -49,9 +98,22 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const route = useRoute()
+    const store = useStore()
     const { createTutorial, getTutorial, destroyTutorial } = useTutorial()
     const { addTutorialSteps, currentTutorialStep } = useTutorialSteps()
-    const { shouldStartTutorial } = useTutorialQuery({ route, router })
+    const { shouldStartTutorial, tutorialStartStep, isInitialTutorial } = useTutorialQuery({
+      route,
+      router
+    })
+    const { quizResult } = useTutorialQuiz({ store })
+
+    const doesTutorialEndHere = computed(() => {
+      return (
+        !quizResult.liveClasses &&
+        !quizResult.printableWorksheets &&
+        !quizResult.educationalVideos
+      )
+    })
 
     onMounted(() => {
       if (!shouldStartTutorial.value) {
@@ -68,6 +130,9 @@ export default defineComponent({
             attachTo: {
               element: '#lesson-video-lessons',
               on: 'right'
+            },
+            showOn() {
+              return tutorialStartStep.value === this.id
             }
           },
           alternateOpeningTarget: '#lesson-dashboard-panel',
@@ -128,7 +193,22 @@ export default defineComponent({
             }
           },
           alternateOpeningTarget: '#lesson-dashboard-panel',
-          alternateOpeningTargetStyles: { backgroundColor: '#FFFFFF' }
+          alternateOpeningTargetStyles: { backgroundColor: '#FFFFFF' },
+          onAdvance: () => {
+            if (quizResult.structuredLessons) {
+              getTutorial()?.next()
+              return
+            }
+
+            if (isInitialTutorial.value && !doesTutorialEndHere.value) {
+              if (quizResult.printableWorksheets) {
+                router.push({
+                  name: 'app-student-cubby-student-portfolio',
+                  query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: true }
+                } as unknown as RawLocation)
+              }
+            }
+          }
         },
         {
           step: {
@@ -138,7 +218,29 @@ export default defineComponent({
               on: 'bottom'
             }
           },
-          alternateOpeningTargetStyles: { backgroundColor: '#FFFFFF' }
+          alternateOpeningTargetStyles: { backgroundColor: '#FFFFFF' },
+          onAdvance: () => {
+            if (isInitialTutorial.value && !doesTutorialEndHere.value) {
+              if (quizResult.printableWorksheets) {
+                router.push({
+                  name: 'app-student-cubby-student-portfolio',
+                  query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: true }
+                } as unknown as RawLocation)
+              } else if (quizResult.liveClasses) {
+                router.push({
+                  name: 'app-virtual-preschool',
+                  query: { tutorial: true, tutorialStep: 'step2', tutorialIntroDaysRedirect: true }
+                } as unknown as RawLocation)
+              } else if (quizResult.educationalVideos) {
+                router.push({
+                  name: 'app-virtual-preschool',
+                  query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: true }
+                } as unknown as RawLocation)
+              }
+            } else {
+              getTutorial()?.next()
+            }
+          }
         },
         {
           step: {

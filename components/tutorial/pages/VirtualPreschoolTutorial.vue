@@ -2,30 +2,33 @@
   <TutorialCard>
     <template v-if="currentTutorialStep">
       <div class="pg-text-center">
+        <div v-if="showWelcome" class="pg-text-[#707070] pg-font-[Poppins] pg-font-bold pg-text-2xl pg-mb-4">
+          WELCOME!
+        </div>
         <template v-if="currentTutorialStep.step.id === 'step1'">
-          <div class="pg-text-[#707070] pg-font-[Poppins] pg-font-bold pg-text-2xl pg-mb-4">
-            WELCOME!
-          </div>
           <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6">
             To start, click here to go to your Daily Lessons.
           </div>
         </template>
         <template v-if="currentTutorialStep.step.id === 'step2'">
-          <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6 pg-pt-4">
+          <div
+            class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6"
+            :class="{ 'pg-pt-4': !showWelcome }"
+          >
             Click here to visit your<br />
             <span class="pg-text-[#F89838] pg-font-bold">Live Classes</span>
           </div>
         </template>
         <template v-if="currentTutorialStep.step.id === 'step3'">
-          <div class="pg-text-[#707070] pg-font-[Poppins] pg-font-bold pg-text-2xl pg-mb-4">
-            WELCOME!
-          </div>
           <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6">
             Your worksheets are located in the Daily Lessons area.
           </div>
         </template>
         <template v-if="currentTutorialStep.step.id === 'step4'">
-          <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6 pg-pt-4">
+          <div
+            class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6"
+            :class="{ 'pg-pt-4': !showWelcome }"
+          >
             For more educational videos, check out our <span class="pg-text-[#A4A4EB] pg-font-bold">Video Library</span>.
           </div>
         </template>
@@ -35,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, useRouter, onMounted, onUnmounted } from '@nuxtjs/composition-api'
+import { defineComponent, computed, useRoute, useRouter, onMounted, onUnmounted } from '@nuxtjs/composition-api'
 import { RawLocation } from 'vue-router'
 import { useTutorial, useTutorialQuery, useTutorialSteps } from '@/composables/tutorial/use-tutorial.composable'
 import TutorialCard from '@/components/tutorial/TutorialCard.vue'
@@ -52,7 +55,11 @@ export default defineComponent({
     const route = useRoute()
     const { createTutorial, getTutorial, destroyTutorial } = useTutorial()
     const { addTutorialSteps, currentTutorialStep } = useTutorialSteps()
-    const { shouldStartTutorial, tutorialStartStep } = useTutorialQuery({ route, router })
+    const { shouldStartTutorial, tutorialStartStep, isInitialTutorial } = useTutorialQuery({ route, router })
+
+    const showWelcome = computed(() => {
+      return !!route.value.query.tutorialWelcome
+    })
 
     onMounted(() => {
       if (!shouldStartTutorial.value) {
@@ -76,7 +83,7 @@ export default defineComponent({
             }
           },
           onAdvance: () => {
-            router.push({ name: 'app-dashboard', query: { tutorial: true, tutorialStep: 'step1' } } as unknown as RawLocation)
+            router.push({ name: 'app-dashboard', query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value } } as unknown as RawLocation)
           }
         },
         {
@@ -92,7 +99,7 @@ export default defineComponent({
             }
           },
           onAdvance: () => {
-            router.push({ name: 'app-live-classes', query: { tutorial: true, tutorialStep: 'step1' } } as unknown as RawLocation)
+            router.push({ name: 'app-live-classes', query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value } } as unknown as RawLocation)
           }
         },
         {
@@ -108,7 +115,7 @@ export default defineComponent({
             }
           },
           onAdvance: () => {
-            router.push({ name: 'app-dashboard', query: { tutorial: true, tutorialStep: 'step2' } } as unknown as RawLocation)
+            router.push({ name: 'app-dashboard', query: { tutorial: true, tutorialStep: 'step2', tutorialIntroDaysRedirect: isInitialTutorial.value } } as unknown as RawLocation)
           }
         },
         {
@@ -124,12 +131,14 @@ export default defineComponent({
             }
           },
           onAdvance: () => {
-            router.push({ name: 'app-library', query: { tutorial: true, tutorialStep: 'step1' } } as unknown as RawLocation)
+            router.push({ name: 'app-library', query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value } } as unknown as RawLocation)
           }
         }
       ])
 
-      tutorial?.start()
+      window.setTimeout(() => {
+        tutorial?.start()
+      }, 500)
     })
 
     onUnmounted(() => {
@@ -137,7 +146,8 @@ export default defineComponent({
     })
 
     return {
-      currentTutorialStep
+      currentTutorialStep,
+      showWelcome
     }
   }
 })
