@@ -177,11 +177,6 @@ export default {
    */
   modules: [
     '@nuxtjs/sentry',
-    // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/style-resources',
-    'vue-scrollto/nuxt',
-    'vue-social-sharing/nuxt',
     [
       '@nuxtjs/i18n',
       {
@@ -206,6 +201,11 @@ export default {
         }
       }
     ],
+    // Doc: https://axios.nuxtjs.org/usage
+    '@nuxtjs/axios',
+    '@nuxtjs/style-resources',
+    'vue-scrollto/nuxt',
+    'vue-social-sharing/nuxt',
     [
       'storyblok-nuxt',
       {
