@@ -290,7 +290,7 @@ export default defineComponent({
     const letters = computed(() => store.getters['admin/curriculum/types'])
 
     const getUploadedOfflineWorksheets = async (lessonId: number, index: number) => {
-      if (loadingWorksheets.value) {
+      if (loadingWorksheets.value || route.value.query.tutorial) {
         return
       }
       loadingWorksheets.value = true
