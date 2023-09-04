@@ -1,6 +1,7 @@
 import { Child, TypedStore } from '@/models'
 import { ref, useRoute, useRouter, watch, computed } from '@nuxtjs/composition-api'
 import { Store } from 'vuex/types'
+import { useTutorialQuery } from '@/composables/tutorial/use-tutorial.composable'
 import { useChild } from './use-child.composable'
 
 interface UseChildRouteParams {
@@ -30,6 +31,7 @@ export const useChildRoute = ({ store, route, router, shouldRedirect = false }: 
     childId.value = null
   }
 
+  const { getTutorialQueryParams } = useTutorialQuery({ route, router })
   const setCurrentChildToRoute = (id: number) => {
     if (id && route.value.name) {
       // Update received child id in the store
@@ -43,7 +45,8 @@ export const useChildRoute = ({ store, route, router, shouldRedirect = false }: 
         router.push({
           name: route.value.name,
           query: {
-            id: `${id}`
+            id: `${id}`,
+            ...getTutorialQueryParams()
           }
         })
       }

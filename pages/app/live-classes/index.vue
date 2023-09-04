@@ -108,11 +108,13 @@
                   />
                 </template>
               </v-col>
+
+              <tutorial-btn-wrapper class="!pg-absolute pg-right-0" />
             </v-row>
 
             <v-row>
               <v-col cols="12">
-                <span class="font-weight-bold">
+                <span id="time-zone-changer" class="font-weight-bold">
                   *Hours are in {{ getAcronymCurrent }}, you can change your
                   time zone by clicking
                   <span
@@ -133,6 +135,7 @@
             />
           </v-col>
         </v-row>
+        <live-classes-tutorial />
       </v-container>
 
       <v-container
@@ -160,6 +163,10 @@
           @prev-week="removeWeek"
           @next-week="addWeek"
         />
+
+        <div class="pg-text-center">
+          <tutorial-btn-wrapper />
+        </div>
 
         <v-row class="mt-4 px-4" justify="space-around">
           <div
@@ -191,6 +198,8 @@
             </v-card>
           </v-col>
         </v-row>
+
+        <live-classes-tutorial />
       </v-container>
     </pg-loading>
 
@@ -321,6 +330,8 @@
         </v-row>
       </v-card>
     </pg-dialog>
+
+    <live-classes-tutorial-dialog />
   </v-main>
 </template>
 
@@ -342,6 +353,9 @@ import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
 import { jsonCopy } from '@/utils'
 import dayjs from 'dayjs'
 import HolidayCard from '@/components/app/live-sessions/HolidayCard.vue'
+import LiveClassesTutorial from '@/components/tutorial/pages/LiveClassesTutorial.vue'
+import TutorialBtnWrapper from '@/components/tutorial/wrappers/TutorialBtnWrapper.vue'
+import LiveClassesTutorialDialog from '@/components/tutorial/wrappers/LiveClassesTutorialDialog.vue'
 
 export default {
   name: 'Index',
@@ -355,7 +369,10 @@ export default {
     WeekSelector,
     DaySelector,
     UnlockPrompt,
-    HolidayCard
+    HolidayCard,
+    LiveClassesTutorial,
+    TutorialBtnWrapper,
+    LiveClassesTutorialDialog
   },
 
   data: () => {
@@ -506,7 +523,7 @@ export default {
 
     sessions() {
       const sessionId = Number(this.$route.query.sid) || 0
-      this.$router.push({ name: 'app-live-classes' })
+      this.$router.push({ name: 'app-live-classes', query: { ...this.$route.query } })
       if (!sessionId) {
         return
       }
@@ -531,6 +548,15 @@ export default {
       this.getFilteredHolidays()
       this.setCurrentTimezone()
     }
+
+    // tutorial
+    this.$appEventBus.$on('tutorial-open-drawer', () => {
+      this.drawer = false
+    })
+
+    this.$appEventBus.$on('tutorial-close-drawer', () => {
+      this.drawer = true
+    })
   },
 
   methods: {

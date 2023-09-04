@@ -64,6 +64,7 @@
         <v-col cols="12">
           <v-expansion-panels
             v-if="lessons.length"
+            id="student-portfolio-worksheet-cards"
             v-model="panel"
             flat
             tile
@@ -192,6 +193,7 @@
               No lessons found for this letter.
             </div>
           </div>
+          <StudentPortfolioTutorial v-if="getCurrentLetter && !loading && lessons.length" />
           <portfolio-overlay :child="child" />
         </v-col>
       </pg-loading>
@@ -211,6 +213,7 @@ import RecordedLetter from '@/components/app/live-sessions/recorded/RecordedLett
 import UploadOfflineWorksheetDialog from '@/components/app/dashboard/worksheets/UploadOfflineWorksheetDialog.vue'
 import WorksheetsWrapper from '@/components/app/student-cubby/WorksheetsWrapper.vue'
 import UploadWorksheetCarousel from '@/components/app/student-cubby/UploadWorksheetCarousel.vue'
+import StudentPortfolioTutorial from '@/components/tutorial/pages/StudentPortfolioTutorial.vue'
 import {
   computed,
   defineComponent,
@@ -241,7 +244,8 @@ export default defineComponent({
     RecordedLetter,
     UploadOfflineWorksheetDialog,
     WorksheetsWrapper,
-    UploadWorksheetCarousel
+    UploadWorksheetCarousel,
+    StudentPortfolioTutorial
   },
   data: () => {
     return {

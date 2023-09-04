@@ -12,6 +12,12 @@ export default actionTree(
       return count > 0
     },
 
+    getUserSurvey(_, surveyKey: string) {
+      return this.$axios.$get('/users/survey', {
+        params: { survey: surveyKey }
+      })
+    },
+
     async saveUserSurvey(_, createSurveyDto: CreateSurveyDto) {
       const survey = await this.$axios.$post('/users/survey', createSurveyDto)
       return survey

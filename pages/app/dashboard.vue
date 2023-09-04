@@ -165,6 +165,10 @@ export default {
       }
       return undefined
     },
+    getFirstId(items = []) {
+      const item = items.sort((itemA, itemB) => itemA.order - itemB.order)[0]
+      return (item && item.id) || undefined
+    },
     changeChild(newId, redirect = true) {
       let child
       if (!Array.isArray(newId)) {
@@ -219,12 +223,27 @@ export default {
         const goToVideos = this.prevRoute === 'app-welcome'
         const curriculumName = this.lesson.curriculumType.name
         const shouldRedirect = this.$route.query.shouldRedirect !== 'false' // This is use to avoid redirection loops
+        const { tutorial, tutorialStep, tutorialIntroDaysRedirect } = this.$route.query
+        const tutorialQueryParams = { tutorial, tutorialStep, tutorialIntroDaysRedirect }
         const redirectToWorksheets = this.$route.query.redirectWorksheets === 'true'
         const cancelWelcomePage = this.highestProgress > 1
         const wasProgressMade = this.videos.progress > 0
 
         // We set this to avoid re-directions to lesson videos
         this.prevRoute = ''
+
+        // Tutorial redirect
+        if (tutorialQueryParams.tutorial) {
+          if (this.$route.name === 'app-dashboard-lesson-videos') {
+            return
+          }
+          const route = this.generateNuxtRoute('lesson-videos', {
+            id: this.getFirstId(this.videos.items),
+            ...tutorialQueryParams
+          })
+          this.$router.push(route)
+          return
+        }
 
         if ((lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro' && shouldRedirect && !wasProgressMade && !cancelWelcomePage) {
           this.$router.push({ name: 'app-welcome', query: { step: lessonDay } })

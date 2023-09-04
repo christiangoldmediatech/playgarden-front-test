@@ -73,6 +73,7 @@ export default {
               dataTestId: 'app-music'
             },
             {
+              id: 'kids-corner-button',
               title: 'Kids Corner',
               dataTestId: 'app-kids-corner',
               external: true,
@@ -80,6 +81,7 @@ export default {
               openInNewTab: false
             },
             {
+              id: 'student-cubby-button',
               title: 'Student Cubby',
               dataTestId: 'app-student-cubby',
               to: {

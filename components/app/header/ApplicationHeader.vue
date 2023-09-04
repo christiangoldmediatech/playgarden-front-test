@@ -65,6 +65,7 @@
               <!-- EXTERNAL LINK -->
               <v-btn
                 v-if="item.external && !item.hidden"
+                :id="item.id"
                 :key="`${_uid}-${index}`"
                 class="px-2 text-none link-text px-lg-4"
                 active-class="custom-active"
@@ -77,6 +78,7 @@
               <!-- INTERNAL LINK -->
               <v-btn
                 v-else-if="!item.hidden"
+                :id="item.id"
                 :key="`${_uid}-${index}`"
                 class="px-2 text-none link-text px-lg-4"
                 active-class="custom-active"
