@@ -89,6 +89,7 @@ export default defineComponent({
       finishTutorial()
       if (introDaysRedirect.value) {
         startIntroDays()
+        return
       }
       clearTutorialRouteParams()
     }
