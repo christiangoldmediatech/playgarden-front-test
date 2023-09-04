@@ -28,7 +28,7 @@
           <div class="sm:pg-mb-4">
             <div v-if="finishButtons" class="pg-flex pg-justify-center">
               <div class="pg-w-full pg-max-w-[128px]">
-                <VBtn color="#F58E00" class="!pg-text-white" elevation="0" block @click="onClickNext">
+                <VBtn color="#F58E00" class="!pg-text-white" elevation="0" block @click="onClickSkip">
                   {{ (currentTutorialStep && currentTutorialStep.advanceText) || 'Close' }}
                 </VBtn>
               </div>
