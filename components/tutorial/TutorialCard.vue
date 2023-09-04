@@ -86,11 +86,11 @@ export default defineComponent({
     })
 
     function onClickSkip() {
-      clearTutorialRouteParams()
       finishTutorial()
       if (introDaysRedirect.value) {
         startIntroDays()
       }
+      clearTutorialRouteParams()
     }
 
     function onClickNext() {
