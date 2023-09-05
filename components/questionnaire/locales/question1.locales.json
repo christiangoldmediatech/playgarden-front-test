@@ -1,0 +1,12 @@
+{
+  "en": {
+    "text": "Which components of Playgarden Online do you plan on using?",
+    "instructions": "Select all that apply:",
+    "options": ["Structured Online Preschool Lessons", "Live Zoom Classes", "Printable Worksheets", "Educational videos to replace TV"]
+  },
+  "es": {
+    "text": "¿Cuáles componentes de Playgarden Online planeas usar?",
+    "instructions": "Seleccione todo lo que aplique:",
+    "options": ["Lecciones Preescolares Estructuradas En Línea", "Clases en Vivo por Zoom", "Hojas Imprimibles de Trabajo", "Videos Educativos para reemplazar la TV"]
+  }
+}

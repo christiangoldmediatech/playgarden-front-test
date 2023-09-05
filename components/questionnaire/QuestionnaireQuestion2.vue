@@ -6,11 +6,11 @@
 
     <div class="questionnaire-card">
       <div class="questionnaire-title pg-mb-5">
-        {{ questDataState.question2.text }}
+        {{ $t('text') }}
       </div>
 
       <div class="questionnaire-text pg-mb-6 lg:pg-mb-8">
-        {{ questDataState.question2.instructions }}
+        {{ $t('instructions') }}
       </div>
 
       <div class="questionnaire-answers questionnaire-answers__days-per-week pg-mb-5 lg:pg-mb-16">
@@ -22,7 +22,7 @@
           <div class="pg-flex pg-w-full pg-h-full pg-items-center pg-justify-center pg-mb-2">
             <img src="@/assets/png/questionnaire/days-per-week-option-1.png" />
           </div>
-          DAY PER WEEK OR LESS
+          {{ $t('dayPerWeekOrLess') }}
         </div>
 
         <div
@@ -33,7 +33,7 @@
           <div class="pg-flex pg-w-full pg-h-full pg-items-center pg-justify-center pg-mb-4">
             <img src="@/assets/png/questionnaire/days-per-week-option-2.png" />
           </div>
-          DAYS PER WEEK
+          {{ $t('daysPerWeek') }}
         </div>
 
         <div
@@ -44,7 +44,7 @@
           <div class="pg-flex pg-w-full pg-h-full pg-items-center pg-justify-center pg-mb-4">
             <img src="@/assets/png/questionnaire/days-per-week-option-3.png" />
           </div>
-          DAYS PER WEEK
+          {{ $t('daysPerWeek') }}
         </div>
 
         <div
@@ -55,7 +55,7 @@
           <div class="pg-flex pg-w-full pg-h-full pg-items-center pg-justify-center pg-mb-1">
             <img src="@/assets/png/questionnaire/days-per-week-option-4.png" />
           </div>
-          DAYS PER WEEK
+          {{ $t('daysPerWeek') }}
         </div>
       </div>
 
@@ -67,7 +67,7 @@
           :disabled="!questDataState.question2.answer"
           @click.stop="onNextBtnClick"
         >
-          NEXT
+          {{ $t('next') }}
         </v-btn>
       </div>
     </div>
@@ -120,3 +120,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '@/assets/scss/questionnaire';
 </style>
+
+<i18n src="./locales/questionnaire.common.locales.json"></i18n>
+
+<i18n src="./locales/question2.locales.json"></i18n>

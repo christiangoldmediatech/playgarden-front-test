@@ -8,11 +8,11 @@
     <VCard class="!pg-rounded-[20px] sm:!pg-rounded-[42px]">
       <div class="pg-text-center pg-text-[#606060] pg-py-9 pg-px-6 sm:pg-pt-13 sm:pg-pb-10 sm:pg-px-14 sm:pg-text-lg pg-leading-[normal]">
         <h2 class="pg-my-0 pg-mb-2 pg-text-[#F89838] pg-text-2xl pg-font-[Quicksand] sm:pg-text-3xl">
-          Thank you for answering these questions!
+          {{ $t('title') }}
         </h2>
 
         <p class="pg-mb-2">
-          Your answers will help us to personalize the learning experience.
+          {{ $t('subtitle') }}
         </p>
 
         <img
@@ -22,15 +22,15 @@
         />
 
         <p class="pg-mb-3 sm:pg-mb-6">
-          To start, here is an introduction video from Miss Beth, who will guide you through what to expect from the program, and how to learn each day.
+          {{ $t('text1') }}
         </p>
 
         <h3 class="pg-my-3 pg-text-[#68C453] pg-font-[Quicksand] pg-text-xl sm:pg-text-3xl">
-          Have questions?
+          {{ $t('subtitle2') }}
         </h3>
 
         <p class="pg-mb-2">
-          Our teacher team is ready to answer them all!
+          {{ $t('text2') }}
         </p>
 
         <img
@@ -40,7 +40,7 @@
         />
 
         <p class="pg-mb-4">
-          We're so excited to watch your little one grow with us!
+          {{ $t('text3') }}
         </p>
 
         <div class="pg-max-w-[460px] md:pg-max-w-[610px] pg-mx-auto">
@@ -51,7 +51,7 @@
             block
             @click="() => { showDialog = false }"
           >
-            LET'S GET STARTED
+            {{ $t('letsGetStarted') }}
           </VBtn>
         </div>
       </div>
@@ -93,3 +93,5 @@ export default defineComponent({
   }
 })
 </script>
+
+<i18n src="./locales/questionnaire-dialog.locales.json"></i18n>
