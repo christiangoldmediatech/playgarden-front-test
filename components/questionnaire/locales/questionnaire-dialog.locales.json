@@ -1,0 +1,20 @@
+{
+  "en": {
+    "title": "Thank you for answering these questions!",
+    "subtitle": "Your answers will help us to personalize the learning experience.",
+    "text1": "To start, here is an introduction video from Miss Beth, who will guide you through what to expect from the program, and how to learn each day.",
+    "subtitle2": "Have questions?",
+    "text2": "Our teacher team is ready to answer them all!",
+    "text3": "We're so excited to watch your little one grow with us!",
+    "letsGetStarted": "LET'S GET STARTED"
+  },
+  "es": {
+    "title": "¡Gracias por responder nuestras preguntas!",
+    "subtitle": "Tus respuestas nos ayudarán a personalizar la experiencia de aprendizaje.",
+    "text1": "Para comenzar, aquí hay un video de introducción de Miss Beth, quien lo guiará sobre qué esperar del programa y cómo aprender cada día.",
+    "subtitle2": "¿Tiene preguntas?",
+    "text2": "¡Nuestro equipo de profesores está listo para responderlas todas!",
+    "text3": "¡Estamos muy emocionados de ver crecer a tu pequeño con nosotros!",
+    "letsGetStarted": "COMENCEMOS"
+  }
+}

@@ -5,19 +5,6 @@ import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscripti
 import routeHandlerIgnoredRoutes from '~/utils/consts/routeHandlerIgnoredRoutes.json'
 
 export default async function ({ redirect, route, store, app, req }) {
-  // Set language
-  const queriedLanguage = route.query.lang
-  const isLangQueryPresent = !!queriedLanguage
-  const availableLanguages = store.getters.getLanguages.map(lang => lang.code)
-  const currentAppliedLanguage = app.i18n.locale
-  const browserLanguage = navigator.language
-  const browserLanguageCode = browserLanguage.includes('-') ? browserLanguage.split('-')[0] : browserLanguage
-  if (isLangQueryPresent && availableLanguages.includes(queriedLanguage)) {
-    app.i18n.setLocale(queriedLanguage)
-  } else if (browserLanguageCode !== currentAppliedLanguage && availableLanguages.includes(browserLanguageCode)) {
-    app.i18n.setLocale(browserLanguageCode)
-  }
-
   const redirectLogout = (route.query.logout)
 
   if (redirectLogout) {
@@ -64,12 +51,40 @@ export default async function ({ redirect, route, store, app, req }) {
     }
   }
 
+  isLoggedIn = await store.dispatch('auth/checkAuth', undefined, { root: true })
+
+  if (isLoggedIn && !isUserInStore) {
+    await store.dispatch('auth/fetchUserInfo', undefined, { root: true })
+  }
+
+  user = store.getters['auth/getUserInfo']
+
+  // Set language
+  const getLanguageCode = (code) => {
+    if (code.includes('-')) {
+      return code.split('-')[0]
+    } else if (code.includes('_')) {
+      return code.split('_')[0]
+    } else {
+      return code
+    }
+  }
+
+  const languageToApply = user.language ? getLanguageCode(user.language.code) : 'en'
+  const availableLanguages = store.getters.getLanguages.map(lang => lang.code)
+  const currentAppliedLanguage = app.i18n.locale
+  const browserLanguage = navigator.language
+  const browserLanguageCode = getLanguageCode(browserLanguage)
+  if (languageToApply && availableLanguages.includes(languageToApply)) {
+    app.i18n.setLocale(languageToApply)
+  } else if (browserLanguageCode !== currentAppliedLanguage && availableLanguages.includes(browserLanguageCode)) {
+    app.i18n.setLocale(browserLanguageCode)
+  }
+
   const noUserFlow = route.query.noUserFlow
   if (noUserFlow && route.name === 'app-payment-iframe-plan') {
     return
   }
-
-  isLoggedIn = await store.dispatch('auth/checkAuth', undefined, { root: true })
 
   if (route.name === 'app-payment-iframe-plan' && !route.query.isLogged && isLoggedIn) {
     return redirect({ name: 'app-payment-iframe-plan', query: { isLogged: true } })

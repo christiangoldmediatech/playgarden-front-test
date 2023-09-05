@@ -20,7 +20,7 @@
   },
   "resolutions": {
     "prosemirror-model": "1.19.0",
-    "deasync": "0.1.16"
+    "deasync": "0.1.28"
   },
   "dependencies": {
     "@gold-media-tech/pg-video-player": "^0.0.96",

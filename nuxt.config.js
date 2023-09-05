@@ -198,7 +198,8 @@ export default {
           useCookie: true,
           cookieKey: 'i18n_redirected',
           redirectOn: 'root'
-        }
+        },
+        vueI18nLoader: true
       }
     ],
     // Doc: https://axios.nuxtjs.org/usage
