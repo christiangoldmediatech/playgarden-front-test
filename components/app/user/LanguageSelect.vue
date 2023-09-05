@@ -92,6 +92,7 @@ export default defineComponent({
         toast.error('Could not change language')
       } finally {
         loading.value = false
+        location.reload()
       }
     }
 
