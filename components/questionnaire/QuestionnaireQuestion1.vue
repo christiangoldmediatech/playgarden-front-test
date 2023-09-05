@@ -6,19 +6,19 @@
 
     <div class="questionnaire-card">
       <div class="questionnaire-title pg-mb-5">
-        {{ questDataState.question1.text }}
+        {{ $t('text') }}
       </div>
 
       <div class="questionnaire-text pg-mb-6 lg:pg-mb-8">
-        {{ questDataState.question1.instructions }}
+        {{ $t('instructions') }}
       </div>
 
       <div class="questionnaire-answers questionnaire-answers--checkboxes pg-mb-5 lg:pg-mb-16">
         <v-checkbox
-          v-for="(checkbox, checkboxIndex) in checkboxOptions"
+          v-for="(checkbox, checkboxIndex) in optionsTexts"
           :key="`questionnaire-checkbox-${checkboxIndex}`"
           v-model="questDataState.question1.answer"
-          :value="checkbox"
+          :value="optionsValues[checkboxIndex]"
           :label="checkbox"
           class="mt-0 pt-0 mb-3"
           off-icon="mdi-checkbox-blank-outline primary--text"
@@ -34,7 +34,7 @@
           :disabled="!questDataState.question1.answer.length"
           @click.stop="onNextBtnClick"
         >
-          NEXT
+          {{ $t('next') }}
         </v-btn>
       </div>
     </div>
@@ -43,13 +43,15 @@
 
 <script lang="ts">
 import dayjs from 'dayjs'
-import { defineComponent, onMounted } from '@nuxtjs/composition-api'
+import { defineComponent, computed, onMounted } from '@nuxtjs/composition-api'
 import { useQuestionnaire } from '@/composables/questionnaire/useQuestionnaire.composable'
+import { useLanguageHelper } from '@/composables'
 
 export default defineComponent({
   name: 'QuestionnaireQuestion1',
 
   setup() {
+    const language = useLanguageHelper()
     const { questDataState, questPageData, goToNextPage } = useQuestionnaire()
     const checkboxOptions = questDataState.question1.options || []
     let startTime = dayjs()
@@ -65,9 +67,19 @@ export default defineComponent({
       goToNextPage()
     }
 
+    const optionsTexts = computed(() => {
+      return language.t('options') as unknown as Array<string>
+    })
+
+    const optionsValues = computed(() => {
+      return language.t('options', 'en', undefined) as unknown as Array<string>
+    })
+
     return {
       questDataState,
       checkboxOptions,
+      optionsTexts,
+      optionsValues,
       onNextBtnClick
     }
   }
@@ -77,3 +89,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '@/assets/scss/questionnaire';
 </style>
+
+<i18n src="./locales/questionnaire.common.locales.json"></i18n>
+
+<i18n src="./locales/question1.locales.json"></i18n>
