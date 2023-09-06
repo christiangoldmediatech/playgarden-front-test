@@ -187,7 +187,6 @@ export default defineComponent({
       try {
         await store.requestToAddLibrary(draft.value as any)
       } catch (error) {
-        console.log(error)
         toast.error('Could not send request to add library')
       } finally {
         loading.value = false
