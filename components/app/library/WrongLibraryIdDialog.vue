@@ -51,7 +51,7 @@
       </p>
     </v-col>
 
-    <v-col v-else cols="12" class="px-16 py-0">
+    <v-col v-else cols="12" class="pg-px-0 sm:pg-px-16 pg-py-0">
       <validation-observer v-slot="{ invalid, passes }">
         <v-form @submit.prevent="passes(onSubmit)">
           <v-col cols="12" class="py-0">
