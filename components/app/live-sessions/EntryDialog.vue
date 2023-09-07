@@ -113,7 +113,7 @@
                   >
                     Description
                   </p>
-                  <span class="pg-text-lg pg-font-normal pg-text-black">{{ entry.description }}</span>
+                  <span class="pg-text-lg pg-font-normal pg-text-black" v-html="entry.description "></span>
                 </div>
 
                 <div class="pb-6">
