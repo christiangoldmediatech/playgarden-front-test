@@ -109,7 +109,7 @@
             v-if="isUserLoggedIn && !isUserInSignupProcess"
             height="45"
             class="clickable"
-            src="@/assets/svg/account-profile-v2.svg"
+            src="@/assets/svg/account-profile.svg"
             @click="$router.push({ name: 'app-account-index' })"
           />
           <div class="text-caption">
