@@ -109,7 +109,6 @@
                 </template>
               </v-col>
 
-              <!-- <tutorial-btn-wrapper class="!pg-absolute pg-right-0" /> -->
               <live-classes-tutorial-btn class="!pg-absolute pg-right-0" />
             </v-row>
 
@@ -331,8 +330,6 @@
         </v-row>
       </v-card>
     </pg-dialog>
-
-    <!-- <live-classes-tutorial-dialog /> -->
   </v-main>
 </template>
 
@@ -354,8 +351,6 @@ import DaySelector from '@/components/app/live-sessions/DaySelector.vue'
 import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
 import HolidayCard from '@/components/app/live-sessions/HolidayCard.vue'
 import LiveClassesTutorial from '@/components/tutorial/pages/LiveClassesTutorial.vue'
-// import TutorialBtnWrapper from '@/components/tutorial/wrappers/TutorialBtnWrapper.vue'
-// import LiveClassesTutorialDialog from '@/components/tutorial/wrappers/LiveClassesTutorialDialog.vue'
 import LiveClassesTutorialBtn from '@/components/tutorial/wrappers/LiveClassesTutorialBtn.vue'
 
 import { useLiveClassesTutorial } from '@/composables/tutorial/use-live-classes-tutorial.composable'
@@ -379,8 +374,6 @@ export default {
     UnlockPrompt,
     HolidayCard,
     LiveClassesTutorial,
-    // TutorialBtnWrapper,
-    // LiveClassesTutorialDialog,
     LiveClassesTutorialBtn
   },
 
