@@ -6,7 +6,6 @@
 import { defineComponent, useStore, PropType, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
 import TutorialBtn from '@/components/tutorial/TutorialBtn.vue'
-import type { LessonApiResponse } from '@/composables'
 import type { RawLocation } from 'vue-router'
 
 export default defineComponent({
@@ -16,15 +15,7 @@ export default defineComponent({
     TutorialBtn
   },
 
-  props: {
-    lessonVideos: {
-      type: Array as PropType<LessonApiResponse['lesson']['videos']>,
-      required: false,
-      default: undefined
-    }
-  },
-
-  setup(props) {
+  setup() {
     const store = useStore()
     const route = useRoute()
     const router = useRouter()

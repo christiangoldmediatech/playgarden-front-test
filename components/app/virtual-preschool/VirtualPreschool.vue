@@ -255,13 +255,11 @@ export default defineComponent({
     }
 
     // Tutorial Dialog
-    const { resetQuizResults } = useTutorialQuiz({ store })
     function onClickTutorialBtn() {
       startTutorial()
     }
 
     function startTutorial() {
-      resetQuizResults()
       router.push({
         name: 'app-virtual-preschool',
         query: {

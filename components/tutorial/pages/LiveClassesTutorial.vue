@@ -82,9 +82,6 @@ export default defineComponent({
       createTutorial()
       const tutorial = getTutorial()
 
-      // In all cases, we want to open the drawer
-      // appEventBus.$emit('tutorial-open-drawer')
-
       addTutorialSteps([
         {
           step: {
@@ -94,18 +91,6 @@ export default defineComponent({
               on: 'right'
             }
           },
-          // onBeforeShowPromise() {
-          //   return new Promise((resolve) => {
-          //     let attempts = 0
-          //     const checkInterval = window.setInterval(() => {
-          //       attempts++
-          //       if (document.querySelector('.today-liveclass-card') || attempts === 10) {
-          //         window.clearInterval(checkInterval)
-          //         resolve(!!document.querySelector('.today-liveclass-card'))
-          //       }
-          //     }, 33)
-          //   })
-          // },
           onAdvance() {
             document.querySelector('#tutorial-music-live-session')?.dispatchEvent(new Event('click'))
             tutorial?.next()
@@ -132,18 +117,6 @@ export default defineComponent({
               on: 'right'
             }
           },
-          // onBeforeShowPromise() {
-          //   return new Promise((resolve) => {
-          //     let attempts = 0
-          //     const checkInterval = window.setInterval(() => {
-          //       attempts++
-          //       if (document.querySelector('.today-playdate-card') || attempts === 10) {
-          //         window.clearInterval(checkInterval)
-          //         resolve(true)
-          //       }
-          //     }, 33)
-          //   })
-          // },
           onAdvance() {
             document.querySelector('#tutorial-art-live-session')?.dispatchEvent(new Event('click'))
             tutorial?.next()
@@ -181,10 +154,10 @@ export default defineComponent({
           },
           alternateOpeningTargetStyles: { backgroundColor: '#FFFFFF' },
           onAdvance: () => {
-            if (isInitialTutorial.value && !doesTutorialEndHere.value) {
+            if (!doesTutorialEndHere.value) {
               router.push({
                 name: 'app-virtual-preschool',
-                query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: true }
+                query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: isInitialTutorial.value }
               } as unknown as RawLocation)
             } else {
               getTutorial()?.next()

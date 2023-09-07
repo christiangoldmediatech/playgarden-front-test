@@ -64,16 +64,16 @@ export default defineComponent({
             }
           },
           onAdvance: () => {
-            if (isInitialTutorial.value && !doesTutorialEndHere.value) {
+            if (!doesTutorialEndHere.value) {
               if (quizResult.liveClasses) {
                 router.push({
                   name: 'app-virtual-preschool',
-                  query: { tutorial: true, tutorialStep: 'step2', tutorialIntroDaysRedirect: true }
+                  query: { tutorial: true, tutorialStep: 'step2', tutorialIntroDaysRedirect: isInitialTutorial.value }
                 } as unknown as RawLocation)
               } else if (quizResult.educationalVideos) {
                 router.push({
                   name: 'app-virtual-preschool',
-                  query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: true }
+                  query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: isInitialTutorial.value }
                 } as unknown as RawLocation)
               }
             } else {
