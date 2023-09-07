@@ -85,7 +85,7 @@ import {
   useQuestionnaire,
   useQuestionnaireSave
 } from '@/composables/questionnaire/useQuestionnaire.composable'
-import { useTutorialDialog } from '@/composables/tutorial/use-tutorial.composable'
+import type { RawLocation } from 'vue-router'
 
 export default defineComponent({
   name: 'QuestionnaireQuestion3',
@@ -102,14 +102,13 @@ export default defineComponent({
       startTime = dayjs()
     })
 
-    const { showTutorialDialog } = useTutorialDialog()
     async function onSave() {
       try {
         const endTime = dayjs()
         const totalTime = endTime.diff(startTime, 'seconds')
         questPageData[2].pageTime = totalTime
         await handleSave()
-        showTutorialDialog()
+        router.push({ name: 'app-virtual-preschool', query: { promptTutorial: true } } as unknown as RawLocation)
       } catch {}
     }
 

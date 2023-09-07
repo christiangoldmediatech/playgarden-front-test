@@ -62,6 +62,7 @@
     </div>
     <BirthdayVideoDialog />
     <VirtualPreschoolTutorial />
+    <TutorialDialog @close="startIntroDays" @remind="startIntroDays" @start="startTutorial" />
   </v-main>
 </template>
 
@@ -81,9 +82,10 @@ import { TypedStore, Child } from '@/models'
 
 import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
 import SectionImage from '@/components/app/virtual-preschool/SectionImage.vue'
-import { useTutorialQuery, TutorialQueryParams, useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
+import { useTutorialQuery, TutorialQueryParams, useTutorialDialog, useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
 import VirtualPreschoolTutorial from '@/components/tutorial/pages/VirtualPreschoolTutorial.vue'
 import TutorialBtn from '@/components/tutorial/TutorialBtn.vue'
+import TutorialDialog from '@/components/tutorial/TutorialDialog.vue'
 
 import type { RawLocation } from 'vue-router'
 
@@ -94,7 +96,8 @@ export default defineComponent({
     BirthdayVideoDialog,
     SectionImage,
     VirtualPreschoolTutorial,
-    TutorialBtn
+    TutorialBtn,
+    TutorialDialog
   },
 
   setup() {
@@ -124,7 +127,7 @@ export default defineComponent({
       window.open(url.href, '_self')
     }
 
-    const { isTutorial } = useTutorialQuery({ route, router })
+    const { isTutorial, startIntroDays } = useTutorialQuery({ route, router })
     const section = computed(() => {
       // Tutorial query parameters
       const dashboardQueryParams: TutorialQueryParams = {}
@@ -272,6 +275,43 @@ export default defineComponent({
       })
     }
 
+    const { getQuizResults, quizResult } = useTutorialQuiz({ store })
+    const { dialogLoading, showTutorialDialog, closeTutorialDialog } = useTutorialDialog()
+    if (route.value.query.promptTutorial) {
+      showTutorialDialog()
+    }
+    async function onDialogStartTutorial() {
+      try {
+        dialogLoading.value = true
+        await getQuizResults()
+
+        let step = ''
+
+        if (quizResult.structuredLessons) {
+          step = 'step1'
+        } else if (quizResult.liveClasses) {
+          step = 'step2'
+        } else if (quizResult.printableWorksheets) {
+          step = 'step3'
+        } else if (quizResult.educationalVideos) {
+          step = 'step4'
+        }
+
+        await router.push({
+          name: 'app-virtual-preschool',
+          query: {
+            tutorial: true,
+            tutorialStep: step,
+            tutorialWelcome: true,
+            tutorialIntroDaysRedirect: true
+          }
+        } as unknown as RawLocation)
+      } finally {
+        dialogLoading.value = false
+        closeTutorialDialog()
+      }
+    }
+
     return {
       section,
       goToKidsCorner,
@@ -279,7 +319,9 @@ export default defineComponent({
       handleClick,
       isBirthdayModalVisible,
       onClickTutorialBtn,
-      startTutorial
+      startTutorial,
+      onDialogStartTutorial,
+      startIntroDays
     }
   }
 })
