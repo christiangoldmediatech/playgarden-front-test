@@ -62,7 +62,7 @@
     </div>
     <BirthdayVideoDialog />
     <VirtualPreschoolTutorial />
-    <TutorialDialog @start="startTutorial" />
+    <!-- <TutorialDialog @start="startTutorial" /> -->
   </v-main>
 </template>
 
@@ -84,7 +84,7 @@ import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVid
 import SectionImage from '@/components/app/virtual-preschool/SectionImage.vue'
 import { useTutorialQuery, TutorialQueryParams, useTutorialDialog, useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
 import VirtualPreschoolTutorial from '@/components/tutorial/pages/VirtualPreschoolTutorial.vue'
-import TutorialDialog from '@/components/tutorial/TutorialDialog.vue'
+// import TutorialDialog from '@/components/tutorial/TutorialDialog.vue'
 import TutorialBtn from '@/components/tutorial/TutorialBtn.vue'
 
 import type { RawLocation } from 'vue-router'
@@ -96,7 +96,7 @@ export default defineComponent({
     BirthdayVideoDialog,
     SectionImage,
     VirtualPreschoolTutorial,
-    TutorialDialog,
+    // TutorialDialog,
     TutorialBtn
   },
 
@@ -259,14 +259,14 @@ export default defineComponent({
 
     // Tutorial Dialog
     const { resetQuizResults } = useTutorialQuiz({ store })
-    const { showTutorialDialog, dialogLoading } = useTutorialDialog()
+    // const { showTutorialDialog, dialogLoading } = useTutorialDialog()
     function onClickTutorialBtn() {
-      showTutorialDialog()
+      startTutorial()
     }
 
     async function startTutorial() {
       try {
-        dialogLoading.value = true
+        // dialogLoading.value = true
         resetQuizResults()
 
         await router.push({
@@ -280,7 +280,7 @@ export default defineComponent({
           window.open(route.value.fullPath, '_self')
         })
       } finally {
-        dialogLoading.value = false
+        // dialogLoading.value = false
       }
     }
 

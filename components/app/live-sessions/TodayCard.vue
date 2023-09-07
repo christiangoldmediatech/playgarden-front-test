@@ -8,6 +8,7 @@
     </div>
     <v-hover v-slot="{ hover }">
       <v-card
+        :id="entry.tutorialId"
         class="lsess-card clickable !pg-bg-white"
         :style="{
           '--borderColor': entry.type === 'LiveClass' ? '#F89838' : '#68C453'
@@ -114,6 +115,7 @@ import { TAG_MANAGER_EVENTS } from '@/models'
 import { sameDay, isTomorrow } from '@/utils/dateTools.js'
 import moment from 'moment'
 import { formatTimezone } from '@/utils/dateTools'
+import dayjs from 'dayjs'
 
 export default {
   name: 'TodayCard',
@@ -171,8 +173,16 @@ export default {
 
   computed: {
     ...mapGetters('auth', ['getUserInfo']),
+
+    getToday() {
+      if (this.$route.query.tutorial) {
+        return dayjs().startOf('week').add(1, 'day').add(10, 'hours').toDate()
+      }
+      return new Date()
+    },
+
     time() {
-      const today = new Date()
+      const today = this.getToday
       const date = new Date(this.entry.dateStart)
       let word = this.days[date.getDay()]
       if (date.getFullYear() === today.getFullYear()) {

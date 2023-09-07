@@ -73,7 +73,9 @@ export default defineComponent({
     }
   },
 
-  setup() {
+  emits: ['skip'],
+
+  setup(_, { emit }) {
     const router = useRouter()
     const route = useRoute()
 
@@ -85,13 +87,14 @@ export default defineComponent({
       return !!route.value.query.tutorialIntroDaysRedirect
     })
 
-    function onClickSkip() {
+    async function onClickSkip() {
       finishTutorial()
       if (introDaysRedirect.value) {
         startIntroDays()
         return
       }
-      clearTutorialRouteParams()
+      await clearTutorialRouteParams()
+      emit('skip')
     }
 
     function onClickNext() {

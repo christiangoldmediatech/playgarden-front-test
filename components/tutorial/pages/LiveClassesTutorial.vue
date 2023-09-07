@@ -1,5 +1,8 @@
 <template>
-  <TutorialCard :finish-buttons="currentTutorialStep && currentTutorialStep.step.id === 'step6'">
+  <TutorialCard
+    :finish-buttons="currentTutorialStep && currentTutorialStep.step.id === 'step6'"
+    @skip="onSkip"
+  >
     <template v-if="currentTutorialStep">
       <div class="pg-text-center">
         <template v-if="currentTutorialStep.step.id === 'step1'">
@@ -65,6 +68,12 @@ export default defineComponent({
       return !quizResult.educationalVideos
     })
 
+    function onSkip() {
+      window.setTimeout(() => {
+        window.open(route.value.fullPath, '_self')
+      }, 0)
+    }
+
     onMounted(() => {
       if (!shouldStartTutorial.value) {
         return
@@ -74,31 +83,31 @@ export default defineComponent({
       const tutorial = getTutorial()
 
       // In all cases, we want to open the drawer
-      appEventBus.$emit('tutorial-open-drawer')
+      // appEventBus.$emit('tutorial-open-drawer')
 
       addTutorialSteps([
         {
           step: {
             id: 'step1',
             attachTo: {
-              element: '.today-liveclass-card',
+              element: '#tutorial-music-live-session',
               on: 'right'
             }
           },
-          onBeforeShowPromise() {
-            return new Promise((resolve) => {
-              let attempts = 0
-              const checkInterval = window.setInterval(() => {
-                attempts++
-                if (document.querySelector('.today-liveclass-card') || attempts === 10) {
-                  window.clearInterval(checkInterval)
-                  resolve(!!document.querySelector('.today-liveclass-card'))
-                }
-              }, 33)
-            })
-          },
+          // onBeforeShowPromise() {
+          //   return new Promise((resolve) => {
+          //     let attempts = 0
+          //     const checkInterval = window.setInterval(() => {
+          //       attempts++
+          //       if (document.querySelector('.today-liveclass-card') || attempts === 10) {
+          //         window.clearInterval(checkInterval)
+          //         resolve(!!document.querySelector('.today-liveclass-card'))
+          //       }
+          //     }, 33)
+          //   })
+          // },
           onAdvance() {
-            document.querySelector('.today-liveclass-card')?.dispatchEvent(new Event('click'))
+            document.querySelector('#tutorial-music-live-session')?.dispatchEvent(new Event('click'))
             tutorial?.next()
           },
           alternateOpeningTargetStyles: { backgroundColor: '#FFFFFF' }
@@ -119,24 +128,24 @@ export default defineComponent({
           step: {
             id: 'step3',
             attachTo: {
-              element: '.today-playdate-card',
+              element: '#tutorial-playdate',
               on: 'right'
             }
           },
-          onBeforeShowPromise() {
-            return new Promise((resolve) => {
-              let attempts = 0
-              const checkInterval = window.setInterval(() => {
-                attempts++
-                if (document.querySelector('.today-playdate-card') || attempts === 10) {
-                  window.clearInterval(checkInterval)
-                  resolve(true)
-                }
-              }, 33)
-            })
-          },
+          // onBeforeShowPromise() {
+          //   return new Promise((resolve) => {
+          //     let attempts = 0
+          //     const checkInterval = window.setInterval(() => {
+          //       attempts++
+          //       if (document.querySelector('.today-playdate-card') || attempts === 10) {
+          //         window.clearInterval(checkInterval)
+          //         resolve(true)
+          //       }
+          //     }, 33)
+          //   })
+          // },
           onAdvance() {
-            document.querySelector('.today-playdate-card')?.dispatchEvent(new Event('click'))
+            document.querySelector('#tutorial-art-live-session')?.dispatchEvent(new Event('click'))
             tutorial?.next()
           },
           alternateOpeningTargetStyles: { backgroundColor: '#FFFFFF' }
@@ -197,7 +206,8 @@ export default defineComponent({
     })
 
     return {
-      currentTutorialStep
+      currentTutorialStep,
+      onSkip
     }
   }
 })

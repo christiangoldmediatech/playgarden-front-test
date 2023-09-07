@@ -219,7 +219,7 @@ export const useTutorialQuery = ({ route, router }: { route: ComputedRef<Route>,
 
   function clearTutorialRouteParams() {
     const { tutorial, tutorialStep, tutorialWelcome, tutorialIntroDaysRedirect, name, params, ...query } = route.value.query
-    router.push({ name, params, query } as unknown as RawLocation)
+    return router.push({ name, params, query } as unknown as RawLocation)
   }
 
   function getTutorialQueryParams() {
