@@ -1,5 +1,5 @@
 import Shepherd from 'shepherd.js'
-import { ComputedRef, ref, reactive, computed, useRouter } from '@nuxtjs/composition-api'
+import { ComputedRef, ref, reactive, computed, useRouter, watch } from '@nuxtjs/composition-api'
 import { Store } from 'vuex/types'
 import { flip, shift, limitShift, offset } from '@floating-ui/dom'
 import { useSurvey } from '@/composables/survey/useSurvey.composable'
@@ -151,8 +151,6 @@ function destroyTutorial() {
     tutorial.complete()
   }
   tutorial = undefined
-  // observer?.disconnect()
-  // observer = undefined
   shouldCardExist.value = false
 }
 
@@ -250,10 +248,10 @@ export const useTutorialQuery = ({ route, router }: { route: ComputedRef<Route>,
 }
 
 const quizResult = reactive({
-  structuredLessons: true,
-  liveClasses: true,
-  printableWorksheets: true,
-  educationalVideos: true
+  structuredLessons: false,
+  liveClasses: false,
+  printableWorksheets: false,
+  educationalVideos: false
 })
 
 export const useTutorialQuiz = ({ store }: { store: Store<unknown> }) => {

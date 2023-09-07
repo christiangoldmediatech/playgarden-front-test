@@ -200,14 +200,15 @@ export default defineComponent({
               return
             }
 
-            if (isInitialTutorial.value && !doesTutorialEndHere.value) {
-              if (quizResult.printableWorksheets) {
-                router.push({
-                  name: 'app-student-cubby-student-portfolio',
-                  query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: true }
-                } as unknown as RawLocation)
-              }
+            if (!doesTutorialEndHere.value && quizResult.printableWorksheets) {
+              router.push({
+                name: 'app-student-cubby-student-portfolio',
+                query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value }
+              } as unknown as RawLocation)
+              return
             }
+
+            getTutorial()?.next()
           }
         },
         {
@@ -220,22 +221,24 @@ export default defineComponent({
           },
           alternateOpeningTargetStyles: { backgroundColor: '#FFFFFF' },
           onAdvance: () => {
-            if (isInitialTutorial.value && !doesTutorialEndHere.value) {
+            if (!doesTutorialEndHere.value) {
               if (quizResult.printableWorksheets) {
                 router.push({
                   name: 'app-student-cubby-student-portfolio',
-                  query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: true }
+                  query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value }
                 } as unknown as RawLocation)
               } else if (quizResult.liveClasses) {
                 router.push({
                   name: 'app-virtual-preschool',
-                  query: { tutorial: true, tutorialStep: 'step2', tutorialIntroDaysRedirect: true }
+                  query: { tutorial: true, tutorialStep: 'step2', tutorialIntroDaysRedirect: isInitialTutorial.value }
                 } as unknown as RawLocation)
               } else if (quizResult.educationalVideos) {
                 router.push({
                   name: 'app-virtual-preschool',
-                  query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: true }
+                  query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: isInitialTutorial.value }
                 } as unknown as RawLocation)
+              } else {
+                getTutorial()?.next()
               }
             } else {
               getTutorial()?.next()

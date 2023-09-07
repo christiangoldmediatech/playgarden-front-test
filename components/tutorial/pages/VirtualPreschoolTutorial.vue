@@ -38,9 +38,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, useRoute, useRouter, onMounted, onUnmounted } from '@nuxtjs/composition-api'
+import { defineComponent, computed, useStore, useRoute, useRouter, onMounted, onUnmounted } from '@nuxtjs/composition-api'
 import { RawLocation } from 'vue-router'
-import { useTutorial, useTutorialQuery, useTutorialSteps } from '@/composables/tutorial/use-tutorial.composable'
+import { useTutorial, useTutorialQuery, useTutorialSteps, useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
 import TutorialCard from '@/components/tutorial/TutorialCard.vue'
 
 export default defineComponent({
@@ -51,11 +51,13 @@ export default defineComponent({
   },
 
   setup() {
-    const router = useRouter()
+    const store = useStore()
     const route = useRoute()
+    const router = useRouter()
     const { createTutorial, getTutorial, destroyTutorial } = useTutorial()
     const { addTutorialSteps, currentTutorialStep } = useTutorialSteps()
     const { shouldStartTutorial, tutorialStartStep, isInitialTutorial } = useTutorialQuery({ route, router })
+    const { resetQuizResults } = useTutorialQuiz({ store })
 
     const showWelcome = computed(() => {
       return !!route.value.query.tutorialWelcome
@@ -68,6 +70,10 @@ export default defineComponent({
 
       createTutorial()
       const tutorial = getTutorial()
+
+      if (!isInitialTutorial.value) {
+        resetQuizResults()
+      }
 
       addTutorialSteps([
         {
