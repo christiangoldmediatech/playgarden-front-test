@@ -71,15 +71,12 @@
 
           <v-col cols="12" class="py-0">
             <validation-provider v-slot="{ errors }" name="Library Address" rules="required">
-              <pg-text-field
-                v-model="draft.libraryAddress"
-                clearable
+              <search-address-autocomplete
+                v-model="addressDraft.address1"
                 class="custom-text-field"
-                :error-messages="errors"
-                color="#606060"
-                placeholder="Library Address"
-                solo
-                dense
+                :errors="errors"
+                label="Library Address"
+                @address-components="configureAddress"
               />
             </validation-provider>
           </v-col>
@@ -143,6 +140,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
 import { useAccessorHelper, useToastHelper } from '@/composables'
+import SearchAddressAutocomplete from '@/components/SearchAddressAutocomplete.vue'
 
 const draftDefault = {
   libraryName: null,
@@ -152,6 +150,9 @@ const draftDefault = {
 
 export default defineComponent({
   name: 'WrongLibraryIdDialog',
+  components: {
+    SearchAddressAutocomplete
+  },
   props: {
     value: {
       type: Boolean,
@@ -174,6 +175,54 @@ export default defineComponent({
     })
 
     const draft = ref({ ...draftDefault })
+    const addressDraft = ref<any>({ address1: null })
+
+    const configureAddress = (data: any) => {
+      try {
+        let fullAddress = ''
+
+        // eslint-disable-next-line camelcase
+        if (data && data.address_components) {
+          addressDraft.value = { address1: addressDraft.value.address1 }
+          fullAddress += addressDraft.value.address1
+
+          // eslint-disable-next-line camelcase
+          const addressComponents = data.address_components
+
+          const postalCode = addressComponents.find(({ types }: any) =>
+            types.includes('postal_code')
+          )
+          if (postalCode) {
+            addressDraft.value.zipCode = postalCode.short_name.toUpperCase()
+            fullAddress += ` ${postalCode.long_name}`
+          }
+
+          const city = addressComponents.find(({ types }: any) =>
+            types.includes('locality')
+          )
+          if (city) {
+            fullAddress += `, ${city.long_name}`
+          }
+
+          const state = addressComponents.find(({ types }: any) =>
+            types.includes('administrative_area_level_1')
+          )
+          if (state) {
+            fullAddress += `, ${state.long_name}`
+          }
+
+          const country = addressComponents.find(({ types }: any) =>
+            types.includes('country')
+          )
+          if (country) {
+            addressDraft.value.country = country.short_name.toUpperCase()
+            fullAddress += `, ${country.long_name}`
+          }
+
+          draft.value.libraryAddress = fullAddress as any
+        }
+      } catch {}
+    }
 
     const closeDialog = () => {
       dialog.value = false
@@ -200,8 +249,10 @@ export default defineComponent({
       loading,
       viewForm,
       draft,
+      addressDraft,
       closeDialog,
-      onSubmit
+      onSubmit,
+      configureAddress
     }
   }
 })

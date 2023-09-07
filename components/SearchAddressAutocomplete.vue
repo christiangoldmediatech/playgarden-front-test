@@ -35,7 +35,7 @@
           'error--text': shouldError,
         }"
       >
-        Address
+        {{ label }}
       </span>
     </template>
     <template #item="{ item }">
@@ -89,6 +89,11 @@ export default Vue.extend({
     shouldError: {
       type: Boolean,
       default: false
+    },
+
+    label: {
+      type: String,
+      default: 'Address'
     },
 
     errors: {
