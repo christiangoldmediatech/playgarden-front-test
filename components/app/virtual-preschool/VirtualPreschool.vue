@@ -62,7 +62,6 @@
     </div>
     <BirthdayVideoDialog />
     <VirtualPreschoolTutorial />
-    <TutorialDialog @start="startTutorial" />
   </v-main>
 </template>
 
@@ -82,9 +81,8 @@ import { TypedStore, Child } from '@/models'
 
 import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
 import SectionImage from '@/components/app/virtual-preschool/SectionImage.vue'
-import { useTutorialQuery, TutorialQueryParams, useTutorialDialog, useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
+import { useTutorialQuery, TutorialQueryParams, useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
 import VirtualPreschoolTutorial from '@/components/tutorial/pages/VirtualPreschoolTutorial.vue'
-import TutorialDialog from '@/components/tutorial/TutorialDialog.vue'
 import TutorialBtn from '@/components/tutorial/TutorialBtn.vue'
 
 import type { RawLocation } from 'vue-router'
@@ -96,7 +94,6 @@ export default defineComponent({
     BirthdayVideoDialog,
     SectionImage,
     VirtualPreschoolTutorial,
-    TutorialDialog,
     TutorialBtn
   },
 
@@ -259,29 +256,22 @@ export default defineComponent({
 
     // Tutorial Dialog
     const { resetQuizResults } = useTutorialQuiz({ store })
-    const { showTutorialDialog, dialogLoading } = useTutorialDialog()
     function onClickTutorialBtn() {
-      showTutorialDialog()
+      startTutorial()
     }
 
-    async function startTutorial() {
-      try {
-        dialogLoading.value = true
-        resetQuizResults()
-
-        await router.push({
-          name: 'app-virtual-preschool',
-          query: {
-            tutorial: true,
-            tutorialStep: 'step1',
-            tutorialWelcome: true
-          }
-        } as unknown as RawLocation, () => {
-          window.open(route.value.fullPath, '_self')
-        })
-      } finally {
-        dialogLoading.value = false
-      }
+    function startTutorial() {
+      resetQuizResults()
+      router.push({
+        name: 'app-virtual-preschool',
+        query: {
+          tutorial: true,
+          tutorialStep: 'step1',
+          tutorialWelcome: true
+        }
+      } as unknown as RawLocation, () => {
+        window.open(route.value.fullPath, '_self')
+      })
     }
 
     return {

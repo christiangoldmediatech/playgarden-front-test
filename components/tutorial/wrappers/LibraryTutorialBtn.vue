@@ -1,27 +1,35 @@
 <template>
-  <TutorialDialog @start="onTutorialStart" />
+  <TutorialBtn @click="onClickTutorialBtn" />
 </template>
 
 <script lang="ts">
 import { defineComponent, useStore, PropType, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
-import TutorialDialog from '@/components/tutorial/TutorialDialog.vue'
+import TutorialBtn from '@/components/tutorial/TutorialBtn.vue'
+import type { LessonApiResponse } from '@/composables'
 import type { RawLocation } from 'vue-router'
 
 export default defineComponent({
-  name: 'LibraryTutorialDialog',
+  name: 'DashboardTutorialBtn',
 
   components: {
-    TutorialDialog
+    TutorialBtn
   },
 
-  setup() {
+  props: {
+    lessonVideos: {
+      type: Array as PropType<LessonApiResponse['lesson']['videos']>,
+      required: false,
+      default: undefined
+    }
+  },
+
+  setup(props) {
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
     const { turnOffQuiz } = useTutorialQuiz({ store })
-    function onTutorialStart() {
-      // Tutorial needs to be lesson specific
+    function onClickTutorialBtn() {
       turnOffQuiz()
       router.push({
         name: 'app-library',
@@ -35,7 +43,7 @@ export default defineComponent({
     }
 
     return {
-      onTutorialStart
+      onClickTutorialBtn
     }
   }
 })

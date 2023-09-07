@@ -1,19 +1,19 @@
 <template>
-  <TutorialDialog @start="onTutorialStart" />
+  <TutorialBtn @click="onClickTutorialBtn" />
 </template>
 
 <script lang="ts">
 import { defineComponent, useStore, PropType, useRoute, useRouter } from '@nuxtjs/composition-api'
-import { useTutorialQuiz, useTutorialDialog } from '@/composables/tutorial/use-tutorial.composable'
-import TutorialDialog from '@/components/tutorial/TutorialDialog.vue'
+import { useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
+import TutorialBtn from '@/components/tutorial/TutorialBtn.vue'
 import type { LessonApiResponse } from '@/composables'
 import type { RawLocation } from 'vue-router'
 
 export default defineComponent({
-  name: 'DashboardTutorialDialog',
+  name: 'DashboardTutorialBtn',
 
   components: {
-    TutorialDialog
+    TutorialBtn
   },
 
   props: {
@@ -29,8 +29,7 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const { turnOffQuiz } = useTutorialQuiz({ store })
-    const { closeTutorialDialog } = useTutorialDialog()
-    function onTutorialStart() {
+    function onClickTutorialBtn() {
       // Tutorial needs to be lesson specific
       turnOffQuiz()
       if (props.lessonVideos && props.lessonVideos.length) {
@@ -49,14 +48,12 @@ export default defineComponent({
           } as unknown as RawLocation, () => {
             window.open(route.value.fullPath, '_self')
           })
-          return
         }
       }
-      closeTutorialDialog()
     }
 
     return {
-      onTutorialStart
+      onClickTutorialBtn
     }
   }
 })

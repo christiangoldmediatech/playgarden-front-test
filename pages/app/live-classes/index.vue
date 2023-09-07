@@ -109,7 +109,7 @@
                 </template>
               </v-col>
 
-              <tutorial-btn-wrapper class="!pg-absolute pg-right-0" />
+              <live-classes-tutorial-btn class="!pg-absolute pg-right-0" />
             </v-row>
 
             <v-row>
@@ -203,7 +203,7 @@
       </v-container>
     </pg-loading>
 
-    <entry-dialog @refresh="getUserLiveSessions" />
+    <entry-dialog @refresh="refreshUserLiveSessions" />
 
     <recorded-class-player />
 
@@ -330,8 +330,6 @@
         </v-row>
       </v-card>
     </pg-dialog>
-
-    <live-classes-tutorial-dialog />
   </v-main>
 </template>
 
@@ -342,6 +340,7 @@ import {
   timezoneOptions,
   getTimezone
 } from '@/utils/dateTools'
+
 import TodayCardsPanel from '@/components/app/live-sessions/TodayCardsPanel.vue'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
 import EntryDialog from '@/components/app/live-sessions/EntryDialog.vue'
@@ -350,12 +349,16 @@ import RecordedClassPlayer from '@/components/app/live-sessions/RecordedClassPla
 import WeekSelector from '@/components/app/live-sessions/WeekSelector.vue'
 import DaySelector from '@/components/app/live-sessions/DaySelector.vue'
 import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
-import { jsonCopy } from '@/utils'
-import dayjs from 'dayjs'
 import HolidayCard from '@/components/app/live-sessions/HolidayCard.vue'
 import LiveClassesTutorial from '@/components/tutorial/pages/LiveClassesTutorial.vue'
-import TutorialBtnWrapper from '@/components/tutorial/wrappers/TutorialBtnWrapper.vue'
-import LiveClassesTutorialDialog from '@/components/tutorial/wrappers/LiveClassesTutorialDialog.vue'
+import LiveClassesTutorialBtn from '@/components/tutorial/wrappers/LiveClassesTutorialBtn.vue'
+
+import { useLiveClassesTutorial } from '@/composables/tutorial/use-live-classes-tutorial.composable'
+
+import { jsonCopy } from '@/utils'
+import dayjs from 'dayjs'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+dayjs.extend(isSameOrBefore)
 
 export default {
   name: 'Index',
@@ -371,8 +374,7 @@ export default {
     UnlockPrompt,
     HolidayCard,
     LiveClassesTutorial,
-    TutorialBtnWrapper,
-    LiveClassesTutorialDialog
+    LiveClassesTutorialBtn
   },
 
   data: () => {
@@ -434,21 +436,14 @@ export default {
 
     orderedSessions() {
       const sessions = jsonCopy(this.sessions)
-      const now = dayjs().unix()
 
       return sessions
         .filter((session) => {
-          return (
-            dayjs(session.dateEnd)
-              .add(30, 'minutes')
-              .unix() >= now
-          )
+          const futureDate = dayjs(session.dateEnd).add(30, 'minutes')
+          return futureDate.isSameOrBefore(dayjs())
         })
         .sort((sessionA, sessionB) => {
-          const start = new Date(sessionA.dateStart)
-          const end = new Date(sessionB.dateEnd)
-
-          return start.getTime() - end.getTime()
+          return dayjs(sessionA.dateStart).diff(dayjs(sessionB.dateEnd), 'milliseconds')
         })
     },
 
@@ -507,18 +502,18 @@ export default {
       return groups
         .filter((group) => group.sessions.length > 0)
         .sort((sessionA, sessionB) => {
-          const start = new Date(sessionA.dateStart)
-          const end = new Date(sessionB.dateEnd)
-
-          return start.getTime() - end.getTime()
+          return dayjs(sessionA.dateStart).diff(dayjs(sessionB.dateEnd), 'milliseconds')
         })
     }
   },
 
   watch: {
     days() {
-      this.getUserLiveSessions(this.days)
-      this.getFilteredHolidays()
+      // skip during tutorial mode
+      if (this.$route.query.tutorial) {
+        return
+      }
+      this.onDaysUpdate()
     },
 
     sessions() {
@@ -537,46 +532,92 @@ export default {
     }
   },
 
-  created() {
+  async created() {
+    this.loading = true
+    /*
+      Tutorial mode:
+      Set date to monday of the week at 10:00 am
+      Load tutorial mock data
+    */
+    if (this.$route.query.tutorial) {
+      try {
+        // open the drawer for the tutorial
+        this.drawer = false
+
+        // set day and hour
+        const monday = dayjs().startOf('week').add(1, 'day').add('10', 'hours')
+        this.setToday(monday)
+
+        // set timezone
+        this.setCurrentTimezone()
+
+        // set listener for drawer close event
+        this.$appEventBus.$on('tutorial-close-drawer', () => {
+          this.drawer = true
+        })
+
+        // load mock data
+        const { liveSessions } = await useLiveClassesTutorial() // { store: this.$store }
+        this.$store.commit('live-sessions/SET_SESSIONS', liveSessions.meetings)
+        this.$store.commit('live-sessions/SET_TOTAL', liveSessions.total)
+        return
+      } finally {
+        this.loading = false
+      }
+    }
+
     if (!this.isRegistrationComplete) {
       this.$router.push({
         name: 'app-index'
       })
     } else {
-      this.setToday(new Date())
-      this.getUserLiveSessions(this.days)
-      this.getFilteredHolidays()
+      this.setToday(dayjs())
       this.setCurrentTimezone()
     }
+  },
 
-    // tutorial
-    this.$appEventBus.$on('tutorial-open-drawer', () => {
-      this.drawer = false
-    })
-
-    this.$appEventBus.$on('tutorial-close-drawer', () => {
-      this.drawer = true
-    })
+  beforeDestroy() {
+    this.$appEventBus.$off('tutorial-close-drawer')
   },
 
   methods: {
-    async getUserLiveSessions() {
-      this.loading = true
-      await this.$store.dispatch('live-sessions/getUserLiveSessions', {
-        ...this.days,
-        type: this.filterType
-      })
-      this.loading = false
-    },
-
     ...mapActions('admin/users', ['setTimezone']),
     ...mapActions('auth', ['fetchUserInfo']),
     ...mapActions('live-sessions', ['fetchHolidays']),
 
-    async getFilteredHolidays() {
-      this.loading = true
-      await this.fetchHolidays({ ...this.days })
-      this.loading = false
+    getUserLiveSessions() {
+      return this.$store.dispatch('live-sessions/getUserLiveSessions', {
+        ...this.days,
+        type: this.filterType
+      })
+    },
+
+    async onDaysUpdate() {
+      try {
+        this.loading = true
+        await Promise.all([
+          this.getUserLiveSessions(this.days),
+          this.getFilteredHolidays()
+        ])
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async refreshUserLiveSessions() {
+      try {
+        this.loading = true
+        await this.$store.dispatch('live-sessions/getUserLiveSessions', {
+          ...this.days,
+          type: this.filterType
+        })
+      } finally {
+        this.loading = false
+      }
+    },
+
+    getFilteredHolidays() {
+      return this.fetchHolidays({ ...this.days })
     },
 
     close() {
@@ -599,46 +640,36 @@ export default {
     },
 
     getDateObj() {
-      const parts = this.today.split('-')
-      return new Date(parts[0], parts[1] - 1, parts[2])
+      return dayjs(this.today).toDate()
     },
 
     setToday(date) {
-      this.today = `${date.getFullYear()}-${(date.getMonth() + 1)
-        .toString()
-        .padStart(2, '0')}-${date
-        .getDate()
-        .toString()
-        .padStart(2, '0')}`
+      this.today = dayjs(date).format('YYYY-MM-DD')
     },
 
     addWeek() {
-      const date = this.getDateObj()
-      date.setDate(date.getDate() + 7)
+      const date = dayjs(this.today).add(1, 'week')
       this.setToday(date)
     },
 
     removeWeek() {
-      const date = this.getDateObj()
-      date.setDate(date.getDate() - 7)
+      const date = dayjs(this.today).subtract(1, 'week')
       this.setToday(date)
     },
 
     addDay() {
-      const date = this.getDateObj()
-      date.setDate(date.getDate() + 1)
+      const date = dayjs(this.today).add(1, 'day')
       this.setToday(date)
     },
 
     removeDay() {
-      const date = this.getDateObj()
-      date.setDate(date.getDate() - 1)
+      const date = dayjs(this.today).subtract(1, 'day')
       this.setToday(date)
     },
 
     async saveTimeZone() {
-      this.loading = true
       try {
+        this.loading = true
         await this.setTimezone({ timezone: this.selectedTimezone })
         await this.fetchUserInfo()
         await this.getUserLiveSessions(this.days)

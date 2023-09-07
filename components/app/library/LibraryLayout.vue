@@ -17,7 +17,7 @@
     <template v-else>
       <v-container v-bind="fillHeight" fluid data-test-id="library-content">
         <v-row class="mt-10" justify="center" justify-sm="end">
-          <TutorialBtnWrapper />
+          <LibraryTutorialBtn />
         </v-row>
         <!-- Top Header -->
         <v-row class="flex-lg-nowrap" align="center">
@@ -59,7 +59,6 @@
         <slot />
       </v-container>
     </template>
-    <LibraryTutorialDialog />
   </v-main>
 </template>
 
@@ -76,8 +75,7 @@ import LibraryBackBtn from '@/components/app/library/LibraryBackBtn.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import SearchTextField from '@/components/app/library/SearchTextField.vue'
 import LibraryLinks from '@/components/app/library/LibraryLinks.vue'
-import TutorialBtnWrapper from '@/components/tutorial/wrappers/TutorialBtnWrapper.vue'
-import LibraryTutorialDialog from '@/components/tutorial/wrappers/LibraryTutorialDialog.vue'
+import LibraryTutorialBtn from '@/components/tutorial/wrappers/LibraryTutorialBtn.vue'
 
 export default defineComponent({
   name: 'LibraryLayout',
@@ -87,8 +85,7 @@ export default defineComponent({
     ChildSelect,
     SearchTextField,
     LibraryLinks,
-    TutorialBtnWrapper,
-    LibraryTutorialDialog
+    LibraryTutorialBtn
   },
 
   props: {

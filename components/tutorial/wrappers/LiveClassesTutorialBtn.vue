@@ -1,18 +1,18 @@
 <template>
-  <TutorialDialog @start="onTutorialStart" />
+  <TutorialBtn @click="onClickTutorialBtn" />
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, PropType, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
-import TutorialDialog from '@/components/tutorial/TutorialDialog.vue'
+import TutorialBtn from '@/components/tutorial/TutorialBtn.vue'
 import type { RawLocation } from 'vue-router'
 
 export default defineComponent({
-  name: 'LiveClassesTutorialDialog',
+  name: 'LiveClassesTutorialBtn',
 
   components: {
-    TutorialDialog
+    TutorialBtn
   },
 
   setup() {
@@ -20,7 +20,7 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const { turnOffQuiz } = useTutorialQuiz({ store })
-    function onTutorialStart() {
+    function onClickTutorialBtn() {
       // Tutorial needs to be lesson specific
       turnOffQuiz()
       router.push({
@@ -35,7 +35,7 @@ export default defineComponent({
     }
 
     return {
-      onTutorialStart
+      onClickTutorialBtn
     }
   }
 })

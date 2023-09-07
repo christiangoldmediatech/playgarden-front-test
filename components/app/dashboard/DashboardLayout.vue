@@ -94,7 +94,7 @@
               />
             </div>
             <div class="pg-text-right sm:pg-col-span-2 md:pg-col-span-1">
-              <tutorial-btn-wrapper />
+              <dashboard-tutorial-btn :lesson-videos="lesson.videos" />
             </div>
           </div>
 
@@ -149,7 +149,6 @@
     <lesson-teacher-video />
     <course-progress-overlay />
     <puzzle-pieces-dialog />
-    <dashboard-tutorial-dialog :lesson-videos="lesson.videos" />
   </div>
 </template>
 
@@ -164,8 +163,7 @@ import ChildSelect from '@/components/app/ChildSelect.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 import CarouselLetter from '@/components/app/all-done/CarouselLetter.vue'
 import DashboardOverrides from '@/mixins/DashboardOverridesMixin'
-import DashboardTutorialDialog from '@/components/tutorial/wrappers/DashboardTutorialDialog.vue'
-import TutorialBtnWrapper from '@/components/tutorial/wrappers/TutorialBtnWrapper.vue'
+import DashboardTutorialBtn from '@/components/tutorial/wrappers/DashboardTutorialBtn.vue'
 
 export default {
   name: 'DashboardLayout',
@@ -177,8 +175,7 @@ export default {
     ChildSelect,
     CourseProgressOverlay,
     CarouselLetter,
-    DashboardTutorialDialog,
-    TutorialBtnWrapper
+    DashboardTutorialBtn
   },
 
   mixins: [DashboardOverrides],
