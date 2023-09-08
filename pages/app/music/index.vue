@@ -281,7 +281,7 @@ export default defineComponent({
         musicPlayer.value.createNewPlaylist(playList)
         playlist.value = playList
 
-        isTopRibbonMinimized.value = true
+        isTopRibbonMinimized.value = false
       }
 
       if (playList.length > 1) {

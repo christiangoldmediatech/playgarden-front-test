@@ -57,6 +57,12 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+
+    word: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -68,6 +74,9 @@ export default {
 
   computed: {
     letterText () {
+      if (this.word) {
+        return this.name
+      }
       return this.name.substr(0, 1).toUpperCase()
     },
 
@@ -78,10 +87,11 @@ export default {
     letterClasses () {
       const classes = {
         clickable: this.clickable && !this.disabled,
-        'letter-vowel': this.vowels.includes(this.letterText),
+        'letter-vowel': this.vowels.includes(this.letterText) || this.word,
         'letter-active': this.selected,
         'letter-disabled': this.disabled,
-        'letter-picture': this.hasPicture
+        'letter-picture': this.hasPicture,
+        'letter-word': this.word
       }
 
       return (hover) => {
@@ -159,6 +169,10 @@ export default {
     //   margin: 12px;
     //   border-radius: 4px;
     // }
+  }
+  &-word {
+    width: auto;
+    padding: 0px 24px;
   }
 }
 </style>
