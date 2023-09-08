@@ -271,7 +271,9 @@ export default defineComponent({
           tutorialWelcome: true
         }
       } as unknown as RawLocation, () => {
-        window.open(route.value.fullPath, '_self')
+        window.setTimeout(() => {
+          window.open(route.value.fullPath, '_self')
+        }, 0)
       })
     }
 
