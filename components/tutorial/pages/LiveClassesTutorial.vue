@@ -1,8 +1,5 @@
 <template>
-  <TutorialCard
-    :finish-buttons="currentTutorialStep && currentTutorialStep.step.id === 'step6'"
-    @skip="onSkip"
-  >
+  <TutorialCard :finish-buttons="currentTutorialStep && currentTutorialStep.step.id === 'step6'">
     <template v-if="currentTutorialStep">
       <div class="pg-text-center">
         <template v-if="currentTutorialStep.step.id === 'step1'">
@@ -67,12 +64,6 @@ export default defineComponent({
     const doesTutorialEndHere = computed(() => {
       return !quizResult.educationalVideos
     })
-
-    function onSkip() {
-      window.setTimeout(() => {
-        window.open(route.value.fullPath, '_self')
-      }, 0)
-    }
 
     onMounted(() => {
       if (!shouldStartTutorial.value) {
@@ -179,8 +170,7 @@ export default defineComponent({
     })
 
     return {
-      currentTutorialStep,
-      onSkip
+      currentTutorialStep
     }
   }
 })

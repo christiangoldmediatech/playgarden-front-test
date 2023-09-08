@@ -28,11 +28,7 @@ export default defineComponent({
           tutorial: true,
           tutorialStep: 'step1'
         }
-      } as unknown as RawLocation, () => {
-        window.setTimeout(() => {
-          window.open(route.value.fullPath, '_self')
-        }, 0)
-      })
+      } as unknown as RawLocation)
     }
 
     return {

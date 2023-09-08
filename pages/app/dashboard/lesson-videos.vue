@@ -19,13 +19,14 @@
       </v-btn>
       <LessonPuzzlePieces v-else v-bind="{ puzzlePiece }" />
     </v-list-item-action>
-    <LessonVideosTutorial />
+    <LessonVideosTutorial v-if="isTutorial" />
   </lesson-videos-card>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, ref, useRoute, useStore } from '@nuxtjs/composition-api'
+import { computed, defineComponent, onBeforeMount, ref, useRoute, useRouter, useStore } from '@nuxtjs/composition-api'
 import { useFavorites, useFavoritesApi, useGtmHelper } from '@/composables'
+import { useTutorialQuery } from '@/composables/tutorial/use-tutorial.composable'
 import { isArray } from 'lodash'
 import { TypedStore } from '@/models'
 import LessonVideosCard from '@/components/app/dashboard/LessonVideosCard.vue'
@@ -44,6 +45,7 @@ export default defineComponent({
   setup () {
     const store = useStore<TypedStore>()
     const route = useRoute()
+    const router = useRouter()
     const gtm = useGtmHelper()
     const isFavoritesLoading = ref(false)
     const { favoriteVideoIds, isVideoFavorite, getAllFavorites } = useFavorites()
@@ -97,8 +99,11 @@ export default defineComponent({
       }
     })
 
+    const { isTutorial } = useTutorialQuery({ route, router })
+
     return {
       onFavoriteClick,
+      isTutorial,
       favoriteVideoIds,
       puzzlePiece,
       isFavorite,

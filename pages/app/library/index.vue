@@ -32,7 +32,7 @@
         />
       </template>
     </library-content-section>
-    <LibraryTutorial v-if="!isLoadingInitialData" />
+    <LibraryTutorial v-if="!isLoadingInitialData && $route.query.tutorial" />
   </library-layout>
 </template>
 

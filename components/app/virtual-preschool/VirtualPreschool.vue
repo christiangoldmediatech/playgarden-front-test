@@ -61,7 +61,7 @@
       </div>
     </div>
     <BirthdayVideoDialog />
-    <VirtualPreschoolTutorial />
+    <VirtualPreschoolTutorial v-if="isTutorial" />
     <TutorialDialog @close="startIntroDays" @remind="startIntroDays" @start="startTutorial" />
   </v-main>
 </template>
@@ -270,11 +270,7 @@ export default defineComponent({
           tutorialStep: 'step1',
           tutorialWelcome: true
         }
-      } as unknown as RawLocation, () => {
-        window.setTimeout(() => {
-          window.open(route.value.fullPath, '_self')
-        }, 0)
-      })
+      } as unknown as RawLocation)
     }
 
     const { getQuizResults, quizResult } = useTutorialQuiz({ store })
@@ -320,6 +316,7 @@ export default defineComponent({
       handleAudioPlay,
       handleClick,
       isBirthdayModalVisible,
+      isTutorial,
       onClickTutorialBtn,
       startTutorial,
       onDialogStartTutorial,

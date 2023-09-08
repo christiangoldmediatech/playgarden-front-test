@@ -128,14 +128,14 @@
             </v-row>
 
             <sessions-table
-              v-if="!loading"
+              v-if="!loading && today"
               :day-mode="viewMode === 'DAY'"
               :today="today"
               :holidays="getHolidays"
             />
           </v-col>
         </v-row>
-        <live-classes-tutorial />
+        <live-classes-tutorial v-if="!!$route.query.tutorial" />
       </v-container>
 
       <v-container
@@ -199,7 +199,7 @@
           </v-col>
         </v-row>
 
-        <live-classes-tutorial />
+        <live-classes-tutorial v-if="!!$route.query.tutorial" />
       </v-container>
     </pg-loading>
 
@@ -382,7 +382,7 @@ export default {
       mode: 'TODAY',
       today: null,
       currentTimeZone: null,
-      loading: false,
+      loading: true,
       fullscreen: true,
       showNotice: true,
       selectedTimezone: 'America/New_York',
@@ -508,6 +508,17 @@ export default {
   },
 
   watch: {
+    '$route.query.tutorial': {
+      handler() {
+        if (this.$route.query.tutorial) {
+          this.getTutorialSessions()
+          return
+        }
+        this.getNormalSessions()
+      },
+      deep: true
+    },
+
     days() {
       // skip during tutorial mode
       if (this.$route.query.tutorial) {
@@ -533,14 +544,25 @@ export default {
   },
 
   async created() {
-    this.loading = true
-    /*
-      Tutorial mode:
-      Set date to monday of the week at 10:00 am
-      Load tutorial mock data
-    */
     if (this.$route.query.tutorial) {
+      await this.getTutorialSessions()
+      return
+    }
+    this.getNormalSessions()
+  },
+
+  beforeDestroy() {
+    this.$appEventBus.$off('tutorial-close-drawer')
+  },
+
+  methods: {
+    ...mapActions('admin/users', ['setTimezone']),
+    ...mapActions('auth', ['fetchUserInfo']),
+    ...mapActions('live-sessions', ['fetchHolidays']),
+
+    async getTutorialSessions() {
       try {
+        this.loading = true
         // open the drawer for the tutorial
         this.drawer = false
 
@@ -557,33 +579,26 @@ export default {
         })
 
         // load mock data
-        const { liveSessions } = await useLiveClassesTutorial() // { store: this.$store }
+        const { liveSessions } = await useLiveClassesTutorial()
         this.$store.commit('live-sessions/SET_SESSIONS', liveSessions.meetings)
         this.$store.commit('live-sessions/SET_TOTAL', liveSessions.total)
-        return
       } finally {
         this.loading = false
       }
-    }
+    },
 
-    if (!this.isRegistrationComplete) {
-      this.$router.push({
-        name: 'app-index'
-      })
-    } else {
-      this.setToday(dayjs())
-      this.setCurrentTimezone()
-    }
-  },
-
-  beforeDestroy() {
-    this.$appEventBus.$off('tutorial-close-drawer')
-  },
-
-  methods: {
-    ...mapActions('admin/users', ['setTimezone']),
-    ...mapActions('auth', ['fetchUserInfo']),
-    ...mapActions('live-sessions', ['fetchHolidays']),
+    getNormalSessions() {
+      this.drawer = true
+      this.loading = true
+      if (!this.isRegistrationComplete) {
+        this.$router.push({
+          name: 'app-index'
+        })
+      } else {
+        this.setToday(dayjs())
+        this.setCurrentTimezone()
+      }
+    },
 
     getUserLiveSessions() {
       return this.$store.dispatch('live-sessions/getUserLiveSessions', {
