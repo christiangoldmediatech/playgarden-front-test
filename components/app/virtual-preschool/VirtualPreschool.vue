@@ -62,7 +62,7 @@
     </div>
     <BirthdayVideoDialog />
     <VirtualPreschoolTutorial v-if="isTutorial" />
-    <TutorialDialog @close="startIntroDays" @remind="startIntroDays" @start="startTutorial" />
+    <TutorialDialog @close="startIntroDays" @remind="startIntroDays" @start="onDialogStartTutorial" />
   </v-main>
 </template>
 
