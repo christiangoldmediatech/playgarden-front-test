@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useStore, useRoute, useRouter, onMounted, onUnmounted } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useRoute, useRouter, onMounted, onUnmounted, nextTick } from '@nuxtjs/composition-api'
 import { useTutorial, useTutorialQuery, useTutorialSteps } from '@/composables/tutorial/use-tutorial.composable'
 import TutorialCard from '@/components/tutorial/TutorialCard.vue'
 
@@ -60,11 +60,7 @@ export default defineComponent({
             // On first render, the search bar is incorrectly placed, and if we don't wait some time
             // The tool tip is incorrectly positioned.
             // The cause of this remains unknown
-            return new Promise((resolve) => {
-              window.setTimeout(() => {
-                resolve(true)
-              }, 1000)
-            })
+            return nextTick()
           },
           alternateOpeningTargetStyles: { backgroundColor: '#FFFFFF', padding: '1px 4px 5px 4px' }
         },
