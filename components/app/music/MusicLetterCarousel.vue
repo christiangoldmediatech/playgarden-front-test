@@ -9,6 +9,7 @@
             :key="index"
           >
             <carousel-letter
+              :word="letter.id === null"
               :disabled="letter.disabled"
               :name="letter.name"
               :picture="letter.picture"
@@ -34,13 +35,17 @@
           <template v-slot:selection="{ item }">
             <v-list-item>
               <carousel-letter
+                :word="item.id === null"
                 :disabled="item.disabled"
                 :name="item.name"
                 :picture="item.picture"
               />
 
               <v-list-item-content>
-                <v-list-item-title v-if="item.picture" class="pl-4">
+                <v-list-item-title v-if="item.id === null" class="pl-4">
+                  All Letters
+                </v-list-item-title>
+                <v-list-item-title v-else-if="item.picture" class="pl-4">
                   Letter {{ item.name }}
                 </v-list-item-title>
                 <v-list-item-title v-else class="pl-4">
@@ -53,13 +58,17 @@
           <template v-slot:item="{ item, on, attrs }">
             <v-list-item v-bind="attrs" v-on="on">
               <carousel-letter
+                :word="item.id === null"
                 :disabled="item.disabled"
                 :name="item.name"
                 :picture="item.picture"
               />
 
               <v-list-item-content>
-                <v-list-item-title v-if="item.picture" class="pl-4">
+                <v-list-item-title v-if="item.id === null" class="pl-4">
+                  {{ item.name }}
+                </v-list-item-title>
+                <v-list-item-title v-else-if="item.picture" class="pl-4">
                   Letter {{ item.name }}
                 </v-list-item-title>
                 <v-list-item-title v-else class="pl-4">
@@ -116,7 +125,15 @@ export default {
 
     displayLetters () {
       if (Array.isArray(this.letters)) {
-        return this.letters.map((letter) => {
+        const letters = [
+          {
+            id: null,
+            disabled: false,
+            name: 'All'
+          },
+          ...this.letters
+        ]
+        return letters.map((letter) => {
           return {
             ...letter,
             disabled: this.disabledLetters.includes(letter.id)
