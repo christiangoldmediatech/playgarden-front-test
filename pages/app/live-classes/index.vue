@@ -436,11 +436,15 @@ export default {
 
     orderedSessions() {
       const sessions = jsonCopy(this.sessions)
+      const now = dayjs().unix()
 
       return sessions
         .filter((session) => {
-          const futureDate = dayjs(session.dateEnd).add(30, 'minutes')
-          return futureDate.isSameOrBefore(dayjs())
+          return (
+            dayjs(session.dateEnd)
+              .add(30, 'minutes')
+              .unix() >= now
+          )
         })
         .sort((sessionA, sessionB) => {
           return dayjs(sessionA.dateStart).diff(dayjs(sessionB.dateEnd), 'milliseconds')
