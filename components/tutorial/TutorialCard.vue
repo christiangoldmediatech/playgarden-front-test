@@ -81,16 +81,21 @@ export default defineComponent({
 
     const { shouldCardExist, getTutorial, finishTutorial } = useTutorial()
     const { currentTutorialStep } = useTutorialSteps()
-    const { clearTutorialRouteParams, startIntroDays } = useTutorialQuery({ route, router })
+    const { clearTutorialRouteParams, startIntroDays, getTutorialQueryParams } = useTutorialQuery({ route, router })
 
     const introDaysRedirect = computed(() => {
       return !!route.value.query.tutorialIntroDaysRedirect
     })
 
     async function onClickSkip() {
+      const { tutorialVirtualPreschoolRedirect } = getTutorialQueryParams()
       finishTutorial()
       if (introDaysRedirect.value) {
         startIntroDays()
+        return
+      }
+      if (tutorialVirtualPreschoolRedirect) {
+        router.push({ name: 'app-virtual-preschool' })
         return
       }
       await clearTutorialRouteParams()

@@ -268,7 +268,8 @@ export default defineComponent({
         query: {
           tutorial: true,
           tutorialStep: 'step1',
-          tutorialWelcome: true
+          tutorialWelcome: true,
+          tutorialVirtualPreschoolRedirect: true
         }
       } as unknown as RawLocation)
     }

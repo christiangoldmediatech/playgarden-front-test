@@ -56,7 +56,7 @@ export default defineComponent({
     const router = useRouter()
     const { createTutorial, getTutorial, destroyTutorial } = useTutorial()
     const { addTutorialSteps, currentTutorialStep } = useTutorialSteps()
-    const { shouldStartTutorial, tutorialStartStep, isInitialTutorial } = useTutorialQuery({ route, router })
+    const { shouldStartTutorial, tutorialStartStep, isInitialTutorial, getTutorialQueryParams } = useTutorialQuery({ route, router })
     const { resetQuizResults } = useTutorialQuiz({ store })
 
     const showWelcome = computed(() => {
@@ -89,7 +89,8 @@ export default defineComponent({
             }
           },
           onAdvance: () => {
-            router.push({ name: 'app-dashboard', query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value } } as unknown as RawLocation)
+            const { tutorialVirtualPreschoolRedirect } = getTutorialQueryParams()
+            router.push({ name: 'app-dashboard', query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value, tutorialVirtualPreschoolRedirect } } as unknown as RawLocation)
           }
         },
         {
@@ -105,7 +106,8 @@ export default defineComponent({
             }
           },
           onAdvance: () => {
-            router.push({ name: 'app-live-classes', query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value } } as unknown as RawLocation)
+            const { tutorialVirtualPreschoolRedirect } = getTutorialQueryParams()
+            router.push({ name: 'app-live-classes', query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value, tutorialVirtualPreschoolRedirect } } as unknown as RawLocation)
           }
         },
         {
@@ -121,7 +123,8 @@ export default defineComponent({
             }
           },
           onAdvance: () => {
-            router.push({ name: 'app-dashboard', query: { tutorial: true, tutorialStep: 'step2', tutorialIntroDaysRedirect: isInitialTutorial.value } } as unknown as RawLocation)
+            const { tutorialVirtualPreschoolRedirect } = getTutorialQueryParams()
+            router.push({ name: 'app-dashboard', query: { tutorial: true, tutorialStep: 'step2', tutorialIntroDaysRedirect: isInitialTutorial.value, tutorialVirtualPreschoolRedirect } } as unknown as RawLocation)
           }
         },
         {
@@ -137,7 +140,8 @@ export default defineComponent({
             }
           },
           onAdvance: () => {
-            router.push({ name: 'app-library', query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value } } as unknown as RawLocation)
+            const { tutorialVirtualPreschoolRedirect } = getTutorialQueryParams()
+            router.push({ name: 'app-library', query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value, tutorialVirtualPreschoolRedirect } } as unknown as RawLocation)
           }
         }
       ])

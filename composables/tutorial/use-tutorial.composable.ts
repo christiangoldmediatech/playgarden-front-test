@@ -19,6 +19,8 @@ export type TutorialStep = {
 export type TutorialQueryParams ={
   tutorial?: boolean
   tutorialStep?: string | number
+  tutorialIntroDaysRedirect?: boolean
+  tutorialVirtualPreschoolRedirect?: boolean
 }
 
 let tutorial: Shepherd.Tour | undefined
@@ -216,17 +218,42 @@ export const useTutorialQuery = ({ route, router }: { route: ComputedRef<Route>,
   })
 
   function clearTutorialRouteParams() {
-    const { tutorial, tutorialStep, tutorialWelcome, tutorialIntroDaysRedirect, name, params, ...query } = route.value.query
+    const { tutorial, tutorialStep, tutorialWelcome, tutorialIntroDaysRedirect, tutorialVirtualPreschoolRedirect, name, params, ...query } = route.value.query
     return router.push({ name, params, query } as unknown as RawLocation)
   }
 
+  function getQueryParamBooleanValue(value?: string | boolean) {
+    if (value === undefined) {
+      return value
+    }
+
+    if (typeof value === 'boolean') {
+      return value
+    }
+
+    if (value === 'true') {
+      return true
+    }
+
+    if (value === 'false') {
+      return false
+    }
+
+    return undefined
+  }
+
   function getTutorialQueryParams() {
-    const { tutorial, tutorialStep, tutorialIntroDaysRedirect } = route.value.query
-    return { tutorial, tutorialStep, tutorialIntroDaysRedirect }
+    const { tutorial, tutorialStep, tutorialIntroDaysRedirect, tutorialVirtualPreschoolRedirect } = route.value.query
+    return {
+      tutorial: getQueryParamBooleanValue(tutorial as string | undefined),
+      tutorialStep: tutorialStep as string | undefined,
+      tutorialIntroDaysRedirect: getQueryParamBooleanValue(tutorialIntroDaysRedirect as string | undefined),
+      tutorialVirtualPreschoolRedirect: getQueryParamBooleanValue(tutorialVirtualPreschoolRedirect as string | undefined)
+    }
   }
 
   const isInitialTutorial = computed(() => {
-    return !!route.value.query.tutorialIntroDaysRedirect
+    return getQueryParamBooleanValue(route.value.query.tutorialIntroDaysRedirect as string | undefined)
   })
 
   function startIntroDays() {

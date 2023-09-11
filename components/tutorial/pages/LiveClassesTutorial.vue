@@ -57,7 +57,7 @@ export default defineComponent({
     const route = useRoute()
     const { createTutorial, getTutorial, destroyTutorial } = useTutorial()
     const { addTutorialSteps, currentTutorialStep } = useTutorialSteps()
-    const { shouldStartTutorial, isInitialTutorial } = useTutorialQuery({ route, router })
+    const { shouldStartTutorial, isInitialTutorial, getTutorialQueryParams } = useTutorialQuery({ route, router })
     const appEventBus = useAppEventBusHelper()
     const { quizResult } = useTutorialQuiz({ store })
 
@@ -146,9 +146,10 @@ export default defineComponent({
           alternateOpeningTargetStyles: { backgroundColor: '#FFFFFF' },
           onAdvance: () => {
             if (!doesTutorialEndHere.value) {
+              const { tutorialVirtualPreschoolRedirect } = getTutorialQueryParams()
               router.push({
                 name: 'app-virtual-preschool',
-                query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: isInitialTutorial.value }
+                query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: isInitialTutorial.value, tutorialVirtualPreschoolRedirect }
               } as unknown as RawLocation)
             } else {
               getTutorial()?.next()

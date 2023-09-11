@@ -35,7 +35,7 @@ export default defineComponent({
     const route = useRoute()
     const { createTutorial, getTutorial, destroyTutorial } = useTutorial()
     const { addTutorialSteps, currentTutorialStep } = useTutorialSteps()
-    const { shouldStartTutorial, isInitialTutorial } = useTutorialQuery({ route, router })
+    const { shouldStartTutorial, isInitialTutorial, getTutorialQueryParams } = useTutorialQuery({ route, router })
 
     onMounted(() => {
       if (!shouldStartTutorial.value) {
@@ -73,7 +73,8 @@ export default defineComponent({
             }
           },
           onAdvance() {
-            window.open(`${process.env.kidsCornerUrl}?atoken=${store.getters['auth/getAccessToken']}&tutorial=true&tutorialStep=step1${isInitialTutorial.value ? '&tutorialIntroDaysRedirect=true' : ''}`, '_self')
+            const { tutorialVirtualPreschoolRedirect } = getTutorialQueryParams()
+            window.open(`${process.env.kidsCornerUrl}?atoken=${store.getters['auth/getAccessToken']}&tutorial=true&tutorialStep=step1${isInitialTutorial.value ? '&tutorialIntroDaysRedirect=true' : ''}${tutorialVirtualPreschoolRedirect ? '&tutorialVirtualPreschoolRedirect=true' : ''}`, '_self')
           }
         }
       ])
