@@ -23,7 +23,7 @@ export const useLiveClassesTutorial = async () => {
       dateStart: week.monday.at(15),
       dateEnd: week.monday.at(16),
       activityType: getActivity('Art'),
-      teacher: getTeacher('Emma')
+      teacher: getTeacher('Canitra')
     },
     {
       title: 'Jake on the Playground...',
@@ -31,7 +31,7 @@ export const useLiveClassesTutorial = async () => {
       dateStart: week.wednesday.at(13),
       dateEnd: week.wednesday.at(14),
       activityType: getActivity('Movement'),
-      teacher: getTeacher('Jake')
+      teacher: getTeacher('Katryna')
     },
     {
       title: 'Spanish Class with Veronica',
@@ -60,28 +60,28 @@ export const useLiveClassesTutorial = async () => {
   let playdatesData = [
     {
       tutorialId: 'tutorial-playdate',
-      title: 'Playdates with Miss Beth',
+      title: 'Playdates with Miss Gabby',
       description: 'Join your friends and socialize in our Educational Playdates! These 30 minute Zoom sessions are created to give children the opportunity to connect with peers, while learning.',
       dateStart: week.monday.at(13),
       dateEnd: week.monday.at(14),
-      activityType: getActivity('Art'),
-      teacher: getTeacher('Beth')
+      activityType: getActivity('Math'),
+      teacher: getTeacher('Gabby')
     },
     {
-      title: 'Playdates with Miss Beth',
-      description: '',
+      title: 'Playdates with Miss Katryna',
+      description: 'Join your friends and socialize in our Educational Playdates! These 30 minute Zoom sessions are created to give children the opportunity to connect with peers, while learning.',
       dateStart: week.tuesday.at(11),
       dateEnd: week.tuesday.at(12),
       activityType: getActivity('Sensory'),
-      teacher: getTeacher('Beth')
+      teacher: getTeacher('Katryna')
     },
     {
-      title: 'Playdates with Miss Beth',
-      description: '',
+      title: 'Playdates with Miss Katryna',
+      description: 'Join your friends and socialize in our Educational Playdates! These 30 minute Zoom sessions are created to give children the opportunity to connect with peers, while learning.',
       dateStart: week.friday.at(11),
       dateEnd: week.friday.at(12),
       activityType: getActivity('Science'),
-      teacher: getTeacher('Beth')
+      teacher: getTeacher('Katryna')
     }
   ]
 
