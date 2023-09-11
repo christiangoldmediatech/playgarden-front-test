@@ -528,7 +528,9 @@ export default {
       if (this.$route.query.tutorial) {
         return
       }
-      this.onDaysUpdate()
+      if (this.today) {
+        this.onDaysUpdate()
+      }
     },
 
     sessions() {
@@ -663,7 +665,10 @@ export default {
     },
 
     setToday(date) {
-      this.today = dayjs(date).format('YYYY-MM-DD')
+      this.today = null
+      this.$nextTick(() => {
+        this.today = dayjs(date).format('YYYY-MM-DD')
+      })
     },
 
     addWeek() {
