@@ -101,7 +101,7 @@ export default defineComponent({
     const store = useStore()
     const { createTutorial, getTutorial, destroyTutorial } = useTutorial()
     const { addTutorialSteps, currentTutorialStep } = useTutorialSteps()
-    const { shouldStartTutorial, tutorialStartStep, isInitialTutorial } = useTutorialQuery({
+    const { shouldStartTutorial, tutorialStartStep, isInitialTutorial, getTutorialQueryParams } = useTutorialQuery({
       route,
       router
     })
@@ -201,9 +201,10 @@ export default defineComponent({
             }
 
             if (!doesTutorialEndHere.value && quizResult.printableWorksheets) {
+              const { tutorialVirtualPreschoolRedirect } = getTutorialQueryParams()
               router.push({
                 name: 'app-student-cubby-student-portfolio',
-                query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value }
+                query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value, tutorialVirtualPreschoolRedirect }
               } as unknown as RawLocation)
               return
             }
@@ -222,20 +223,21 @@ export default defineComponent({
           alternateOpeningTargetStyles: { backgroundColor: '#FFFFFF' },
           onAdvance: () => {
             if (!doesTutorialEndHere.value) {
+              const { tutorialVirtualPreschoolRedirect } = getTutorialQueryParams()
               if (quizResult.printableWorksheets) {
                 router.push({
                   name: 'app-student-cubby-student-portfolio',
-                  query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value }
+                  query: { tutorial: true, tutorialStep: 'step1', tutorialIntroDaysRedirect: isInitialTutorial.value, tutorialVirtualPreschoolRedirect }
                 } as unknown as RawLocation)
               } else if (quizResult.liveClasses) {
                 router.push({
                   name: 'app-virtual-preschool',
-                  query: { tutorial: true, tutorialStep: 'step2', tutorialIntroDaysRedirect: isInitialTutorial.value }
+                  query: { tutorial: true, tutorialStep: 'step2', tutorialIntroDaysRedirect: isInitialTutorial.value, tutorialVirtualPreschoolRedirect }
                 } as unknown as RawLocation)
               } else if (quizResult.educationalVideos) {
                 router.push({
                   name: 'app-virtual-preschool',
-                  query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: isInitialTutorial.value }
+                  query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: isInitialTutorial.value, tutorialVirtualPreschoolRedirect }
                 } as unknown as RawLocation)
               } else {
                 getTutorial()?.next()

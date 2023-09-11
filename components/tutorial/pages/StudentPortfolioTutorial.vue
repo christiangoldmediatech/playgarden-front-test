@@ -36,7 +36,7 @@ export default defineComponent({
     const store = useStore()
     const { createTutorial, getTutorial, destroyTutorial } = useTutorial()
     const { addTutorialSteps, currentTutorialStep } = useTutorialSteps()
-    const { shouldStartTutorial, isInitialTutorial } = useTutorialQuery({ route, router })
+    const { shouldStartTutorial, isInitialTutorial, getTutorialQueryParams } = useTutorialQuery({ route, router })
     const { quizResult } = useTutorialQuiz({ store })
 
     const doesTutorialEndHere = computed(() => {
@@ -65,15 +65,16 @@ export default defineComponent({
           },
           onAdvance: () => {
             if (!doesTutorialEndHere.value) {
+              const { tutorialVirtualPreschoolRedirect } = getTutorialQueryParams()
               if (quizResult.liveClasses) {
                 router.push({
                   name: 'app-virtual-preschool',
-                  query: { tutorial: true, tutorialStep: 'step2', tutorialIntroDaysRedirect: isInitialTutorial.value }
+                  query: { tutorial: true, tutorialStep: 'step2', tutorialIntroDaysRedirect: isInitialTutorial.value, tutorialVirtualPreschoolRedirect }
                 } as unknown as RawLocation)
               } else if (quizResult.educationalVideos) {
                 router.push({
                   name: 'app-virtual-preschool',
-                  query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: isInitialTutorial.value }
+                  query: { tutorial: true, tutorialStep: 'step4', tutorialIntroDaysRedirect: isInitialTutorial.value, tutorialVirtualPreschoolRedirect }
                 } as unknown as RawLocation)
               }
             } else {

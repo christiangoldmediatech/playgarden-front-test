@@ -1,5 +1,5 @@
 <template>
-  <PgDialog v-model="shouldShowTutorialDialog" max-width="540px" :z-index="4000">
+  <PgDialog v-model="shouldShowTutorialDialog" max-width="540px" :z-index="4000" persistent>
     <VCard class="pg-overflow-hidden" rounded="xl">
       <div class="pg-text-right pg-mb-5">
         <VBtn

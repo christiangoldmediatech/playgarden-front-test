@@ -3,7 +3,7 @@ import { ref, useRoute, useRouter, watch, computed } from '@nuxtjs/composition-a
 import { Store } from 'vuex/types'
 import { useTutorialQuery } from '@/composables/tutorial/use-tutorial.composable'
 import { useChild } from './use-child.composable'
-
+import type { RawLocation } from 'vue-router'
 interface UseChildRouteParams {
   store: Store<TypedStore>,
   route: ReturnType<typeof useRoute>
@@ -48,7 +48,7 @@ export const useChildRoute = ({ store, route, router, shouldRedirect = false }: 
             id: `${id}`,
             ...getTutorialQueryParams()
           }
-        })
+        } as unknown as RawLocation)
       }
     }
   }

@@ -223,8 +223,6 @@ export default {
         const goToVideos = this.prevRoute === 'app-welcome'
         const curriculumName = this.lesson.curriculumType.name
         const shouldRedirect = this.$route.query.shouldRedirect !== 'false' // This is use to avoid redirection loops
-        const { tutorial, tutorialStep, tutorialIntroDaysRedirect } = this.$route.query
-        const tutorialQueryParams = { tutorial, tutorialStep, tutorialIntroDaysRedirect }
         const redirectToWorksheets = this.$route.query.redirectWorksheets === 'true'
         const cancelWelcomePage = this.highestProgress > 1
         const wasProgressMade = this.videos.progress > 0
@@ -233,6 +231,8 @@ export default {
         this.prevRoute = ''
 
         // Tutorial redirect
+        const { tutorial, tutorialStep, tutorialIntroDaysRedirect, tutorialVirtualPreschoolRedirect } = this.$route.query
+        const tutorialQueryParams = { tutorial, tutorialStep, tutorialIntroDaysRedirect, tutorialVirtualPreschoolRedirect }
         if (tutorialQueryParams.tutorial) {
           if (this.$route.name === 'app-dashboard-lesson-videos') {
             return
