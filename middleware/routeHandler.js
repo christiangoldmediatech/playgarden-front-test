@@ -70,13 +70,16 @@ export default async function ({ redirect, route, store, app, req }) {
     }
   }
 
-  const languageToApply = user.language ? getLanguageCode(user.language.code) : 'en'
   const availableLanguages = store.getters.getLanguages.map(lang => lang.code)
   const currentAppliedLanguage = app.i18n.locale
   const browserLanguage = navigator.language
   const browserLanguageCode = getLanguageCode(browserLanguage)
-  if (languageToApply && availableLanguages.includes(languageToApply)) {
+
+  if (user && user.language) {
+    const languageToApply = user.language ? getLanguageCode(user.language.code) : 'en'
     app.i18n.setLocale(languageToApply)
+  } else if (currentAppliedLanguage && availableLanguages.includes(currentAppliedLanguage)) {
+    app.i18n.setLocale(currentAppliedLanguage)
   } else if (browserLanguageCode !== currentAppliedLanguage && availableLanguages.includes(browserLanguageCode)) {
     app.i18n.setLocale(browserLanguageCode)
   }

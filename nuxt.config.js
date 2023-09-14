@@ -180,6 +180,7 @@ export default {
     [
       '@nuxtjs/i18n',
       {
+        langDir: 'lang/',
         locales: [
           {
             code: 'es',
@@ -192,14 +193,17 @@ export default {
         ],
         defaultLocale: 'en',
         strategy: 'no_prefix',
-        langDir: 'lang/',
         lazy: true,
         detectBrowserLanguage: {
           useCookie: true,
           cookieKey: 'i18n_redirected',
-          redirectOn: 'root'
+          redirectOn: 'root',
+          fallbackLocale: 'en'
         },
-        vueI18nLoader: true
+        vueI18nLoader: true,
+        vueI18n: {
+          fallbackLocale: 'en'
+        }
       }
     ],
     // Doc: https://axios.nuxtjs.org/usage
