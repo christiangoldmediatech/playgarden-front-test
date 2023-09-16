@@ -67,7 +67,7 @@ export const useKidsCorner = () => {
         kidsCornerId: videoData.id,
         activityId: videoData.id,
         activityTypeId: activityType?.id,
-        author: `with ${video.name}`,
+        author: `${video.name}`,
         type: 'KidsCorner',
         videoIcon: activityType?.icon
       }
