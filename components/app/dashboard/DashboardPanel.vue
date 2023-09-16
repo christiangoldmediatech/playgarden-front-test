@@ -144,6 +144,7 @@
             </v-icon>
           </v-avatar>
           <span
+            id="lesson-weekly-letter-worksheets"
             class="pr-6"
             :class="{
               'title-download-mobile': $vuetify.breakpoint.mobile
@@ -154,6 +155,7 @@
         </v-btn>
         <!-- VIDEO LESSONS -->
         <content-section
+          titleId="lesson-video-lessons"
           number="1"
           :title="$t('dailyLessons.panel.videoTitle')"
           :progress="videos.progress"
@@ -168,7 +170,7 @@
           />
 
           <!-- PROGRESS -->
-          <lesson-progress :progress="videos.progress" />
+          <lesson-progress id="win-a-puzzle-piece" :progress="videos.progress" />
         </content-section>
 
         <!-- WORKSHEETS -->
@@ -362,6 +364,7 @@
 
                 <v-col cols="9" align-self="center">
                   <div
+                    id="upload-worksheets-button"
                     class="text-uppercase dashboard-item-title"
                     :class="{
                       'dashboard-item-disabled': lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100
@@ -482,6 +485,7 @@
                     />
 
                     <div
+                      id="upload-worksheets-button"
                       class="text-uppercase dashboard-item-title text-center"
                       :class="{
                         'dashboard-item-disabled': videos.progress < 100
@@ -505,6 +509,7 @@
 
         <content-section
           v-if="activities && activities.items.length > 0"
+          id="lesson-activities"
           number="3"
           :title="$t('dailyLessons.panel.activitiesTitle')"
           :progress="activities.progress"

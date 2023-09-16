@@ -30,8 +30,13 @@ export const useSurvey = ({ store }:{ store: Store<unknown> }) => {
     return store.dispatch('survey/saveUserSurvey', createSurveyDto)
   }
 
+  function getUserSurvey(surveyKey: string) {
+    return store.dispatch('survey/getUserSurvey', surveyKey)
+  }
+
   return {
     checkUserSurvey,
-    saveUserSurvey
+    saveUserSurvey,
+    getUserSurvey
   }
 }

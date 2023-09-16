@@ -11,9 +11,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount } from '@nuxtjs/composition-api'
+import { defineComponent, onBeforeMount, useRouter, useRoute, useStore } from '@nuxtjs/composition-api'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
-
 import { useQuestionnaire } from '@/composables/questionnaire/useQuestionnaire.composable'
 import QuestionnaireQuestion1 from '@/components/questionnaire/QuestionnaireQuestion1.vue'
 import QuestionnaireQuestion2 from '@/components/questionnaire/QuestionnaireQuestion2.vue'

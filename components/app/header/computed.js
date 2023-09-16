@@ -74,6 +74,7 @@ export default {
             },
             {
               title: this.$t('menus.header.kidsCorner'),
+              id: 'kids-corner-button',
               dataTestId: 'app-kids-corner',
               external: true,
               link: `${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`,
@@ -81,6 +82,7 @@ export default {
             },
             {
               title: this.$t('menus.header.cubby'),
+              id: 'student-cubby-button',
               dataTestId: 'app-student-cubby',
               to: {
                 name: 'app-student-cubby-puzzle',

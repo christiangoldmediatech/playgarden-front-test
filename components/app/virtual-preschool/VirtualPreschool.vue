@@ -1,8 +1,12 @@
 <template>
   <v-main>
-    <div class="pg-w-[90%] pg-mx-auto pg-my-5">
-      <div class="pg-grid pg-grid-cols-1 md:pg-grid-cols-2 pg-gap-5">
+    <div class="pg-w-[90%] pg-mx-auto">
+      <div class="pg-flex pg-justify-center sm:pg-justify-end pg-my-5">
+        <TutorialBtn @click="onClickTutorialBtn" />
+      </div>
+      <div class="pg-grid pg-grid-cols-1 md:pg-grid-cols-2 pg-gap-5 pg-my-5">
         <section-image
+          id="pg-tutorial__step-1"
           :section="section.dashboard"
           :small="$vuetify.breakpoint.mdAndDown"
           @click:play="handleAudioPlay"
@@ -10,6 +14,7 @@
         />
 
         <section-image
+          id="pg-tutorial__step-2"
           :section="section.classes"
           :small="$vuetify.breakpoint.mdAndDown"
           @click:play="handleAudioPlay"
@@ -33,6 +38,7 @@
         />
 
         <section-image
+          id="pg-tutorial__step-3"
           :section="section.library"
           small
           @click:play="handleAudioPlay"
@@ -55,6 +61,8 @@
       </div>
     </div>
     <BirthdayVideoDialog />
+    <VirtualPreschoolTutorial v-if="isTutorial" />
+    <TutorialDialog @close="startIntroDays" @remind="startIntroDays" @start="onDialogStartTutorial" />
   </v-main>
 </template>
 
@@ -65,6 +73,7 @@ import {
   onMounted,
   ref,
   useRouter,
+  useRoute,
   useStore
 } from '@nuxtjs/composition-api'
 
@@ -73,18 +82,28 @@ import { TypedStore, Child } from '@/models'
 
 import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
 import SectionImage from '@/components/app/virtual-preschool/SectionImage.vue'
+import { useTutorialQuery, TutorialQueryParams, useTutorialDialog, useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
+import VirtualPreschoolTutorial from '@/components/tutorial/pages/VirtualPreschoolTutorial.vue'
+import TutorialBtn from '@/components/tutorial/TutorialBtn.vue'
+import TutorialDialog from '@/components/tutorial/TutorialDialog.vue'
+
+import type { RawLocation } from 'vue-router'
 
 export default defineComponent({
   name: 'VirtualPreschoolChild',
 
   components: {
     BirthdayVideoDialog,
-    SectionImage
+    SectionImage,
+    VirtualPreschoolTutorial,
+    TutorialBtn,
+    TutorialDialog
   },
 
   setup() {
     const store = useStore<TypedStore>()
     const router = useRouter()
+    const route = useRoute()
     const { accessToken } = useAuth({ store })
     const baseRoute =
       process.env.testEnv === 'production'
@@ -109,96 +128,107 @@ export default defineComponent({
     }
 
     const lang = useLanguageHelper()
-    const section = {
-      dashboard: {
-        imageUrl: require('@/assets/png/virtual-preschool/sections-images/dayli_lessons.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Beth-daily lessons.png'),
-        title: `${lang.t('virtualPreschool.sections.dashboard.title')}`,
-        message: `${lang.t('virtualPreschool.sections.dashboard.message')}`,
-        route: { name: 'app-dashboard' },
-        audio: `${baseRoute}audio/virtual-preschool/Daily lessons.m4a`,
-        color: '#359846',
-        textColor: '#C9EE9D',
-        bubbleText: '#359846'
-      },
-      kidscorner: {
-        imageUrl: require('@/assets/png/virtual-preschool/sections-images/kids_corner.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Katryna-kidscorner.png'),
-        title: `${lang.t('virtualPreschool.sections.kidscorner.title')}`,
-        message:
-          `${lang.t('virtualPreschool.sections.kidscorner.message')}`,
-        route: goToKidsCorner,
-        audio: `${baseRoute}audio/virtual-preschool/Kidscorner.m4a`,
-        color: '#FCF394',
-        textColor: '#AF7E00',
-        bubbleText: '#AF7E00'
-      },
-      classes: {
-        imageUrl: require('@/assets/png/virtual-preschool/sections-images/live_classes.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Lucy-Liveclasses.png'),
-        title: `${lang.t('virtualPreschool.sections.classes.title')}`,
-        message:
-          `${lang.t('virtualPreschool.sections.classes.message')}`,
-        route: { name: 'app-live-classes' },
-        audio: `${baseRoute}audio/virtual-preschool/Live classes.m4a`,
-        color: '#F58E00',
-        textColor: '#FEEAA5',
-        bubbleText: '#F58E00'
-      },
-      cubby: {
-        imageUrl: require('@/assets/png/virtual-preschool/sections-images/student_cubby.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Ally_cubby.png'),
-        title: `${lang.t('virtualPreschool.sections.cubby.title')}`,
-        message:
-          `${lang.t('virtualPreschool.sections.cubby.message')}`,
-        route: {
-          name: 'app-student-cubby-puzzle',
-          query: { id: currentChild.value?.id }
-        },
-        audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`,
-        color: '#FFC648',
-        textColor: '#FF8000',
-        bubbleText: '#FF8000'
-      },
-      music: {
-        imageUrl: require('@/assets/png/virtual-preschool/sections-images/music.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Emma_Music.png'),
-        title: `${lang.t('virtualPreschool.sections.music.title')}`,
-        message:
-          `${lang.t('virtualPreschool.sections.music.message')}`,
-        route: { name: 'app-music' },
-        audio: `${baseRoute}audio/virtual-preschool/Music.m4a`,
-        color: '#F6B7D2',
-        textColor: '#CF2A5C',
-        bubbleText: '#CF2A5C'
-      },
-      library: {
-        imageUrl: require('@/assets/png/virtual-preschool/sections-images/video_library.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
-        title: `${lang.t('virtualPreschool.sections.library.title')}`,
-        message:
-          `${lang.t('virtualPreschool.sections.library.message')}`,
-        route: { name: 'app-library' },
-        audio: `${baseRoute}audio/virtual-preschool/Library.m4a`,
-        color: '#BFBFF7',
-        textColor: '#8659C6',
-        bubbleText: '#8659C6'
-      },
-      wellbeing: {
-        imageUrl: require('@/assets/png/virtual-preschool/sections-images/social_emotional.png'),
-        teacherUrl: require('@/assets/png/virtual-preschool/teacher/teacher_well_being.png'),
-        title: `${lang.t('virtualPreschool.sections.wellbeing.title')}`,
-        message:
-        `${lang.t('virtualPreschool.sections.wellbeing.message')}`,
-        audio: `${baseRoute}audio/virtual-preschool/Social and emotional.m4a`,
-        route: { name: 'app-learn-play' },
-        color: '#B2E68D',
-        textColor: '#1A8901',
-        bubbleText: '#1A8901'
-      }
-    }
 
-    type Section = typeof section
+    const { isTutorial, startIntroDays } = useTutorialQuery({ route, router })
+    const section = computed(() => {
+      // Tutorial query parameters
+      const dashboardQueryParams: TutorialQueryParams = {}
+      const liveClassesQueryParams: TutorialQueryParams = {}
+      const videoLibraryQueryParams: TutorialQueryParams = {}
+      if (isTutorial.value) {
+        dashboardQueryParams.tutorial = true
+        dashboardQueryParams.tutorialStep = 'step1'
+        liveClassesQueryParams.tutorial = true
+        liveClassesQueryParams.tutorialStep = 'step1'
+        videoLibraryQueryParams.tutorial = true
+        videoLibraryQueryParams.tutorialStep = 'step1'
+      }
+
+      return {
+        dashboard: {
+          imageUrl: require('@/assets/png/virtual-preschool/sections-images/dayli_lessons.png'),
+          teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Beth-daily lessons.png'),
+          title: `${lang.t('virtualPreschool.sections.dashboard.title')}`,
+          route: { name: 'app-dashboard', query: dashboardQueryParams },
+          message: `${lang.t('virtualPreschool.sections.dashboard.message')}`,
+          audio: `${baseRoute}audio/virtual-preschool/Daily lessons.m4a`,
+          color: '#359846',
+          textColor: '#C9EE9D',
+          bubbleText: '#359846'
+        },
+        kidscorner: {
+          imageUrl: require('@/assets/png/virtual-preschool/sections-images/kids_corner.png'),
+          teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Katryna-kidscorner.png'),
+          title: `${lang.t('virtualPreschool.sections.kidscorner.title')}`,
+          route: goToKidsCorner,
+          message: `${lang.t('virtualPreschool.sections.kidscorner.message')}`,
+          audio: `${baseRoute}audio/virtual-preschool/Kidscorner.m4a`,
+          color: '#FCF394',
+          textColor: '#AF7E00',
+          bubbleText: '#AF7E00'
+        },
+        classes: {
+          imageUrl: require('@/assets/png/virtual-preschool/sections-images/live_classes.png'),
+          teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Lucy-Liveclasses.png'),
+          title: `${lang.t('virtualPreschool.sections.classes.title')}`,
+          route: { name: 'app-live-classes', query: liveClassesQueryParams },
+          message: `${lang.t('virtualPreschool.sections.classes.message')}`,
+          audio: `${baseRoute}audio/virtual-preschool/Live classes.m4a`,
+          color: '#F58E00',
+          textColor: '#FEEAA5',
+          bubbleText: '#F58E00'
+        },
+        cubby: {
+          imageUrl: require('@/assets/png/virtual-preschool/sections-images/student_cubby.png'),
+          teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Ally_cubby.png'),
+          title: `${lang.t('virtualPreschool.sections.cubby.title')}`,
+          route: {
+            name: 'app-student-cubby-puzzle',
+            query: { id: currentChild.value?.id }
+          },
+          message: `${lang.t('virtualPreschool.sections.cubby.message')}`,
+          audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`,
+          color: '#FFC648',
+          textColor: '#FF8000',
+          bubbleText: '#FF8000'
+        },
+        music: {
+          imageUrl: require('@/assets/png/virtual-preschool/sections-images/music.png'),
+          teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Emma_Music.png'),
+          title: `${lang.t('virtualPreschool.sections.music.title')}`,
+          route: { name: 'app-music' },
+          message: `${lang.t('virtualPreschool.sections.music.message')}`,
+          audio: `${baseRoute}audio/virtual-preschool/Music.m4a`,
+          color: '#F6B7D2',
+          textColor: '#CF2A5C',
+          bubbleText: '#CF2A5C'
+        },
+        library: {
+          imageUrl: require('@/assets/png/virtual-preschool/sections-images/video_library.png'),
+          teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
+          title: `${lang.t('virtualPreschool.sections.library.title')}`,
+          route: { name: 'app-library', query: videoLibraryQueryParams },
+          message: `${lang.t('virtualPreschool.sections.library.message')}`,
+          audio: `${baseRoute}audio/virtual-preschool/Library.m4a`,
+          color: '#BFBFF7',
+          textColor: '#8659C6',
+          bubbleText: '#8659C6'
+        },
+        wellbeing: {
+          imageUrl: require('@/assets/png/virtual-preschool/sections-images/social_emotional.png'),
+          teacherUrl: require('@/assets/png/virtual-preschool/teacher/teacher_well_being.png'),
+          title: `${lang.t('virtualPreschool.sections.wellbeing.title')}`,
+          route: { name: 'app-learn-play' },
+          message: `${lang.t('virtualPreschool.sections.wellbeing.message')}`,
+          audio: `${baseRoute}audio/virtual-preschool/Social and emotional.m4a`,
+          color: '#B2E68D',
+          textColor: '#1A8901',
+          bubbleText: '#1A8901'
+        }
+      }
+    })
+
+    type Section = typeof section.value
     type SectionItem = Section[keyof Section]
 
     const player = ref<HTMLAudioElement>()
@@ -227,12 +257,71 @@ export default defineComponent({
       }
     }
 
+    // Tutorial Dialog
+    function onClickTutorialBtn() {
+      startTutorial()
+    }
+
+    function startTutorial() {
+      router.push({
+        name: 'app-virtual-preschool',
+        query: {
+          tutorial: true,
+          tutorialStep: 'step1',
+          tutorialWelcome: true,
+          tutorialVirtualPreschoolRedirect: true
+        }
+      } as unknown as RawLocation)
+    }
+
+    const { getQuizResults, quizResult } = useTutorialQuiz({ store })
+    const { dialogLoading, showTutorialDialog, closeTutorialDialog } = useTutorialDialog()
+    if (route.value.query.promptTutorial) {
+      showTutorialDialog()
+    }
+    async function onDialogStartTutorial() {
+      try {
+        dialogLoading.value = true
+        await getQuizResults()
+
+        let step = ''
+
+        if (quizResult.structuredLessons) {
+          step = 'step1'
+        } else if (quizResult.liveClasses) {
+          step = 'step2'
+        } else if (quizResult.printableWorksheets) {
+          step = 'step3'
+        } else if (quizResult.educationalVideos) {
+          step = 'step4'
+        }
+
+        await router.push({
+          name: 'app-virtual-preschool',
+          query: {
+            tutorial: true,
+            tutorialStep: step,
+            tutorialWelcome: true,
+            tutorialIntroDaysRedirect: true
+          }
+        } as unknown as RawLocation)
+      } finally {
+        dialogLoading.value = false
+        closeTutorialDialog()
+      }
+    }
+
     return {
       section,
       goToKidsCorner,
       handleAudioPlay,
       handleClick,
-      isBirthdayModalVisible
+      isBirthdayModalVisible,
+      isTutorial,
+      onClickTutorialBtn,
+      startTutorial,
+      onDialogStartTutorial,
+      startIntroDays
     }
   }
 })

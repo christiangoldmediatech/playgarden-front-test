@@ -2,7 +2,7 @@
   <div class="w-100 d-flex my-4 pa-0 pa-md-4 scrollable-container">
     <worksheet-card
       v-for="(worksheet, index) in worksheets"
-      :key="index"
+      :key="`worksheet-card-${index}`"
       class="mr-4 mb-4 mb-md-0 worksheet-card"
       :horizontal-mode="isMobile"
       :name="worksheet.name"
@@ -22,7 +22,7 @@ export default defineComponent({
   name: 'WorksheetsWrapper',
   props: {
     worksheets: {
-      type: Array as PropType<Lesson[]>,
+      type: Array as PropType<Array<Lesson & { pdfThumbnail: string }>>,
       default: () => [] as Lesson[]
     }
   },
