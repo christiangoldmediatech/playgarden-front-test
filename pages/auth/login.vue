@@ -397,7 +397,7 @@ export default {
           await this.$router.push(this.goToPage(this.userInfo))
         }
       } catch (error) {
-        this.errorMessage = this.$t('wrongPassword')
+        this.errorMessage = this.$t('login.wrongPassword')
       } finally {
         this.loading = false
       }
@@ -464,14 +464,3 @@ export default {
   }
 }
 </style>
-
-<i18n>
-  {
-    "en": {
-      "wrongPassword": "Oops! The password you entered is incorrect. Please try again, or try resetting your password."
-    },
-    "es": {
-      "wrongPassword": "¡Ups! La contraseña que ha ingresado es incorrecta. Inténtelo de nuevo o intente restablecer su contraseña."
-    }
-  }
-</i18n>

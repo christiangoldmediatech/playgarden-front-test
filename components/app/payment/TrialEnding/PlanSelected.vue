@@ -9,7 +9,7 @@
     >
       <div>
         <underlined-title
-          text="LET'S KEEP LEARNING!"
+          :text="$t('PlanSelected.title')"
           font-size="32px"
           font-size-mobile="22px"
           letter-spacing="4.8px"
@@ -18,14 +18,10 @@
 
       <div class="grey--text text--darken-2 caption text-md-h6 font-weight-regular my-3 my-md-6">
         <p>
-          Thank you for joining the <span class="font-weight-bold accent--text"> {{ plan }}</span> plan. We hope that your child enjoys it! As always,
-          you can cancel your enrollment at any time by going to your
-          <a class="accent--text font-weight-bold" @click="goToAccount">Accounts Page</a>
-          Please feel free to contact us with any questions you may have, and our teacher team
-          will get back to you as soon as possible!
+          {{ $t('PlanSelected.p1') }} <span class="font-weight-bold accent--text">{{ plan }}</span> {{ $t('PlanSelected.p2') }} <a class="accent--text font-weight-bold" @click="goToAccount">{{ $t('PlanSelected.accountsPage') }}</a>. {{ $t('PlanSelected.p3') }}
         </p>
 
-        <p>Your next billing date will be:</p>
+        <p>{{ $t('PlanSelected.nextBillingDate') }}</p>
 
         <div class="mt-8 mb-12">
           <underlined-title
@@ -39,22 +35,22 @@
         </div>
 
         <p class="my-0">
-          Kind Regards,
+          {{ $t('PlanSelected.kindRegards') }}
         </p>
-        <p>Playgarden Prep Online Team.</p>
+        <p>{{ $t('PlanSelected.playgardenTeam') }}</p>
       </div>
 
       <v-row no-gutters class="text-center text-md-left">
         <v-col cols="12" md="auto" class="my-4">
           <v-btn x-large color="accent" class="text-none" width="250" @click="goToHome">
-            Go to Home
+            {{ $t('PlanSelected.goHome') }}
           </v-btn>
         </v-col>
 
         <v-col cols="12" md="auto" class="mx-0 mx-md-4 align-self-center font-weight-bold">
-          <span class="grey--text">Need help? </span>
+          <span class="grey--text">{{ $t('PlanSelected.needHelp') }}</span>
           <span class="text-decoration-underline" @click="handleContactUs">
-            <a class="accent--text">Contact us</a>
+            <a class="accent--text">{{ $t('PlanSelected.contactUs') }}</a>
           </span>
         </v-col>
       </v-row>
@@ -69,6 +65,9 @@ import LargeImageContentDialog from '@/components/ui/dialogs/LargeImageContentDi
 import { defineComponent, useStore } from '@nuxtjs/composition-api'
 import { useGlobalModal } from '@/composables'
 import { TypedStore } from '@/models'
+
+require('dayjs/locale/es')
+
 export default defineComponent({
   name: 'PlanSelected',
 
@@ -130,6 +129,7 @@ export default defineComponent({
 
     async getBillingDetails (): Promise<void> {
       try {
+        const locale = this.$i18n.locale || 'en'
         this.loading = true
         const data: any = await this.$store.dispatch('payment/fetchBillingDetails')
         this.plan = data.planName || null
@@ -137,7 +137,7 @@ export default defineComponent({
         if (data.subscriptionData) {
           this.billingDate = dayjs(
             data.subscriptionData.current_period_end * 1000
-          ).format('MMMM D, YYYY')
+          ).locale(locale).format('MMMM D, YYYY')
         }
       } finally {
         this.loading = false
