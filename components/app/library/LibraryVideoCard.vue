@@ -62,7 +62,7 @@ export default defineComponent({
     })
 
     const description = computed(() => {
-      return props.mediaObject.description || (props.mediaObject.meta?.author) ? `${language.t('commonWords.prepositionTextUpper')} ${props.mediaObject.meta?.author}` : ''
+      return (props.mediaObject.meta?.author) ? `${props.mediaObject.meta.author}` : ''
     })
 
     function handlePlay() {

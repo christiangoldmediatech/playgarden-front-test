@@ -189,7 +189,7 @@ export default defineComponent({
         teacherUrl: require('@/assets/png/virtual-preschool/teacher/teacher_well_being.png'),
         title: `${lang.t('virtualPreschool.sections.wellbeing.title')}`,
         message:
-          'Play and learn together with activities, games, books and so much more!',
+        `${lang.t('virtualPreschool.sections.wellbeing.message')}`,
         audio: `${baseRoute}audio/virtual-preschool/Social and emotional.m4a`,
         route: { name: 'app-learn-play' },
         color: '#B2E68D',

@@ -49,7 +49,7 @@
                   </div>
                 </div>
               </div>
-              <div class="player-preview-author">
+              <div class="player-preview-author !pg-capitalize">
                 {{ $t('commonWords.prepositionTextUpper') }} {{ author }}
               </div>
             </div>
