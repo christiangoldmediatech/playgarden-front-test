@@ -91,6 +91,11 @@ export default Vue.extend({
       default: false
     },
 
+    label: {
+      type: String,
+      default: 'Address'
+    },
+
     errors: {
       type: Array,
       default: () => []

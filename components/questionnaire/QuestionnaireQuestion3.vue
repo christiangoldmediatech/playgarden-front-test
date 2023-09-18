@@ -86,6 +86,7 @@ import {
   useQuestionnaireSave
 } from '@/composables/questionnaire/useQuestionnaire.composable'
 import { useLanguageHelper } from '@/composables'
+import type { RawLocation } from 'vue-router'
 
 export default defineComponent({
   name: 'QuestionnaireQuestion3',
@@ -124,10 +125,7 @@ export default defineComponent({
         const totalTime = endTime.diff(startTime, 'seconds')
         questPageData[2].pageTime = totalTime
         await handleSave()
-        router.push({
-          name: 'app-welcome',
-          query: { fromQuestionnaire: 'true', step: '1' }
-        })
+        router.push({ name: 'app-virtual-preschool', query: { promptTutorial: true } } as unknown as RawLocation)
       } catch {}
     }
 

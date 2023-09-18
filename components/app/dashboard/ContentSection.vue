@@ -11,7 +11,7 @@
       </v-col>
 
       <!-- SECTION TITLE -->
-      <v-col class="content-header pl-0 py-0 text-uppercase d-flex justify-start align-center">
+      <v-col :id="titleId" class="content-header pl-0 py-0 text-uppercase d-flex justify-start align-center">
         {{ title }}
         <slot name="title-append" />
       </v-col>
@@ -41,6 +41,11 @@ export default {
   name: 'ContentSection',
 
   props: {
+    titleId: {
+      type: String,
+      default: undefined
+    },
+
     number: {
       type: [String, Number],
       required: true

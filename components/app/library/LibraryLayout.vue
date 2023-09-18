@@ -16,8 +16,11 @@
 
     <template v-else>
       <v-container v-bind="fillHeight" fluid data-test-id="library-content">
+        <v-row class="mt-10" justify="center" justify-sm="end">
+          <LibraryTutorialBtn />
+        </v-row>
         <!-- Top Header -->
-        <v-row class="flex-lg-nowrap mt-10" align="center">
+        <v-row class="flex-lg-nowrap" align="center">
           <v-col cols="12" sm="5" md="3" order="1" order-sm="0">
             <child-select v-model="selectedChild" hide-details />
           </v-col>
@@ -32,7 +35,9 @@
             order="2"
             order-sm="1"
           >
-            <search-text-field @search="handleSearch" />
+            <div id="library-search">
+              <search-text-field @search="handleSearch" />
+            </div>
           </v-col>
 
           <library-links
@@ -51,7 +56,6 @@
             <library-back-btn @click="goBack" />
           </v-col>
         </v-row>
-
         <slot />
       </v-container>
     </template>
@@ -71,6 +75,7 @@ import LibraryBackBtn from '@/components/app/library/LibraryBackBtn.vue'
 import ChildSelect from '@/components/app/ChildSelect.vue'
 import SearchTextField from '@/components/app/library/SearchTextField.vue'
 import LibraryLinks from '@/components/app/library/LibraryLinks.vue'
+import LibraryTutorialBtn from '@/components/tutorial/wrappers/LibraryTutorialBtn.vue'
 
 export default defineComponent({
   name: 'LibraryLayout',
@@ -79,7 +84,8 @@ export default defineComponent({
     LibraryBackBtn,
     ChildSelect,
     SearchTextField,
-    LibraryLinks
+    LibraryLinks,
+    LibraryTutorialBtn
   },
 
   props: {

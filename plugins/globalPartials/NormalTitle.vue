@@ -81,7 +81,7 @@ export default {
       default: "'Poppins', sans-serif"
     },
 
-    color: { type: String, default: '#000000' }
+    color: { type: String, default: '#606060' }
   },
 
   computed: {

@@ -109,8 +109,15 @@ export default {
     ...mapState('live-sessions', ['sessions']),
     ...mapGetters('auth', ['hasPlayAndLearnPlan']),
 
+    getToday() {
+      if (this.$route.query.tutorial) {
+        return dayjs().startOf('week').add(1, 'day').add(10, 'hours').toDate()
+      }
+      return new Date()
+    },
+
     nextSessions() {
-      const today = new Date()
+      const today = this.getToday
       const filtered = this.sessions.filter((session) => {
         if (!this.userHasAccess(session)) {
           return false

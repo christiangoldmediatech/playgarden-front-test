@@ -1,5 +1,7 @@
 <template>
   <v-container :class="{ 'mt-n14': !$vuetify.breakpoint.mdAndUp }">
+    <wrong-library-id-dialog v-model="viewDialog" />
+
     <v-row
       :class="{ 'mt-n4': !$vuetify.breakpoint.mdAndUp }"
       align="center"
@@ -96,9 +98,12 @@
 <script lang="ts">
 import { defineComponent, ref, useMeta, useRouter } from '@nuxtjs/composition-api'
 import { useAccessorHelper, useLanguageHelper } from '@/composables'
+import WrongLibraryIdDialog from '@/components/app/library/WrongLibraryIdDialog.vue'
 
 export default defineComponent({
   name: 'LibraryCard',
+
+  components: { WrongLibraryIdDialog },
 
   head() {
     return {}
@@ -116,6 +121,7 @@ export default defineComponent({
     const loading = ref(false)
     const isValidForm = ref(true)
     const libraryCardNumber = ref('')
+    const viewDialog = ref(false)
     const errorMessages = ref<string[]>([])
 
     const isValidLibraryCard = (value: string) => {
@@ -137,12 +143,14 @@ export default defineComponent({
           return router.push({ name: 'auth-preschool-normal' })
         }
         errorMessages.value = [`${language.t('register.libraryCard.badCard')}` || '']
+        setTimeout(() => { viewDialog.value = true }, 1000)
       } finally {
         loading.value = false
       }
     }
 
     return {
+      viewDialog,
       frontendUrl: process.env.frontendUrl,
       cardValidationForm,
       loading,

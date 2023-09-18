@@ -101,6 +101,10 @@ export default {
       src: 'tiptap-vuetify/dist/main.css',
       lang: 'css'
     },
+    {
+      src: 'shepherd.js/dist/css/shepherd.css',
+      lang: 'css'
+    },
     './assets/scss/pg-components/index.scss',
     './assets/scss/app.scss',
     './assets/scss/pg-icons.scss',

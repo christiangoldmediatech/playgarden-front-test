@@ -101,6 +101,10 @@ export default actionTree(
       commit('SET_AUTH_FLOW', AuthFlow.PRESCHOOL)
 
       return true
+    },
+
+    async requestToAddLibrary({ commit }, request: {libraryName: string, libraryAddress: string, userEmail: string}) {
+      return await this.$axios.$post('/user-library-cards/no-library', { ...request })
     }
   }
 )

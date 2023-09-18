@@ -5,6 +5,7 @@
     @click:outside="dialog = false"
   >
     <div
+      id="entry-dialog"
       class="entry-container"
     >
       <v-btn icon class="pg-bg-[#FFA0C8] !pg-p-0 md:!pg-p-5 !pg-absolute !pg-right-5 md:!pg-right-10 !pg-top-[6rem] md:!pg-top-10 !pg-z-50" @click="dialog = false">
@@ -112,7 +113,7 @@
                   >
                     {{ $t('liveClasses.entryDialog.description') }}
                   </p>
-                  <span class="pg-text-lg pg-font-normal pg-text-black">{{ entry.description }}</span>
+                  <span class="pg-text-lg pg-font-normal pg-text-black" v-html="entry.description "></span>
                 </div>
 
                 <div class="pb-6">
@@ -553,6 +554,9 @@ export default {
     this.$nuxt.$on('open-entry-dialog', (entry) => {
       this.entry = entry
       this.dialog = true
+    })
+    this.$appEventBus.$on('tutorial-close-entry-dialog', () => {
+      this.dialog = false
     })
   },
 

@@ -59,6 +59,7 @@
           xl="3"
         >
           <dashboard-panel
+            id="lesson-dashboard-panel"
             v-bind="{ lesson, childId, loading }"
             :next-button="canAdvance"
           />
@@ -73,40 +74,29 @@
           xl="9"
         >
           <!-- Tutorial row -->
-          <v-row
-            class="dashboard-tip-row flex-grow-0 flex-shrink-1"
-            justify="center"
-            justify-md="start"
-            align="center"
-            :no-gutters="$vuetify.breakpoint.smAndUp"
-          >
-            <v-col cols="12" md="3" sm="6">
-              <v-row>
-                <child-select
-                  class="mx-3"
-                  :value="value"
-                  :preview-mode="previewMode"
-                  hide-details
-                  :management-button="!previewMode"
-                  @input="$emit('input', $event)"
-                />
-              </v-row>
-            </v-col>
-            <!--carousel letter-->
-            <v-col cols="12" md="9" sm="6">
-              <v-row
-                class="mx-md-2 my-md-0 mx-sm-4 my-sm-2 mx-xs-4 my-xs-2"
-                justify="center"
-              >
-                <carousel-letter
-                  ref="CarouselLetter"
-                  :value="curriculumTypeId"
-                  :preview-mode="previewMode"
-                />
-              </v-row>
-            </v-col>
-            <!--carousel letter-->
-          </v-row>
+          <div class="dashboard-tip-row pg-grid pg-grid-cols-1 sm:pg-grid-cols-2 md:pg-grid-cols-[200px_calc(100%_-_400px)_200px] lg:pg-grid-cols-[300px_calc(100%_-_500px)_200px] pg-items-center">
+            <div>
+              <child-select
+                class="mx-3"
+                :value="value"
+                :preview-mode="previewMode"
+                hide-details
+                :management-button="!previewMode"
+                @input="$emit('input', $event)"
+              />
+            </div>
+            <div>
+              <carousel-letter
+                id="lesson-letter-carousel"
+                ref="CarouselLetter"
+                :value="curriculumTypeId"
+                :preview-mode="previewMode"
+              />
+            </div>
+            <div class="pg-text-right sm:pg-col-span-2 md:pg-col-span-1">
+              <dashboard-tutorial-btn :lesson-videos="lesson.videos" />
+            </div>
+          </div>
 
           <v-row
             :class="[
@@ -173,6 +163,7 @@ import ChildSelect from '@/components/app/ChildSelect.vue'
 import CourseProgressOverlay from '@/components/app/student-cubby/CourseProgressOverlay.vue'
 import CarouselLetter from '@/components/app/all-done/CarouselLetter.vue'
 import DashboardOverrides from '@/mixins/DashboardOverridesMixin'
+import DashboardTutorialBtn from '@/components/tutorial/wrappers/DashboardTutorialBtn.vue'
 
 export default {
   name: 'DashboardLayout',
@@ -183,7 +174,8 @@ export default {
     PuzzlePiecesDialog,
     ChildSelect,
     CourseProgressOverlay,
-    CarouselLetter
+    CarouselLetter,
+    DashboardTutorialBtn
   },
 
   mixins: [DashboardOverrides],
