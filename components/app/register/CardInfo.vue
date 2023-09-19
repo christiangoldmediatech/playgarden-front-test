@@ -19,7 +19,7 @@
     <div>
       <template>
         <NormalTitle
-          text="The easiest and most effective way to give your child an immersive education outside of school!"
+          :text="title"
           font-size="20px"
           font-size-mobile="17px"
         />
@@ -40,7 +40,13 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  name: 'CardInfo'
+  name: 'CardInfo',
+  props: {
+    title: {
+      type: String,
+      default: 'The easiest and most effective way to give your child an immersive education outside of school!'
+    }
+  }
 })
 </script>
 
