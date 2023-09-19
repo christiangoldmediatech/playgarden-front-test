@@ -10,57 +10,40 @@
           class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-pt-4"
         >
           <template v-if="currentTutorialStep.step.id === 'step1'">
-            Your teachers have prepared lesson videos, worksheets, and
-            activities that your child can complete each day, similarly to
-            in-person school. You are welcome to take things at your own pace,
-            moving as slowly or quickly as your child needs
+            {{ $localT('step1') }}
           </template>
           <template v-if="currentTutorialStep.step.id === 'step2'">
-            Watch all of your Lesson videos to move on to your daily Worksheets.
-            You can print these by clicking
+            {{ $localT('step2Ln1') }}
             <span class="pg-text-[#F89838] pg-font-bold">
-              DOWNLOAD WORKSHEETS
-            </span>, or you can use the pages in your workbook. You will receive your
-            workbook once your free trial has ended.
+              {{ $localT('downloadWorksheets') }}
+            </span>{{ $localT('step2Ln2') }}
           </template>
           <template v-if="currentTutorialStep.step.id === 'step3'">
-            Once your child has completed their worksheets, you may upload them
-            by clicking
-            <span class="pg-text-[#F89838] pg-font-bold">
-              DOWNLOAD WORKSHEET</span>. Once uploaded, a Playgarden Prep teacher will take a look and
-            provide feedback on your little one's progress!
+            {{ $localT('step3Ln1') }} <span class="pg-text-[#F89838] pg-font-bold">{{ $localT('uploadWorksheet') }}</span>.
+            {{ $localT('step3Ln2') }}
           </template>
           <template v-if="currentTutorialStep.step.id === 'step4'">
-            You will be notified about this teacher feedback via email, and you
-            may see all feedback at once in the
-            <span class="pg-text-[#68C453] pg-font-bold">STUDENT CUBBY</span>.
+            {{ $localT('step4') }} <span class="pg-text-[#68C453] pg-font-bold">{{ $generalTutorialT('studentCubby') }}</span>.
           </template>
           <template v-if="currentTutorialStep.step.id === 'step5'">
-            Once you've uploaded your child's worksheets, watch the activity
-            videos to complete the day.
+            {{ $localT('step5') }}
           </template>
           <template v-if="currentTutorialStep.step.id === 'step6'">
-            After each section of the Daily Lessons, your little one will earn a
-            Puzzle Piece. At the end of each week, you'll complete a puzzle,
-            which will turn into a printable for your little one! You can find
-            all the puzzles in the
-            <span class="pg-text-[#68C453] pg-font-bold">STUDENT CUBBY</span>.
+            {{ $localT('step6') }}
+            <span class="pg-text-[#68C453] pg-font-bold">{{ $generalTutorialT('studentCubby') }}</span>.
           </template>
           <template v-if="currentTutorialStep.step.id === 'step7'">
-            To unlock the next day's lessons, you must complete the full day.
-            Our Daily Lessons are structured to build on each other, so it's
-            important that your little one finishes one day to move onto the
-            next.
+            {{ $localT('step7') }}
           </template>
           <template v-if="currentTutorialStep.step.id === 'step8'">
-            For more information on how to use your
-            <span class="pg-text-[#359645] pg-font-bold">Daily Lessons</span>,
-            visit our FAQ page, or email us at<br />
+            {{ $generalTutorialT('forMoreInformation') }}
+            <span class="pg-text-[#359645] pg-font-bold">{{ $localT('step8') }}</span>,
+            {{ $generalTutorialT('visitOurFaqPage') }}<br />
             <a
               class="!pg-text-[#F89838] !pg-font-bold"
-              href="mailto:Hello@PlaygardenPrep.com"
+              :href="`mailto:${$generalTutorialT('email')}`"
             >
-              Hello@PlaygardenPrep.com
+              {{ $generalTutorialT('email') }}
             </a>
           </template>
         </div>
@@ -85,6 +68,7 @@ import {
   useTutorialSteps,
   useTutorialQuiz
 } from '@/composables/tutorial/use-tutorial.composable'
+import { useLocalLanguageHelper } from '@/composables/i18n/use-local-language-helper.composable'
 import TutorialCard from '@/components/tutorial/TutorialCard.vue'
 import type { RawLocation } from 'vue-router'
 
@@ -106,6 +90,9 @@ export default defineComponent({
       router
     })
     const { quizResult } = useTutorialQuiz({ store })
+    const { getLocalT } = useLocalLanguageHelper()
+    const $generalTutorialT = getLocalT('tutorial.general')
+    const $localT = getLocalT('tutorial.lessonVideos')
 
     const doesTutorialEndHere = computed(() => {
       return (
@@ -262,8 +249,14 @@ export default defineComponent({
     })
 
     return {
-      currentTutorialStep
+      currentTutorialStep,
+      $generalTutorialT,
+      $localT
     }
   }
 })
 </script>
+
+<i18n src="@/lang/tutorial/tutorial.en.json"></i18n>
+
+<i18n src="@/lang/tutorial/tutorial.es.json"></i18n>

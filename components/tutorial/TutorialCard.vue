@@ -29,17 +29,17 @@
             <div v-if="finishButtons" class="pg-flex pg-justify-center">
               <div class="pg-w-full pg-max-w-[128px]">
                 <VBtn color="#F58E00" class="!pg-text-white" elevation="0" block @click="onClickSkip">
-                  {{ (currentTutorialStep && currentTutorialStep.advanceText) || 'Close' }}
+                  {{ (currentTutorialStep && currentTutorialStep.advanceText) || $localT('close') }}
                 </VBtn>
               </div>
             </div>
 
             <div v-else class="pg-grid pg-grid-cols-1 sm:pg-grid-cols-2 pg-gap-3 sm:pg-gap-6 pg-px-6">
               <VBtn class="pg-order-2 sm:pg-order-1" color="#F89838" text block @click="onClickSkip">
-                Skip
+                {{ $localT('skip') }}
               </VBtn>
               <VBtn color="#68C453" class="!pg-text-white sm:pg-order-2" elevation="0" block @click="onClickNext">
-                {{ currentTutorialStep && currentTutorialStep.advanceText || 'Next' }}
+                {{ currentTutorialStep && currentTutorialStep.advanceText || $localT('next') }}
               </VBtn>
             </div>
           </div>
@@ -58,6 +58,7 @@
 import { defineComponent, computed, useRoute, useRouter } from '@nuxtjs/composition-api'
 import { MountingPortal } from 'portal-vue'
 import { useTutorial, useTutorialSteps, useTutorialQuery } from '@/composables/tutorial/use-tutorial.composable'
+import { useLocalLanguageHelper } from '@/composables/i18n/use-local-language-helper.composable'
 
 export default defineComponent({
   name: 'TutorialCard',
@@ -78,10 +79,11 @@ export default defineComponent({
   setup(_, { emit }) {
     const router = useRouter()
     const route = useRoute()
-
     const { shouldCardExist, getTutorial, finishTutorial } = useTutorial()
     const { currentTutorialStep } = useTutorialSteps()
     const { clearTutorialRouteParams, startIntroDays, getTutorialQueryParams } = useTutorialQuery({ route, router })
+    const { getLocalT } = useLocalLanguageHelper()
+    const $localT = getLocalT('tutorial.card')
 
     const introDaysRedirect = computed(() => {
       return !!route.value.query.tutorialIntroDaysRedirect
@@ -114,8 +116,13 @@ export default defineComponent({
       onClickSkip,
       onClickNext,
       currentTutorialStep,
-      shouldCardExist
+      shouldCardExist,
+      $localT
     }
   }
 })
 </script>
+
+<i18n src="@/lang/tutorial/tutorial.en.json"></i18n>
+
+<i18n src="@/lang/tutorial/tutorial.es.json"></i18n>

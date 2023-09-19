@@ -1,0 +1,76 @@
+{
+  "es": {
+    "tutorial": {
+      "general": {
+        "tutorialBtnLn1": "Tutorial",
+        "tutorialBtnLn2": "Interactivo",
+        "welcome": "¡BIENVENIDOS!",
+        "studentCubby": "CUBÍCULO DE ESTUDIANTE",
+        "forMoreInformation": "Para obtener más información sobre cómo utilizar su",
+        "visitOurFaqPage": "visite nuestra página de PREGUNTAS FRECUENTES o envíenos un correo electrónico a",
+        "email": "Hello@PlaygardenPrep.com"
+      },
+      "card": {
+        "close": "Cerrar",
+        "skip": "Saltar",
+        "next": "Siguiente"
+      },
+      "dialog": {
+        "title": "¡Bienvenido al tutorial de PlayGarden Prep!",
+        "headingLn1": "¡Empecemos!",
+        "headingLn2": "Descubra cómo aprovechar al máximo nuestra plataforma con un rápido tutorial. Haga clic en 'Iniciar' para comenzar a aprender.",
+        "remindMeLater": "DESPUÉS",
+        "start": "INICIAR"
+      },
+      "virtualPreschool": {
+        "step1": "Para comenzar, haga clic aquí para ir a las Lecciones Diarias.",
+        "step2Ln1": "Haga clic aquí para ver los",
+        "step2Ln2": "Clases en Vivo",
+        "step3": "Sus hojas de trabajo se encuentran en el área de Lecciones Diarias.",
+        "step4Ln1": "Para ver más vídeos educativos, consulte nuestro",
+        "step4Ln2": "Biblioteca de Vídeos"
+      },
+      "lessonVideos": {
+        "downloadWorksheets": "DESCARGAR HOJAS DE TRABAJO",
+        "uploadWorksheet": "SUBIR HOJA DE TRABAJO",
+        "step1": "Los maestros han preparado videos de lecciones, hojas de trabajo y actividades que su hijo puede completar todos los días, de manera similar a la escuela presencial. Le invitamos a tomar las cosas a su propio ritmo, moviéndose tan lento o rápidamente como su hijo necesite.",
+        "step2Ln1": "Mire todos los videos de sus lecciones para pasar a sus hojas de trabajo diarias. Puede imprimirlos haciendo clic en",
+        "step2Ln2": ", o puede utilizar las páginas de su libro de trabajo. Recibirá su libro de trabajo una vez que finalice su prueba gratuita.",
+        "step3Ln1": "Una vez que su hijo haya completado sus hojas de trabajo, puede cargarlas haciendo clic en",
+        "step3Ln2": "Una vez cargado, un maestro de Playgarden Prep echará un vistazo y brindará comentarios sobre el progreso de su pequeño.",
+        "step4": "Se le notificará sobre los comentarios de este maestro por correo electrónico y podrá ver todos los comentarios a la vez en el",
+        "step5": "Una vez que haya cargado las hojas de trabajo de su hijo, mire los videos de actividades para completar el día.",
+        "step6": "Después de cada sección de las lecciones diarias, tu pequeño ganará una pieza de rompecabezas. ¡Al final de cada semana, completarás un rompecabezas, que se convertirá en un imprimible para tu pequeño! Puedes encontrar todos los rompecabezas en el",
+        "step7": "Para desbloquear las lecciones del día siguiente, debes completar la lección del día en curso. Nuestras lecciones diarias están estructuradas para complementarse entre sí, por lo que es importante que su pequeño termine un día para pasar al siguiente.",
+        "step8": "Lecciones Diarias"
+      },
+      "library": {
+        "step1": "Puede buscar videos por tema o puede buscar videos específicos.",
+        "step2Ln1": "El",
+        "kidsCorner": "Rincón de los Niños",
+        "step2Ln2": "tiene videos educativos que incluyen videoclips divertidos y animaciones divertidas para involucrar a su hijo."
+      },
+      "studentPortfolio": {
+        "step1Ln1": "En el",
+        "step1Ln2": ", también puede descargar hojas de trabajo con anticipación para estar preparado para el día siguiente de lecciones.",
+        "worksheets": "Hojas de Trabajo"
+      },
+      "liveClasses": {
+        "step1Ln1": "Además de",
+        "step1Ln2": "Lecciones Diarias",
+        "step1Ln3": ", ofrecemos varias clases en vivo todos los días para enriquecer la rutina de aprendizaje de tu pequeño!",
+        "step2Ln1": "Para unirse a un",
+        "step2Ln2": "Clase en Vivo",
+        "step2Ln3": ", simplemente haga clic en la clase de su elección y haga clic en UNIRSE A LA CLASE. Tenga en cuenta que no podrá seleccionar UNIRSE A LA CLASE hasta 10 minutos antes de la hora de inicio de la clase. También recibirás una notificación con tu enlace de Zoom por correo electrónico antes de que comience cada clase.",
+        "step3Ln1": "Los Citas de Juego",
+        "step3Ln2": "son un poco diferentes: estas clases están diseñadas específicamente para promover la interacción social entre su hijo, su maestro y sus compañeros. Cada Playdate está limitado a 10 niños, para garantizar que cada niño tenga la oportunidad de participar. Para asistir a un Cita de Juego debes reservar tu plaza de antemano.",
+        "step4Ln1": "Algunas clases, como",
+        "step4Ln2": "Arte",
+        "step4Ln3": ", tienen listas de útiles descargables para informarle qué materiales puede necesitar su hijo en clase.",
+        "step5": "Haga clic AQUÍ para ajustar su zona horaria, de modo que su calendario de Clases en Vivo sea el correspondiente al lugar donde vive.",
+        "liveClasses": "Clases en Vivo",
+        "forMoreInformation": "Para obtener más información sobre cómo utilizar las"
+      }
+    }
+  }
+}
