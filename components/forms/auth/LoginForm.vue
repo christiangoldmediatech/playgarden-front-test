@@ -52,7 +52,7 @@
 
       <br class="hidden-md-and-up">
 
-      <nuxt-link :to="{ name: 'auth-preschool-normal' }">
+      <nuxt-link :to="{ name: 'auth-preschool-normal', query: { step: 1 } }">
         <span>SIGN UP NOW!</span>
       </nuxt-link>
     </p>

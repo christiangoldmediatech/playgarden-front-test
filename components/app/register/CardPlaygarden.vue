@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-100">
     <div
       :class="[
         'pg-relative',
@@ -7,12 +7,15 @@
         'pg-flex',
         'pg-flex-col',
         'pg-py-6',
-        'pg-px-8',
+        'pg-px-2',
+        'sm:pg-px-8',
         'pg-text-center',
         'pg-rounded-lg',
         'pg-bg-white',
-        'pg-max-w-[500px]',
-        'lg:pg-w-[500px]',
+        'pg-max-w-[100%]',
+        'sm:pg-max-w-[500px]',
+        'pg-w-[100%]',
+        'sm:pg-w-[500px]',
         {
           'pg-shadow-[0px_8px_24px_rgba(0,0,0,0.15)]': isOpen,
         }
@@ -45,6 +48,7 @@
           'pg-transition-[max-height]',
           'pg-overflow-hidden',
           'pg-duration-500',
+          'pg-w-100',
           {
             'pg-max-h-screen': isOpen,
             'pg-max-h-0': isClose,
@@ -56,16 +60,16 @@
           Still not sure? Call, text, or email us with your questions, and a member of our teacher team will get back to you with more information.
         </p>
 
-        <div class="pg-flex pg-items-center pg-justify-between">
+        <div class="pg-flex pg-items-center pg-justify-between pg-w-100">
           <v-img
             :src="require('@/assets/png/miss_rose.png')"
             alt="Miss Rose"
-            class="pg-block pg-mx-auto pg-mt-5 pg-rounded-[50%]"
-            width="200"
-            height="200"
+            class="pg-block pg-mt-5 pg-rounded-[50%]"
+            :width="$vuetify.breakpoint.xs ? 120 : 200"
+            :height="$vuetify.breakpoint.xs ? 120 : 200"
             contain
           />
-          <div class="pg-text-center pg-mt-5">
+          <div class="pg-mt-5" :style="{ 'width': $vuetify.breakpoint.xs ? 'calc(100% - 120px)' : '100%' }">
             <p class="!pg-mb-2">
               <strong>
                 Reach out to speak with a teacher like Miss Sarah!
