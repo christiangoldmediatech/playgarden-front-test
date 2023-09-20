@@ -122,7 +122,6 @@ export default defineComponent({
     const handleSubmit = async (data: ParentSignupPayload) => {
       try {
         loading.value = true
-        console.log(signupType)
         await ParentSignup.signup(data, signupType)
         toast.success('Welcome to Playgarden Prep!')
         goToNextStep()

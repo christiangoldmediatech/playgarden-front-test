@@ -25,7 +25,7 @@
     >
       <!-- LEFT -->
       <div class="pg-col-span-full lg:pg-col-span-6">
-        <ShippingAddressForm @click:submit="handleSubmit" @click:skip="$emit('click:change-step', 3)" />
+        <ShippingAddressForm :loading="loading" @click:submit="handleSubmit" @click:skip="$emit('click:change-step', 3)" />
       </div>
 
       <!-- RIGHT -->
@@ -61,7 +61,6 @@ import {
   defineComponent,
   ref,
   useRoute,
-  useRouter,
   useStore
 } from '@nuxtjs/composition-api'
 import CardInfo from '@/components/app/register/CardInfo.vue'
