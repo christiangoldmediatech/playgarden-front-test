@@ -1,5 +1,5 @@
 <template>
-  <div class="px-2">
+  <div class="px-2 pb-6">
     <!-- HEADING -->
     <div :class="['pg-mt-6', 'pg-inline']">
       <NormalTitle
@@ -38,7 +38,6 @@
           :is-credit-card-required="isCreditCardRequired"
           :is-coupon-needed="false"
           :is-phone-number-required="false"
-          :no-terms="noTerms"
           :white-btn="true"
           :btn-text="'LOGIN'"
           @click:submit="handleSubmit"
@@ -52,7 +51,7 @@
           'pg-flex',
           'pg-justify-center',
           'lg:pg-col-span-5',
-          'height-mobile'
+          'height-mobile',
         ]"
       >
         <CardInfo title="It's the easiest way to give your child an immersive education at home!" />
@@ -65,20 +64,16 @@
 import {
   defineComponent,
   ref,
-  computed,
-  useRoute,
-  useRouter
+  useRoute
 } from '@nuxtjs/composition-api'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
 import { useToastHelper, useAccessorHelper } from '@/composables'
-import { useUTM } from '@/composables/web/utm'
 import { useModal } from '@/composables/web/modal'
 import {
   useParentSignup,
   useSignupFlow,
-  useSignupInvitation,
-  useSignupStep
+  useSignupInvitation
 } from '@/composables/web/signup'
 import { useAuth } from '@/composables/users'
 import { ParentSignupPayload } from '@/composables/web/signup/types'
@@ -92,27 +87,14 @@ export default defineComponent({
     CardInfo
   },
 
-  props: {
-    isCouponNeeded: {
-      type: Boolean,
-      default: true
-    },
-    noTerms: {
-      type: Boolean,
-      default: true
-    }
-  },
-
   emits: ['click:change-step'],
 
   setup(_, { emit }) {
-    const router = useRouter()
     const route = useRoute()
     const toast = useToastHelper()
 
     const Auth = useAuth()
     const Modal = useModal()
-    const Utm = useUTM({ route: route.value })
     const SignupInvitation = useSignupInvitation({ route: route.value })
 
     const signupStore = useAccessorHelper().auth.signup
@@ -128,54 +110,38 @@ export default defineComponent({
       signupFlow: SignupFlow
     })
 
-    const shouldPickPlanOnSignup = computed(() => {
-      return route.value.query.action === 'pick-plan'
-    })
-
     const loading = ref(false)
     const emailValidated = ref('')
     const token = route.value.query.token
     const signupType = SignupType.PLAYGARDEN
 
     function goToNextStep() {
-      const SignupStep = useSignupStep()
-      const currentPlanType = shouldPickPlanOnSignup.value
-        ? undefined
-        : signupType
-
-      router.push(
-        SignupStep.getStepOneNextStepLocation({
-          signupType: currentPlanType,
-          abFlow: SignupFlow.abFlow.value,
-          utmContent: Utm.utmContent.value,
-          authFlow: SignupFlow.authFlow.value
-        })
-      )
+      emit('click:change-step')
     }
 
-    const handleSubmit = (data: ParentSignupPayload) => {
-      // try {
-      //   loading.value = true
-      //   await ParentSignup.signup(data, signupType)
-      //   toast.success('Welcome to Playgarden Prep!')
-      //   goToNextStep()
-      // } catch (e) {
-      //   const error = e as any
-      //   const data = error?.response?.data
+    const handleSubmit = async (data: ParentSignupPayload) => {
+      try {
+        loading.value = true
+        console.log(signupType)
+        await ParentSignup.signup(data, signupType)
+        toast.success('Welcome to Playgarden Prep!')
+        goToNextStep()
+      } catch (e) {
+        const error = e as any
+        const data = error?.response?.data
 
-      //   if (data?.statusCode === 409) {
-      //     if (data?.message === 'Email already exists') {
-      //       Modal.isEmailConflictModalVisible.value = true
-      //     }
+        if (data?.statusCode === 409) {
+          if (data?.message === 'Email already exists') {
+            Modal.isEmailConflictModalVisible.value = true
+          }
 
-      //     if (data?.message === 'Account Canceled') {
-      //       Modal.isAccountInactiveModalVisible.value = true
-      //     }
-      //   }
-      // } finally {
-      //   loading.value = false
-      // }
-      emit('click:change-step', 2)
+          if (data?.message === 'Account Canceled') {
+            Modal.isAccountInactiveModalVisible.value = true
+          }
+        }
+      } finally {
+        loading.value = false
+      }
     }
 
     return {
@@ -195,6 +161,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .height-mobile {
-  min-height: 475px;
+  @media screen and (min-width: $breakpoint-xs) {
+    min-height: 475px;
+  }
 }
 </style>

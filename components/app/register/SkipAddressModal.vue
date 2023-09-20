@@ -45,7 +45,7 @@
           large
           @click="closeDialog"
         >
-          GO BACK AND ADD MY ADDRESS
+          {{ btnText }}
         </v-btn>
       </v-row>
     </v-col>
@@ -71,6 +71,7 @@
 </template>
 
 <script lang="ts">
+import { useVuetifyHelper } from '@/composables'
 import { computed, defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
@@ -86,6 +87,7 @@ export default defineComponent({
   emits: ['input', 'click:skip'],
 
   setup(props, { emit }) {
+    const vuetify = useVuetifyHelper()
     const dialog = computed({
       get() {
         return props.value
@@ -93,6 +95,10 @@ export default defineComponent({
       set(val) {
         emit('input', val)
       }
+    })
+
+    const btnText = computed(() => {
+      return vuetify.breakpoint.mobile ? 'GO BACK' : 'GO BACK AND ADD MY ADDRESS'
     })
 
     const closeDialog = () => {
@@ -106,6 +112,7 @@ export default defineComponent({
 
     return {
       dialog,
+      btnText,
       skipStep,
       closeDialog
     }

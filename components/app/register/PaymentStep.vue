@@ -3,7 +3,8 @@
     :class="[
       'pg-flex',
       'pg-flex-col',
-      'pl-2',
+      'px-2',
+      'pb-6',
       'pg-mx-auto',
     ]"
   >
@@ -12,7 +13,7 @@
       @reject="handlePromoCodeRejection"
     />
 
-    <SkipPaymentModal v-model="viewModal" @click:skip="$emit('click:skip')" />
+    <SkipPaymentModal v-model="viewModal" @click:skip="skipStep" />
 
     <!-- CONTENT -->
     <div
@@ -100,7 +101,7 @@
             <div class="pg-text-center mt-5">
               <NormalTitle
                 font-size="24px"
-                font-size-mobile="20px"
+                font-size-mobile="16px"
                 text="Join thousands of happy families that have graduated from Playgarden Prep"
               />
             </div>
@@ -220,6 +221,19 @@ export default defineComponent({
       }
     }
 
+    const skipStep = async () => {
+      loading.value = true
+      try {
+        await store.dispatch('auth/signup/skipPaymentStep')
+        await User.getUserInfo()
+        await goToNextStep()
+      } catch {
+        toast.error('Something went wrong. Please try again.')
+      } finally {
+        loading.value = false
+      }
+    }
+
     onMounted(() => {
       if (isUserInactive.value) {
         Gtm.paymentPage({
@@ -238,7 +252,9 @@ export default defineComponent({
       showPromoCodeDialog: PromoCodeDialog.showPromoCodeDialog,
       handlePromoCodeRejection: PromoCodeDialog.handlePromoCodeRejection,
       handleBackButtonClick: PromoCodeDialog.handleBackButtonClick,
-      handleSubmit
+      handleSubmit,
+      skipStep,
+      goToNextStep
     }
   }
 })

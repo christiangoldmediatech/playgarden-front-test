@@ -46,7 +46,7 @@
           large
           @click="closeDialog"
         >
-          GO BACK AND ADD MY CREDIT CARD NOW
+          {{ btnText }}
         </v-btn>
       </v-row>
     </v-col>
@@ -73,6 +73,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from '@nuxtjs/composition-api'
+import { useVuetifyHelper } from '@/composables'
 
 export default defineComponent({
   name: 'SkipPaymentModal',
@@ -87,6 +88,7 @@ export default defineComponent({
   emits: ['input', 'click:skip'],
 
   setup(props, { emit }) {
+    const vuetify = useVuetifyHelper()
     const dialog = computed({
       get() {
         return props.value
@@ -94,6 +96,10 @@ export default defineComponent({
       set(val) {
         emit('input', val)
       }
+    })
+
+    const btnText = computed(() => {
+      return vuetify.breakpoint.mobile ? 'GO BACK' : 'GO BACK AND ADD MY CREDIT CARD NOW'
     })
 
     const closeDialog = () => {
@@ -107,6 +113,7 @@ export default defineComponent({
 
     return {
       dialog,
+      btnText,
       skipStep,
       closeDialog
     }

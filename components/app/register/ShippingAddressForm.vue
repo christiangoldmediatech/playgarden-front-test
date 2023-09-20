@@ -88,7 +88,7 @@
                 </v-row>
 
                 <v-row no-gutters>
-                  <v-col cols="12" md="6" class="pr-2">
+                  <v-col cols="12" md="6" class="pr-0 pr-sm-2">
                     <!-- Zip Code -->
                     <validation-provider
                       v-slot="{ errors }"
@@ -108,12 +108,12 @@
                     </validation-provider>
                   </v-col>
 
-                  <v-col cols="12" md="6" class="pl-2">
+                  <v-col cols="12" md="6" class="pl-0 pl-sm-2">
                     <!-- Phone number -->
                     <validation-provider
                       v-slot="{ errors }"
                       name="Phone Number"
-                      rules="required"
+                      rules="phone|required"
                     >
                       <pg-text-field
                         v-model="draft.phoneNumber"

@@ -4,7 +4,7 @@
     <v-form v-else @submit.prevent="passes(onSubmit)">
       <v-container class="px-0">
         <v-row no-gutters class="some">
-          <v-col class="pr-2" cols="12" md="6">
+          <v-col class="pr-0 pr-sm-2" cols="12" md="6">
             <!-- First name -->
             <validation-provider
               v-slot="{ errors }"

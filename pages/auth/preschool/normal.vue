@@ -6,7 +6,8 @@
         'pg-flex-col',
         'pg-mx-auto',
         'pg-max-w-[768px]',
-        'pg-px-4',
+        'pg-px-0',
+        'lg:pg-px-4',
         'lg:pg-pb-16',
         'lg:pg-px-8',
         'lg:pg-max-w-[1300px]',
@@ -46,18 +47,21 @@
 
         <v-stepper-items>
           <v-stepper-content
+            class="px-0"
             step="1"
           >
             <RegisterStep @click:change-step="changeStep" />
           </v-stepper-content>
 
           <v-stepper-content
+            class="px-0"
             step="2"
           >
             <ShippingAddressStep @click:change-step="changeStep" />
           </v-stepper-content>
 
           <v-stepper-content
+            class="px-0"
             step="3"
           >
             <PaymentStep @click:change-step="changeStep" />
@@ -118,20 +122,9 @@ export default defineComponent({
         return
       }
 
-      const flowCreditCard = route.value.query.card
+      currentStep.value = route.value.query.step ? Number(route.value.query.step) : 1
 
-      if (flowCreditCard) {
-        store.SET_AUTH_FLOW(AuthFlow.PRESCHOOL)
-      } else {
-        const options = ['CREDITACARD', 'NOCREDITCARD']
-        const randomOption = options[Math.floor(Math.random() * options.length)]
-        switch (randomOption) {
-          case 'CREDITACARD':
-            return store.SET_AUTH_FLOW(AuthFlow.PRESCHOOL)
-          case 'NOCREDITCARD':
-            store.SET_AB_FLOW(Flow.NOCREDITCARD)
-        }
-      }
+      store.SET_AUTH_FLOW(AuthFlow.PRESCHOOL)
     })
 
     const handleGoBack = () => {
@@ -143,8 +136,8 @@ export default defineComponent({
       window.open('https://playgardenonline.com/', '_self')
     }
 
-    const changeStep = (step: number) => {
-      currentStep.value = step
+    const changeStep = () => {
+      currentStep.value++
     }
 
     return {
