@@ -22,24 +22,24 @@
 
       <v-stepper v-model="currentStep" alt-labels flat class="stepper-wrapper">
         <v-stepper-header class="elevation-0">
-          <v-stepper-step color="#B2E68D" :complete="currentStep > 1" complete-icon="mdi-numeric-1" step="1">
-            <h1 class="pg-text-center pg-font-quick pg-text-base pg-font-normal pg-tracking-[5px]" :class="{ 'pg-text-[#B2E68D]': currentStep >= 1 }">
+          <v-stepper-step color="#68C453" :complete="currentStep > 1" complete-icon="mdi-numeric-1" step="1">
+            <h1 class="pg-text-center pg-font-quick pg-text-base pg-font-normal pg-tracking-[5px]" :class="{ 'pg-text-[#68C453]': currentStep >= 1 }">
               Start learning
             </h1>
           </v-stepper-step>
 
           <v-divider></v-divider>
 
-          <v-stepper-step color="#B2E68D" :complete="currentStep > 2" complete-icon="mdi-numeric-2" step="2">
-            <h1 class="pg-text-center pg-font-quick pg-text-base pg-font-normal pg-tracking-[5px]" :class="{ 'pg-text-[#B2E68D]': currentStep >= 2 }">
+          <v-stepper-step color="#68C453" :complete="currentStep > 2" complete-icon="mdi-numeric-2" step="2">
+            <h1 class="pg-text-center pg-font-quick pg-text-base pg-font-normal pg-tracking-[5px]" :class="{ 'pg-text-[#68C453]': currentStep >= 2 }">
               Shipping address
             </h1>
           </v-stepper-step>
 
           <v-divider></v-divider>
 
-          <v-stepper-step color="#B2E68D" :complete="currentStep > 3" complete-icon="mdi-numeric-3" step="3">
-            <h1 class="pg-text-center pg-font-quick pg-text-base pg-font-normal pg-tracking-[5px]" :class="{ 'pg-text-[#B2E68D]': currentStep >= 3 }">
+          <v-stepper-step color="#68C453" :complete="currentStep > 3" complete-icon="mdi-numeric-3" step="3">
+            <h1 class="pg-text-center pg-font-quick pg-text-base pg-font-normal pg-tracking-[5px]" :class="{ 'pg-text-[#68C453]': currentStep >= 3 }">
               Credit card information
             </h1>
           </v-stepper-step>
