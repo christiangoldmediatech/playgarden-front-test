@@ -69,7 +69,18 @@
         "step4Ln3": ", tienen listas de útiles descargables para informarle qué materiales puede necesitar su hijo en clase.",
         "step5": "Haga clic AQUÍ para ajustar su zona horaria, de modo que su calendario de Clases en Vivo sea el correspondiente al lugar donde vive.",
         "liveClasses": "Clases en Vivo",
-        "forMoreInformation": "Para obtener más información sobre cómo utilizar las"
+        "forMoreInformation": "Para obtener más información sobre cómo utilizar las",
+        "mockup": {
+          "liveClass1Title": "A la profesora le encanta la música, el canto...",
+          "liveClass1Description": "¡A la Miss Sarah le encanta la música, cantar y tocar el piano! ¡Únase a nosotros cada semana para conocer una nueva Letra de la Semana utilizando canciones educativas y música en vivo!",
+          "liveClass2Title": "¡Hagamos arte!",
+          "liveClass2Description": "¡A la profesora le gusta dibujar y pintar! ¡Únase a nosotros para conocer una nueva Letra de la Semana con clases educativas de arte!\nNecesitará la siguiente lista de materiales:\nPapel tamaño Carta,\nCrayones,\nAcuarelas y pinceles\n",
+          "liveClass3Title": "Jake en el patio de recreo...",
+          "liveClass4Title": "Clase de español con Verónica",
+          "playdate1Title": "Cita para jugar con la señorita Gabby",
+          "playdate2Title": "Cita para jugar con la señorita Katryna",
+          "playdateDescription": "¡Únete a tus amigos y socializa en nuestras Playdates educativas! Estas sesiones de Zoom de 30 minutos se crean para brindarles a los niños la oportunidad de conectarse con sus compañeros mientras aprenden."
+        }
       }
     }
   }

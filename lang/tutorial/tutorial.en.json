@@ -69,8 +69,19 @@
         "step4Ln3": ", have downloadable supplies lists to let you know what materials your child may need in class.",
         "step5": "Click HERE to adjust your time zone, so that your Live Classes calendar is accurate to where you live.",
         "liveClasses": "Live Classes",
-        "forMoreInformation": "For more information on how to use your"
+        "forMoreInformation": "For more information on how to use your",
+        "mockup": {
+          "liveClass1Title": "The teacher loves music, singing...",
+          "liveClass1Description": "Miss Sarah loves music, singing and playing the piano! Join us each week to learn about a new Letter of the Week using educational songs and live music!",
+          "liveClass2Title": "Let's do art!",
+          "liveClass2Description": "The teacher enjoys drawing and painting! Join us to learn about a new Letter of the Week with educational art classes!\nYou will need the following list of materials:\nLetter sized paper,\nCrayons,\nWatercolors and brushes\n",
+          "liveClass3Title": "Jake on the Playground...",
+          "liveClass4Title": "Spanish Class with Veronica",
+          "playdate1Title": "Playdate with Miss Gabby",
+          "playdate2Title": "Playdate with Miss Katryna",
+          "playdateDescription": "Join your friends and socialize in our Educational Playdates! These 30 minute Zoom sessions are created to give children the opportunity to connect with peers, while learning."
+        }
       }
-    } 
+    }
   }
 }
