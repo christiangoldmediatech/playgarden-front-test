@@ -105,6 +105,7 @@ export default Vue.extend({
   data () {
     return {
       inputValue: '',
+      originalInputValue: '',
       searchInput: '',
       items: [] as Item[],
       isFetchingLocationPredictions: false,
@@ -143,7 +144,8 @@ export default Vue.extend({
   },
 
   watch: {
-    searchInput (value: string): void {
+    searchInput(value: string): void {
+      this.originalInputValue = value
       if (value && this.googleAutocompleteService !== null) {
         this.fetchPredictions(value)
       } else if (!value) {
@@ -278,10 +280,25 @@ export default Vue.extend({
           ]
           this.inputValue = this.streetString.trim()
         }
+      } else {
+        this.addUserInputAsOption(this.originalInputValue.trim(), this.originalInputValue.trim())
       }
     },
+    addUserInputAsOption(text: string, value: string): void {
+      this.items = [
+        ...this.items,
+        {
+          text,
+          value,
+          ignore: true
+        }
+      ]
+      this.inputValue = text
+      this.streetString = text
+      this.$emit('input', this.streetString)
+    },
 
-    handlePlaceSelection (placeId: string): void {
+    handlePlaceSelection(placeId: string): void {
       const item = this.items.find(({ value }) => value === placeId)
 
       if (item && !item.ignore) {
@@ -296,6 +313,21 @@ export default Vue.extend({
               this.streetString = this.validateStreetAddress(this.streetString, placeId)
               this.$emit('input', this.streetString)
               this.$emit('address-components', { ...address, streetString: this.streetString })
+            } else {
+              // Agregar la entrada del usuario como nueva opción
+              console.log('entrada que no')
+              this.items = [
+                ...this.items,
+                {
+                  text: item.text,
+                  value: placeId,
+                  ignore: true
+                }
+              ]
+              // Establecer la entrada del usuario como el valor actual
+              this.inputValue = item.text
+              this.streetString = item.text
+              this.$emit('input', this.streetString)
             }
           }
           this.isReverseGeocoding = false
