@@ -364,7 +364,16 @@ export default {
       return `${this.draft.address1} ${this.draft.address2 ? `, ${this.draft.address2}` : ''}`
     },
     formattedCountry() {
-      return this.draft.country && this.draft.country.name ? this.draft.country.name : ''
+      if (typeof this.draft.country === 'object') {
+        return this.draft.country.name
+      }
+
+      if (this.countries.length > 0) {
+        const country = this.countries.find(({ code }) => code === this.draft.country)
+        return country ? country.name : ''
+      }
+
+      return ''
     }
   },
 
@@ -455,8 +464,7 @@ export default {
         if (!this.shippingAddress) {
           await this.getShippingAddress()
         }
-
-        const draft = { ...this.shippingAddress }
+        const draft = { ...this.shippingAddress, country: typeof this.shippingAddress.country === 'object' ? this.shippingAddress.country.code : this.shippingAddress.country }
         this.draft = draft || { ...draftDefault }
       } catch (e) {
         this.$toast.warning('Could not fetch shipping address', {
