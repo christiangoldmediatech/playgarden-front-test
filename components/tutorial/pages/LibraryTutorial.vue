@@ -4,12 +4,12 @@
       <div class="pg-text-center">
         <template v-if="currentTutorialStep.step.id === 'step1'">
           <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6">
-            You can select videos by Subject, or you can search for specific videos.
+            {{ $localT('step1') }}
           </div>
         </template>
         <template v-if="currentTutorialStep.step.id === 'step2'">
           <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6 pg-pt-4">
-            The <span class="!pg-text-[#F6B7D2] pg-font-bold">Kids Corner</span> has educational videos that include silly video clips and fun animations to engage your child.
+            {{ $localT('step2Ln1') }} <span class="!pg-text-[#F6B7D2] pg-font-bold">{{ $localT('kidsCorner') }}</span> {{ $localT('step2Ln2') }}
           </div>
         </template>
       </div>
@@ -20,6 +20,7 @@
 <script lang="ts">
 import { defineComponent, useStore, useRoute, useRouter, onMounted, onUnmounted, nextTick } from '@nuxtjs/composition-api'
 import { useTutorial, useTutorialQuery, useTutorialSteps } from '@/composables/tutorial/use-tutorial.composable'
+import { useLocalLanguageHelper } from '@/composables/i18n/use-local-language-helper.composable'
 import TutorialCard from '@/components/tutorial/TutorialCard.vue'
 
 export default defineComponent({
@@ -36,6 +37,8 @@ export default defineComponent({
     const { createTutorial, getTutorial, destroyTutorial } = useTutorial()
     const { addTutorialSteps, currentTutorialStep } = useTutorialSteps()
     const { shouldStartTutorial, isInitialTutorial, getTutorialQueryParams } = useTutorialQuery({ route, router })
+    const { getLocalT } = useLocalLanguageHelper()
+    const $localT = getLocalT('tutorial.library')
 
     onMounted(() => {
       if (!shouldStartTutorial.value) {
@@ -87,8 +90,13 @@ export default defineComponent({
     })
 
     return {
-      currentTutorialStep
+      currentTutorialStep,
+      $localT
     }
   }
 })
 </script>
+
+<i18n src="@/lang/tutorial/tutorial.en.json"></i18n>
+
+<i18n src="@/lang/tutorial/tutorial.es.json"></i18n>

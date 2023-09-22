@@ -350,7 +350,6 @@ import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
 import HolidayCard from '@/components/app/live-sessions/HolidayCard.vue'
 import LiveClassesTutorial from '@/components/tutorial/pages/LiveClassesTutorial.vue'
 import LiveClassesTutorialBtn from '@/components/tutorial/wrappers/LiveClassesTutorialBtn.vue'
-
 import { useLiveClassesTutorial } from '@/composables/tutorial/use-live-classes-tutorial.composable'
 
 import { jsonCopy } from '@/utils'
@@ -583,7 +582,7 @@ export default {
         })
 
         // load mock data
-        const { liveSessions } = await useLiveClassesTutorial()
+        const { liveSessions } = await useLiveClassesTutorial(this.$i18n)
         this.$store.commit('live-sessions/SET_SESSIONS', liveSessions.meetings)
         this.$store.commit('live-sessions/SET_TOTAL', liveSessions.total)
       } finally {
@@ -796,3 +795,7 @@ export default {
   max-width: 100%;
 }
 </style>
+
+<i18n src="@/lang/tutorial/tutorial.en.json"></i18n>
+
+<i18n src="@/lang/tutorial/tutorial.es.json"></i18n>

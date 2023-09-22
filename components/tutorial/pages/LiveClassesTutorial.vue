@@ -4,32 +4,35 @@
       <div class="pg-text-center">
         <template v-if="currentTutorialStep.step.id === 'step1'">
           <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6">
-            In addition to <span class="pg-font-bold">Daily Lessons</span>, we offer several live classes every day to complement your little one's learning routine!
+            {{ $localT('step1Ln1') }} <span class="pg-font-bold">{{ $localT('step1Ln2') }}</span>{{ $localT('step1Ln3') }}
           </div>
         </template>
         <template v-if="currentTutorialStep.step.id === 'step2'">
           <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6 pg-pt-4">
-            To join a <span class="!pg-text-[#F89838] pg-font-bold">Live Class</span>, simply click on the class of your choice, and click JOIN CLASS. Note that you will not be able to select JOIN CLASS until 10 minutes prior to the start time of class. You will also receive a notification with your Zoom link via email before each class begins.
+            {{ $localT('step2Ln1') }} <span class="!pg-text-[#F89838] pg-font-bold">{{ $localT('step2Ln2') }}</span>{{ $localT('step2Ln3') }}
           </div>
         </template>
         <template v-if="currentTutorialStep.step.id === 'step3'">
           <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6 pg-pt-4">
-            <span class="!pg-text-[#78C383] pg-font-bold">Playdates</span> are a bit different—These classes are specifically to promote social interaction between your child, their teacher, and their peers. Each Playdate is limited to 10 children, to ensure that each child has an opportunity to participate. To attend a Playdate, you must reserve your spot in advance.
+            <span class="!pg-text-[#78C383] pg-font-bold">{{ $localT('step3Ln1') }}</span> {{ $localT('step3Ln2') }}
           </div>
         </template>
         <template v-if="currentTutorialStep.step.id === 'step4'">
           <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6 pg-pt-4">
-            Some classes, like <span class="pg-font-bold">Art</span>, have downloadable supplies lists to let you know what materials your child may need in class.
+            {{ $localT('step4Ln1') }} <span class="pg-font-bold">{{ $localT('step4Ln2') }}</span>{{ $localT('step4Ln3') }}
           </div>
         </template>
         <template v-if="currentTutorialStep.step.id === 'step5'">
           <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6 pg-pt-4">
-            Click HERE to adjust your time zone, so that your Live Classes calendar is accurate to where you live.
+            {{ $localT('step5') }}
           </div>
         </template>
         <template v-if="currentTutorialStep.step.id === 'step6'">
           <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6 pg-pt-4">
-            For more information on how to use <span class="pg-text-[#F89838] pg-font-bold">Live Classes</span>, visit our FAQ page, or email us at <a class="!pg-text-[#F89838] !pg-font-bold" href="mailto:Hello@PlaygardenPrep.com">Hello@PlaygardenPrep.com</a>.
+            {{ $localT('forMoreInformation') }} <span class="pg-text-[#F89838] pg-font-bold">{{ $localT('liveClasses') }}</span>
+            {{ $generalTutorialT('visitOurFaqPage') }} <a class="!pg-text-[#F89838] !pg-font-bold" :href="`mailto:${$generalTutorialT('email')}`">
+              {{ $generalTutorialT('email') }}
+            </a>-
           </div>
         </template>
       </div>
@@ -41,6 +44,7 @@
 import { defineComponent, computed, useStore, useRoute, useRouter, onMounted, onUnmounted } from '@nuxtjs/composition-api'
 import { useTutorial, useTutorialQuery, useTutorialSteps, useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
 import { useAppEventBusHelper } from '@/composables'
+import { useLocalLanguageHelper } from '@/composables/i18n/use-local-language-helper.composable'
 import TutorialCard from '@/components/tutorial/TutorialCard.vue'
 import type { RawLocation } from 'vue-router'
 
@@ -60,6 +64,9 @@ export default defineComponent({
     const { shouldStartTutorial, isInitialTutorial, getTutorialQueryParams } = useTutorialQuery({ route, router })
     const appEventBus = useAppEventBusHelper()
     const { quizResult } = useTutorialQuiz({ store })
+    const { getLocalT } = useLocalLanguageHelper()
+    const $generalTutorialT = getLocalT('tutorial.general')
+    const $localT = getLocalT('tutorial.liveClasses')
 
     const doesTutorialEndHere = computed(() => {
       return !quizResult.educationalVideos
@@ -171,8 +178,14 @@ export default defineComponent({
     })
 
     return {
-      currentTutorialStep
+      currentTutorialStep,
+      $generalTutorialT,
+      $localT
     }
   }
 })
 </script>
+
+<i18n src="@/lang/tutorial/tutorial.en.json"></i18n>
+
+<i18n src="@/lang/tutorial/tutorial.es.json"></i18n>
