@@ -109,7 +109,7 @@
               name="Country"
               rules="required"
             >
-              <pg-select
+              <v-autocomplete
                 v-model="draft.country"
                 :items="countries"
                 clearable

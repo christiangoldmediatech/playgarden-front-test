@@ -73,7 +73,7 @@
                       name="Country"
                       rules="required"
                     >
-                      <v-select
+                      <v-autocomplete
                         v-model="draft.country"
                         :items="countries"
                         label="Country"
