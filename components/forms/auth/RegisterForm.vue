@@ -19,7 +19,7 @@
                 label="First Name"
                 class="custom-text-field"
                 :loading="loading"
-                solo
+                solo-labeled
               />
             </validation-provider>
           </v-col>
@@ -38,7 +38,7 @@
                 label="Last name"
                 class="custom-text-field"
                 :loading="loading"
-                solo
+                solo-labeled
               />
             </validation-provider>
           </v-col>
@@ -60,7 +60,7 @@
                     label="Phone Number (optional)"
                     :loading="loading"
                     class="custom-text-field"
-                    solo
+                    solo-labeled
                   />
                 </validation-provider>
               </v-col>
@@ -81,7 +81,7 @@
                     :error-messages="errors"
                     label="Email"
                     :loading="loading"
-                    solo
+                    solo-labeled
                     class="custom-text-field"
                     type="email"
                   />
@@ -115,7 +115,7 @@
                         label="Phone Number (optional)"
                         class="custom-text-field"
                         :loading="loading"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -147,7 +147,7 @@
                           label="Password"
                           :loading="loading"
                           maxlength="20"
-                          solo
+                          solo-labeled
                           class="custom-text-field"
                           v-bind="attrs"
                           v-on="on"
@@ -187,7 +187,7 @@
                       :loading="isCheckingCoupon"
                       clearable
                       label="Coupon"
-                      solo
+                      solo-labeled
                       class="custom-text-field"
                       @change="checkCoupon"
                     />
