@@ -73,15 +73,19 @@
                       name="Country"
                       rules="required"
                     >
-                      <pg-text-field
+                      <v-autocomplete
                         v-model="draft.country"
-                        clearable
-                        :disabled="loading"
-                        :error-messages="errors"
+                        :items="countries"
                         label="Country"
+                        clearable
+                        item-text="name"
+                        item-value="code"
+                        :error-messages="errors"
+                        :loading="loadingCountries"
                         class="custom-text-field"
-                        :loading="loading"
                         solo
+                        flat
+                        dense
                       />
                     </validation-provider>
                   </v-col>
@@ -165,9 +169,10 @@
 
 <script lang="ts">
 
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { computed, defineComponent, onMounted, ref, useStore } from '@nuxtjs/composition-api'
 import { jsonCopy } from '@/utils/objectTools'
 import SearchAddressAutocomplete from '@/components/SearchAddressAutocomplete.vue'
+import { useToastHelper } from '@/composables'
 import SkipAddressModal from './SkipAddressModal.vue'
 
 interface AddressDraft {
@@ -204,7 +209,12 @@ export default defineComponent({
 
   setup(_, { emit }) {
     const viewModal = ref(false)
+    const toast = useToastHelper()
+    const loadingCountries = ref(false)
+    const store = useStore()
     const draft = ref<AddressDraft>({ ...draftDefault })
+
+    const countries = computed(() => store.getters['countries/countries'])
 
     const configureAddress = (data: any) => {
       try {
@@ -246,13 +256,32 @@ export default defineComponent({
       } catch {}
     }
 
+    const getCountries = async () => {
+      loadingCountries.value = true
+
+      try {
+        await store.dispatch('countries/getCountries')
+      } catch {
+        toast.error('Could not load the countries')
+      } finally {
+        loadingCountries.value = false
+      }
+    }
+
     const onSubmit = () => {
       const data = jsonCopy(draft.value)
       emit('click:submit', data)
     }
 
+    onMounted(async () => {
+      await getCountries()
+      console.log(countries.value[0])
+    })
+
     return {
       viewModal,
+      countries,
+      loadingCountries,
       draft,
       configureAddress,
       onSubmit
