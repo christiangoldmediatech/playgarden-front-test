@@ -256,6 +256,10 @@ export default Vue.extend({
     },
 
     handleAddItem () {
+      if (!this.inputValue || !this.originalInputValue) {
+        return
+      }
+
       if (!this.inputValue && this.streetString?.trim()) {
         /**
          * A user typed a string into the input that was not in the

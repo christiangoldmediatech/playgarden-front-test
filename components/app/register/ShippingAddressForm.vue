@@ -37,7 +37,7 @@
                         label="City"
                         class="custom-text-field"
                         :loading="loading"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -59,7 +59,7 @@
                         label="State"
                         class="custom-text-field"
                         :loading="loading"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -107,7 +107,7 @@
                         label="Zip Code"
                         class="custom-text-field"
                         :loading="loading"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -127,7 +127,7 @@
                         label="Phone Number"
                         class="custom-text-field"
                         :loading="loading"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
