@@ -1,5 +1,6 @@
 import { get } from 'lodash'
 import dayjs from 'dayjs'
+import { getLanguageCode } from '@/utils'
 import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscriptionWhitelistedRoutes.json'
 import routeHandlerIgnoredRoutes from '~/utils/consts/routeHandlerIgnoredRoutes.json'
@@ -60,16 +61,6 @@ export default async function ({ redirect, route, store, app, req }) {
   user = store.getters['auth/getUserInfo']
 
   // Set language
-  const getLanguageCode = (code) => {
-    if (code.includes('-')) {
-      return code.split('-')[0]
-    } else if (code.includes('_')) {
-      return code.split('_')[0]
-    } else {
-      return code
-    }
-  }
-
   const availableLanguages = store.getters.getLanguages.map(lang => lang.code)
   const currentAppliedLanguage = app.i18n.locale
   const browserLanguage = navigator.language

@@ -9,6 +9,7 @@ export default {
       )
 
       dispatch('auth/setToken', response.data.accessToken, { root: true })
+      await dispatch('account/setupUserLanguage', undefined, { root: true })
     } catch (error) {
       toastError(commit, {
         body: 'Sorry! There was an error while signing you up.'
