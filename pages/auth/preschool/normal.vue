@@ -24,7 +24,7 @@
         <v-stepper-header class="elevation-0">
           <v-stepper-step color="#68C453" :complete="currentStep > 1" complete-icon="mdi-numeric-1" step="1">
             <h1 class="pg-text-center pg-font-quick pg-text-base pg-font-normal pg-tracking-[5px]" :class="{ 'pg-text-[#68C453]': currentStep >= 1 }">
-              Start learning
+              {{ $t('register.step1') }}
             </h1>
           </v-stepper-step>
 
@@ -32,7 +32,7 @@
 
           <v-stepper-step color="#68C453" :complete="currentStep > 2" complete-icon="mdi-numeric-2" step="2">
             <h1 class="pg-text-center pg-font-quick pg-text-base pg-font-normal pg-tracking-[5px]" :class="{ 'pg-text-[#68C453]': currentStep >= 2 }">
-              Shipping address
+              {{ $t('register.step2') }}
             </h1>
           </v-stepper-step>
 
@@ -40,7 +40,7 @@
 
           <v-stepper-step color="#68C453" :complete="currentStep > 3" complete-icon="mdi-numeric-3" step="3">
             <h1 class="pg-text-center pg-font-quick pg-text-base pg-font-normal pg-tracking-[5px]" :class="{ 'pg-text-[#68C453]': currentStep >= 3 }">
-              Credit card information
+              {{ $t('register.step3') }}
             </h1>
           </v-stepper-step>
         </v-stepper-header>
