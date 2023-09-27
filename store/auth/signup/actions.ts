@@ -83,6 +83,10 @@ export default actionTree(
       return response.flow
     },
 
+    async skipPaymentStep() {
+      await this.$axios.$patch('/users/skip-payment')
+    },
+
     async setLibraryCardNumber(
       { commit },
       libraryCardNumber: string

@@ -108,11 +108,15 @@
 }
 
 .spanSocialNetwork {
-  font-size: 12px;
+  font-size: 10px;
   line-height: 1.5;
   font-weight: 600;
   text-align: left;
   color: #606060;
+
+  @media screen and (min-width: 600px) {
+    font-size: 12px !important;
+  }
 }
 .social-btn {
   background-color: white !important;
