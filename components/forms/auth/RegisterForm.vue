@@ -245,18 +245,6 @@
                 >
                   {{ btnText }}
                 </v-btn>
-                <v-btn
-                  block
-                  min-height="60"
-                  class="mb-6 main-btn"
-                  :class="{ 'white--text': whiteBtn }"
-                  color="green2"
-                  :loading="loading"
-                  @click="onSubmit"
-                  x-large
-                >
-                  {{ btnText }}
-                </v-btn>
               </v-col>
             </v-row>
 
