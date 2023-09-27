@@ -1,3 +1,5 @@
+import { getLanguageCode } from '@/utils'
+
 export default {
   async fetchLanguages ({ commit }) {
     try {
@@ -27,6 +29,20 @@ export default {
       return data
     } catch (e) {
       Promise.reject(e)
+    }
+  },
+
+  /**
+   * Used for new accounts.
+   * Sets user language based on what the middleware originally detected
+   */
+  async setupUserLanguage({ dispatch, getters }) {
+    await dispatch('fetchLanguages')
+    const currentLocale = this.$i18n.locale ? this.$i18n.locale.toLocaleLowerCase() : 'en'
+    const selectedLanguage = getters.getLanguages.find((language) => getLanguageCode(language.code).toLocaleLowerCase() === currentLocale) || getters.getLanguages.find((language) => language.language === 'English')
+
+    if (selectedLanguage) {
+      return dispatch('setUserLanguage', selectedLanguage.id)
     }
   }
 }

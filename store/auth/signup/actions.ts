@@ -31,9 +31,11 @@ export default actionTree(
         ...utm
       })
 
-      await dispatch('auth/setToken', accessToken, {
+      dispatch('auth/setToken', accessToken, {
         root: true
       })
+
+      await dispatch('account/setupUserLanguage', undefined, { root: true })
 
       if (getters.hasValidLibraryCard) {
         await this.$axios.$post('/user-library-cards', {
@@ -57,9 +59,11 @@ export default actionTree(
           data
         )
 
-        await dispatch('auth/setToken', accessToken, {
+        dispatch('auth/setToken', accessToken, {
           root: true
         })
+
+        await dispatch('account/setupUserLanguage', undefined, { root: true })
 
         return dispatch('auth/fetchUserInfo', null, { root: true })
       } catch (error) {
