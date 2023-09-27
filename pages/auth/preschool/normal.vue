@@ -1,6 +1,74 @@
 <template>
   <div>
-    <StepOne />
+    <div
+      :class="[
+        'pg-flex',
+        'pg-flex-col',
+        'pg-mx-auto',
+        'pg-max-w-[768px]',
+        'pg-px-0',
+        'lg:pg-px-4',
+        'lg:pg-pb-16',
+        'lg:pg-px-8',
+        'lg:pg-max-w-[1300px]',
+        currentStep === 1 ? 'lg:pg-bg-[url(@/assets/png/green-whirl.png)]' : '',
+        currentStep === 1 ? 'lg:pg-bg-[right_bottom]' : '',
+        currentStep === 1 ? 'lg:pg-bg-[length:45%_75%]' : ''
+      ]"
+    >
+      <div class="md:pg-mt-24">
+        <BackButton @click="handleGoBack" />
+      </div>
+
+      <v-stepper v-model="currentStep" alt-labels flat class="stepper-wrapper">
+        <v-stepper-header class="elevation-0">
+          <v-stepper-step color="#68C453" :complete="currentStep > 1" complete-icon="mdi-numeric-1" step="1">
+            <h1 class="pg-text-center pg-font-quick pg-text-base pg-font-normal pg-tracking-[5px]" :class="{ 'pg-text-[#68C453]': currentStep >= 1 }">
+              Start learning
+            </h1>
+          </v-stepper-step>
+
+          <v-divider></v-divider>
+
+          <v-stepper-step color="#68C453" :complete="currentStep > 2" complete-icon="mdi-numeric-2" step="2">
+            <h1 class="pg-text-center pg-font-quick pg-text-base pg-font-normal pg-tracking-[5px]" :class="{ 'pg-text-[#68C453]': currentStep >= 2 }">
+              Shipping address
+            </h1>
+          </v-stepper-step>
+
+          <v-divider></v-divider>
+
+          <v-stepper-step color="#68C453" :complete="currentStep > 3" complete-icon="mdi-numeric-3" step="3">
+            <h1 class="pg-text-center pg-font-quick pg-text-base pg-font-normal pg-tracking-[5px]" :class="{ 'pg-text-[#68C453]': currentStep >= 3 }">
+              Credit card information
+            </h1>
+          </v-stepper-step>
+        </v-stepper-header>
+
+        <v-stepper-items>
+          <v-stepper-content
+            class="px-0"
+            step="1"
+          >
+            <RegisterStep @click:change-step="changeStep" />
+          </v-stepper-content>
+
+          <v-stepper-content
+            class="px-0"
+            step="2"
+          >
+            <ShippingAddressStep @click:change-step="changeStep" />
+          </v-stepper-content>
+
+          <v-stepper-content
+            class="px-0"
+            step="3"
+          >
+            <PaymentStep @click:change-step="changeStep" />
+          </v-stepper-content>
+        </v-stepper-items>
+      </v-stepper>
+    </div>
   </div>
 </template>
 
@@ -9,12 +77,15 @@
 </head>
 
 <script lang="ts">
-import { defineComponent, onMounted, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, useRoute } from '@nuxtjs/composition-api'
 import StepOne from '@/components/app/register/StepOne.vue'
+import ShippingAddressStep from '@/components/app/register/ShippingAddressStep.vue'
+import RegisterStep from '@/components/app/register/RegisterStep.vue'
+import PaymentStep from '@/components/app/register/PaymentStep.vue'
+import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import { useGtm } from '@/composables/web/gtm'
 import { useAccessorHelper } from '@/composables'
 import { AuthFlow, Flow } from '@/composables/users/enums'
-import { switchCase } from '@babel/types'
 
 export default defineComponent({
   name: 'Parent',
@@ -27,13 +98,19 @@ export default defineComponent({
   layout: 'signup',
 
   components: {
-    StepOne
+    StepOne,
+    ShippingAddressStep,
+    RegisterStep,
+    PaymentStep,
+    BackButton
   },
 
   setup() {
     const route = useRoute()
     const store = useAccessorHelper().auth.signup
     const Gtm = useGtm()
+
+    const currentStep = ref(1)
 
     Gtm.parentPage({
       conversionID: '959213252',
@@ -45,29 +122,35 @@ export default defineComponent({
         return
       }
 
-      const flowCreditCard = route.value.query.card
+      currentStep.value = route.value.query.step ? Number(route.value.query.step) : 1
 
-      if (flowCreditCard) {
-        store.SET_AUTH_FLOW(AuthFlow.PRESCHOOL)
-      } else {
-        const options = ['CREDITACARD', 'NOCREDITCARD']
-        const randomOption = options[Math.floor(Math.random() * options.length)]
-        switch (randomOption) {
-          case 'CREDITACARD':
-            return store.SET_AUTH_FLOW(AuthFlow.PRESCHOOL)
-          case 'NOCREDITCARD':
-            store.SET_AB_FLOW(Flow.NOCREDITCARD)
-        }
-      }
+      store.SET_AUTH_FLOW(AuthFlow.PRESCHOOL)
     })
 
-    function goToBack() {
+    const handleGoBack = () => {
+      if (currentStep.value === 3 || currentStep.value === 2) {
+        currentStep.value--
+        return
+      }
+
       window.open('https://playgardenonline.com/', '_self')
     }
 
+    const changeStep = () => {
+      currentStep.value++
+    }
+
     return {
-      goToBack
+      handleGoBack,
+      currentStep,
+      changeStep
     }
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.stepper-wrapper {
+  background-color: transparent;
+}
+</style>

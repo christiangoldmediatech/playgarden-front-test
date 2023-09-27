@@ -4,7 +4,7 @@
     <v-form v-else @submit.prevent="passes(onSubmit)">
       <v-container class="px-0">
         <v-row no-gutters class="some">
-          <v-col class="pr-2" cols="12" md="6">
+          <v-col class="pr-0 pr-sm-2" cols="12" md="6">
             <!-- First name -->
             <validation-provider
               v-slot="{ errors }"
@@ -19,7 +19,7 @@
                 :label="$t('register.registerForm.firstName')"
                 class="custom-text-field"
                 :loading="loading"
-                solo
+                solo-labeled
               />
             </validation-provider>
           </v-col>
@@ -38,7 +38,7 @@
                 :label="$t('register.registerForm.lastName')"
                 class="custom-text-field"
                 :loading="loading"
-                solo
+                solo-labeled
               />
             </validation-provider>
           </v-col>
@@ -47,6 +47,7 @@
               <v-col v-if="!isAddressRequired" cols="12">
                 <!-- Phone number -->
                 <validation-provider
+                  v-if="isPhoneNumberRequired"
                   v-slot="{ errors }"
                   name="Phone Number (optional)"
                   rules="phone"
@@ -59,7 +60,7 @@
                     :label="$t('register.registerForm.optionalPhoneNumber')"
                     :loading="loading"
                     class="custom-text-field"
-                    solo
+                    solo-labeled
                   />
                 </validation-provider>
               </v-col>
@@ -80,7 +81,7 @@
                     :error-messages="errors"
                     :label="$t('register.registerForm.email')"
                     :loading="loading"
-                    solo
+                    solo-labeled
                     class="custom-text-field"
                     type="email"
                   />
@@ -101,6 +102,7 @@
                   <v-col v-if="isAddressRequired" cols="12" md="6">
                     <!-- Phone number -->
                     <validation-provider
+                      v-if="isPhoneNumberRequired"
                       v-slot="{ errors }"
                       name="Phone Number (optional)"
                       rules="phone"
@@ -113,7 +115,7 @@
                         :label="$t('register.registerForm.optionalPhoneNumber')"
                         class="custom-text-field"
                         :loading="loading"
-                        solo
+                        solo-labeled
                       />
                     </validation-provider>
                   </v-col>
@@ -145,7 +147,7 @@
                           :label="$t('register.registerForm.password')"
                           :loading="loading"
                           maxlength="20"
-                          solo
+                          solo-labeled
                           class="custom-text-field"
                           v-bind="attrs"
                           v-on="on"
@@ -185,7 +187,7 @@
                       :loading="isCheckingCoupon"
                       clearable
                       :label="$t('register.registerForm.coupon')"
-                      solo
+                      solo-labeled
                       class="custom-text-field"
                       @change="checkCoupon"
                     />
@@ -241,7 +243,7 @@
                   type="submit"
                   x-large
                 >
-                  {{ $t('register.registerForm.startLearning') }}
+                  {{ btnText }}
                 </v-btn>
               </v-col>
             </v-row>
@@ -274,23 +276,6 @@
 
               <!-- Social buttons -->
               <v-row no-gutters>
-                <!-- LIBRARY CARD -->
-                <v-col class="mb-6 mb-md-4" cols="12" order="2" order-md="0">
-                  <v-btn
-                    block
-                    height="45"
-                    class="social-btn"
-                    @click="goToLibraryCardValidator"
-                  >
-                    <img
-                      alt="Facebook"
-                      class="mr-1"
-                      src="@/assets/svg/library-card-signup.svg"
-                    />
-                    <span class="spanSocialNetwork">{{ $t('register.registerForm.registerWithLibraryCard') }}</span>
-                  </v-btn>
-                </v-col>
-
                 <!-- FACEBOOK -->
                 <v-col class="mb-4 mb-md-0 pr-md-4" cols="12" md="6">
                   <v-btn
@@ -323,6 +308,24 @@
                     />
 
                     <span class="spanSocialNetwork">{{ $t('register.registerForm.registerWithGoogle') }}</span>
+                  </v-btn>
+                </v-col>
+
+                <!-- LIBRARY CARD -->
+                <v-col class="mb-6 mb-md-4 mt-4" cols="12" order="2" order-md="0">
+                  <v-btn
+                    block
+                    height="45"
+                    class="social-btn"
+                    @click="goToLibraryCardValidator"
+                  >
+                    <img
+                      alt="Facebook"
+                      class="mr-1"
+                      src="@/assets/svg/library-card-signup.svg"
+                    />
+
+                    <span class="spanSocialNetwork">Continue with your library card number</span>
                   </v-btn>
                 </v-col>
               </v-row>
@@ -368,6 +371,16 @@ export default {
     isAddressRequired: {
       type: Boolean,
       default: false
+    },
+
+    isPhoneNumberRequired: {
+      type: Boolean,
+      default: true
+    },
+
+    btnText: {
+      type: String,
+      default: 'START LEARNING'
     },
 
     whiteBtn: {
