@@ -353,17 +353,6 @@ export default {
     }
   },
 
-  watch: {
-    report: {
-      handler(val) {
-        console.log(val)
-      },
-      immediate: true
-    }
-  },
-
-  created () {},
-
   methods: {
     separateValues(dataSeries) {
       /*
