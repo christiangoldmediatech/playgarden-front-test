@@ -55,18 +55,18 @@ export default defineComponent({
 
     const reports = computed(() => store.getters['admin/report-card/types'])
 
-    const reportDescription = computed(() => reports.value.find((report: any) => report.name === props.data.nameCardType).description)
+    const reportDescription = computed(() => reports.value.find((report: any) => report.name === props.data.nameCardType)?.description)
 
     const arrowLeftPosition = computed(() => {
       const category = props.data.nameCardType
       switch (category) {
-        case 'Cognitive':
+        case language.t('studentCubby.progressReport.cognitive'):
           return '30%'
-        case 'Language & Literacy':
+        case language.t('studentCubby.progressReport.languageAndLiteracy'):
           return '46%'
-        case 'Physical':
+        case language.t('studentCubby.progressReport.physical'):
           return '63%'
-        case 'Social and Emotional':
+        case language.t('studentCubby.progressReport.socialEmotional'):
           return '78%'
         default:
           return '30%'
@@ -100,13 +100,13 @@ export default defineComponent({
     const categoryColor = computed(() => {
       const category = props.data.nameCardType
       switch (category) {
-        case 'Cognitive':
+        case language.t('studentCubby.progressReport.cognitive'):
           return '255, 164, 172'
-        case 'Language & Literacy':
+        case language.t('studentCubby.progressReport.languageAndLiteracy'):
           return '120, 195, 131'
-        case 'Physical':
+        case language.t('studentCubby.progressReport.physical'):
           return '105, 190, 255'
-        case 'Social and Emotional':
+        case language.t('studentCubby.progressReport.socialEmotional'):
           return '255, 175, 75'
         default:
           return '255, 164, 172'
