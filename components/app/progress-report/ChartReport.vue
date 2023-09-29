@@ -181,19 +181,16 @@ export default {
           }]
     },
     getDataSeriesWithStyles() {
-      const cognitive = this.report.dataSerie.find((data) => data.nameCardType === 'Cognitive')
-      const languageAndLiteracy = this.report.dataSerie.find((data) => data.nameCardType === 'Language & Literacy')
-      const physical = this.report.dataSerie.find((data) => data.nameCardType === 'Physical')
-      const socialAndEmotional = this.report.dataSerie.find((data) => data.nameCardType === 'Social and Emotional')
+      const firstSeparationValues = []
+      const secondSeparationValues = []
+      const thirdSeparationValues = []
 
-      const separatedCognitive = this.separateValues(cognitive)
-      const separatedLanguageAndLiteracy = this.separateValues(languageAndLiteracy)
-      const separatedPhysical = this.separateValues(physical)
-      const separatedSocialAndEmotional = this.separateValues(socialAndEmotional)
-
-      const firstSeparationValues = [separatedCognitive[0], separatedLanguageAndLiteracy[0], separatedPhysical[0], separatedSocialAndEmotional[0]]
-      const secondSeparationValues = [separatedCognitive[1], separatedLanguageAndLiteracy[1], separatedPhysical[1], separatedSocialAndEmotional[1]]
-      const thirdSeparationValues = [separatedCognitive[2], separatedLanguageAndLiteracy[2], separatedPhysical[2], separatedSocialAndEmotional[2]]
+      this.report.dataSerie.forEach((serie) => {
+        const seperatedValues = this.separateValues(serie)
+        firstSeparationValues.push(seperatedValues[0])
+        secondSeparationValues.push(seperatedValues[1])
+        thirdSeparationValues.push(seperatedValues[2])
+      })
 
       // A zero is added at the beginning in order to render and empty space
       if (!this.$vuetify.breakpoint.mdAndDown) {
@@ -257,7 +254,7 @@ export default {
       return {
         tooltip: {
           trigger: 'item',
-          formatter (params) {
+          formatter: (params) => {
             let text = (params.data.value !== undefined) ? `Percentage: <b> ${params.data.value} %</b> <br />` : this.$t('studentCubby.progressReport.text')
             if (params.data.value !== undefined) {
               if (params.data.value <= 20) {
@@ -355,10 +352,6 @@ export default {
       }
     }
   },
-
-  watch: {},
-
-  created () {},
 
   methods: {
     separateValues(dataSeries) {

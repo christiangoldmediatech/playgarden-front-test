@@ -193,13 +193,13 @@ export default {
   },
 
   watch: {
-    report(val, oldVal) {
+    report(val) {
       if (this.hasReport) {
         this.selectedBarData = val.dataSerie[0]
       }
     },
 
-    async selectedChild(val, oldVal) {
+    async selectedChild(val) {
       this.loadLetterStatsData = true
       await this.fetchCurrentLesson(val)
       await this.getDataReport()
@@ -325,7 +325,7 @@ export default {
 
     async getDataGraphic() {
       if (this.selectedChild) {
-        await this.getGraphicByChildrenId({ childId: this.selectedChild })
+        await this.getGraphicByChildrenId({ childId: this.selectedChild, reportCardTypes: this.types })
       }
     },
 
