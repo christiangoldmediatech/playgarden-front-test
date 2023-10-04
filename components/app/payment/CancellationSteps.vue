@@ -4,6 +4,7 @@
       v-model="viewBaseModal"
       :hide-input="inputInSecondStep"
       :explanation-required="explanationRequired"
+      :explanation-min-length="explanationMinLength"
       :loading="loading"
       :subtitle="subtitle"
       :confirmation-btn-text="confirmationBtnText"
@@ -113,6 +114,10 @@ export default defineComponent({
     value: {
       type: Boolean,
       default: false
+    },
+    explanationMinLength: {
+      type: Number,
+      default: 5
     },
     inputInSecondStep: {
       type: Boolean,

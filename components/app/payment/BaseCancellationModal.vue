@@ -8,6 +8,7 @@
     <tell-us-more-modal
       v-model="viewTellUsMoreModal"
       :explanation-required="!offeredAccepted"
+      :explanation-min-length="explanationMinLength"
       :subtitle="subtitle"
       @confirmation="emitConfirmation"
     />
@@ -97,6 +98,10 @@ export default defineComponent({
     hideInput: {
       type: Boolean,
       default: false
+    },
+    explanationMinLength: {
+      type: Number,
+      default: 5
     },
     explanationRequired: {
       type: Boolean,
