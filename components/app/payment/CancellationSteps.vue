@@ -9,6 +9,7 @@
       :subtitle="subtitle"
       :confirmation-btn-text="confirmationBtnText"
       @confirmation="handleBaseConfirmation"
+      @resetFlow="resetFlow"
     >
       <p class="base-model-title mb-0" v-html="baseMessage"></p>
     </base-cancellation-modal>
@@ -284,6 +285,7 @@ export default defineComponent({
 
     watch(startFlow, () => {
       if (startFlow.value) {
+        console.log('starting flow')
         if (hasDiscountFlowBeenUsed.value) {
           hasDiscountBeenApplied.value = true
           if (hasPreschoolPlan.value || hasPlayAndLearnLivePlan.value) {
@@ -505,7 +507,8 @@ export default defineComponent({
       }
     }
 
-    onUnmounted(() => {
+    const resetFlow = () => {
+      startFlow.value = false
       viewBaseModal.value = false
       viewLastModal.value = false
       viewFirstPositiveModal.value = false
@@ -514,7 +517,7 @@ export default defineComponent({
       viewSecondNegativeModal.value = false
       viewThirdPositiveModal.value = false
       viewThirdNegativeModal.value = false
-    })
+    }
 
     return {
       loading,
@@ -538,7 +541,8 @@ export default defineComponent({
       handleBaseConfirmation,
       handleLastAction,
       handleFirstIntermediateResponse,
-      handleSecondIntermediateResponse
+      handleSecondIntermediateResponse,
+      resetFlow
     }
   }
 })

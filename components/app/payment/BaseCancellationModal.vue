@@ -120,7 +120,7 @@ export default defineComponent({
       default: false
     }
   },
-  emits: ['input', 'confirmation'],
+  emits: ['input', 'confirmation', 'resetFlow'],
   setup(props, { emit }) {
     const explanation = ref('')
     const placeholder = computed(() => props.explanationRequired ? '(REQUIRED)' : '(Optional)')
@@ -161,6 +161,7 @@ export default defineComponent({
 
     const closeModal = () => {
       viewModal.value = false
+      emit('resetFlow')
     }
 
     return {
