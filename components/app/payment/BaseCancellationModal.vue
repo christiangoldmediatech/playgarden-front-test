@@ -8,6 +8,7 @@
     <tell-us-more-modal
       v-model="viewTellUsMoreModal"
       :explanation-required="!offeredAccepted"
+      :explanation-min-length="explanationMinLength"
       :subtitle="subtitle"
       @confirmation="emitConfirmation"
     />
@@ -99,6 +100,10 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
+    explanationMinLength: {
+      type: Number,
+      default: 5
+    },
     explanationRequired: {
       type: Boolean,
       default: false
@@ -116,7 +121,7 @@ export default defineComponent({
       default: false
     }
   },
-  emits: ['input', 'confirmation'],
+  emits: ['input', 'confirmation', 'resetFlow'],
   setup(props, { emit }) {
     const language = useLanguageHelper()
     const explanation = ref('')
@@ -158,6 +163,7 @@ export default defineComponent({
 
     const closeModal = () => {
       viewModal.value = false
+      emit('resetFlow')
     }
 
     return {
