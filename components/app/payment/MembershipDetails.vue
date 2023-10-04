@@ -396,40 +396,8 @@
         :reason-message="leaveMotive"
         @reloadInformation="reloadInformation"
       />
-      <too-much-time-modal
-        v-model="viewTooMuchTimeModal"
-        :plan="plan"
-        :plan-info="planInfo"
-        :billing-type="billing.billingType"
-        :reason-message="leaveMotive"
-        @reloadInformation="reloadInformation"
-      />
       <little-one-not-engaged-modal
         v-model="viewLittleOneNotEngagedModal"
-        :plan="plan"
-        :plan-info="planInfo"
-        :billing-type="billing.billingType"
-        :reason-message="leaveMotive"
-        @reloadInformation="reloadInformation"
-      />
-      <did-not-use-enough-modal
-        v-model="viewDidNotUseEnoughModal"
-        :plan="plan"
-        :plan-info="planInfo"
-        :billing-type="billing.billingType"
-        :reason-message="leaveMotive"
-        @reloadInformation="reloadInformation"
-      />
-      <missing-features-modal
-        v-model="viewMissingFeaturesModal"
-        :plan="plan"
-        :plan-info="planInfo"
-        :billing-type="billing.billingType"
-        :reason-message="leaveMotive"
-        @reloadInformation="reloadInformation"
-      />
-      <did-not-meet-expectations
-        v-model="viewDidNotMeetExpectations"
         :plan="plan"
         :plan-info="planInfo"
         :billing-type="billing.billingType"
@@ -504,14 +472,10 @@ import PlanDescription from '@/components/app/payment/SubscriptionPlanSelection/
 import MembershipBtn from '@/components/app/payment/MembershipBtn.vue'
 import TrialIsExpiring from '@/components/app/header/TrialIsExpiring.vue'
 import TechnicalIssuesCancellationModal from '@/components/app/payment/TechnicalIssuesCancellationModal.vue'
-import TooMuchTimeModal from '@/components/app/payment/TooMuchTimeModal.vue'
 import UsingOtherPlatformModal from '@/components/app/payment/UsingOtherPlatformModal.vue'
 import LittleOneNotEngagedModal from '@/components/app/payment/LittleOneNotEngagedModal.vue'
 import TooExpensiveModal from '@/components/app/payment/TooExpensiveModal.vue'
-import DidNotUseEnoughModal from '@/components/app/payment/DidNotUseEnoughModal.vue'
 import GoingToInPersonModal from '@/components/app/payment/GoingToInPersonModal.vue'
-import MissingFeaturesModal from '@/components/app/payment/MissingFeaturesModal.vue'
-import DidNotMeetExpectations from '@/components/app/payment/DidNotMeetExpectations.vue'
 import OtherReasonModal from '@/components/app/payment/OtherReasonModal.vue'
 import AnnualSubscriptionCancellationModal from '@/components/app/payment/AnnualSubscriptionCancellationModal.vue'
 import LearningKitsPopup from './LearningKitsPopup.vue'
@@ -541,15 +505,11 @@ export default {
     TryPlayAndLearnModal,
     AppliedCouponModal,
     LearningKitsPopup,
-    TooMuchTimeModal,
     TechnicalIssuesCancellationModal,
     TooExpensiveModal,
     UsingOtherPlatformModal,
     GoingToInPersonModal,
     LittleOneNotEngagedModal,
-    DidNotUseEnoughModal,
-    MissingFeaturesModal,
-    DidNotMeetExpectations,
     OtherReasonModal,
     AnnualSubscriptionCancellationModal
   },
@@ -601,24 +561,8 @@ export default {
         modal: GoingToInPersonModal.name
       },
       {
-        motive: 'Too much time commitment',
-        modal: TooMuchTimeModal.name
-      },
-      {
         motive: "My little one wasn't engaged",
         modal: LittleOneNotEngagedModal.name
-      },
-      {
-        motive: "Didn't use it enough",
-        modal: DidNotUseEnoughModal.name
-      },
-      {
-        motive: 'Missing features I need',
-        modal: MissingFeaturesModal.name
-      },
-      {
-        motive: "Didn't meet my expectations",
-        modal: DidNotMeetExpectations.name
       },
       {
         motive: 'Other (please explain)',
@@ -630,11 +574,7 @@ export default {
     viewTooExpensiveModal: false,
     viewUsingOtherPlatformModal: false,
     viewGoingToInPersonModal: false,
-    viewTooMuchTimeModal: false,
     viewLittleOneNotEngagedModal: false,
-    viewDidNotUseEnoughModal: false,
-    viewMissingFeaturesModal: false,
-    viewDidNotMeetExpectations: false,
     viewOtherReasonModal: false,
     viewAnnualCancellationModal: false,
     // Discount Flow
@@ -974,16 +914,8 @@ export default {
         this.viewUsingOtherPlatformModal = true
       } else if (leaveMotive.modal === GoingToInPersonModal.name) {
         this.viewGoingToInPersonModal = true
-      } else if (leaveMotive.modal === TooMuchTimeModal.name) {
-        this.viewTooMuchTimeModal = true
       } else if (leaveMotive.modal === LittleOneNotEngagedModal.name) {
         this.viewLittleOneNotEngagedModal = true
-      } else if (leaveMotive.modal === DidNotUseEnoughModal.name) {
-        this.viewDidNotUseEnoughModal = true
-      } else if (leaveMotive.modal === MissingFeaturesModal.name) {
-        this.viewMissingFeaturesModal = true
-      } else if (leaveMotive.modal === DidNotMeetExpectations.name) {
-        this.viewDidNotMeetExpectations = true
       } else if (leaveMotive.modal === OtherReasonModal.name) {
         this.viewOtherReasonModal = true
       }

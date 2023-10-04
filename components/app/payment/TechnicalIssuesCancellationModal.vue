@@ -1,6 +1,9 @@
 <template>
   <cancellation-steps
     v-model="startFlow"
+    :input-in-second-step=" true"
+    :cancel-after-first-step="true"
+    :explanation-min-length="20"
     :base-message="baseMessage"
     :subtitle="subtitle"
     :confirmation-btn-text="confirmationBtnText"
