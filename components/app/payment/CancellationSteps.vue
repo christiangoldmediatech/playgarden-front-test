@@ -98,7 +98,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onUnmounted, ref, useStore, watch } from '@nuxtjs/composition-api'
+import { computed, defineComponent, ref, useStore, watch } from '@nuxtjs/composition-api'
 import BaseCancellationModal from '@/components/app/payment/BaseCancellationModal.vue'
 import LastModal from '@/components/app/payment/LastModal.vue'
 import PositiveCancellationModal from '@/components/app/payment/PositiveCancellationModal.vue'
