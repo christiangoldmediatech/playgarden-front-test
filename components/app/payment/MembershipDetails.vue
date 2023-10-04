@@ -542,32 +542,6 @@ export default {
     plan: {},
     planInfo: {},
     leaveMotive: '',
-    leaveMotives: [
-      {
-        motive: 'Repeated technical issues',
-        modal: TechnicalIssuesCancellationModal.name
-      },
-      {
-        motive: 'Too expensive',
-        modal: TooExpensiveModal.name
-      },
-      {
-        motive: 'Using another learning platform',
-        modal: UsingOtherPlatformModal.name
-      },
-      {
-        motive: 'Going to in person school',
-        modal: GoingToInPersonModal.name
-      },
-      {
-        motive: "My little one wasn't engaged",
-        modal: LittleOneNotEngagedModal.name
-      },
-      {
-        motive: 'Other (please explain)',
-        modal: OtherReasonModal.name
-      }
-    ],
     learnAndPlayWasCanceled: false,
     viewTechnicalIssuesModal: false,
     viewTooExpensiveModal: false,
@@ -615,24 +589,8 @@ export default {
           modal: GoingToInPersonModal.name
         },
         {
-          motive: this.$t('modals.cancelSubscription.motives.tooMuchTime'),
-          modal: TooMuchTimeModal.name
-        },
-        {
           motive: this.$t('modals.cancelSubscription.motives.littleOneNotEngaged'),
           modal: LittleOneNotEngagedModal.name
-        },
-        {
-          motive: this.$t('modals.cancelSubscription.motives.didNotUseEnough'),
-          modal: DidNotUseEnoughModal.name
-        },
-        {
-          motive: this.$t('modals.cancelSubscription.motives.missingFeatures'),
-          modal: MissingFeaturesModal.name
-        },
-        {
-          motive: this.$t('modals.cancelSubscription.motives.didNotMeetExpectations'),
-          modal: DidNotMeetExpectations.name
         },
         {
           motive: this.$t('modals.cancelSubscription.motives.otherReason'),
