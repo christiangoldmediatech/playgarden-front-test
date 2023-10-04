@@ -5,13 +5,6 @@
     content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl v2-font"
     @click:outside="closeModal"
   >
-    <tell-us-more-modal
-      v-model="viewTellUsMoreModal"
-      :explanation-required="!offeredAccepted"
-      :subtitle="subtitle"
-      @confirmation="emitConfirmation"
-    />
-
     <v-col class="text-right pg-pr-3" cols="12">
       <v-btn
         icon
@@ -25,18 +18,14 @@
       </v-btn>
     </v-col>
 
-    <v-col cols="12" class="px-10">
-      <slot />
-    </v-col>
-
-    <v-col v-if="!hideInput" cols="12">
+    <v-col cols="12">
       <p class="subtitle px-8 mb-0">
         <span class="subtitle-header">Tell us more: </span>
         {{ subtitle }}
       </p>
     </v-col>
 
-    <v-col v-if="!hideInput" cols="12">
+    <v-col cols="12">
       <v-row no-gutters class="px-8">
         <v-textarea
           v-model="explanation"
@@ -56,22 +45,9 @@
         :loading="loading"
         large
         :disabled="disabledBtn"
-        @click="handleConfirmation(true, explanation)"
+        @click="emitConfirmation(explanation)"
       >
-        {{ confirmationBtnText }}
-      </v-btn>
-    </v-col>
-
-    <v-col cols="12" class="text-center pa-0 pb-5">
-      <v-btn
-        class="px-16 btn-text"
-        text
-        color="accent"
-        :loading="loading"
-        :disabled="disabledBtn"
-        @click="handleConfirmation(false, explanation)"
-      >
-        NO, I JUST WANT TO CANCEL
+        CONTINUE
       </v-btn>
     </v-col>
 
@@ -84,17 +60,11 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
-import TellUsMoreModal from './TellUsMoreModal.vue'
 
 export default defineComponent({
-  name: 'BaseCancellationModal',
-  components: { TellUsMoreModal },
+  name: 'TellUsMoreModal',
   props: {
     value: {
-      type: Boolean,
-      default: false
-    },
-    hideInput: {
       type: Boolean,
       default: false
     },
@@ -136,22 +106,9 @@ export default defineComponent({
       }
     })
 
-    const viewTellUsMoreModal = ref(false)
-    const offeredAccepted = ref(false)
-
-    const handleConfirmation = (confirmation: boolean, explanation: string) => {
-      if (props.hideInput) {
-        viewTellUsMoreModal.value = true
-        offeredAccepted.value = confirmation
-        closeModal()
-        return
-      }
-
-      emit('confirmation', { confirmation, explanation })
-    }
-
     const emitConfirmation = (explanation: string) => {
-      emit('confirmation', { explanation, confirmation: offeredAccepted.value })
+      emit('confirmation', explanation)
+      closeModal()
     }
 
     const closeModal = () => {
@@ -159,15 +116,12 @@ export default defineComponent({
     }
 
     return {
-      viewTellUsMoreModal,
       explanation,
       placeholder,
-      offeredAccepted,
       disabledBtn,
       viewModal,
       closeModal,
-      emitConfirmation,
-      handleConfirmation
+      emitConfirmation
     }
   }
 })

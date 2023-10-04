@@ -2,6 +2,7 @@
   <div>
     <base-cancellation-modal
       v-model="viewBaseModal"
+      :hide-input="inputInSecondStep"
       :explanation-required="explanationRequired"
       :loading="loading"
       :subtitle="subtitle"
@@ -95,7 +96,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, useStore, watch } from '@nuxtjs/composition-api'
+import { computed, defineComponent, onUnmounted, ref, useStore, watch } from '@nuxtjs/composition-api'
 import BaseCancellationModal from '@/components/app/payment/BaseCancellationModal.vue'
 import LastModal from '@/components/app/payment/LastModal.vue'
 import PositiveCancellationModal from '@/components/app/payment/PositiveCancellationModal.vue'
@@ -110,6 +111,14 @@ export default defineComponent({
   name: 'CancellationSteps',
   props: {
     value: {
+      type: Boolean,
+      default: false
+    },
+    inputInSecondStep: {
+      type: Boolean,
+      default: false
+    },
+    cancelAfterFirstStep: {
       type: Boolean,
       default: false
     },
@@ -316,6 +325,19 @@ export default defineComponent({
           cancellationExplanation.value = data.explanation
         }
 
+        if (props.cancelAfterFirstStep) {
+          viewBaseModal.value = true
+
+          if (data.confirmation) {
+            await applyDiscountCode(discountCode.value, props.reasonMessage, cancellationExplanation.value)
+            viewFirstPositiveModal.value = true
+          } else {
+            await handleLastAction(data)
+          }
+
+          return
+        }
+
         if (data.confirmation) {
           await applyDiscountCode(discountCode.value, props.reasonMessage, cancellationExplanation.value)
           viewFirstPositiveModal.value = true
@@ -346,6 +368,7 @@ export default defineComponent({
         toast.error('Could not process plan cancellation')
       } finally {
         loading.value = false
+        viewBaseModal.value = false
         viewLastModal.value = false
         startFlow.value = false
         emit('reloadInformation', true)
@@ -476,6 +499,17 @@ export default defineComponent({
         viewThirdPositiveModal.value = true
       }
     }
+
+    onUnmounted(() => {
+      viewBaseModal.value = false
+      viewLastModal.value = false
+      viewFirstPositiveModal.value = false
+      viewFirstNegativeModal.value = false
+      viewSecondPositiveModal.value = false
+      viewSecondNegativeModal.value = false
+      viewThirdPositiveModal.value = false
+      viewThirdNegativeModal.value = false
+    })
 
     return {
       loading,
