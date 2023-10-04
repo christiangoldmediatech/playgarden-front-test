@@ -2,8 +2,9 @@
   <div>
     <cancellation-steps
       v-model="startFlow"
-      :explanation-required="true"
+      :input-in-second-step=" true"
       :base-message="baseMessage"
+      :explanation-min-length="25"
       :subtitle="subtitle"
       :confirmation-btn-text="confirmationBtnText"
       :plan="plan"

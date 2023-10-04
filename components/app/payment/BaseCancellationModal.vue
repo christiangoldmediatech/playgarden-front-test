@@ -5,6 +5,14 @@
     content-class="pg-bg-[#FFFCFC] py-2 !pg-rounded-3xl v2-font"
     @click:outside="closeModal"
   >
+    <tell-us-more-modal
+      v-model="viewTellUsMoreModal"
+      :explanation-required="!offeredAccepted"
+      :explanation-min-length="explanationMinLength"
+      :subtitle="subtitle"
+      @confirmation="emitConfirmation"
+    />
+
     <v-col class="text-right pg-pr-3" cols="12">
       <v-btn
         icon
@@ -22,14 +30,14 @@
       <slot />
     </v-col>
 
-    <v-col cols="12">
+    <v-col v-if="!hideInput" cols="12">
       <p class="subtitle px-8 mb-0">
         <span class="subtitle-header">{{ $t('modals.baseCancellation.title') }} </span>
         {{ subtitle }}
       </p>
     </v-col>
 
-    <v-col cols="12">
+    <v-col v-if="!hideInput" cols="12">
       <v-row no-gutters class="px-8">
         <v-textarea
           v-model="explanation"
@@ -49,7 +57,7 @@
         :loading="loading"
         large
         :disabled="disabledBtn"
-        @click="emitConfirmation(true, explanation)"
+        @click="handleConfirmation(true, explanation)"
       >
         {{ confirmationBtnText }}
       </v-btn>
@@ -62,7 +70,7 @@
         color="accent"
         :loading="loading"
         :disabled="disabledBtn"
-        @click="emitConfirmation(false, explanation)"
+        @click="handleConfirmation(false, explanation)"
       >
         {{ $t('modals.baseCancellation.cancel') }}
       </v-btn>
@@ -78,13 +86,23 @@
 <script lang="ts">
 import { useLanguageHelper } from '@/composables'
 import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
+import TellUsMoreModal from './TellUsMoreModal.vue'
 
 export default defineComponent({
   name: 'BaseCancellationModal',
+  components: { TellUsMoreModal },
   props: {
     value: {
       type: Boolean,
       default: false
+    },
+    hideInput: {
+      type: Boolean,
+      default: false
+    },
+    explanationMinLength: {
+      type: Number,
+      default: 5
     },
     explanationRequired: {
       type: Boolean,
@@ -103,7 +121,7 @@ export default defineComponent({
       default: false
     }
   },
-  emits: ['input', 'confirmation'],
+  emits: ['input', 'confirmation', 'resetFlow'],
   setup(props, { emit }) {
     const language = useLanguageHelper()
     const explanation = ref('')
@@ -125,21 +143,39 @@ export default defineComponent({
       }
     })
 
-    const emitConfirmation = (confirmation: boolean, explanation: string) => {
+    const viewTellUsMoreModal = ref(false)
+    const offeredAccepted = ref(false)
+
+    const handleConfirmation = (confirmation: boolean, explanation: string) => {
+      if (props.hideInput) {
+        viewTellUsMoreModal.value = true
+        offeredAccepted.value = confirmation
+        closeModal()
+        return
+      }
+
       emit('confirmation', { confirmation, explanation })
+    }
+
+    const emitConfirmation = (explanation: string) => {
+      emit('confirmation', { explanation, confirmation: offeredAccepted.value })
     }
 
     const closeModal = () => {
       viewModal.value = false
+      emit('resetFlow')
     }
 
     return {
+      viewTellUsMoreModal,
       explanation,
       placeholder,
+      offeredAccepted,
       disabledBtn,
       viewModal,
       closeModal,
-      emitConfirmation
+      emitConfirmation,
+      handleConfirmation
     }
   }
 })

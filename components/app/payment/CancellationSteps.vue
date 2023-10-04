@@ -2,11 +2,14 @@
   <div>
     <base-cancellation-modal
       v-model="viewBaseModal"
+      :hide-input="inputInSecondStep"
       :explanation-required="explanationRequired"
+      :explanation-min-length="explanationMinLength"
       :loading="loading"
       :subtitle="subtitle"
       :confirmation-btn-text="confirmationBtnText"
       @confirmation="handleBaseConfirmation"
+      @resetFlow="resetFlow"
     >
       <p class="base-model-title mb-0" v-html="baseMessage"></p>
     </base-cancellation-modal>
@@ -111,6 +114,18 @@ export default defineComponent({
   name: 'CancellationSteps',
   props: {
     value: {
+      type: Boolean,
+      default: false
+    },
+    explanationMinLength: {
+      type: Number,
+      default: 5
+    },
+    inputInSecondStep: {
+      type: Boolean,
+      default: false
+    },
+    cancelAfterFirstStep: {
       type: Boolean,
       default: false
     },
@@ -272,6 +287,7 @@ export default defineComponent({
 
     watch(startFlow, () => {
       if (startFlow.value) {
+        console.log('starting flow')
         if (hasDiscountFlowBeenUsed.value) {
           hasDiscountBeenApplied.value = true
           if (hasPreschoolPlan.value || hasPlayAndLearnLivePlan.value) {
@@ -318,6 +334,19 @@ export default defineComponent({
           cancellationExplanation.value = data.explanation
         }
 
+        if (props.cancelAfterFirstStep) {
+          viewBaseModal.value = true
+
+          if (data.confirmation) {
+            await applyDiscountCode(discountCode.value, props.reasonMessage, cancellationExplanation.value)
+            viewFirstPositiveModal.value = true
+          } else {
+            await handleLastAction(data)
+          }
+
+          return
+        }
+
         if (data.confirmation) {
           await applyDiscountCode(discountCode.value, props.reasonMessage, cancellationExplanation.value)
           viewFirstPositiveModal.value = true
@@ -348,6 +377,7 @@ export default defineComponent({
         toast.error(language.t('modals.cancellationSteps.error2'))
       } finally {
         loading.value = false
+        viewBaseModal.value = false
         viewLastModal.value = false
         startFlow.value = false
         emit('reloadInformation', true)
@@ -479,6 +509,18 @@ export default defineComponent({
       }
     }
 
+    const resetFlow = () => {
+      startFlow.value = false
+      viewBaseModal.value = false
+      viewLastModal.value = false
+      viewFirstPositiveModal.value = false
+      viewFirstNegativeModal.value = false
+      viewSecondPositiveModal.value = false
+      viewSecondNegativeModal.value = false
+      viewThirdPositiveModal.value = false
+      viewThirdNegativeModal.value = false
+    }
+
     return {
       loading,
       hasDiscountBeenApplied,
@@ -501,7 +543,8 @@ export default defineComponent({
       handleBaseConfirmation,
       handleLastAction,
       handleFirstIntermediateResponse,
-      handleSecondIntermediateResponse
+      handleSecondIntermediateResponse,
+      resetFlow
     }
   }
 })
