@@ -341,7 +341,7 @@ export default defineComponent({
             await applyDiscountCode(discountCode.value, props.reasonMessage, cancellationExplanation.value)
             viewFirstPositiveModal.value = true
           } else {
-            await handleLastAction(data)
+            await applySubscriptionCancelLogic()
           }
 
           return
