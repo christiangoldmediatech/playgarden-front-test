@@ -62,7 +62,7 @@
             v-else
             class="pg-text-4xl pg-text-[#BA89EB] pg-font-bold pg-tracking-[1px] v2-font"
           >
-            Change Plan
+            {{ $t('membership.changePlan') }}
           </div>
 
           <!-- TEXT -->
@@ -111,7 +111,6 @@ import {
   useRoute,
   useRouter
 } from '@nuxtjs/composition-api'
-
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 
 import { useVuetifyHelper } from '@/composables'

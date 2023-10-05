@@ -4,5 +4,11 @@ export default async (context, locale) => {
   }
 
   const response = await context.$axios.$get('/i18n/es')
-  return response.content
+  return {
+    ...response.content,
+    paymentPlan: {
+      ...response.content.paymentPlan,
+      bestFor: 'Ideal para familias que buscan:'
+    }
+  }
 }

@@ -75,7 +75,7 @@
             <div
               class="pg-px-8 pg-py-1 pg-text-[#FFA0C8] pg-text-lg pg-text-center pg-font-medium v2-font"
             >
-              Best for families that want: <br />
+              {{ $t('paymentPlan.bestFor') }}<br />
               {{ plan.commonBenefits.bestFor }}
             </div>
 
