@@ -1,13 +1,16 @@
 import dayjs from 'dayjs'
 import { computed } from '@nuxtjs/composition-api'
 import { axios } from '@/utils'
-import { useToastHelper } from '@/composables'
+import { useToastHelper, useLanguageHelper } from '@/composables'
 import { useAccessorHelper } from '../helpers.composable'
 import { User } from './types'
+
+require('dayjs/locale/es')
 
 export const useUser = () => {
   const store = useAccessorHelper().auth
   const toast = useToastHelper()
+  const language = useLanguageHelper()
 
   const userInfo = computed(() => store.userInfo)
 
@@ -24,7 +27,8 @@ export const useUser = () => {
       return ''
     }
 
-    return dayjs(userInfo.value.trialEnd).format('MMMM DD, YYYY')
+    const locale = language.locale || 'en'
+    return dayjs(userInfo.value.trialEnd).locale(locale).format('MMMM DD, YYYY')
   })
 
   const trialEndedTooLongAgo = computed<boolean>(() => {
