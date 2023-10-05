@@ -6,10 +6,10 @@
           <!-- Bill monthly/anually switch -->
           <div class="pg-flex pg-justify-center">
             <div class="pg-flex pg-items-center">
-              <span class="pg-mr-3 pg-text-[14px] sm:pg-text-xl pg-font-semibold">{{ $t('paymentPlan.subscriptionPlan.month') }}</span>
+              <span class="pg-mr-3 pg-text-[14px] sm:pg-text-xl pg-font-semibold">{{ $t('paymentPlan.subscriptionPlan.billMonthly') }}</span>
               <v-switch v-model="billBiannually" color="#FFA0C8" inset />
               <span class="pg-block pg-mt-[15px] sm:pg-mt-0 pg-text-[14px] sm:pg-text-xl pg-font-semibold">
-                {{ $t('paymentPlan.subscriptionPlan.biannual') }} <br v-if="$vuetify.breakpoint.xs" />
+                {{ $t('paymentPlan.subscriptionPlan.billBiannually') }} <br v-if="$vuetify.breakpoint.xs" />
                 <span class="pg-font-normal pg-text-[12px] sm:pg-text-xl">{{ $t('paymentPlan.subscriptionPlan.sixMonths') }}</span>
               </span>
             </div>
