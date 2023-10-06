@@ -51,14 +51,6 @@ const questDataState = reactive<Record<string, SurveyQuestion>>({
     type: 'RADIO',
     options: enLocale.question3.options,
     answer: '',
-    order: 0
-  },
-  question4: {
-    text: enLocale.question4.text,
-    instructions: enLocale.question4.instructions,
-    type: 'RADIO',
-    options: enLocale.question4.options,
-    answer: '',
     order: 1
   }
 })
@@ -80,7 +72,6 @@ function resetQuestionnaire() {
   questDataState.question1.answer = []
   questDataState.question2.answer = ''
   questDataState.question3.answer = ''
-  questDataState.question4.answer = ''
 }
 
 export const useQuestionnaire = () => {
@@ -110,7 +101,7 @@ export const useQuestionnaireSave = ({ store }:{ store: Store<unknown> }) => {
       // Add questions to pages
       questPageData[0].questions = [questDataState.question1]
       questPageData[1].questions = [questDataState.question2]
-      questPageData[2].questions = [questDataState.question3, questDataState.question4]
+      questPageData[2].questions = [questDataState.question3]
 
       await saveUserSurvey({
         surveyKey: questionnaireSurveyKey,

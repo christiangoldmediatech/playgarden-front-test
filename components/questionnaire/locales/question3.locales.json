@@ -3,11 +3,6 @@
     "title": "One last thing before you get started!",
     "goToFirstDayOfLearning": "GO TO FIRST DAY OF LEARNING",
     "question3": {
-      "text": "Has your child attended an online learning program before?",
-      "instructions": "",
-      "options": ["Yes", "No"]
-    },
-    "question4": {
       "text": "Would you like to assess your child's progress for free using our partner, Cognitive Toybox?",
       "textComp": "Would you like to assess your child's progress for free using our partner, ",
       "cognitiveToybox": "Cognitive Toybox",
@@ -19,11 +14,6 @@
     "title": "¡Una última cosa antes de empezar!",
     "goToFirstDayOfLearning": "IR AL PRIMER DÍA DE APRENDIZAJE",
     "question3": {
-      "text": "¿Su hijo ha asistido antes a un programa de aprendizaje en línea?",
-      "instructions": "",
-      "options": ["Sí", "No"]
-    },
-    "question4": {
       "text": "Would you like to assess your child's progress for free using our partner, Cognitive Toybox?",
       "textComp": "¿Le gustaría evaluar el progreso de su hijo de forma gratuita utilizando nuestro socio, ",
       "cognitiveToybox": "Cognitive Toybox",
