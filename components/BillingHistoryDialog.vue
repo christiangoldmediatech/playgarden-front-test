@@ -23,7 +23,7 @@
           <p
             class="text-left pg-text-[25px] pg-text-[#707070] pg-font-[500]"
           >
-            Billing History
+            {{ $t('account.membership.billingHistory') }}
           </p>
         </v-col>
       </v-row>
@@ -32,10 +32,10 @@
           <v-card class="billing-history-dialog-card elevation-0 pt-5 px-5" color="transparent">
             <v-row class="billing-history-dialog-header mb-0">
               <v-col cols="6" class="px-2 px-md-unset">
-                <span class="header">Date</span>
+                <span class="header">{{ $t('commonWords.date') }}</span>
               </v-col>
               <v-col cols="6" class="d-flex px-2 px-md-unset">
-                <span class="header ml-auto">Plan and price</span>
+                <span class="header ml-auto">{{ $t('commonWords.planPrice') }}</span>
               </v-col>
             </v-row>
             <v-row v-if="loading" no-gutters>
@@ -58,7 +58,7 @@
                     <div class="d-flex flex-column ml-auto">
                       <span class="row-data">${{ billing.totalFormatted }} {{ billing.currency.toUpperCase() }} /{{ billing.period }} plan<br></span>
                       <a class="accent--text text-caption text-decoration-underline ml-auto" :href="billing.invoiceUrl" target="_blank">
-                        View Invoice
+                        {{ $t('account.membership.viewInvoice') }}
                       </a>
                     </div>
                   </v-col>

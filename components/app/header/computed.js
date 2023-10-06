@@ -37,52 +37,52 @@ export default {
         if (!this.hasPlayAndLearnPlan) {
           list = [
             {
-              title: 'Home',
+              title: this.$t('menus.header.home'),
               dataTestId: 'home',
               to: { name: 'app-virtual-preschool' },
               exact: true
             },
             {
-              title: 'Daily Lessons',
+              title: this.$t('menus.header.dailyLessons'),
               dataTestId: 'app-dashboard',
               to: { name: 'app-dashboard' },
               exact: false
             },
             {
-              title: 'Social & Emotional',
+              title: this.$t('menus.header.socialEmotional'),
               dataTestId: 'app-learn-play',
               to: { name: 'app-learn-play' },
               exact: false
             },
             {
-              title: 'Live Classes',
+              title: this.$t('menus.header.liveClasses'),
               dataTestId: 'app-live-classes',
               to: { name: 'app-live-classes' },
               exact: false
             },
             {
-              title: 'Video Library',
+              title: this.$t('menus.header.videoLibrary'),
               to: { name: 'app-library' },
               exact: false,
               dataTestId: 'app-library'
             },
             {
-              title: 'Music',
+              title: this.$t('menus.header.music'),
               to: { name: 'app-music' },
               exact: false,
               dataTestId: 'app-music'
             },
             {
+              title: this.$t('menus.header.kidsCorner'),
               id: 'kids-corner-button',
-              title: 'Kids Corner',
               dataTestId: 'app-kids-corner',
               external: true,
               link: `${process.env.kidsCornerUrl}?atoken=${this.$store.getters['auth/getAccessToken']}`,
               openInNewTab: false
             },
             {
+              title: this.$t('menus.header.cubby'),
               id: 'student-cubby-button',
-              title: 'Student Cubby',
               dataTestId: 'app-student-cubby',
               to: {
                 name: 'app-student-cubby-puzzle',
@@ -95,7 +95,7 @@ export default {
               exact: false
             },
             {
-              title: 'Community',
+              title: this.$t('menus.header.community'),
               dataTestId: 'app-community',
               external: true,
               link: `https://community.playgardenprep.com/login/?atoken=${this.getAccessToken}`,
@@ -110,7 +110,7 @@ export default {
 
           if (!['production'].includes(process.env.testEnv)) {
             list.push({
-              title: 'Parent Corner',
+              title: this.$t('menus.header.parentCorner'),
               dataTestId: 'app-parent-corner',
               to: { name: 'app-parent-corner' },
               exact: false

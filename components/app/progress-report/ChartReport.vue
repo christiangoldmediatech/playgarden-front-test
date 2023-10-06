@@ -3,15 +3,15 @@
     <v-row v-if="isMobile" no-gutters>
       <v-col cols="4" class="d-flex flex-column align-center justify-center">
         <div class="pg-w-[50px] pg-h-[15px] pg-rounded-[4px] pg-bg-[#D1ADF5] mb-2"></div>
-        <span class="bar-label-mobile">Progressing</span>
+        <span class="bar-label-mobile">{{ $t('studentCubby.progressReport.areaOfStrength') }}</span>
       </v-col>
       <v-col cols="4" class="d-flex flex-column align-center justify-center">
         <div class="pg-w-[50px] pg-h-[15px] pg-rounded-[4px] pg-bg-[#FFB8E7] mb-2"></div>
-        <span class="bar-label-mobile">Age Appropriate</span>
+        <span class="bar-label-mobile">{{ $t('studentCubby.progressReport.ageAppropriate') }}</span>
       </v-col>
       <v-col cols="4" class="d-flex flex-column align-center justify-center">
         <div class="pg-w-[50px] pg-h-[15px] pg-rounded-[4px] pg-bg-[#A5EA95] mb-2"></div>
-        <span class="bar-label-mobile">Area of Strength</span>
+        <span class="bar-label-mobile">{{ $t('studentCubby.progressReport.progressing') }}</span>
       </v-col>
     </v-row>
     <report-chart ref="progress-chart" :graph="chartOptions" @click="handleClick" />
@@ -92,7 +92,7 @@ export default {
                 distance: this.$vuetify.breakpoint.smAndDown ? -110 : -140,
                 color: '#606060',
                 fontSize: this.getLabelFontSize,
-                formatter: '{square|      }  Area of Strength',
+                formatter: `{square|      }  ${this.$t('studentCubby.progressReport.areaOfStrength')}`,
                 rich: {
                   square: {
                     fontSize: '18px',
@@ -125,7 +125,7 @@ export default {
                 distance: this.$vuetify.breakpoint.smAndDown ? -110 : -140,
                 color: '#606060',
                 fontSize: this.getLabelFontSize,
-                formatter: '{square|      }  Age Appropriate',
+                formatter: `{square|      }  ${this.$t('studentCubby.progressReport.ageAppropriate')}`,
                 rich: {
                   square: {
                     fontSize: '18px',
@@ -159,7 +159,7 @@ export default {
                 color: '#606060',
                 fontSize: this.getLabelFontSize,
                 fontWeight: 'bold',
-                formatter: '{square|      }  Progressing',
+                formatter: `{square|      }  ${this.$t('studentCubby.progressReport.progressing')}`,
                 rich: {
                   square: {
                     fontSize: '18px',
@@ -181,19 +181,16 @@ export default {
           }]
     },
     getDataSeriesWithStyles() {
-      const cognitive = this.report.dataSerie.find((data) => data.nameCardType === 'Cognitive')
-      const languageAndLiteracy = this.report.dataSerie.find((data) => data.nameCardType === 'Language & Literacy')
-      const physical = this.report.dataSerie.find((data) => data.nameCardType === 'Physical')
-      const socialAndEmotional = this.report.dataSerie.find((data) => data.nameCardType === 'Social and Emotional')
+      const firstSeparationValues = []
+      const secondSeparationValues = []
+      const thirdSeparationValues = []
 
-      const separatedCognitive = this.separateValues(cognitive)
-      const separatedLanguageAndLiteracy = this.separateValues(languageAndLiteracy)
-      const separatedPhysical = this.separateValues(physical)
-      const separatedSocialAndEmotional = this.separateValues(socialAndEmotional)
-
-      const firstSeparationValues = [separatedCognitive[0], separatedLanguageAndLiteracy[0], separatedPhysical[0], separatedSocialAndEmotional[0]]
-      const secondSeparationValues = [separatedCognitive[1], separatedLanguageAndLiteracy[1], separatedPhysical[1], separatedSocialAndEmotional[1]]
-      const thirdSeparationValues = [separatedCognitive[2], separatedLanguageAndLiteracy[2], separatedPhysical[2], separatedSocialAndEmotional[2]]
+      this.report.dataSerie.forEach((serie) => {
+        const seperatedValues = this.separateValues(serie)
+        firstSeparationValues.push(seperatedValues[0])
+        secondSeparationValues.push(seperatedValues[1])
+        thirdSeparationValues.push(seperatedValues[2])
+      })
 
       // A zero is added at the beginning in order to render and empty space
       if (!this.$vuetify.breakpoint.mdAndDown) {
@@ -257,15 +254,15 @@ export default {
       return {
         tooltip: {
           trigger: 'item',
-          formatter (params) {
-            let text = (params.data.value !== undefined) ? `Percentage: <b> ${params.data.value} %</b> <br />` : 'Progress Report'
+          formatter: (params) => {
+            let text = (params.data.value !== undefined) ? `Percentage: <b> ${params.data.value} %</b> <br />` : this.$t('studentCubby.progressReport.text')
             if (params.data.value !== undefined) {
               if (params.data.value <= 20) {
-                text += 'Progressing'
+                text += this.$t('studentCubby.progressReport.progressing')
               } else if (params.data.value > 20 && params.data.value <= 80) {
-                text += 'Age Appropriate'
+                text += this.$t('studentCubby.progressReport.ageAppropriate')
               } else {
-                text += 'Area of Strength'
+                text += this.$t('studentCubby.progressReport.areaOfStrength')
               }
             }
             return text
@@ -355,10 +352,6 @@ export default {
       }
     }
   },
-
-  watch: {},
-
-  created () {},
 
   methods: {
     separateValues(dataSeries) {

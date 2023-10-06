@@ -3,17 +3,17 @@
     <!-- HEADING -->
     <div :class="['pg-mt-6', 'pg-inline']">
       <NormalTitle
-        text="CREATE AN ACCOUNT TO START LEARNING!"
+        :text="$t('register.title')"
         font-size="40px"
         font-size-mobile="20px"
       />
     </div>
 
     <div class="pg-text-xl pg-text-[rgba(96,96,96,0.5)]">
-      Are you excited for a fun-filled day of learning?
+      {{ $t('register.subtitle1') }}
 
       <div v-if="hasValidLibraryCard" class="pg-font-semibold pg-mt-5">
-        Your library card number:
+        {{ $t('register.libraryCard.yourLibraryCardNum') }}
         <span class="pg-text-[#68C453] pg-font-bold">{{ libraryCardNumber }}</span>
       </div>
     </div>
@@ -39,7 +39,7 @@
           :is-coupon-needed="false"
           :is-phone-number-required="false"
           :white-btn="true"
-          :btn-text="'LOGIN'"
+          :btn-text="$t('register.btnText')"
           @click:submit="handleSubmit"
         />
       </div>
@@ -54,7 +54,7 @@
           'height-mobile',
         ]"
       >
-        <CardInfo title="It's the easiest way to give your child an immersive education at home!" />
+        <CardInfo :title="$t('register.cardInfo.altTitle')" />
       </div>
     </div>
   </div>
@@ -68,7 +68,7 @@ import {
 } from '@nuxtjs/composition-api'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
-import { useToastHelper, useAccessorHelper } from '@/composables'
+import { useToastHelper, useAccessorHelper, useLanguageHelper } from '@/composables'
 import { useModal } from '@/composables/web/modal'
 import {
   useParentSignup,
@@ -92,6 +92,7 @@ export default defineComponent({
   setup(_, { emit }) {
     const route = useRoute()
     const toast = useToastHelper()
+    const language = useLanguageHelper()
 
     const Auth = useAuth()
     const Modal = useModal()
@@ -123,7 +124,7 @@ export default defineComponent({
       try {
         loading.value = true
         await ParentSignup.signup(data, signupType)
-        toast.success('Welcome to Playgarden Prep!')
+        toast.success(language.t('register.success'))
         goToNextStep()
       } catch (e) {
         const error = e as any

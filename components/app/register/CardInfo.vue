@@ -29,7 +29,7 @@
       </div>
       <!-- CONTENT -->
       <div class="pg-text-base lg:pg-text-lg pg-text-black pg-mt-4">
-        Engaged children and proven outcomes!
+        {{ $t('register.cardInfo.subtitle') }}
       </div>
     </div>
 

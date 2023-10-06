@@ -91,8 +91,8 @@
                 </v-btn>
                 <div class="pg-pt-10 pg-pl-4 pg-pr-4 text-center pg-text-base">
                   <span class="dialog-text">
-                    Sorry!<br />
-                    This class has been cancelled today. See you next time!
+                    {{ $t('lessonEnd.todayCard.title1') }}<br />
+                    {{ $t('lessonEnd.todayCard.title2') }}
                   </span>
                 </div>
                 <div

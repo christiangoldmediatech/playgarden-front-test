@@ -2,7 +2,7 @@
   <div class="letter-song-wrapper">
     <div class="letter-song-title">
       <v-row no-gutters justify="center" align="center">
-        <span class="letter-text pg-font-quick">Letter</span>
+        <span class="letter-text pg-font-quick">{{ $t('commonWords.letter') }}</span>
         <carousel-letter
           :name="letter.name"
           :picture="letter.picture"
@@ -38,7 +38,7 @@
               mdi-heart
             </v-icon>
             <span v-if="isCurrentSong(song.id)" class="song-playing-tag">
-              PLAYING
+              {{ $t('music.letterSongs.playing') }}
             </span>
           </div>
           <p class="song-description mb-0 pa-2 d-flex align-center !pg-font-quick">
@@ -58,7 +58,7 @@
                   mdi-playlist-music-outline
                 </v-icon>
               </template>
-              {{ isMobile ? 'Added to queue' : 'Add to queue' }}
+              {{ isMobile ? $t('music.letterSongs.addedQueue') : $t('music.letterSongs.addQueue') }}
             </v-tooltip>
           </div>
         </v-card>

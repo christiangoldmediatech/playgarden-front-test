@@ -45,7 +45,7 @@
                 class="text-left pg-capitalize pg-leading-[27px] !pg-text-[12px]"
               >
                 <span class="pg-font-[600]">
-                  FOR THE SAFETY OF OUR STUDENTS DURING THE LIVE CLASSES, WE NEED TO VERIFY WHO YOU ARE. Please add a credit card to your account. YOU WILL NOT BE CHARGED. Playgarden only charges when your trial has ended and you have confirmed your plan.
+                  {{ $t('payment.description') }}
                 </span>
               </p>
               <p
@@ -53,7 +53,7 @@
               >
                 <underlined-title
                   class="text-h6 text-md-h5"
-                  text="CREDIT CARD INFORMATION"
+                  :text="$t('payment.title')"
                 />
                 <br />
               </p>
@@ -62,9 +62,9 @@
               <p>
                 <center>
                   <span class="font-weight-bold text-completely !pg-leading-5">
-                    Playgarden Prep Online is COMPLETELY FREE for the next 15 days.
+                    {{ $t('payment.footer1') }}
                     <br />
-                    YOU CAN CANCEL YOUR TRIAL ANY TIME
+                    {{ $t('payment.footer2') }}
                   </span>
                 </center>
               </p>
@@ -74,9 +74,9 @@
                 <center class="ml-2">
                   <span class="info-pay">
                     <span class="d-none d-md-block pg-font-[600]">
-                      You can easily cancel your trial or membership at any time from your Account Settings. Once your free trial ends, you will be placed on the
-                      <span class="option-standar">ONLINE PRESCHOOL</span>
-                      monthly plan; your provided payment information will be automatically charged, and your first billing cycle will begin. You can change plans at any time from your Account Settings. For assistance, contact
+                      {{ $t('payment.footer3') }}
+                      <span class="option-standar">{{ $t('commonWords.onlinePreschool') }}</span>
+                      {{ $t('payment.footer4') }}
                       <span class="option-standar">hello@playgardenprep.com</span>
                     </span>
                   </span>
@@ -109,7 +109,7 @@
                 <NormalTitle
                   font-size="24px"
                   font-size-mobile="20px"
-                  text="Join thousands of happy families that have graduated from Playgarden Prep"
+                  :text="$t('payment.card.title')"
                 />
               </div>
             </template>
@@ -140,6 +140,7 @@ import {
 import { useGtm } from '@/composables/web/gtm'
 import { useUTM } from '@/composables/web/utm'
 import {
+  useLanguageHelper,
   usePayment,
   useToastHelper
 } from '@/composables'
@@ -168,6 +169,7 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const toast = useToastHelper()
+    const language = useLanguageHelper()
 
     const Gtm = useGtm()
     const Utm = useUTM({ route: route.value })
@@ -187,8 +189,8 @@ export default defineComponent({
 
     const stripeButtonText = computed(() => {
       return isUserInactive.value
-        ? 'REACTIVATE ACCOUNT'
-        : 'START LEARNING NOW'
+        ? language.t('payment.button1')
+        : language.t('payment.button2')
     })
 
     async function goToNextStep() {

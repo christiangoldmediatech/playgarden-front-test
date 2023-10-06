@@ -2,12 +2,12 @@
   <v-card class="pa-4 pa-sm-8 d-flex flex-column align-start account-card-border" :style="{ '--card-custom-color': generalInfoColor }">
     <div class="w-100 d-flex justify-space-between align-centers">
       <span class="account-card-title">
-        General Info
+        {{ $t('account.general.title') }}
       </span>
     </div>
 
     <div class="py-2 account-card-subtitle">
-      Manage your personal information.
+      {{ $t('account.general.subtitle') }}
     </div>
 
     <div class="account-green-dashed-line mt-2 mb-4 mx-auto"></div>
@@ -15,19 +15,19 @@
     <v-col cols="12">
       <v-row no-gutters>
         <v-col cols="6" class="d-flex flex-column">
-          <span class="account-field-label">Full name</span>
+          <span class="account-field-label">{{ $t('commonWords.fullName') }}</span>
           <p class="account-field-value ma-0">
             {{ userInfo.fullName }}
           </p>
         </v-col>
         <v-col cols="6" class="d-flex flex-column">
-          <span class="account-field-label">Phone number</span>
+          <span class="account-field-label">{{ $t('commonWords.phoneNumber') }}</span>
           <p class="account-field-value ma-0">
             {{ userInfo.phoneNumber }}
           </p>
         </v-col>
         <v-col cols="12" class="mt-4 d-flex flex-column">
-          <span class="account-field-label">Email</span>
+          <span class="account-field-label">{{ $t('commonWords.emailPlaceholder') }}</span>
           <p class="account-field-value ma-0">
             {{ userInfo.email }}
           </p>
@@ -43,7 +43,7 @@
         block
         @click="goToPage"
       >
-        VIEW MORE
+        {{ $t('commonWords.viewMore') }}
       </v-btn>
     </v-col>
   </v-card>

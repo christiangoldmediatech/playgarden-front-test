@@ -3,8 +3,8 @@
     <unlock-prompt
       v-show="false"
       v-if="hasPlayAndLearnPlan && !loading"
-      title="MUSIC"
-      desc="Unlock the full music library"
+      :title="$t('music.unlockPrompt.title')"
+      :desc="$t('music.unlockPrompt.description')"
       img="music.svg"
       :padding="150"
     />

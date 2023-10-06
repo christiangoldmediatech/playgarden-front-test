@@ -1,6 +1,7 @@
 import { Store } from 'vuex/types'
 import { ref, reactive } from '@nuxtjs/composition-api'
 import { CreateSurveyDto, SurveyQuestion, useSurvey } from '@/composables/survey/useSurvey.composable'
+import enLocale from '@/components/questionnaire/locales/questionnaire.en.locale'
 
 const questionnaireSurveyKey = 'POST-LOGIN-QUESTIONNAIRE'
 const activeQuestionnairePage = ref(0)
@@ -29,39 +30,34 @@ const questPageData = reactive<CreateSurveyDto['surveyData']>([
 
 const questDataState = reactive<Record<string, SurveyQuestion>>({
   question1: {
-    text: 'Which components of Playgarden Online do you plan on using?',
-    instructions: 'Select all that apply:',
+    text: enLocale.question1.text,
+    instructions: enLocale.question1.instructions,
     type: 'CHECKBOX',
-    options: [
-      'Structured Online Preschool Lessons',
-      'Live Zoom Classes',
-      'Printable Worksheets',
-      'Educational videos to replace TV'
-    ],
+    options: enLocale.question1.options,
     answer: [],
     order: 0
   },
   question2: {
-    text: 'How often do you plan on using Playgarden Online?',
-    instructions: 'Please tell us how many days a week do you expect to use Playgarden Online',
+    text: enLocale.question2.text,
+    instructions: enLocale.question2.instructions,
     type: 'RADIO',
-    options: ['1 day per week or less', '1-2 days per week', '3-4 days per week', '5 days per week'],
+    options: enLocale.question2.options,
     answer: '',
     order: 0
   },
   question3: {
-    text: 'Has your child attended an online learning program before?',
-    instructions: '',
+    text: enLocale.question3.text,
+    instructions: enLocale.question3.instructions,
     type: 'RADIO',
-    options: ['Yes', 'No'],
+    options: enLocale.question3.options,
     answer: '',
     order: 0
   },
   question4: {
-    text: 'Would you like to assess your child\'s progress for free using our partner, Cognitive Toybox?',
-    instructions: '',
+    text: enLocale.question4.text,
+    instructions: enLocale.question4.instructions,
     type: 'RADIO',
-    options: ['Yes', 'No', 'Not sure, reminde me later'],
+    options: enLocale.question4.options,
     answer: '',
     order: 1
   }

@@ -19,6 +19,7 @@
 import { computed, defineComponent, useStore } from '@nuxtjs/composition-api'
 import CancellationSteps from '@/components/app/payment/CancellationSteps.vue'
 import { TypedStore } from '@/models'
+import { useLanguageHelper } from '@/composables'
 
 export default defineComponent({
   name: 'TooExpensiveModal',
@@ -49,6 +50,7 @@ export default defineComponent({
   },
   emits: ['input', 'closeModal', 'reloadInformation'],
   setup(props, { emit }) {
+    const language = useLanguageHelper()
     const store = useStore<TypedStore>()
 
     const startFlow = computed({
@@ -81,30 +83,31 @@ export default defineComponent({
       return ((discountAmount.value / 100) * props.planInfo.priceMonthly).toFixed(2)
     })
 
-    const subtitle = computed(() => 'Is there a price that would better match your budget?')
+    const subtitle = computed(() => language.t('modals.tooExpensive.subtitle'))
 
-    const baseMessage = computed(() => {
+    const baseMessage = computed<any>(() => {
       if (hasPreschoolPlan.value) {
-        return 'Are you a member of our Mailing List? Subscribe now for weekly coupons, giveaways, and more! Give us another chance and we\'ll provide a ' +
-          `<span class="pg-text-[#78C383]">${discountAmount.value}% off discount </span>` +
-          '—That\'s ' +
-          `<span class="pg-text-[#78C383]">only $${discountedAmount.value} for the next three months.</span>`
+        return language.t('modals.tooExpensive.baseMessageFirstAlt1') +
+        `<span class="pg-text-[#78C383]"> ${discountAmount.value}% ${language.t('modals.tooExpensive.baseMessageFirstAlt2')}</span>` +
+        language.t('modals.tooExpensive.baseMessageFirstAlt3') +
+        `<span class="pg-text-[#78C383]"> ${language.t('modals.tooExpensive.baseMessageFirstAlt4', { price: discountedAmount.value })}</span>`
       } else if (hasPlayAndLearnLivePlan.value) {
-        return 'Are you a member of our Mailing List? Subscribe now for weekly coupons, giveaways, and more! Give us another chance and we\'ll provide a ' +
-          `<span class="pg-text-[#78C383]">${discountAmount.value}% off discount </span>` +
-          '—That\'s ' +
-          `<span class="pg-text-[#78C383]">only $${discountedAmount.value} for the next five months.</span>`
+        return language.t('modals.tooExpensive.baseMessageSecondAlt1') +
+          `<span class="pg-text-[#78C383]"> ${discountAmount.value}% ${language.t('modals.tooExpensive.baseMessageSecondAlt2')}</span>` +
+          language.t('modals.tooExpensive.baseMessageSecondAlt3') +
+          `<span class="pg-text-[#78C383]"> ${language.t('modals.tooExpensive.baseMessageSecondAlt4', { price: discountedAmount.value })}</span>`
       } else {
-        return 'We\'re sorry to see you go! Give us another chance and we\'ll provide a discount—' +
-        '<span class="pg-text-[#78C383]">A Play & Learn membership for only $9.99/month, forever!</span>'
+        return language.t('modals.tooExpensive.baseMessageThirdAlt1') + '' +
+          language.t('modals.tooExpensive.baseMessageThirdAlt2') +
+          `<span class="pg-text-[#78C383]"> ${language.t('modals.tooExpensive.baseMessageThirdAlt3')}</span>`
       }
     })
 
     const confirmationBtnText = computed(() => {
       if (hasPreschoolPlan.value || hasPlayAndLearnLivePlan.value) {
-        return `YES, I WANT ${discountAmount.value}% OFF`
+        return language.t('modals.tooExpensive.confirmation1', { price: `${discountAmount.value}%` })
       } else {
-        return 'YES, I WANT THIS DEAL'
+        return language.t('modals.tooExpensive.confirmation2')
       }
     })
 

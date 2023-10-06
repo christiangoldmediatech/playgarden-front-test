@@ -5,5 +5,6 @@ export default {
   getLoadingCaregiverInfo: get('loadingCaregiverInfo'),
   getLoadingNotifications: get('loadingNotifications'),
   getLoadingShippingAddressInfo: get('loadingShippingAddressInfo'),
-  getLoadingStudentProfileInfo: get('loadingStudentProfileInfo')
+  getLoadingStudentProfileInfo: get('loadingStudentProfileInfo'),
+  getLanguages: get('languages')
 }

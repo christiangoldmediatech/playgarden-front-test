@@ -2,7 +2,7 @@
   <div>
     <div v-if="loading || getOfflineWorksheet.length > 0" class="mb-4 d-flex align-center">
       <span class="title-dashboard">
-        Worksheets
+        {{ $t('socialEmotional.common.worksheets') }}
       </span>
     </div>
     <div v-if="getOfflineWorksheet.length > 0" class="card-offline">

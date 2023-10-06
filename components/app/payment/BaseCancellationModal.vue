@@ -32,7 +32,7 @@
 
     <v-col v-if="!hideInput" cols="12">
       <p class="subtitle px-8 mb-0">
-        <span class="subtitle-header">Tell us more: </span>
+        <span class="subtitle-header">{{ $t('modals.baseCancellation.title') }} </span>
         {{ subtitle }}
       </p>
     </v-col>
@@ -72,7 +72,7 @@
         :disabled="disabledBtn"
         @click="handleConfirmation(false, explanation)"
       >
-        NO, I JUST WANT TO CANCEL
+        {{ $t('modals.baseCancellation.cancel') }}
       </v-btn>
     </v-col>
 
@@ -84,6 +84,7 @@
 </template>
 
 <script lang="ts">
+import { useLanguageHelper } from '@/composables'
 import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
 import TellUsMoreModal from './TellUsMoreModal.vue'
 
@@ -122,8 +123,9 @@ export default defineComponent({
   },
   emits: ['input', 'confirmation', 'resetFlow'],
   setup(props, { emit }) {
+    const language = useLanguageHelper()
     const explanation = ref('')
-    const placeholder = computed(() => props.explanationRequired ? '(REQUIRED)' : '(Optional)')
+    const placeholder = computed(() => props.explanationRequired ? language.t('modals.textPlaceholderUppercase') : language.t('modals.textPlaceholderOptional'))
     const disabledBtn = computed(() => {
       if (!props.explanationRequired) {
         return false

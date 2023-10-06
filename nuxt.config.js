@@ -181,6 +181,35 @@ export default {
    */
   modules: [
     '@nuxtjs/sentry',
+    [
+      '@nuxtjs/i18n',
+      {
+        langDir: 'lang/',
+        locales: [
+          {
+            code: 'es',
+            file: 'es.js'
+          },
+          {
+            code: 'en',
+            file: 'en.js'
+          }
+        ],
+        defaultLocale: 'en',
+        strategy: 'no_prefix',
+        lazy: true,
+        detectBrowserLanguage: {
+          useCookie: true,
+          cookieKey: 'i18n_redirected',
+          redirectOn: 'root',
+          fallbackLocale: 'en'
+        },
+        vueI18nLoader: true,
+        vueI18n: {
+          fallbackLocale: 'en'
+        }
+      }
+    ],
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',

@@ -14,8 +14,8 @@
       v-else
       class="overlay-title pg-text-[20px] md:pg-text-xl mb-2 pg-px-5 pg-mt-[-30px] md:pg-mt-5 md:pg-px-0"
     >
-      Don't forget to join us in our next live class. <br v-if="$vuetify.breakpoint.mdAndUp" />
-      They are a great complement to the video lessons!
+      {{ $t('dailyLessons.scheduledFinished.description1') }} <br v-if="$vuetify.breakpoint.mdAndUp" />
+      {{ $t('dailyLessons.scheduledFinished.description2') }}
     </h2>
 
     <div v-if="isIntroLesson && (lessonDay === 1 || lessonDay === 3)">
@@ -56,8 +56,7 @@
       v-else
       class="overlay-subtitle pg-text-[20px] md:pg-text-[20px] pg-mt-7 md:pg-mt-6 pg-mb-5 md:pg-mb-[-15px] pg-w-full md:pg-w-10/12"
     >
-      If the schedule doesn't work for you, check out the recommended videos in
-      the Library!
+      {{ $t('dailyLessons.scheduledFinished.subtitle') }}
     </h3>
 
     <div
@@ -78,7 +77,7 @@
         <div
           class="pg-font-bold pg-text-center pg-text-lg pg-text-[#F89838] pg-py-4 pg-px-2"
         >
-          Come read with us in the book nook!
+          {{ $t('dailyLessons.scheduledFinished.librarySubtitle') }}
         </div>
       </v-card>
 
@@ -123,7 +122,7 @@
         <div
           class="pg-font-bold pg-text-center pg-text-lg pg-text-[#F89838] pg-py-4 pg-px-2"
         >
-          Go to next day
+          {{ $t('dailyLessons.scheduledFinished.nextDay') }}
           <v-icon color="#F89838">
             mdi-chevron-right
           </v-icon>
@@ -146,7 +145,7 @@
         <div
           class="pg-text-center pg-text-sm pg-text-[#F89838] pg-py-4 pg-px-2"
         >
-          Come read with us in the book nook!
+          {{ $t('dailyLessons.scheduledFinished.librarySubtitle') }}
         </div>
       </v-card>
 
@@ -189,7 +188,7 @@
         <div
           class="pg-text-center pg-text-lg pg-text-[#F89838] pg-py-4 pg-px-2 pg-mx-auto"
         >
-          Go to next day
+          {{ $t('dailyLessons.scheduledFinished.nextDay') }}
           <v-icon color="#F89838">
             mdi-chevron-right
           </v-icon>

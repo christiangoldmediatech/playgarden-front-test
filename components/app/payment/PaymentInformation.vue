@@ -3,12 +3,12 @@
     <v-divider class="w-100 mb-3" />
 
     <h2 class="payment-title mb-3">
-      Payment Method
+      {{ $t('paymentPlan.cards.title') }}
     </h2>
 
     <div v-for="(card, index) in userCards" :key="index" class="w-100">
       <h3 class="payment-subtitle mb-2">
-        Credit or debit cards
+        {{ $t('paymentPlan.cards.subtitle') }}
       </h3>
 
       <div class="d-flex justify-space-between">
@@ -28,7 +28,7 @@
         <v-icon left medium>
           mdi-plus-circle
         </v-icon>
-        <span class="add-payment-btn">Add a Payment Method</span>
+        <span class="add-payment-btn">{{ $t('paymentPlan.cards.add') }}</span>
       </v-btn>
     </div>
 
@@ -36,14 +36,14 @@
       <validation-observer v-slot="{ invalid }">
         <div class="w-100 d-flex justify-space-between align-center">
           <h3 class="payment-subtitle">
-            Credit or debit cards
+            {{ $t('paymentPlan.cards.subtitle') }}
           </h3>
           <v-btn
             text
             color="#F83838"
             @click="showCardForm = false"
           >
-            <span class="text-decoration-underline">DELETE CARD</span>
+            <span class="text-decoration-underline">{{ $t('paymentPlan.cards.delete') }}</span>
           </v-btn>
         </div>
         <validation-provider name="Card number" rules="required">
@@ -58,10 +58,10 @@
             :disabled="invalid"
             @click="saveCard"
           >
-            Save
+            {{ $t('paymentPlan.cards.save') }}
           </v-btn>
           <v-btn text color="#F89838" class="px-16" @click="showCardForm = false">
-            <span class="text-decoration-underline">Cancel</span>
+            <span class="text-decoration-underline">{{ $t('paymentPlan.cards.cancel') }}</span>
           </v-btn>
         </div>
       </validation-observer>
@@ -73,7 +73,7 @@
 
 <script lang="ts">
 import StripeCard from '@/components/forms/payment/StripeCard.vue'
-import { useToastHelper } from '@/composables'
+import { useLanguageHelper, useToastHelper } from '@/composables'
 import { defineComponent, useStore, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
@@ -90,6 +90,7 @@ export default defineComponent({
   },
   emits: ['update:cards'],
   setup(props, { emit }) {
+    const language = useLanguageHelper()
     const store = useStore()
     const token = ref<string>('')
     const showCardForm = ref(false)
@@ -114,7 +115,7 @@ export default defineComponent({
         } else {
           await store.dispatch('payment/addBillingCard', { ...data, sendEmail: true })
         }
-        toast.success('Card has been updated successfully!')
+        toast.success(language.t('paymentPlan.cards.success'))
         emit('update:cards')
       } catch (e: any) {
         toast.error(e.message)

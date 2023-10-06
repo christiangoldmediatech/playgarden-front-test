@@ -28,10 +28,10 @@
       </v-row>
       <v-row no-gutters justify="center">
         <h1 class="cancellation-title pg-text-[#F89838] pg-mb-[-20px]">
-          We're sad to see you go!
+          {{ $t('modals.annualSubscriptionCancellation.title') }}
         </h1>
         <h1 class="cancellation-title pg-text-[#707070] mt-0">
-          You will still have access to your account until
+          {{ $t('modals.annualSubscriptionCancellation.subtitle') }}
         </h1>
       </v-row>
     </v-col>
@@ -48,8 +48,8 @@
 
     <v-col cols="12">
       <p class="subtitle pg-font-[600] px-8 mb-0">
-        We're always looking to improve! <br />
-        Please let us know why you canceled below.
+        {{ $t('modals.annualSubscriptionCancellation.description1') }} <br />
+        {{ $t('modals.annualSubscriptionCancellation.description2') }}
       </p>
     </v-col>
 
@@ -57,7 +57,7 @@
       <v-row no-gutters class="px-8">
         <v-textarea
           v-model="explanation"
-          placeholder="(required field)"
+          :placeholder="$t('modals.textPlaceholder')"
           solo
           class="custom-text-field"
           no-resize
@@ -74,7 +74,7 @@
         large
         @click="handleCancelSubscription(true, explanation)"
       >
-        Cancel Subscription
+        {{ $t('modals.annualSubscriptionCancellation.cancel') }}
       </v-btn>
     </v-col>
     <img
@@ -85,7 +85,7 @@
 </template>
 
 <script lang="ts">
-import { useCancellation, useToastHelper } from '@/composables'
+import { useCancellation, useLanguageHelper, useToastHelper } from '@/composables'
 import { TypedStore } from '@/models'
 import { computed, defineComponent, ref, useStore } from '@nuxtjs/composition-api'
 
@@ -113,6 +113,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const store = useStore<TypedStore>()
     const toast = useToastHelper()
+    const language = useLanguageHelper()
     const { cancelSubscription } = useCancellation({ store, toast })
 
     const loading = ref(false)
@@ -134,7 +135,7 @@ export default defineComponent({
         await cancelSubscription(props.reasonMessage, explanation)
         emit('reloadInformation')
       } catch {
-        toast.error('Could not cancel subscription')
+        toast.error(language.t('modals.annualSubscriptionCancellation.error'))
       } finally {
         loading.value = false
         viewModal.value = false

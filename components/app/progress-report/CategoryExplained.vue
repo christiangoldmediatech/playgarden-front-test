@@ -33,6 +33,7 @@
 <script lang="ts">
 import { TypedStore } from '@/models'
 import { computed, defineComponent, useStore } from '@nuxtjs/composition-api'
+import { useLanguageHelper } from '@/composables'
 
 export default defineComponent({
   name: 'CategoryExplained',
@@ -50,21 +51,22 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore<TypedStore>()
+    const language = useLanguageHelper()
 
     const reports = computed(() => store.getters['admin/report-card/types'])
 
-    const reportDescription = computed(() => reports.value.find((report: any) => report.name === props.data.nameCardType).description)
+    const reportDescription = computed(() => reports.value.find((report: any) => report.name === props.data.nameCardType)?.description)
 
     const arrowLeftPosition = computed(() => {
       const category = props.data.nameCardType
       switch (category) {
-        case 'Cognitive':
+        case language.t('studentCubby.progressReport.cognitive'):
           return '30%'
-        case 'Language & Literacy':
+        case language.t('studentCubby.progressReport.languageAndLiteracy'):
           return '46%'
-        case 'Physical':
+        case language.t('studentCubby.progressReport.physical'):
           return '63%'
-        case 'Social and Emotional':
+        case language.t('studentCubby.progressReport.socialEmotional'):
           return '78%'
         default:
           return '30%'
@@ -72,20 +74,20 @@ export default defineComponent({
     })
 
     const reportValueDescription = computed(() => {
-      const valueDescription = {
+      const valueDescription: any = {
         title: '',
         description: ''
       }
 
       if (props.data.value !== undefined) {
         if (props.data.value <= 20) {
-          valueDescription.title = 'Progressing'
+          valueDescription.title = language.t('studentCubby.progressReport.progressing')
           valueDescription.description = props.data.progressing
         } else if (props.data.value > 20 && props.data.value <= 80) {
-          valueDescription.title = 'Age Appropriate'
+          valueDescription.title = language.t('studentCubby.progressReport.progressing')
           valueDescription.description = props.data.ageAppropiate
         } else {
-          valueDescription.title = 'Area of Strength'
+          valueDescription.title = language.t('studentCubby.progressReport.progressing')
           valueDescription.description = props.data.areaStrenght
         }
       }
@@ -98,13 +100,13 @@ export default defineComponent({
     const categoryColor = computed(() => {
       const category = props.data.nameCardType
       switch (category) {
-        case 'Cognitive':
+        case language.t('studentCubby.progressReport.cognitive'):
           return '255, 164, 172'
-        case 'Language & Literacy':
+        case language.t('studentCubby.progressReport.languageAndLiteracy'):
           return '120, 195, 131'
-        case 'Physical':
+        case language.t('studentCubby.progressReport.physical'):
           return '105, 190, 255'
-        case 'Social and Emotional':
+        case language.t('studentCubby.progressReport.socialEmotional'):
           return '255, 175, 75'
         default:
           return '255, 164, 172'

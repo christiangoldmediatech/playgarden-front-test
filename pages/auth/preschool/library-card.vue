@@ -23,7 +23,7 @@
             <v-icon class="mr-2" small left color="accent">
               mdi-less-than
             </v-icon>
-            Go Back
+            {{ $t('commonWords.return2') }}
           </v-btn>
         </v-row>
 
@@ -43,7 +43,7 @@
           <div
             class="text-center text-md-left pg-my-5 mt-md-0 pg-mb-9 md:pg-mb-12"
           >
-            <underlined-title text="Register with your library card number" />
+            <underlined-title :text="$t('register.libraryCard.header')" />
           </div>
 
           <!-- CARD VALIDATION FORM -->
@@ -54,7 +54,7 @@
           >
             <pg-text-field
               v-model="libraryCardNumber"
-              label="Library card number"
+              :label="$t('register.libraryCard.label')"
               clearable
               :disabled="loading"
               :loading="loading"
@@ -77,16 +77,16 @@
               type="submit"
               x-large
             >
-              SUBMIT
+              {{ $t('register.libraryCard.submit') }}
             </v-btn>
 
             <p class="pg-mt-6 mt-md-4 pg-text-center md:pg-text-left">
-              Your library card number (also called patron ID or account number) is the 14-digit number found on the library card, near the barcode.
+              {{ $t('register.libraryCard.info') }}
             </p>
 
             <!-- Hidden until link is provided -->
             <p class="pg-hidden pg-mt-6 mt-md-4 pg-text-center md:pg-text-left">
-              What is a library card number? <a class="!pg-text-[#F89838] pg-font-[800] !pg-underline" href="#">CLICK HERE</a>
+              {{ $t('register.libraryCard.whatIsALibraryCard') }} <a class="!pg-text-[#F89838] pg-font-[800] !pg-underline" href="#">{{ $t('register.libraryCard.clickHere') }}</a>
             </p>
           </v-form>
         </div>
@@ -96,8 +96,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useRouter } from '@nuxtjs/composition-api'
-import { useAccessorHelper } from '@/composables'
+import { defineComponent, ref, useMeta, useRouter } from '@nuxtjs/composition-api'
+import { useAccessorHelper, useLanguageHelper } from '@/composables'
 import WrongLibraryIdDialog from '@/components/app/library/WrongLibraryIdDialog.vue'
 
 export default defineComponent({
@@ -106,12 +106,15 @@ export default defineComponent({
   components: { WrongLibraryIdDialog },
 
   head() {
-    return {
-      title: 'Check your Library Card'
-    }
+    return {}
   },
 
   setup() {
+    const language = useLanguageHelper()
+    useMeta({
+      title: `${language.t('register.libraryCard.title')}`
+    })
+
     const store = useAccessorHelper().auth.signup
     const router = useRouter()
     const cardValidationForm = ref()
@@ -124,7 +127,7 @@ export default defineComponent({
     const isValidLibraryCard = (value: string) => {
       return (
         (!!value && value.length === 14) ||
-        'You must enter a valid 14 digit library card number'
+        `${language.t('register.libraryCard.invalidCard')}`
       )
     }
 
@@ -139,7 +142,7 @@ export default defineComponent({
         if (result) {
           return router.push({ name: 'auth-preschool-normal' })
         }
-        errorMessages.value = ['The library card number is not valid or does not exist']
+        errorMessages.value = [`${language.t('register.libraryCard.badCard')}` || '']
         setTimeout(() => { viewDialog.value = true }, 1000)
       } finally {
         loading.value = false

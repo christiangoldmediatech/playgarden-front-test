@@ -77,7 +77,7 @@ import {
   useStore
 } from '@nuxtjs/composition-api'
 
-import { useAuth } from '@/composables'
+import { useAuth, useLanguageHelper } from '@/composables'
 import { TypedStore, Child } from '@/models'
 
 import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVideoDialog.vue'
@@ -127,6 +127,8 @@ export default defineComponent({
       window.open(url.href, '_self')
     }
 
+    const lang = useLanguageHelper()
+
     const { isTutorial, startIntroDays } = useTutorialQuery({ route, router })
     const section = computed(() => {
       // Tutorial query parameters
@@ -146,9 +148,9 @@ export default defineComponent({
         dashboard: {
           imageUrl: require('@/assets/png/virtual-preschool/sections-images/dayli_lessons.png'),
           teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Beth-daily lessons.png'),
-          title: 'Daily Lessons',
+          title: `${lang.t('virtualPreschool.sections.dashboard.title')}`,
           route: { name: 'app-dashboard', query: dashboardQueryParams },
-          message: 'Learn everyday with personalized, structured video lessons and worksheets!',
+          message: `${lang.t('virtualPreschool.sections.dashboard.message')}`,
           audio: `${baseRoute}audio/virtual-preschool/Daily lessons.m4a`,
           color: '#359846',
           textColor: '#C9EE9D',
@@ -157,10 +159,9 @@ export default defineComponent({
         kidscorner: {
           imageUrl: require('@/assets/png/virtual-preschool/sections-images/kids_corner.png'),
           teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Katryna-kidscorner.png'),
-          title: 'Kids Corner',
+          title: `${lang.t('virtualPreschool.sections.kidscorner.title')}`,
           route: goToKidsCorner,
-          message:
-            'Children choose how to learn in a safe, fun space!',
+          message: `${lang.t('virtualPreschool.sections.kidscorner.message')}`,
           audio: `${baseRoute}audio/virtual-preschool/Kidscorner.m4a`,
           color: '#FCF394',
           textColor: '#AF7E00',
@@ -169,9 +170,9 @@ export default defineComponent({
         classes: {
           imageUrl: require('@/assets/png/virtual-preschool/sections-images/live_classes.png'),
           teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Lucy-Liveclasses.png'),
-          title: 'Live Classes & Playdates',
+          title: `${lang.t('virtualPreschool.sections.classes.title')}`,
           route: { name: 'app-live-classes', query: liveClassesQueryParams },
-          message: 'Connect with teachers and peers in daily zoom classes!',
+          message: `${lang.t('virtualPreschool.sections.classes.message')}`,
           audio: `${baseRoute}audio/virtual-preschool/Live classes.m4a`,
           color: '#F58E00',
           textColor: '#FEEAA5',
@@ -180,12 +181,12 @@ export default defineComponent({
         cubby: {
           imageUrl: require('@/assets/png/virtual-preschool/sections-images/student_cubby.png'),
           teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Ally_cubby.png'),
-          title: 'Student Cubby',
+          title: `${lang.t('virtualPreschool.sections.cubby.title')}`,
           route: {
             name: 'app-student-cubby-puzzle',
             query: { id: currentChild.value?.id }
           },
-          message: 'Save your work and track progress in your cubby!',
+          message: `${lang.t('virtualPreschool.sections.cubby.message')}`,
           audio: `${baseRoute}audio/virtual-preschool/Cubby.m4a`,
           color: '#FFC648',
           textColor: '#FF8000',
@@ -194,9 +195,9 @@ export default defineComponent({
         music: {
           imageUrl: require('@/assets/png/virtual-preschool/sections-images/music.png'),
           teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Emma_Music.png'),
-          title: 'Music',
+          title: `${lang.t('virtualPreschool.sections.music.title')}`,
           route: { name: 'app-music' },
-          message: 'Listen anytime, \n to sing and learn!',
+          message: `${lang.t('virtualPreschool.sections.music.message')}`,
           audio: `${baseRoute}audio/virtual-preschool/Music.m4a`,
           color: '#F6B7D2',
           textColor: '#CF2A5C',
@@ -205,9 +206,9 @@ export default defineComponent({
         library: {
           imageUrl: require('@/assets/png/virtual-preschool/sections-images/video_library.png'),
           teacherUrl: require('@/assets/png/virtual-preschool/teacher/Miss_Raulbel-Library.png'),
-          title: 'Video Library',
+          title: `${lang.t('virtualPreschool.sections.library.title')}`,
           route: { name: 'app-library', query: videoLibraryQueryParams },
-          message: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
+          message: `${lang.t('virtualPreschool.sections.library.message')}`,
           audio: `${baseRoute}audio/virtual-preschool/Library.m4a`,
           color: '#BFBFF7',
           textColor: '#8659C6',
@@ -216,10 +217,9 @@ export default defineComponent({
         wellbeing: {
           imageUrl: require('@/assets/png/virtual-preschool/sections-images/social_emotional.png'),
           teacherUrl: require('@/assets/png/virtual-preschool/teacher/teacher_well_being.png'),
-          title: 'Social & Emotional',
+          title: `${lang.t('virtualPreschool.sections.wellbeing.title')}`,
           route: { name: 'app-learn-play' },
-          message:
-            'Play and learn together with activities, games, books and so much more!',
+          message: `${lang.t('virtualPreschool.sections.wellbeing.message')}`,
           audio: `${baseRoute}audio/virtual-preschool/Social and emotional.m4a`,
           color: '#B2E68D',
           textColor: '#1A8901',

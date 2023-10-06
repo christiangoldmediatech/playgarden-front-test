@@ -32,7 +32,7 @@
 
     <v-col cols="12" class="px-10 py-0">
       <p class="pg-font-quick pg-text-[#707070] pg-text-[20px] pg-font-[500] pg-text-center">
-        We need your address in order to send you the Playgarden backpack and work books.
+        {{ $t('register.skipAddress.title') }}
       </p>
     </v-col>
 
@@ -58,7 +58,7 @@
           large
           @click="skipStep"
         >
-          REMIND ME LATER
+          {{ $t('register.skipAddress.skip') }}
         </v-btn>
       </v-row>
     </v-col>
@@ -71,7 +71,7 @@
 </template>
 
 <script lang="ts">
-import { useVuetifyHelper } from '@/composables'
+import { useLanguageHelper, useVuetifyHelper } from '@/composables'
 import { computed, defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
@@ -88,6 +88,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const vuetify = useVuetifyHelper()
+    const language = useLanguageHelper()
     const dialog = computed({
       get() {
         return props.value
@@ -98,7 +99,7 @@ export default defineComponent({
     })
 
     const btnText = computed(() => {
-      return vuetify.breakpoint.mobile ? 'GO BACK' : 'GO BACK AND ADD MY ADDRESS'
+      return vuetify.breakpoint.mobile ? language.t('register.skipAddress.btnText1') : language.t('register.skipAddress.btnText2')
     })
 
     const closeDialog = () => {

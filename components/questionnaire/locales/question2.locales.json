@@ -1,0 +1,16 @@
+{
+  "en": {
+    "text": "How often do you plan on using Playgarden Online?",
+    "instructions": "Please tell us how many days a week do you expect to use Playgarden Online",
+    "options": ["1 day per week or less", "1-2 days per week", "3-4 days per week", "5 days per week"],
+    "dayPerWeekOrLess": "DAY PER WEEK OR LESS",
+    "daysPerWeek": "DAYS PER WEEK"
+  },
+  "es": {
+    "text": "¿Con qué frecuencia planeas usar Playgarden Online?",
+    "instructions": "Díganos cuántos días a la semana espera utilizar Playgarden Online",
+    "options": ["1 día por semana o menos", "1-2 días por semana", "3-4 días por semana", "5 días por semana"],
+    "dayPerWeekOrLess": "DÍA POR SEMANA O MENOS",
+    "daysPerWeek": "DÍAS POR SEMANA"
+  }
+}

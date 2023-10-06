@@ -2,12 +2,12 @@
   <v-card class="pa-4 pa-sm-8 d-flex flex-column align-start account-card-border" :style="{ '--card-custom-color': shippingAddressColor }">
     <div class="w-100 d-flex justify-space-between align-centers">
       <span class="account-card-title">
-        Shipping Address
+        {{ $t('account.shipping.title') }}
       </span>
     </div>
 
     <div class="py-2 account-card-subtitle">
-      We use this information to send you Playgarden Prep educational materials.
+      {{ $t('account.shipping.subtitle') }}
     </div>
 
     <div class="account-blue-dashed-line mt-2 mb-4 mx-auto"></div>
@@ -15,31 +15,31 @@
     <v-col v-if="address" cols="12">
       <v-row no-gutters>
         <v-col class="d-flex flex-column" cols="4">
-          <span class="account-field-label">Street</span>
+          <span class="account-field-label">{{ $t('account.shipping.street') }}</span>
           <p class="account-field-value ma-0">
             {{ formattedAddress }}
           </p>
         </v-col>
         <v-col class="d-flex flex-column" cols="4">
-          <span class="account-field-label">City</span>
+          <span class="account-field-label">{{ $t('account.shipping.city') }}</span>
           <p class="account-field-value ma-0">
             {{ address.city }}
           </p>
         </v-col>
         <v-col cols="4" class="d-flex flex-column mb-auto">
-          <span class="account-field-label">Country</span>
+          <span class="account-field-label">{{ $t('account.shipping.country') }}</span>
           <p class="account-field-value ma-0">
             {{ formattedCountry }}
           </p>
         </v-col>
         <v-col cols="4" class="mt-4 d-flex flex-column">
-          <span class="account-field-label">State</span>
+          <span class="account-field-label">{{ $t('account.shipping.state') }}</span>
           <p class="account-field-value ma-0">
             {{ address.state }}
           </p>
         </v-col>
         <v-col cols="4" class="mt-4 d-flex flex-column">
-          <span class="account-field-label">Zip Code</span>
+          <span class="account-field-label">{{ $t('account.shipping.zip') }}</span>
           <p class="account-field-value ma-0">
             {{ address.zipCode }}
           </p>
@@ -63,7 +63,7 @@
         block
         @click="goToPage"
       >
-        VIEW MORE
+        {{ $t('commonWords.viewMore') }}
       </v-btn>
     </v-col>
   </v-card>

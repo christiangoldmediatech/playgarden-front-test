@@ -32,8 +32,8 @@
 
     <v-col cols="12" class="px-10 py-0">
       <p class="pg-font-quick pg-text-[#707070] pg-text-[20px] pg-font-[500] pg-text-center">
-        Begin your learning journey risk-free! <br />
-        Skip the credit card step now and add it when your free trial ends. Start your educational adventure today!
+        {{ $t('register.skipPayment.title1') }} <br />
+        {{ $t('register.skipPayment.title2') }}
       </p>
     </v-col>
 
@@ -59,7 +59,7 @@
           large
           @click="skipStep"
         >
-          REMIND ME LATER
+          {{ $t('register.skipPayment.skip') }}
         </v-btn>
       </v-row>
     </v-col>
@@ -73,7 +73,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from '@nuxtjs/composition-api'
-import { useVuetifyHelper } from '@/composables'
+import { useLanguageHelper, useVuetifyHelper } from '@/composables'
 
 export default defineComponent({
   name: 'SkipPaymentModal',
@@ -89,6 +89,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const vuetify = useVuetifyHelper()
+    const language = useLanguageHelper()
     const dialog = computed({
       get() {
         return props.value
@@ -99,7 +100,7 @@ export default defineComponent({
     })
 
     const btnText = computed(() => {
-      return vuetify.breakpoint.mobile ? 'GO BACK' : 'GO BACK AND ADD MY CREDIT CARD NOW'
+      return vuetify.breakpoint.mobile ? language.t('register.skipPayment.btnText1') : language.t('register.skipPayment.btnText2')
     })
 
     const closeDialog = () => {

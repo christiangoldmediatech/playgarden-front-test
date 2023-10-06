@@ -4,12 +4,18 @@
       <div class="pg-text-center">
         <template v-if="currentTutorialStep.step.id === 'step1'">
           <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6">
-            In your <span class="pg-text-[#FFAB37] pg-font-bold">STUDENT CUBBY</span>, you may also download worksheets in advance to be prepared for the next day of lessons.
+            {{ $localT('step1Ln1') }} <span class="pg-text-[#FFAB37] pg-font-bold">{{ $generalTutorialT('studentCubby') }}</span>{{ $localT('step1Ln2') }}
           </div>
         </template>
         <template v-if="currentTutorialStep.step.id === 'step2'">
           <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6 pg-pt-4">
-            For more information on how to use <span class="pg-text-[#F89838] pg-font-bold">Worksheets</span>, visit our FAQ page, or email us at <a class="!pg-text-[#F89838] !pg-font-bold" href="mailto:Hello@PlaygardenPrep.com">Hello@PlaygardenPrep.com</a>.
+            {{ $generalTutorialT('forMoreInformation') }} <span class="pg-text-[#F89838] pg-font-bold">{{ $localT('worksheets') }}</span>{{ $generalTutorialT('visitOurFaqPage') }}<br />
+            <a
+              class="!pg-text-[#F89838] !pg-font-bold"
+              :href="`mailto:${$generalTutorialT('email')}`"
+            >
+              {{ $generalTutorialT('email') }}
+            </a>
           </div>
         </template>
       </div>
@@ -20,6 +26,7 @@
 <script lang="ts">
 import { defineComponent, computed, useRoute, useRouter, onMounted, onUnmounted, useStore } from '@nuxtjs/composition-api'
 import { useTutorial, useTutorialQuery, useTutorialSteps, useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
+import { useLocalLanguageHelper } from '@/composables/i18n/use-local-language-helper.composable'
 import TutorialCard from '@/components/tutorial/TutorialCard.vue'
 import type { RawLocation } from 'vue-router'
 
@@ -38,6 +45,9 @@ export default defineComponent({
     const { addTutorialSteps, currentTutorialStep } = useTutorialSteps()
     const { shouldStartTutorial, isInitialTutorial, getTutorialQueryParams } = useTutorialQuery({ route, router })
     const { quizResult } = useTutorialQuiz({ store })
+    const { getLocalT } = useLocalLanguageHelper()
+    const $generalTutorialT = getLocalT('tutorial.general')
+    const $localT = getLocalT('tutorial.studentPortfolio')
 
     const doesTutorialEndHere = computed(() => {
       return (
@@ -97,8 +107,14 @@ export default defineComponent({
     })
 
     return {
-      currentTutorialStep
+      currentTutorialStep,
+      $generalTutorialT,
+      $localT
     }
   }
 })
 </script>
+
+<i18n src="@/lang/tutorial/tutorial.en.json"></i18n>
+
+<i18n src="@/lang/tutorial/tutorial.es.json"></i18n>

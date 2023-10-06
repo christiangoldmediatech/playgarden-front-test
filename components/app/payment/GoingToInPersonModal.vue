@@ -18,6 +18,7 @@
 import { computed, defineComponent, useStore } from '@nuxtjs/composition-api'
 import CancellationSteps from '@/components/app/payment/CancellationSteps.vue'
 import { TypedStore } from '@/models'
+import { useLanguageHelper } from '@/composables'
 
 export default defineComponent({
   name: 'GoingToInPersonModal',
@@ -48,6 +49,7 @@ export default defineComponent({
   },
   emits: ['input', 'closeModal', 'reloadInformation'],
   setup(props, { emit }) {
+    const language = useLanguageHelper()
     const store = useStore<TypedStore>()
 
     const startFlow = computed({
@@ -80,30 +82,31 @@ export default defineComponent({
       return ((discountAmount.value / 100) * props.planInfo.priceMonthly).toFixed(2)
     })
 
-    const subtitle = computed(() => 'We are sad to see you go, but glad to see you continuing your educational journey! Before you go, can you share some feedback about your time with us?')
+    const subtitle = computed(() => language.t('modals.goingToInPerson.subtitle'))
 
-    const baseMessage = computed(() => {
+    const baseMessage = computed<any>(() => {
       if (hasPreschoolPlan.value) {
-        return 'Did you know, some families use Playgarden in conjunction with in-person school? Give us another chance and we\'ll provide a ' +
-          `<span class="pg-text-[#78C383]">${discountAmount.value}% off discount</span>` +
-          '—That\'s ' +
-          `<span class="pg-text-[#78C383]">only $${discountedAmount.value} for the next three months.</span>`
+        return language.t('modals.goingToInPerson.baseMessageFirstAlt1') +
+        `<span class="pg-text-[#78C383]"> ${discountAmount.value}% ${language.t('modals.goingToInPerson.baseMessageFirstAlt2')}</span>` +
+        language.t('modals.goingToInPerson.baseMessageFirstAlt3') +
+        `<span class="pg-text-[#78C383]"> ${language.t('modals.goingToInPerson.baseMessageFirstAlt4', { price: discountedAmount.value })}</span>`
       } else if (hasPlayAndLearnLivePlan.value) {
-        return 'Did you know, some families use Playgarden in conjunction with in-person school? Give us another chance and we\'ll provide a ' +
-          `<span class="pg-text-[#78C383]">${discountAmount.value}% off discount </span>` +
-          '—That\'s ' +
-          `<span class="pg-text-[#78C383]">only $${discountedAmount.value} for the next five months.</span>`
+        return language.t('modals.goingToInPerson.baseMessageSecondAlt1') +
+          `<span class="pg-text-[#78C383]"> ${discountAmount.value}% ${language.t('modals.goingToInPerson.baseMessageSecondAlt2')}</span>` +
+          language.t('modals.goingToInPerson.baseMessageSecondAlt3') +
+          `<span class="pg-text-[#78C383]"> ${language.t('modals.goingToInPerson.baseMessageSecondAlt4', { price: discountedAmount.value })}</span>`
       } else {
-        return 'Did you know, some families use Playgarden in conjunction with in-person school? Give us another chance and we\'ll provide a discount—' +
-        '<span class="pg-text-[#78C383]">A Play & Learn membership for only $9.99/month, forever!</span>'
+        return language.t('modals.goingToInPerson.baseMessageThirdAlt1') + '' +
+          language.t('modals.goingToInPerson.baseMessageThirdAlt2') +
+          `<span class="pg-text-[#78C383]"> ${language.t('modals.goingToInPerson.baseMessageThirdAlt3')}</span>`
       }
     })
 
     const confirmationBtnText = computed(() => {
       if (hasPreschoolPlan.value || hasPlayAndLearnLivePlan.value) {
-        return `YES, I WANT ${discountAmount.value}% OFF`
+        return language.t('modals.goingToInPerson.confirmation1', { price: `${discountAmount.value}%` })
       } else {
-        return 'YES, I WANT THIS DEAL'
+        return language.t('modals.goingToInPerson.confirmation2')
       }
     })
 

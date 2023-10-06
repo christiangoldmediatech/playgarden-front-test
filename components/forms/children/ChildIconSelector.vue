@@ -25,10 +25,10 @@
 
     <div>
       <p v-if="!backpackId" class="text-wrap btn-text ma-0">
-        Choose an icon for your child
+        {{ $t('children.iconSelector.title1') }}
       </p>
       <p v-else class="text-wrap btn-text ma-0">
-        Change your child’s icon
+        {{ $t('children.iconSelector.title2') }}
       </p>
     </div>
     <v-dialog
@@ -53,7 +53,7 @@
         </div>
 
         <v-card-title class="justify-center selector-title">
-          CHOOSE AN ICON FOR YOUR CHILD:
+          {{ $t('children.iconSelector.title3') }}
         </v-card-title>
 
         <v-card-text>

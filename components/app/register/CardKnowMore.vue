@@ -45,7 +45,7 @@
         >
           <img src="@/assets/svg/play-learn/gift-box.svg" class="pg-h-[26px]">
           <span class="pg-ml-1 lg:pg-ml-2">
-            Your 15 Day Free Trial Includes:
+            {{ $t('payment.cardKnowMore.title') }}
           </span>
         </div>
 
@@ -53,8 +53,8 @@
           v-else
           class="pg-text-lg lg:pg-text-2xl pg-font-bold pg-text-pg-grey"
         >
-          WANT TO KNOW MORE ABOUT YOUR
-          <span class="pg-text-primary">FREE TRIAL</span>?
+          {{ $t('payment.cardKnowMore.subtitle1') }}
+          <span class="pg-text-primary">{{ $t('payment.cardKnowMore.subtitle2') }}</span>?
         </div>
       </div>
 
@@ -83,7 +83,7 @@
         </div>
 
         <div class="pg-text-center pg-text-sm">
-          *You can cancel your membership at any time from the Account Settings.
+          {{ $t('payment.cardKnowMore.footer') }}
         </div>
       </div>
     </div>

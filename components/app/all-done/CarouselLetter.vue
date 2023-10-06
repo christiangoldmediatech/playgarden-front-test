@@ -3,9 +3,8 @@
     <unlock-prompt
       v-if="isCurrentLessonUnavailableInPlan && isRouteOnDailyLessons"
       class="pg-mt-[80px]"
-      title="DAILY LESSONS"
-      desc="Upgrade your plan to have access to daily lessons with your favorite
-        playgarden prep teachers"
+      :title="$t('dailyLessons.unlockPrompt.title')"
+      desc="$t('dailyLessons.unlockPrompt.description')"
       img="person-with-laptop.png"
     />
     <v-col class="hidden-sm-and-down ma-0 pa-0">
@@ -38,7 +37,7 @@
           item-value="id"
           hide-details
           solo
-          placeholder="Browse by letter"
+          :placeholder="$t('dailyLessons.carouselLetter.placeholder')"
           v-bind="{ ...$attrs }"
           @input="$nuxt.$emit('show-curriculum-progress', $event)"
         >
@@ -54,10 +53,10 @@
                   v-if="item.picture"
                   class="font-weight-bold pl-4"
                 >
-                  Letter {{ item.name }}
+                  {{ $t('commonWords.letter') }} {{ item.name }}
                 </v-list-item-title>
                 <v-list-item-title v-else class="font-weight-bold pl-4">
-                  Letter {{ item.name.substr(0, 1) }}
+                  {{ $t('commonWords.letter') }} {{ item.name.substr(0, 1) }}
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -89,7 +88,7 @@
 
               <v-list-item-content>
                 <v-list-item-title class="pl-4">
-                  Letter {{ item.name.substr(0, 1) }}
+                  {{ $t('commonWords.letter') }} {{ item.name.substr(0, 1) }}
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>

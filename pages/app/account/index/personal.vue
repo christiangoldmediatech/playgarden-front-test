@@ -1,12 +1,19 @@
 <template>
   <pg-loading :loading="isLoading">
     <v-row no-gutters data-test-id="account-content" class="pa-4 pa-md-0">
+      <v-col cols="12">
+        <v-row no-gutters class="d-flex mt-2 mb-4">
+          <v-col cols="8" md="3" class="ml-auto">
+            <language-select />
+          </v-col>
+        </v-row>
+      </v-col>
       <v-col cols="12" md="6" class="mb-10 pr-md-8 mb-md-0">
         <v-card class="pa-4 pa-sm-8 d-flex flex-column align-start account-card-border" :style="{ '--card-custom-color': generalInfoColor }">
           <!-- Desktop Title -->
           <div class="w-100 d-flex justify-space-between align-centers">
             <span class="account-card-title">
-              General Info
+              {{ $t('account.general.title') }}
             </span>
 
             <v-btn
@@ -15,7 +22,7 @@
               color="#F89838"
               @click="setEditingGeneralInfo"
             >
-              <span class="text-decoration-underline">Edit</span>
+              <span class="text-decoration-underline">{{ $t('commonWords.edit') }}</span>
               <v-icon right>
                 mdi-pencil
               </v-icon>
@@ -23,7 +30,7 @@
           </div>
 
           <div class="py-2 account-card-subtitle">
-            Manage your personal information.
+            {{ $t('account.general.subtitle') }}
           </div>
 
           <div class="account-green-dashed-line my-4 mx-auto"></div>
@@ -37,7 +44,7 @@
           <!-- Desktop Title -->
           <div class="w-100 d-flex justify-space-between align-centers">
             <span class="account-card-title">
-              Shipping Address
+              {{ $t('account.shipping.title') }}
             </span>
 
             <v-btn
@@ -46,7 +53,7 @@
               color="#F89838"
               @click="setEditingShippingAddress"
             >
-              <span class="text-decoration-underline">Edit</span>
+              <span class="text-decoration-underline">{{ $t('commonWords.edit') }}</span>
               <v-icon right>
                 mdi-pencil
               </v-icon>
@@ -65,7 +72,7 @@
             <!-- SHIPPING ADDRESS IS PRESENT -->
             <div v-else-if="isShippingAddressFormVisible" key="shipping-address-present">
               <div class="my-2 account-card-subtitle">
-                We use this information to send you Playgarden Prep educational materials.
+                {{ $t('account.shipping.subtitle') }}
               </div>
 
               <div class="account-blue-dashed-line my-4"></div>
@@ -81,11 +88,11 @@
             <!-- SHIPPING ADDRESS IS REQUIRED TO SEND WELCOME KIT -->
             <div v-else key="shipping-address-required">
               <p class="mt-2 account-placeholder-text text-center">
-                Please enter your shipping address.
+                {{ $t('account.shipping.message') }}
               </p>
 
               <v-btn x-large block color="primary" class="mt-7" @click="showShippingAddressForm">
-                ADD ADDRESS
+                {{ $t('account.shipping.addAddress') }}
               </v-btn>
             </div>
           </v-fade-transition>
@@ -98,17 +105,19 @@
 <script lang="ts">
 import { mapGetters } from 'vuex'
 
-import GeneralInfo from '@/components/app/user/GeneralInfo.vue'
-import ShippingAddressDetails from '@/components/app/payment/ShippingAddressDetails.vue'
 import { defineComponent, onMounted, ref, useRoute } from '@nuxtjs/composition-api'
 import { useShippingAddress, useToastHelper } from '@/composables'
+import GeneralInfo from '@/components/app/user/GeneralInfo.vue'
+import ShippingAddressDetails from '@/components/app/payment/ShippingAddressDetails.vue'
+import LanguageSelect from '@/components/app/user/LanguageSelect.vue'
 
 export default defineComponent({
   name: 'Personal',
 
   components: {
     GeneralInfo,
-    ShippingAddressDetails
+    ShippingAddressDetails,
+    LanguageSelect
   },
 
   setup () {

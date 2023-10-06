@@ -6,7 +6,7 @@
 
     <div class="questionnaire-card">
       <div class="questionnaire-title pg-mb-5">
-        One last thing before you get started!
+        {{ $t('title') }}
       </div>
 
       <div
@@ -20,14 +20,14 @@
           <div
             class="pg-mb-4 pg-text-[#606060] pg-font-bold pg-text-base pg-leading-[20px]"
           >
-            {{ questDataState.question3.text }}
+            {{ $t('question3.text') }}
           </div>
           <v-radio
-            v-for="(option, index) in questDataState.question3.options"
+            v-for="(option, index) in question3Options"
             :key="`question-3-option-${index + 1}`"
             off-icon="mdi-radiobox-blank primary--text"
             :label="option"
-            :value="option"
+            :value="question3OptionsValues[index]"
           />
         </v-radio-group>
 
@@ -35,22 +35,21 @@
           <div
             class="pg-mb-4 pg-text-[#606060] pg-font-bold pg-text-base pg-leading-[20px]"
           >
-            Would you like to assess your child's progress for free using our
-            partner,
+            {{ $t('question4.textComp') }}
             <a
               class="warning--text !pg-underline"
               target="_blank"
               href="https://www.cognitivetoybox.com/"
             >
-              cognitive toybox
+              {{ $t('question4.cognitiveToybox') }}
             </a>?
           </div>
           <v-radio
-            v-for="(option, index) in questDataState.question4.options"
+            v-for="(option, index) in question4Options"
             :key="`question-4-option-${index + 1}`"
             off-icon="mdi-radiobox-blank primary--text"
             :label="option"
-            :value="option"
+            :value="question4OptionsValues[index]"
           />
         </v-radio-group>
       </div>
@@ -66,7 +65,7 @@
           "
           @click="onSave"
         >
-          GO TO FIRST DAY OF LEARNING
+          {{ $t('goToFirstDayOfLearning') }}
         </v-btn>
       </div>
     </div>
@@ -78,6 +77,7 @@ import dayjs from 'dayjs'
 import {
   defineComponent,
   onMounted,
+  computed,
   useStore,
   useRouter
 } from '@nuxtjs/composition-api'
@@ -85,6 +85,7 @@ import {
   useQuestionnaire,
   useQuestionnaireSave
 } from '@/composables/questionnaire/useQuestionnaire.composable'
+import { useLanguageHelper } from '@/composables'
 import type { RawLocation } from 'vue-router'
 
 export default defineComponent({
@@ -93,11 +94,27 @@ export default defineComponent({
   setup() {
     const store = useStore<unknown>()
     const router = useRouter()
+    const language = useLanguageHelper()
     const { questDataState, questPageData } = useQuestionnaire()
     const { isSaving, handleSave } = useQuestionnaireSave({ store })
 
-    let startTime = dayjs()
+    const question3Options = computed(() => {
+      return language.t('question3.options') as unknown as Array<string>
+    })
 
+    const question3OptionsValues = computed(() => {
+      return language.t('question3.options', 'en', undefined) as unknown as Array<string>
+    })
+
+    const question4Options = computed(() => {
+      return language.t('question4.options') as unknown as Array<string>
+    })
+
+    const question4OptionsValues = computed(() => {
+      return language.t('question4.options', 'en', undefined) as unknown as Array<string>
+    })
+
+    let startTime = dayjs()
     onMounted(() => {
       startTime = dayjs()
     })
@@ -115,6 +132,10 @@ export default defineComponent({
     return {
       questDataState,
       isSaving,
+      question3Options,
+      question3OptionsValues,
+      question4Options,
+      question4OptionsValues,
       onSave
     }
   }
@@ -124,3 +145,5 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '@/assets/scss/questionnaire';
 </style>
+
+<i18n src="./locales/question3.locales.json"></i18n>

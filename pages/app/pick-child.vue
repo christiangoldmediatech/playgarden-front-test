@@ -22,12 +22,12 @@
                 }"
               >
                 <h1 v-if="hasPlayAndLearnPlan" class="play-and-learn-title">
-                  Who’s at Play and Learn today?
+                  {{ $t('modals.pickChild.title') }}
                 </h1>
                 <underlined-title
                   v-else
                   class="text-h4 text-md-h3"
-                  text="Who is at school today?"
+                  :text="$t('modals.pickChild.titleAlt')"
                 />
               </div>
 
@@ -91,7 +91,7 @@
                 ]"
                 :to="{ name: 'app-account-index-student-profile' }"
               >
-                MANAGE STUDENT PROFILES
+                {{ $t('modals.pickChild.button') }}
               </v-btn>
             </v-card-text>
           </v-card>

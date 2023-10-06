@@ -10,10 +10,10 @@
               <div
                 class="account-card-title"
               >
-                Membership
+                {{ $t('account.membership.title') }}
               </div>
               <div class="py-2 account-card-subtitle">
-                Information about your membership
+                {{ $t('account.membership.subtitle') }}
               </div>
               <div class="account-pink-dashed-line my-4 mx-auto"></div>
             </v-col>
@@ -23,7 +23,7 @@
             <!-- Trial Period Description -->
             <v-row v-if="billing.status === 'trialing'" no-gutters>
               <v-col cols="12">
-                <span class="account-field-label">Free trial period ends:</span>
+                <span class="account-field-label">{{ $t('account.membership.trialPeriod') }}</span>
               </v-col>
 
               <v-col cols="12">
@@ -34,7 +34,7 @@
             <!-- Next Billing Date -->
             <v-row v-else no-gutters class="mb-3">
               <v-col cols="12">
-                <span class="account-field-label">Your next billing date is:</span>
+                <span class="account-field-label"> {{ $t('account.membership.nextBilling') }}</span>
               </v-col>
 
               <v-col cols="12">
@@ -45,7 +45,7 @@
             <!-- Monthly Membership Fee -->
             <v-row no-gutters class="mb-3">
               <v-col cols="12">
-                <span class="account-field-label">Your {{ membershipInterval }} membership fee is:</span>
+                <span class="account-field-label">  {{ $t('account.membership.feeDescription', {type: membershipInterval}) }}</span>
               </v-col>
 
               <v-col
@@ -119,7 +119,7 @@
                     class="account-field-label pg-py-0"
                   >
                     <span v-if="billing.planAmountDiscount || billing.percentOff">
-                      Coupon applied:
+                      {{ $t('account.membership.couponApplied') }}
                     </span>
                   </v-col>
                   <v-col cols="12" lg="4">
@@ -151,7 +151,7 @@
                         }}
                       </span>
                       <span class="account-field-label-small">
-                        discount on your membership
+                        {{ $t('account.membership.couponDiscount') }}
                       </span>
                       <v-icon color="#68C453" class="ml-2">
                         mdi-check-circle
@@ -174,7 +174,7 @@
                     mdi-plus-circle
                   </v-icon>
                   <span class="white--text">
-                    Add coupon code
+                    {{ $t('account.membership.addCoupon') }}
                   </span>
                 </v-btn>
               </v-col>
@@ -190,8 +190,8 @@
         <!-- Payment Method -->
         <membership-btn
           class="mb-4"
-          title="Billing history"
-          subtitle="View your billing history"
+          :title="$t('account.membership.billingHistory')"
+          :subtitle="$t('account.membership.viewBillingHistory')"
           color="#FAC3D9"
           text-color="#606060"
           @click="viewBillingHistory = true"
@@ -201,7 +201,7 @@
 
         <membership-btn
           v-if="billing.stripeStatus !== 'canceled'"
-          title="Payment Method"
+          :title="$t('account.membership.payment')"
           :subtitle="cardMaskedNumber"
           color="#CFBCE3"
           text-color="#606060"
@@ -236,7 +236,7 @@
             <v-col cols="12" class="text-center">
               <div class="pg-rounded-[9px] py-3" :style="{ 'background': plan.color }">
                 <div class="account-plan-text">
-                  Your Plan is:
+                  {{ $t('account.membership.plan') }}
                 </div>
                 <div class="account-plan-name">
                   {{ plan.name }}
@@ -266,8 +266,8 @@
             >
               <membership-btn
                 v-if="!isCaregiver"
-                title="Change plan"
-                subtitle="Change your plan whenever you want"
+                :title="$t('account.membership.changePlan')"
+                :subtitle="$t('account.membership.changePlanDescription')"
                 color="#F89838"
                 text-color="#FFFFFF"
                 @click="handleChangePlan"
@@ -301,7 +301,7 @@
             text
             @click="removeSubscriptionModal = true"
           >
-            CANCEL MEMBERSHIP
+            {{ $t('account.membership.cancelMembership') }}
           </v-btn>
           <!-- Create Subscription -->
           <!-- <v-btn v-else block color="primary" x-large @click="selectPlan">
@@ -313,18 +313,17 @@
         <div class="pg-mt-6 card-custom-border">
           <div class="text-center pa-4">
             <small class="v2-font pg-font-semibold pg-text-base pg-uppercase">
-              Add-on
+              {{ $t('account.membership.addOn') }}
             </small>
 
             <h3
               class="v2-font pg-text-[#BA89EB] pg-text-3xl pg-font-semibold mb-2"
             >
-              Learning Kits
+              {{ $t('account.membership.learningKits') }}
             </h3>
 
             <p class="v2-font pg-text-medium">
-              Add home delivery of the Learning Kits to any of the Enrollment
-              Plans
+              {{ $t('account.membership.learningKitsDesc') }}
             </p>
 
             <v-btn
@@ -334,7 +333,7 @@
               x-large
               @click="goToSummerPage"
             >
-              View More
+              {{ $t('commonWords.viewMore') }}
             </v-btn>
           </div>
         </div>
@@ -543,32 +542,6 @@ export default {
     plan: {},
     planInfo: {},
     leaveMotive: '',
-    leaveMotives: [
-      {
-        motive: 'Repeated technical issues',
-        modal: TechnicalIssuesCancellationModal.name
-      },
-      {
-        motive: 'Too expensive',
-        modal: TooExpensiveModal.name
-      },
-      {
-        motive: 'Using another learning platform',
-        modal: UsingOtherPlatformModal.name
-      },
-      {
-        motive: 'Going to in person school',
-        modal: GoingToInPersonModal.name
-      },
-      {
-        motive: "My little one wasn't engaged",
-        modal: LittleOneNotEngagedModal.name
-      },
-      {
-        motive: 'Other (please explain)',
-        modal: OtherReasonModal.name
-      }
-    ],
     learnAndPlayWasCanceled: false,
     viewTechnicalIssuesModal: false,
     viewTooExpensiveModal: false,
@@ -596,6 +569,35 @@ export default {
     ...mapGetters('auth', ['hasPlayAndLearnPlan']),
 
     ...mapGetters('payment', ['getBilling', 'getCards', 'getUserPlan']),
+
+    leaveMotives() {
+      return [
+        {
+          motive: this.$t('modals.cancelSubscription.motives.technicalIssues'),
+          modal: TechnicalIssuesCancellationModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.tooExpensive'),
+          modal: TooExpensiveModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.usingOtherPlatform'),
+          modal: UsingOtherPlatformModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.goingToInPerson'),
+          modal: GoingToInPersonModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.littleOneNotEngaged'),
+          modal: LittleOneNotEngagedModal.name
+        },
+        {
+          motive: this.$t('modals.cancelSubscription.motives.otherReason'),
+          modal: OtherReasonModal.name
+        }
+      ]
+    },
 
     membershipColor() {
       return '255, 160, 200'
@@ -655,12 +657,12 @@ export default {
     },
     membershipInterval() {
       switch (this.billing.billingType) {
-        case 'MONTHLY':
-          return 'monthly'
-        case 'ANNUAL':
-          return 'yearly'
+        case 'month':
+          return this.$i18n.t('account.membership.monthly')
+        case 'year':
+          return this.$i18n.t('account.membership.yearly')
         case 'BIANNUAL':
-          return 'by semester'
+          return this.$i18n.t('account.membership.biannual')
       }
       return null
     },

@@ -3,14 +3,14 @@
     <!-- HEADING -->
     <div :class="['pg-mt-6', 'pg-inline']">
       <UnderlinedTitle
-        text="SHIPPING ADDRESS"
+        :text="$t('register.shippingAddress.title')"
         font-size="40px"
         font-size-mobile="20px"
       />
     </div>
 
     <div class="mt-4 pg-text-lg pg-font-[600] pg-text-[#606060]">
-      We use this information to send you Playgarden Prep educational materials.
+      {{ $t('register.shippingAddress.subtitle') }}
     </div>
 
     <!-- CONTENT -->
@@ -46,7 +46,7 @@
               <NormalTitle
                 font-size="24px"
                 font-size-mobile="16px"
-                text="Join thousands of happy families that have graduated from Playgarden Prep"
+                :text="$t('register.shippingAddress.cardTitle')"
               />
             </div>
           </template>
@@ -64,7 +64,7 @@ import {
   useStore
 } from '@nuxtjs/composition-api'
 import CardInfo from '@/components/app/register/CardInfo.vue'
-import { useToastHelper, useAccessorHelper } from '@/composables'
+import { useToastHelper, useAccessorHelper, useLanguageHelper } from '@/composables'
 import {
   useSignupFlow,
   useSignupInvitation
@@ -100,6 +100,7 @@ export default defineComponent({
     const route = useRoute()
     const toast = useToastHelper()
     const store = useStore()
+    const language = useLanguageHelper()
 
     const SignupInvitation = useSignupInvitation({ route: route.value })
 
@@ -129,7 +130,7 @@ export default defineComponent({
 
         goToNextStep()
       } catch {
-        toast.error('Could not create shipping address')
+        toast.error(language.t('register.shippingAddress.error'))
       } finally {
         loading.value = false
       }

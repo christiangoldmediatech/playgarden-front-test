@@ -4,10 +4,10 @@
       <v-row v-for="(item, index) in draft" :key="index" no-gutters>
         <v-col>
           <h1 class="form-title">
-            CHILD INFORMATION
+            {{ $t('children.title') }}
           </h1>
           <h2 class="form-subtitle">
-            Tell us about your little one:
+            {{ $t('children.subtitle') }}
           </h2>
           <children-form
             class="mt-6"
@@ -43,7 +43,7 @@
             >
               <template #label>
                 <span class="pg-text-sm pg-text-[#606060] pg-font-[400] pg-pl-4">
-                  I acknowledge and agree that participation in LIve Zoom classes is limited to children aged 2 - 6 yrs old.
+                  {{ $t('register.registerForm.acknowledgement') }}
                 </span>
               </template>
             </VCheckbox>
@@ -63,7 +63,7 @@
             type="submit"
             x-large
           >
-            START LEARNING
+            {{ $t('children.button1') }}
           </v-btn>
 
           <v-btn
@@ -77,7 +77,7 @@
             x-large
             @click="addRow(null)"
           >
-            ADD ANOTHER CHILD
+            {{ $t('children.button2') }}
           </v-btn>
         </v-col>
       </v-row>

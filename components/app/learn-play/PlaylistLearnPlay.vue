@@ -2,7 +2,7 @@
   <div>
     <div v-if="loading || songs.length > 0" class="mb-4">
       <span class="title-dashboard">
-        Playlist
+        {{ $t('socialEmotional.common.playlist') }}
       </span>
     </div>
     <v-card class="pa-3">
@@ -19,7 +19,7 @@
         <v-col cols="12">
           <div id="topFive" class="ml-3">
             <div class="subtitle-dashboard mb-3">
-              Top five
+              {{ $t('socialEmotional.common.topFive') }}
             </div>
             <top-five v-if="songs && songs.length > 0" :songs="songs" />
             <div v-if="loading">

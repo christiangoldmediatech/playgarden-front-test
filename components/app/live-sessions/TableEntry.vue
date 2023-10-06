@@ -15,7 +15,7 @@
       @click.stop="openLink"
     >
       <div class="lsess-table-entry-live">
-        <span v-if="isLive" class="pg-uppercase">Live</span>
+        <span v-if="isLive" class="pg-uppercase">{{ $t('liveClasses.tableEntry.live') }}</span>
         <img
           class="lsess-table-entry-live-icon"
           :class="{ grayscale: entry.cancelled }"
@@ -77,8 +77,8 @@
         </template>
         <div class="pg-pt-4 pg-pl-10 pg-pr-2 text-center pg-text-base">
           <span class="v2-font">
-            Sorry!<br />
-            This class has been cancelled today. See you next time!
+            {{ $t('liveClasses.tableEntry.cancelled1') }}<br />
+            {{ $t('liveClasses.tableEntry.cancelled2') }}
           </span>
         </div>
       </v-tooltip>
@@ -90,12 +90,12 @@
       >
         <div class="lock pg-mb-1" />
 
-        <span class="pg-font-bold pg-text-sm">To unlock</span>
+        <span class="pg-font-bold pg-text-sm">{{ $t('liveClasses.tableEntry.toUnlock') }}</span>
 
         <span
           class="pg-text-accent pg-font-bold pg-underline pg-text-base pg-leading-tight"
         >
-          Upgrade your Plan
+          {{ $t('liveClasses.tableEntry.upgrade') }}
         </span>
       </div>
     </div>

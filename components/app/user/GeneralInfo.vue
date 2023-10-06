@@ -5,7 +5,7 @@
         <v-col cols="12">
           <v-row no-gutters>
             <v-col cols="12" md="6" class="pr-0 pr-md-4">
-              <span class="d-inline-block account-field-label mb-2">First name</span>
+              <span class="d-inline-block account-field-label mb-2">{{ $t('commonWords.firstName') }}</span>
               <pg-text-field
                 v-model="form.firstName"
                 background-color="#F7F7F7"
@@ -18,7 +18,7 @@
               />
             </v-col>
             <v-col cols="12" md="6" class="pl-0 pl-md-4">
-              <span class="d-inline-block account-field-label mb-2">Last name</span>
+              <span class="d-inline-block account-field-label mb-2">{{ $t('commonWords.lastName') }}</span>
               <v-text-field
                 v-model="form.lastName"
                 background-color="#F7F7F7"
@@ -32,7 +32,7 @@
           </v-row>
           <v-row no-gutters>
             <v-col cols="12">
-              <span class="d-inline-block account-field-label mb-2">Email address</span>
+              <span class="d-inline-block account-field-label mb-2">{{ $t('commonWords.emailPlaceholder') }}</span>
               <v-text-field
                 v-model="form.email"
                 background-color="#F7F7F7"
@@ -47,7 +47,7 @@
           <v-row no-gutters>
             <!-- This is just for showing a password field -->
             <v-col cols="12" md="6" class="pr-0 pr-md-4">
-              <span class="d-inline-block account-field-label mb-2">Password</span>
+              <span class="d-inline-block account-field-label mb-2">{{ $t('commonWords.password') }}</span>
               <v-text-field
                 value="*********"
                 background-color="#F7F7F7"
@@ -59,7 +59,7 @@
               />
             </v-col>
             <v-col cols="12" md="6" class="pl-0 pl-md-4">
-              <span class="d-inline-block account-field-label mb-2">Phone number</span>
+              <span class="d-inline-block account-field-label mb-2">{{ $t('commonWords.phoneNumber') }}</span>
               <v-text-field
                 v-model="form.phoneNumber"
                 background-color="#F7F7F7"
@@ -86,7 +86,7 @@
         :loading="loading"
         @click="saveUserInfo"
       >
-        Save
+        {{ $t('commonWords.save') }}
       </v-btn>
 
       <v-btn
@@ -97,7 +97,7 @@
         color="#F89838"
         @click="isEditing = false"
       >
-        CANCEL
+        {{ $t('commonWords.cancel') }}
       </v-btn>
     </template>
 
@@ -119,7 +119,7 @@
           elevation="0"
           v-on="on"
         >
-          Change Password
+          {{ $t('commonWords.changePassword') }}
         </v-btn>
       </template>
 
@@ -149,7 +149,7 @@
             src="@/assets/svg/facebook_icon.svg"
           >
 
-          <span class="text-none font-weight-bold text-caption text-sm-body-2">Sync your Facebook Account</span>
+          <span class="text-none font-weight-bold text-caption text-sm-body-2">{{ $t('account.general.syncFacebook') }}</span>
         </v-btn>
       </v-col>
 
@@ -162,7 +162,7 @@
             src="@/assets/svg/google_icon.svg"
           >
 
-          <span class="text-none font-weight-bold text-caption text-sm-body-2">Sync your Google Account</span>
+          <span class="text-none font-weight-bold text-caption text-sm-body-2">{{ $t('account.general.syncGoogle') }}</span>
         </v-btn>
       </v-col>
     </v-row>
@@ -177,7 +177,7 @@
           src="@/assets/svg/facebook_icon.svg"
         >
 
-        <span class="text-none font-weight-bold text-caption text-sm-body-2">Your account is synced with Facebook</span>
+        <span class="text-none font-weight-bold text-caption text-sm-body-2">{{ $t('account.general.connectedFacebook') }}</span>
       </div>
       <!-- GOOGLE -->
       <div v-if="userInfo.socialNetwork === 'GOOGLE'" class="my-2" text>
@@ -187,7 +187,7 @@
           src="@/assets/svg/google_icon.svg"
         >
 
-        <span class="text-none font-weight-bold text-caption text-sm-body-2">Your account is synced with Google</span>
+        <span class="text-none font-weight-bold text-caption text-sm-body-2">{{ $t('account.general.connectedGoogle') }}</span>
       </div>
     </v-row>
   </div>

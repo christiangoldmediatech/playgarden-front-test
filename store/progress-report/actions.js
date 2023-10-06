@@ -1,7 +1,7 @@
 export default {
 
-  async getGraphicByChildrenId ({ commit }, { childId }) {
-    const data = await this.$axios.$get(`/progress-reports/graphic/${childId}`)
+  async getGraphicByChildrenId ({ commit }, { childId, reportCardTypes }) {
+    const data = await this.$axios.$post(`/progress-reports/graphic/${childId}`, reportCardTypes)
     commit('SET_REPORT', data)
   },
 

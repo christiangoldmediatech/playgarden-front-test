@@ -22,18 +22,18 @@
       <!-- HEADING -->
       <div :class="['pg-mt-6', 'pg-inline']">
         <NormalTitle
-          text="CREATE AN ACCOUNT TO START LEARNING!"
+          :text="$t('register.title')"
           font-size="40px"
           font-size-mobile="20px"
         />
       </div>
 
       <div class="pg-text-xl pg-text-[rgba(96,96,96,0.5)]">
-        Are you excited for a fun-filled day of learning?
-        <span v-if="!isCreditCardRequired && !hasValidLibraryCard"> NO CREDIT CARD REQUIRED!</span>
+        {{ $t('register.subtitle1') }}
+        <span v-if="!isCreditCardRequired && !hasValidLibraryCard"> {{ $t('register.subtitle2') }}</span>
 
         <div v-if="hasValidLibraryCard" class="pg-font-semibold pg-mt-5">
-          Your library card number:
+          {{ $t('register.libraryCard.yourLibraryCardNum') }}
           <span class="pg-text-[#68C453] pg-font-bold">{{ libraryCardNumber }}</span>
         </div>
       </div>

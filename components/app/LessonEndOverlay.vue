@@ -22,20 +22,20 @@
           <h2
             class="overlay-title mb-2 pg-text-xl md:pg-text-4xl md:pg-mt-0 color-1 px-16 pt-2"
           >
-            Congratulations! <br>
-            {{ subtitle }}
+            {{ $t('lessonEnd.overlay.congratulations') }} <br>
+            {{ $t('lessonEnd.overlay.title') }}
           </h2>
           <h2
             v-if="step === 1 || step === 2"
             class="overlay-subtitle-1 color-3 pg-mb-0 md:pg-mb-6 pg-text-lg md:pg-text-2xl"
           >
-            If you still want more learning today you can:
+            {{ $t('lessonEnd.overlay.subtitle1') }}
           </h2>
           <h2
             v-if="upcomingMeeting && (step === 1 || step === 2)"
             class="overlay-subtitle-2 color-2 pg-mb-0 md:pg-mb-6 pg-text-lg md:pg-text-2xl"
           >
-            Join us in our next live class!
+            {{ $t('lessonEnd.overlay.subtitle2') }}
           </h2>
           <div v-if="upcomingMeeting && (step === 1 || step === 2)">
             <meeting-card
@@ -56,7 +56,7 @@
             <h3
               class="overlay-subtitle-2 color-3 pg-mb-4 md:pg-mb-6 pg-mt-2 md:pg-mt-4 pg-text-lg md:pg-text-2xl"
             >
-              For more daily learning, check out our other features:
+              {{ $t('lessonEnd.overlay.subtitle3') }}
             </h3>
             <div class="pg-w-full pg-flex justify-center align-center pg-flex-col md:pg-flex-row pg-gap-1 md:pg-gap-16" :class="[step === 3 ? 'px-3' : '']">
               <div
@@ -75,10 +75,10 @@
                     {{ section.title }}
                   </h4>
                   <h2 v-if="section.type === 'offline-worksheet'" class="section-type">
-                    Worksheet
+                    {{ $t('lessonEnd.overlay.sectionWorksheet ') }}
                   </h2>
                   <h2 v-if="section.type === 'online-worksheet'" class="section-type">
-                    Online Worksheet
+                    {{ $t('lessonEnd.overlay.sectionOnlineWorksheet ') }}
                   </h2>
                   <v-btn
                     v-if="section.type === 'offline-worksheet'"
@@ -99,7 +99,7 @@
                     text
                     small
                   >
-                    Go to Library
+                    {{ $t('lessonEnd.overlay.goToLibrary ') }}
                     <v-icon>
                       mdi-chevron-right
                     </v-icon>
@@ -112,7 +112,7 @@
                     text
                     small
                   >
-                    Go to Online Worksheets
+                    {{ $t('lessonEnd.overlay.goToOnlineWorksheets ') }}
                     <v-icon>
                       mdi-chevron-right
                     </v-icon>
@@ -126,7 +126,7 @@
                 v-if="upcomingMeeting && (step === 3)"
                 class="overlay-subtitle-2 color-2 pg-my-2 pg-text-lg"
               >
-                Join us in our next live class!
+                {{ $t('lessonEnd.overlay.subtitle2') }}
               </h2>
               <div v-if="upcomingMeeting && (step === 3)">
                 <meeting-card
@@ -144,7 +144,7 @@
                   <v-icon>
                     mdi-chevron-left
                   </v-icon>
-                  Watch video again
+                  {{ $t('lessonEnd.overlay.watchVideoAgain ') }}
                 </v-btn>
               </div>
               <img
@@ -168,7 +168,7 @@ import {
   useRouter
 } from '@nuxtjs/composition-api'
 import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
-import { LessonApiResponse } from '@/composables'
+import { LessonApiResponse, useLanguageHelper } from '@/composables'
 import SectionImageLAP from '@/components/app/virtual-preschool/SectionImageLAP.vue'
 import MeetingCard from './MeetingCard.vue'
 
@@ -183,6 +183,10 @@ export default defineComponent({
     value: {
       type: Boolean,
       default: false
+    },
+    worksheetUrl: {
+      type: String,
+      default: ''
     },
     lesson: {
       type: Object as () => LessonApiResponse,
@@ -224,15 +228,16 @@ export default defineComponent({
 
     const subtitle = computed(() => {
       if (props.step === 1) {
-        return 'You\'ve completed your first day of video lessons.'
+        return language.t('lessonEnd.overlay.title1stDay')
       } else if (props.step === 2) {
-        return 'You\'ve completed the second day of video lessons!'
+        return language.t('lessonEnd.overlay.title2ndDay')
       } else {
-        return 'You\'ve completed the third day of video lessons!'
+        return language.t('lessonEnd.overlay.title3rdDay')
       }
     })
 
     const router = useRouter()
+    const language = useLanguageHelper()
 
     const downloadWorksheet = () => {
       const worksheet = props.lesson.lesson.worksheets.find(({ type }) => type === 'OFFLINE')
@@ -245,7 +250,7 @@ export default defineComponent({
         return [
           {
             type: 'offline-worksheet',
-            title: 'Download worksheet of the day!',
+            title: language.t('lessonEnd.overaly.downloadWorksheet'),
             img: offlineWorksheetThumbnail.value,
             action: downloadWorksheet
           }
@@ -254,34 +259,33 @@ export default defineComponent({
         return [
           {
             type: 'video-library',
-            title: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
+            title: language.t('lessonEnd.overaly.exploreLibrary'),
             img: require('@/assets/svg/video-library.svg'),
             extraBgClass: 'position-bg',
             action: () => goTo({ name: 'app-library' })
           },
           {
             type: 'offline-worksheet',
-            title: 'Download worksheet of the day!',
-            img: offlineWorksheetThumbnail.value,
-            action: downloadWorksheet
-          }
-        ]
-      } else {
-        return [
-          {
-            type: 'online-worksheet',
-            title: 'Go to Online Worksheets',
-            img: require('@/assets/png/onlineWorksheet.png'),
-            action: () => goTo({ name: 'app-dashboard-online-worksheet', query: { redirectWorksheets: 'true' } })
-          },
-          {
-            type: 'offline-worksheet',
-            title: 'Download worksheet of the day!',
+            title: language.t('lessonEnd.overaly.downloadWorksheet'),
             img: offlineWorksheetThumbnail.value,
             action: downloadWorksheet
           }
         ]
       }
+      return [
+        {
+          type: 'online-worksheet',
+          title: language.t('lessonEnd.overaly.goToOnlineWorksheets'),
+          img: require('@/assets/png/onlineWorksheet.png'),
+          action: () => goTo({ name: 'app-dashboard-online-worksheet', query: { redirectWorksheets: 'true' } })
+        },
+        {
+          type: 'offline-worksheet',
+          title: language.t('lessonEnd.overaly.downloadWorksheet'),
+          img: offlineWorksheetThumbnail.value,
+          action: downloadWorksheet
+        }
+      ]
     })
 
     const goTo = (routName: any) => {

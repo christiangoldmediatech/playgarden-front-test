@@ -13,7 +13,7 @@
           clearable
           :disabled="loading"
           :error-messages="errors"
-          label="New password"
+          :label="$t('commonWords.newPassword')"
           :loading="loading"
           maxlength="20"
           solo
@@ -31,7 +31,7 @@
           clearable
           :disabled="loading"
           :error-messages="errors"
-          label="Password confirmation"
+          :label="$t('commonWords.passwordConfirmation')"
           :loading="loading"
           maxlength="20"
           solo
@@ -47,7 +47,7 @@
         type="submit"
         x-large
       >
-        CHANGE PASSWORD
+        {{ $t('commonWords.changePassword') }}
       </v-btn>
 
       <v-btn
@@ -60,7 +60,7 @@
         x-large
         @click="onCancel(reset)"
       >
-        CANCEL
+        {{ $t('commonWords.cancel') }}
       </v-btn>
     </v-form>
   </validation-observer>

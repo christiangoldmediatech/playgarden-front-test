@@ -44,7 +44,7 @@
         {{ `${totalCompletedWorksheets}/${totalWorksheets}` }}
       </div>
       <div class="dashboard-progress-tasks-text">
-        Worksheets
+        {{ $t('dailyLessons.worksheetPlural') }}
       </div>
     </div>
 
@@ -53,6 +53,7 @@
 </template>
 
 <script lang="ts">
+import { useLanguageHelper } from '@/composables'
 import { computed, defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
@@ -79,12 +80,13 @@ export default defineComponent({
   },
 
   setup (props) {
+    const language = useLanguageHelper()
     const isProgressCompleted = computed(() => props.progress === 100)
 
     const lessonProgressMessage = computed(() =>
       isProgressCompleted.value
-        ? 'You earned a puzzle piece'
-        : 'Do the worksheet to Win a Puzzle Piece!'
+        ? language.t('dailyLessons.panel.earnedPuzzlePiece')
+        : language.t('dailyLessons.panel.winPuzzlePiece')
     )
 
     const dashboardProgressBar1Percentage = computed(() => `${props.progress}%`)

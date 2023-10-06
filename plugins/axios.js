@@ -1,4 +1,4 @@
-import { setAxios } from '@/utils'
+import { setAxios, getLanguageCode } from '@/utils'
 
 export default function({ $axios, redirect, store, app, route }) {
   $axios.setBaseURL(process.env.apiBaseUrl)
@@ -13,6 +13,7 @@ export default function({ $axios, redirect, store, app, route }) {
     config.headers.common['X-Forwarded-For'] = userIp
     if (store.state.auth.accessToken) {
       config.headers.Authorization = `Bearer ${store.state.auth.accessToken}`
+      config.headers['x-custom-lang'] = (store.state.auth && store.state.auth.userInfo && store.state.auth.userInfo.language && getLanguageCode(store.state.auth.userInfo.language.code)) || 'en'
       $axios.setToken(store.state.auth.accessToken, 'Bearer')
     }
   })

@@ -11,7 +11,7 @@
       mdi-chevron-left
     </v-icon>
 
-    Back
+    {{ $t('commonWords.backButton') }}
   </button>
 </template>
 

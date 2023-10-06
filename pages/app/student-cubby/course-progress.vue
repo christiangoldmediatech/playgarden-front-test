@@ -5,10 +5,10 @@
         <!-- Section Title and Description -->
         <div class="d-flex align-center justify-center">
           <img height="80px" src="@/assets/png/student-cubby/abc.png" />
-          <span class="ml-4 text-h4 text-md-h3">CURRICULUM</span>
+          <span class="ml-4 text-h4 text-md-h3"> {{ $t('studentCubby.curriculum.text') }}</span>
         </div>
         <div class="my-6 text-md-h6 text-body-1">
-          Scroll through to review your lessons and worksheets!
+          {{ $t('studentCubby.curriculum.content') }}
         </div>
       </div>
 
@@ -30,8 +30,8 @@
     </v-card-text>
     <unlock-prompt
       v-if="hasPlayAndLearnPlan"
-      title="CURRICULUM"
-      desc="Scroll through to review your lessons and worksheets!"
+      :title="$t('studentCubby.curriculum.text')"
+      :desc="$t('studentCubby.curriculum.unlockText')"
       img="student-cubby/abc.png"
     />
 

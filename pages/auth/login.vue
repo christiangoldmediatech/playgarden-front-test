@@ -21,7 +21,7 @@
             <v-icon class="mr-2" small left color="accent">
               mdi-less-than
             </v-icon>
-            Go Back To Homepage
+            {{ $t('login.backBtnText') }}
           </v-btn>
         </v-row>
 
@@ -39,7 +39,7 @@
         <div class="login-form">
           <!-- FORM TITLE -->
           <div class="my-5 text-center mb-md-2 mt-md-0 text-md-left">
-            <underlined-title text="Welcome back!" />
+            <underlined-title :text="$t('login.title')" />
           </div>
 
           <!-- FORM LOADING -->
@@ -66,7 +66,7 @@
             </v-col>
 
             <v-col class="text-center">
-              or
+              {{ $t('commonWords.conjunctionText') }}
             </v-col>
 
             <v-col class="hr-line">
@@ -90,7 +90,7 @@
                   src="@/assets/svg/library-card-signup.svg"
                 />
 
-                <span class="spanSocialNetwork">Continue with your library card number</span>
+                <span class="spanSocialNetwork">{{ $t('register.registerForm.registerWithLibraryCard') }}</span>
               </v-btn>
             </v-col> -->
 
@@ -108,7 +108,7 @@
                   src="@/assets/svg/facebook_icon.svg"
                 />
 
-                <span class="spanSocialNetwork">Login with Facebook</span>
+                <span class="spanSocialNetwork">{{ $t('login.loginWithFb') }}</span>
               </v-btn>
             </v-col>
 
@@ -121,7 +121,7 @@
                   src="@/assets/svg/google_icon.svg"
                 />
 
-                <span class="spanSocialNetwork">Login with Google</span>
+                <span class="spanSocialNetwork">{{ $t('login.loginWithFb') }}</span>
               </v-btn>
             </v-col>
           </v-row>
@@ -397,8 +397,7 @@ export default {
           await this.$router.push(this.goToPage(this.userInfo))
         }
       } catch (error) {
-        this.errorMessage =
-          'Oops! The password you entered is incorrect. Please try again, or try resetting your password.'
+        this.errorMessage = this.$t('login.wrongPassword')
       } finally {
         this.loading = false
       }

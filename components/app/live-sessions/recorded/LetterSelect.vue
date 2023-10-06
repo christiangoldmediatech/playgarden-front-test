@@ -5,7 +5,7 @@
     item-value="id"
     hide-details
     solo
-    :placeholder="(labelTitle) ? labelTitle : 'Browse by letter'"
+    :placeholder="(labelTitle) ? labelTitle : $t('commonWords.browseByLetter')"
     v-bind="{ ...$attrs }"
     @input="$emit('input', $event)"
   >
@@ -20,7 +20,7 @@
             :src="item.icon"
           />
           <span class="hidden-sm-and-down">
-            Nature
+            {{ $t('dailyLessons.letterSelect.nature') }}
           </span>
         </v-btn>
       </v-list-item>
@@ -34,7 +34,7 @@
             :src="item.icon"
           />
           <span class="hidden-sm-and-down">
-            Welcome
+            {{ $t('dailyLessons.letterSelect.welcome') }}
           </span>
         </v-btn>
       </v-list-item>
@@ -46,7 +46,7 @@
 
         <v-list-item-content v-if="!slimVersion">
           <v-list-item-title class="font-weight-bold pl-4">
-            Letter {{ item.name.substr(0, 1) }}
+            {{ $t('commonWords.letter') }} {{ item.name.substr(0, 1) }}
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -63,7 +63,7 @@
             :src="item.icon"
           />
           <span class="hidden-sm-and-down">
-            Nature
+            {{ $t('dailyLessons.letterSelect.nature') }}
           </span>
         </v-btn>
       </v-list-item>
@@ -77,7 +77,7 @@
             :src="item.icon"
           />
           <span class="hidden-sm-and-down">
-            Welcome
+            {{ $t('dailyLessons.letterSelect.welcome') }}
           </span>
         </v-btn>
       </v-list-item>
@@ -89,7 +89,7 @@
 
         <v-list-item-content v-if="!slimVersion">
           <v-list-item-title class="pl-4">
-            Letter {{ item.name.substr(0, 1) }}
+            {{ $t('commonWords.letter') }} {{ item.name.substr(0, 1) }}
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>

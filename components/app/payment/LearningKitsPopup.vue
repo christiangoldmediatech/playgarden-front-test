@@ -28,7 +28,7 @@
           width="min-content"
           href="https://playgardenonline.myshopify.com/products/learning-kit-monthly-subscription"
         >
-          Buy Learning Kits
+          {{ $t('modals.learningKits.buy') }}
         </v-btn>
       </div>
     </div>
@@ -54,7 +54,7 @@
         width="min-content"
         href="https://playgardenonline.myshopify.com/products/learning-kit-monthly-subscription"
       >
-        Buy Learning Kits
+        {{ $t('modals.learningKits.buy') }}
       </v-btn>
     </div>
   </pg-dialog>

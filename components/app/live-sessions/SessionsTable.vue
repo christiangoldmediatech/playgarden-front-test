@@ -33,7 +33,7 @@
             <!-- No entries found for this day -->
             <v-card>
               <v-card-text class="text-h6 text-center">
-                There are no live classes programmed for this day.
+                {{ $t('liveClasses.sessionsTable.noLiveClasses') }}
               </v-card-text>
             </v-card>
           </template>
@@ -150,6 +150,7 @@ import { mapGetters, mapState } from 'vuex'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import dayjs from 'dayjs'
 import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { useLanguageHelper } from '@/composables'
 import TableEntry from './TableEntry.vue'
 import HolidayCard from './HolidayCard.vue'
 
@@ -193,6 +194,17 @@ export default defineComponent({
   setup() {
     const holidaysWeekHeight = ref('0px')
     const holidaysDayHeight = ref('0px')
+    const language = useLanguageHelper()
+
+    const days = ref([
+      language.t('liveClasses.days.sunday'),
+      language.t('liveClasses.days.monday'),
+      language.t('liveClasses.days.tuesday'),
+      language.t('liveClasses.days.wednesday'),
+      language.t('liveClasses.days.thursday'),
+      language.t('liveClasses.days.friday'),
+      language.t('liveClasses.days.saturday')
+    ])
 
     const resizeOb = ref(
       new ResizeObserver(function(entries) {
@@ -237,20 +249,11 @@ export default defineComponent({
       }
     }
 
-    return { holidaysWeekHeight, holidaysDayHeight, setObserver, unsetObserver }
+    return { days, holidaysWeekHeight, holidaysDayHeight, setObserver, unsetObserver, language }
   },
 
   data: () => {
     return {
-      days: [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday'
-      ],
       selectedDay: null,
       scrolling: false
     }

@@ -3,11 +3,11 @@
     <div class="d-flex flex-column align-center">
       <img src="@/assets/svg/welcome.svg" class="pg-block pg-mx-auto pg-w-8/12" />
       <h2 class="overlay-title pg-text-lg md:pg-text-4xl pg-mb-2">
-        Your free trial has officially begun!
+        {{ $t('welcome.overlay.title') }}
       </h2>
       <h2 class="overlay-subtitle pg-text-lg md:pg-text-2xl">
-        *Cancel any time from your <nuxt-link :to="{ name: 'app-account-index' }">
-          Account Settings
+        {{ $t('welcome.overlay.subtitle1') }} <nuxt-link :to="{ name: 'app-account-index' }">
+          {{ $t('welcome.overlay.subtitle2') }}
         </nuxt-link>
       </h2>
     </div>

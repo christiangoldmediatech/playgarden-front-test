@@ -8,8 +8,8 @@
       >
         <unlock-prompt
           v-if="hasBasicPlayAndLearnPlan && !loading"
-          title="LIVE CLASSES"
-          desc="Unlock the live classes section"
+          :title="$t('liveClasses.unlockPrompt.title')"
+          :desc="$t('liveClasses.unlockPrompt.description')"
           img="live-classes.svg"
           :padding="110"
           vertical
@@ -77,7 +77,7 @@
                     'white--text': viewMode === 'WEEK'
                   }"
                 >
-                  Week
+                  {{ $t('liveClasses.week') }}
                 </v-btn>
                 <v-btn
                   :color="viewMode === 'DAY' ? 'accent' : 'white'"
@@ -86,7 +86,7 @@
                     'white--text': viewMode === 'DAY'
                   }"
                 >
-                  Day
+                  {{ $t('liveClasses.day') }}
                 </v-btn>
               </v-btn-toggle>
 
@@ -115,13 +115,12 @@
             <v-row>
               <v-col cols="12">
                 <span id="time-zone-changer" class="font-weight-bold">
-                  *Hours are in {{ getAcronymCurrent }}, you can change your
-                  time zone by clicking
+                  {{ $t('liveClasses.timezone1') + ' ' + getAcronymCurrent + $t('liveClasses.timezone2') }}
                   <span
                     class=" text-decoration-underline font-weight-bold timezone"
                     @click="timezoneDialog = true"
                   >
-                    HERE
+                    {{ $t('commonWords.here') }}
                   </span>
                 </span>
               </v-col>
@@ -145,8 +144,8 @@
       >
         <unlock-prompt
           v-if="hasBasicPlayAndLearnPlan && !loading"
-          title="LIVE CLASSES"
-          desc="Unlock the live classes section"
+          :title="$t('liveClasses.unlockPrompt.title')"
+          :desc="$t('liveClasses.unlockPrompt.description')"
           img="live-classes.svg"
           vertical
           :top="-100"
@@ -154,7 +153,7 @@
         />
         <div class="header">
           <img class="camera-icon" src="@/assets/svg/sessions-camera.svg" />
-          Live Classes Schedule
+          {{ $t('liveClasses.schedule') }}
         </div>
 
         <week-selector
@@ -192,8 +191,7 @@
           <v-col v-if="orderedSessions.length === 0" cols="12">
             <v-card>
               <v-card-text class="text-center text-h6">
-                There are no live classes programmed for this week. Check back
-                later.
+                {{ $t('liveClasses.placeholder') }}
               </v-card-text>
             </v-card>
           </v-col>
@@ -225,7 +223,7 @@
             <v-icon class="mr-2" small left>
               mdi-less-than
             </v-icon>
-            Back
+            {{ $t('commonWords.backButton') }}
           </v-btn>
         </v-row>
         <v-col class="mt-16">
@@ -244,10 +242,10 @@
               tile
             >
               <p class="mt-5 text-center font-weight-bold">
-                Get access to Live Classes
+                {{ $t('liveClasses.access') }}
               </p>
               <p class="text-center">
-                Upgrade your plan
+                {{ $t('liveClasses.upgrade') }}
               </p>
               <v-row justify="center" no-gutters>
                 <v-btn
@@ -262,7 +260,7 @@
                   }"
                 >
                   <!-- nuxt to app-account-index ?changeplan=1 -->
-                  COMPARE PLANS
+                  {{ $t('liveClasses.compare') }}
                 </v-btn>
               </v-row>
             </v-card>
@@ -296,7 +294,7 @@
               >
                 <v-card-text>
                   <v-row justify="center" no-gutters>
-                    TIMEZONE
+                    {{ $t('liveClasses.timezone') }}
                   </v-row>
                   <v-row>
                     <pg-select
@@ -305,7 +303,7 @@
                       hide-details
                       item-text="name"
                       item-value="value"
-                      label="Timezone"
+                      :label="$t('liveClasses.timezoneLowercase')"
                       solo-labeled
                       :items="timezoneOptions"
                       class="select"
@@ -317,10 +315,10 @@
                       color="accent"
                       @click="saveTimeZone"
                     >
-                      Save
+                      {{ $t('commonWords.save') }}
                     </v-btn>
                     <v-btn class="mt-3" color="" @click="closeTimezoneModal">
-                      Close
+                      {{ $t('commonWords.close') }}
                     </v-btn>
                   </v-row>
                 </v-card-text>
@@ -352,7 +350,6 @@ import UnlockPrompt from '@/components/app/all-done/UnlockPrompt.vue'
 import HolidayCard from '@/components/app/live-sessions/HolidayCard.vue'
 import LiveClassesTutorial from '@/components/tutorial/pages/LiveClassesTutorial.vue'
 import LiveClassesTutorialBtn from '@/components/tutorial/wrappers/LiveClassesTutorialBtn.vue'
-
 import { useLiveClassesTutorial } from '@/composables/tutorial/use-live-classes-tutorial.composable'
 
 import { jsonCopy } from '@/utils'
@@ -585,7 +582,7 @@ export default {
         })
 
         // load mock data
-        const { liveSessions } = await useLiveClassesTutorial()
+        const { liveSessions } = await useLiveClassesTutorial(this.$i18n)
         this.$store.commit('live-sessions/SET_SESSIONS', liveSessions.meetings)
         this.$store.commit('live-sessions/SET_TOTAL', liveSessions.total)
       } finally {
@@ -798,3 +795,7 @@ export default {
   max-width: 100%;
 }
 </style>
+
+<i18n src="@/lang/tutorial/tutorial.en.json"></i18n>
+
+<i18n src="@/lang/tutorial/tutorial.es.json"></i18n>

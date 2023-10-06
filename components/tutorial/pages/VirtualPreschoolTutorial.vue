@@ -3,11 +3,11 @@
     <template v-if="currentTutorialStep">
       <div class="pg-text-center">
         <div v-if="showWelcome" class="pg-text-[#707070] pg-font-[Poppins] pg-font-bold pg-text-2xl pg-mb-4">
-          WELCOME!
+          {{ $generalTutorialT('welcome') }}
         </div>
         <template v-if="currentTutorialStep.step.id === 'step1'">
           <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6">
-            To start, click here to go to your Daily Lessons.
+            {{ $localT('step1') }}
           </div>
         </template>
         <template v-if="currentTutorialStep.step.id === 'step2'">
@@ -15,13 +15,13 @@
             class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6"
             :class="{ 'pg-pt-4': !showWelcome }"
           >
-            Click here to visit your<br />
-            <span class="pg-text-[#F89838] pg-font-bold">Live Classes</span>
+            {{ $localT('step2Ln1') }}<br />
+            <span class="pg-text-[#F89838] pg-font-bold">{{ $localT('step2Ln2') }}</span>
           </div>
         </template>
         <template v-if="currentTutorialStep.step.id === 'step3'">
           <div class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6">
-            Your worksheets are located in the Daily Lessons area.
+            {{ $localT('step3') }}
           </div>
         </template>
         <template v-if="currentTutorialStep.step.id === 'step4'">
@@ -29,7 +29,7 @@
             class="pg-text-[#606060] !pg-font-[Quicksand] pg-font-semibold pg-px-6"
             :class="{ 'pg-pt-4': !showWelcome }"
           >
-            For more educational videos, check out our <span class="pg-text-[#A4A4EB] pg-font-bold">Video Library</span>.
+            {{ $localT('step4Ln1') }} <span class="pg-text-[#A4A4EB] pg-font-bold">{{ $localT('step4Ln2') }}</span>.
           </div>
         </template>
       </div>
@@ -41,6 +41,7 @@
 import { defineComponent, computed, useStore, useRoute, useRouter, onMounted, onUnmounted } from '@nuxtjs/composition-api'
 import { RawLocation } from 'vue-router'
 import { useTutorial, useTutorialQuery, useTutorialSteps, useTutorialQuiz } from '@/composables/tutorial/use-tutorial.composable'
+import { useLocalLanguageHelper } from '@/composables/i18n/use-local-language-helper.composable'
 import TutorialCard from '@/components/tutorial/TutorialCard.vue'
 
 export default defineComponent({
@@ -58,6 +59,9 @@ export default defineComponent({
     const { addTutorialSteps, currentTutorialStep } = useTutorialSteps()
     const { shouldStartTutorial, tutorialStartStep, isInitialTutorial, getTutorialQueryParams } = useTutorialQuery({ route, router })
     const { resetQuizResults } = useTutorialQuiz({ store })
+    const { getLocalT } = useLocalLanguageHelper()
+    const $generalTutorialT = getLocalT('tutorial.general')
+    const $localT = getLocalT('tutorial.virtualPreschool')
 
     const showWelcome = computed(() => {
       return !!route.value.query.tutorialWelcome
@@ -157,8 +161,14 @@ export default defineComponent({
 
     return {
       currentTutorialStep,
-      showWelcome
+      showWelcome,
+      $generalTutorialT,
+      $localT
     }
   }
 })
 </script>
+
+<i18n src="@/lang/tutorial/tutorial.en.json"></i18n>
+
+<i18n src="@/lang/tutorial/tutorial.es.json"></i18n>

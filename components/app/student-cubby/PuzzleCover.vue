@@ -472,52 +472,52 @@ export default {
       const xPosition =
         pathElBoundaries.left + (pathElBoundaries.width / 2) - (menuWidth / 2)
 
-      let message = 'Unlock This in '
+      let message = this.$t('studentCubby.puzzle.unlockIntro')
       switch (index) {
         case 0:
-          message += `Video Letter ${this.letter} Day 1`
+          message += this.$t('studentCubby.puzzle.videoUnlock', { letter: this.letter, day: 1 })
           break
         case 1:
-          message += `Worksheet Letter ${this.letter} Day 1`
+          message += this.$t('studentCubby.puzzle.worksheetUnlock', { letter: this.letter, day: 1 })
           break
         case 2:
-          message += `Activities Letter ${this.letter} Day 1`
+          message += this.$t('studentCubby.puzzle.activitiesUnlock', { letter: this.letter, day: 1 })
           break
         case 3:
-          message += `Video Letter ${this.letter} Day 2`
+          message += this.$t('studentCubby.puzzle.videoUnlock', { letter: this.letter, day: 2 })
           break
         case 4:
-          message += `Worksheet Letter ${this.letter} Day 2`
+          message += this.$t('studentCubby.puzzle.worksheetUnlock', { letter: this.letter, day: 2 })
           break
         case 5:
-          message += `Activities Letter ${this.letter} Day 2`
+          message += this.$t('studentCubby.puzzle.activitiesUnlock', { letter: this.letter, day: 2 })
           break
         case 6:
-          message += `Video Letter ${this.letter} Day 3`
+          message += this.$t('studentCubby.puzzle.videoUnlock', { letter: this.letter, day: 3 })
           break
         case 7:
-          message += `Worksheet Letter ${this.letter} Day 3`
+          message += this.$t('studentCubby.puzzle.worksheetUnlock', { letter: this.letter, day: 3 })
           break
         case 8:
-          message += `Activities Letter ${this.letter} Day 3`
+          message += this.$t('studentCubby.puzzle.activitiesUnlock', { letter: this.letter, day: 3 })
           break
         case 9:
-          message += `Video Letter ${this.letter} Day 4`
+          message += this.$t('studentCubby.puzzle.videoUnlock', { letter: this.letter, day: 4 })
           break
         case 10:
-          message += `Worksheet Letter ${this.letter} Day 4`
+          message += this.$t('studentCubby.puzzle.worksheetUnlock', { letter: this.letter, day: 4 })
           break
         case 11:
-          message += `Activities Letter ${this.letter} Day 4`
+          message += this.$t('studentCubby.puzzle.activitiesUnlock', { letter: this.letter, day: 4 })
           break
         case 12:
-          message += `Video Letter ${this.letter} Day 5`
+          message += this.$t('studentCubby.puzzle.videoUnlock', { letter: this.letter, day: 5 })
           break
         case 13:
-          message += `Worksheet Letter ${this.letter} Day 5`
+          message += this.$t('studentCubby.puzzle.worksheetUnlock', { letter: this.letter, day: 5 })
           break
         case 14:
-          message += `Activities Letter ${this.letter} Day 5`
+          message += this.$t('studentCubby.puzzle.activitiesUnlock', { letter: this.letter, day: 5 })
           break
       }
 

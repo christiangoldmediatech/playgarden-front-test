@@ -4,6 +4,16 @@ export default () => ({
   currentChildExpires: null,
   paginationLimit: 50,
   showContent: false,
+  languages: [
+    {
+      code: 'en',
+      name: 'English'
+    },
+    {
+      code: 'es',
+      name: 'Español'
+    }
+  ],
 
   fullWidthPages: {
     'app-welcome': 1,

@@ -40,7 +40,7 @@
               class="text-left pg-capitalize pg-leading-[27px] !pg-text-[12px]"
             >
               <span class="pg-font-[600]">
-                Playgarden Online Features Live Zoom Classes With Teachers And Other Students. <span class="pg-text-[#F89838]">For The Safety Of Our Students</span>, We Need Your Credit Card Information <span class="pg-text-[#F89838]">For Verification Purposes</span>. You Will NOT Be Charged Until The End Of Your 15 Day Free Trial. Cancel Anytime Before Your Trial Ends, And Your Payment Method Will Be Deleted.
+                {{ $t('register.payment.desc1') }} <span class="pg-text-[#F89838]">{{ $t('register.payment.desc2') }}</span>, {{ $t('register.payment.desc3') }} <span class="pg-text-[#F89838]">{{ $t('register.payment.desc4') }}</span> {{ $t('register.payment.desc5') }}
               </span>
             </p>
             <p
@@ -48,7 +48,7 @@
             >
               <underlined-title
                 class="text-h6 text-md-h5"
-                text="CREDIT CARD INFORMATION"
+                :text="$t('register.payment.title')"
               />
               <br />
             </p>
@@ -57,9 +57,9 @@
             <p>
               <center>
                 <span class="font-weight-bold text-completely !pg-leading-5">
-                  Playgarden Prep Online is COMPLETELY FREE for the next 15 days.
+                  {{ $t('register.payment.footer1') }}
                   <br />
-                  YOU CAN CANCEL YOUR TRIAL ANY TIME
+                  {{ $t('register.payment.footer2') }}
                 </span>
               </center>
             </p>
@@ -73,7 +73,7 @@
               x-large
               @click="viewModal = true"
             >
-              SKIP FOR TODAY
+              {{ $t('register.payment.skip') }}
             </v-btn>
           </template>
         </StripePayForm>
@@ -102,7 +102,7 @@
               <NormalTitle
                 font-size="24px"
                 font-size-mobile="16px"
-                text="Join thousands of happy families that have graduated from Playgarden Prep"
+                :text="$t('register.payment.cardTitle')"
               />
             </div>
           </template>

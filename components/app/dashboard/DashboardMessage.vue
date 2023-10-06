@@ -22,7 +22,7 @@
           <v-col class="text-center pb-0" cols="12">
             <slot name="title">
               <h2>
-                Coming next!
+                {{ $t('dailyLessons.onlineWorksheet.coming') }}
               </h2>
             </slot>
           </v-col>

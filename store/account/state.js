@@ -3,5 +3,6 @@ export default () => ({
   loadingCaregiverInfo: false,
   loadingNotifications: false,
   loadingShippingAddressInfo: false,
-  loadingStudentProfileInfo: false
+  loadingStudentProfileInfo: false,
+  languages: []
 })

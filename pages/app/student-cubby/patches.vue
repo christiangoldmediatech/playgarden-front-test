@@ -8,10 +8,10 @@
           <!-- Section Title and Description -->
           <div class="d-flex align-center justify-center">
             <img height="80px" src="@/assets/png/student-cubby/patches.svg" />
-            <span class="ml-4 text-h4 text-md-h3">PATCHES</span>
+            <span class="ml-4 text-h4 text-md-h3">{{ $t('studentCubby.patches.text') }}</span>
           </div>
           <div class="my-6 text-md-h6 text-body-1">
-            Master subjects to collect patches for your Student Cubby!
+            {{ $t('studentCubby.patches.content') }}
           </div>
         </div>
 
@@ -28,8 +28,8 @@
       </v-card-text>
       <unlock-prompt
         v-if="hasPlayAndLearnPlan"
-        title="PATCHES"
-        desc="Master subjects in the Activities section to collect patches for your Student Cubby! Collect all badges to receive a real patch for your backpack."
+        :title="$t('studentCubby.patches.text')"
+        :desc="$t('studentCubby.puzzle.unlockText')"
         img="student-cubby/patches.svg"
       />
     </v-card>

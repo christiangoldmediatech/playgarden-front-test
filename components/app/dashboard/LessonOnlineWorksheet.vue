@@ -23,7 +23,7 @@
         </div>
 
         <div class="text-caption grey--text">
-          Online Worksheet
+          {{ $t('dailyLessons.onlineWorksheet.title') }}
         </div>
 
         <lesson-item-status v-if="isAdmin" tag="div" v-bind="{ item: onlineWorksheet }" />

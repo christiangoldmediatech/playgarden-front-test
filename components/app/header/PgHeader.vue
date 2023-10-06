@@ -85,7 +85,7 @@
           <!-- Toolbar Title -->
           <v-col v-if="!hasPlayAndLearnPlan" cols="12">
             <normal-title
-              text="Welcome to School"
+              :text="`${$t('virtualPreschool.header.welcomeMsg')}`"
               :font-size="appBarTitleSize"
               :font-size-mobile="appBarTitleSize"
               font-family="'Quicksand', sans-serif"
@@ -96,7 +96,7 @@
           <!-- Toolbar Description -->
           <v-col>
             <div class="text-body-1 text-md-h6 !pg-font-light">
-              Thank you for learning with us today!
+              {{ $t('virtualPreschool.header.welcomeMsgSubtitle') }}
             </div>
           </v-col>
         </v-row>
@@ -113,7 +113,7 @@
             @click="$router.push({ name: 'app-account-index' })"
           />
           <div class="text-caption">
-            Profile
+            {{ $t('virtualPreschool.header.profile') }}
           </div>
         </div>
 
@@ -128,7 +128,7 @@
               >
                 <img :src="require('@/assets/png/Help.png')" height="45" />
                 <div class="text-caption">
-                  Help
+                  {{ $t('virtualPreschool.header.help') }}
                 </div>
               </div>
             </template>
@@ -174,7 +174,7 @@
                       height="30"
                       :src="require('@/assets/png/FAQ.png')"
                     />
-                    FAQ
+                    {{ $t('virtualPreschool.header.faq') }}
                   </v-btn>
                 </v-list-item>
               </v-list>

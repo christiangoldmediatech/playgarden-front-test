@@ -1,6 +1,6 @@
 <template>
   <library-layout
-    title="Library"
+    :title="$t('videoLibrary.library')"
     :loading="isLoadingInitialData"
     show-favorites
   >
@@ -10,8 +10,8 @@
     <!-- Browse by letters / Browse by category -->
     <library-content-section
       :titles="{
-        columnA: 'Browse by Letters',
-        columnB: 'Browse by Category'
+        columnA: $t('videoLibrary.columnA'),
+        columnB: $t('videoLibrary.columnB')
       }"
       :height-override="`${libraryLetterBrowserY + 64}px`"
     >

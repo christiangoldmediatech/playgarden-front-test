@@ -29,7 +29,7 @@
         </p>
 
         <p class="positive-message pg-text-[#707070] pg-font-[500]">
-          Thanks for being a part of the Playgarden Online community!
+          {{ $t('modals.cancellationSteps.positive') }}
         </p>
       </template>
     </positive-cancellation-modal>
@@ -37,7 +37,7 @@
     <negative-cancellation-modal
       v-model="viewFirstNegativeModal"
       :hide-icon-and-title="hasDiscountBeenApplied"
-      title="Are you sure?"
+      :title="$t('modals.negativeCancellation.firstTitle')"
     >
       <intermediate-cancellation-modal
         :loading="loading"
@@ -56,14 +56,14 @@
         </p>
 
         <p class="positive-message pg-text-[#707070] pg-font-[500]">
-          Thanks for being a part of the Playgarden Online community!
+          {{ $t('modals.cancellationSteps.positive') }}
         </p>
       </template>
     </positive-cancellation-modal>
 
     <negative-cancellation-modal
       v-model="viewSecondNegativeModal"
-      title="Are you sure?"
+      :title="$t('modals.negativeCancellation.firstTitle')"
     >
       <intermediate-cancellation-modal :loading="loading" @intermediateResponse="handleSecondIntermediateResponse">
         <p class="intermediate-message" v-html="secondNegativeModalMessage"></p>
@@ -78,20 +78,21 @@
         </p>
 
         <p class="positive-message pg-text-[#707070] pg-font-[500]">
-          Thanks for being a part of the Playgarden Online community!
+          {{ $t('modals.cancellationSteps.positive') }}
         </p>
       </template>
     </positive-cancellation-modal>
 
     <negative-cancellation-modal
       v-model="viewThirdNegativeModal"
-      title="Sorry to see you go!"
+      :title="$t('modals.negativeCancellation.secondTitle')"
     >
       <final-cancellation-message />
     </negative-cancellation-modal>
 
     <credit-card-modal
       v-model="viewCreditCardModal"
+      :back-button-text="$t('modals.creditCard.backBtn')"
       @card-added="retryFailedSubscriptionChange"
     />
   </div>
@@ -107,7 +108,7 @@ import IntermediateCancellationModal from '@/components/app/payment/Intermediate
 import FinalCancellationMessage from '@/components/app/payment/FinalCancellationMessage.vue'
 import CreditCardModal from '@/components/app/payment/CreditCardModal.vue'
 import { PlanTier, TypedStore, UserFlow } from '@/models'
-import { useAuth, useBilling, useCancellation, useToastHelper } from '@/composables'
+import { useAuth, useBilling, useCancellation, useLanguageHelper, useToastHelper } from '@/composables'
 
 export default defineComponent({
   name: 'CancellationSteps',
@@ -176,6 +177,7 @@ export default defineComponent({
   },
   emits: ['input', 'closeModal', 'reloadInformation'],
   setup(props, { emit }) {
+    const language = useLanguageHelper()
     const store = useStore<TypedStore>()
     const toast = useToastHelper()
     const auth = useAuth({ store })
@@ -227,51 +229,51 @@ export default defineComponent({
 
     const firstPositiveModalMessage = computed(() => {
       if (hasPreschoolPlan.value) {
-        return 'Your 50% discount has been applied to your next 3 billing dates.'
+        return language.t('modals.positiveCancellation.firstMessageFirstAlt')
       } else if (hasPlayAndLearnLivePlan.value) {
-        return 'Your 40% discount has been applied to your next 5 billing dates.'
+        return language.t('modals.positiveCancellation.firstMessageSecondAlt')
       } else {
-        return 'Your discount has been applied to all future billing dates.'
+        return language.t('modals.positiveCancellation.firstMessageThirdAlt')
       }
     })
 
     const secondPositiveModalMessage = computed(() => {
       if (hasPreschoolPlan.value) {
-        return 'Your 15 day free trial of Play & Learn LIVE starts now.'
+        return language.t('modals.positiveCancellation.secondMessageFirstAlt')
       } else if (hasPlayAndLearnLivePlan.value) {
-        return 'Your 15 day free trial of Play & Learn starts now.'
+        return language.t('modals.positiveCancellation.secondMessageSecondAlt')
       }
     })
 
     const thirdPositiveModalMessage = computed(() => {
-      return 'Your 15 day free trial of Play & Learn starts now.'
+      return language.t('modals.positiveCancellation.thirdMessage')
     })
 
     const firstNegativeModalMessage = computed(() => {
       if (hasPreschoolPlan.value) {
-        return 'Do you know about our ' +
-          '<span class="pg-text-[#78C383]">Play & Learn LIVE </span>' +
-          'Program? For ' +
-          '<span class="pg-text-[#78C383]">only $39.99/month</span>, ' +
-          'you get even more engaging learning videos, well-being content, and UNLIMITED live classes—for a value of only $3 per class! <br />' +
-          '<span class="pg-text-[#F89838]">Do you want to try Play & Learn LIVE for free for 15 days?</span>'
+        return language.t('modals.negativeCancellation.firstMessageFirstAltPart1') + ' ' +
+          `<span class="pg-text-[#78C383]">${language.t('modals.negativeCancellation.firstMessageFirstAltPart2')} </span>` +
+          language.t('modals.negativeCancellation.firstMessageFirstAltPart3') + ' ' +
+          `<span class="pg-text-[#78C383]">${language.t('modals.negativeCancellation.firstMessageFirstAltPart4')}</span>, ` +
+          language.t('modals.negativeCancellation.firstMessageFirstAltPart5') + ' <br />' +
+          `<span class="pg-text-[#F89838]">${language.t('modals.negativeCancellation.firstMessageFirstAltPart6')}</span>`
       } else if (hasPlayAndLearnLivePlan.value) {
-        return 'For only ' +
-          '<span class="pg-text-[#AAD579]">$15.99/month</span>' +
-          ', our ' +
-          '<span class="pg-text-[#AAD579]">Play & Learn </span>' +
-          'program includes our full video library with over 1000 educational videos by real teachers, Well-Being content, and engaging music playlists, and more! <br />' +
-          '<span class="pg-text-[#359846]">Do you want to try Play & Learn for free for 15 days?</span>'
+        return language.t('modals.negativeCancellation.firstMessageSecondAltPart1') + ' ' +
+          `<span class="pg-text-[#AAD579]">${language.t('modals.negativeCancellation.firstMessageSecondAltPart2')}</span>` +
+          language.t('modals.negativeCancellation.firstMessageSecondAltPart3') + ' ' +
+          `<span class="pg-text-[#AAD579]">${language.t('modals.negativeCancellation.firstMessageSecondAltPart4')} </span>` +
+          language.t('modals.negativeCancellation.firstMessageSecondAltPart5') + ' <br />' +
+          `<span class="pg-text-[#359846]">${language.t('modals.negativeCancellation.firstMessageSecondAltPart6')}</span>`
       }
     })
 
     const secondNegativeModalMessage = computed(() => {
-      return 'For only ' +
-          '<span class="pg-text-[#AAD579]">$15.99/month</span>' +
-          ', our ' +
-          '<span class="pg-text-[#AAD579]">Play & Learn </span>' +
-          'program includes our full video library with over 1000 educational videos by real teachers, Well-Being content, and engaging music playlists, and more! <br />' +
-          '<span class="pg-text-[#359846]">Do you want to try Play & Learn for free for 15 days?</span>'
+      return language.t('modals.negativeCancellation.secondMessageFirstAltPart1') + ' ' +
+          `<span class="pg-text-[#AAD579]">${language.t('modals.negativeCancellation.secondMessageFirstAltPart2')}</span>` +
+          language.t('modals.negativeCancellation.secondMessageFirstAltPart3') + ' ' +
+          `<span class="pg-text-[#AAD579]">${language.t('modals.negativeCancellation.secondMessageFirstAltPart4')} </span>` +
+          language.t('modals.negativeCancellation.secondMessageFirstAltPart5') + ' <br />' +
+          `<span class="pg-text-[#359846]">${language.t('modals.negativeCancellation.secondMessageFirstAltPart6')}</span>`
     })
 
     const startFlow = computed({
@@ -354,7 +356,7 @@ export default defineComponent({
           viewFirstNegativeModal.value = true
         }
       } catch {
-        toast.error('Could not process plan cancellation')
+        toast.error(language.t('modals.cancellationSteps.error1'))
       } finally {
         loading.value = false
         viewBaseModal.value = false
@@ -372,7 +374,7 @@ export default defineComponent({
 
         await applySubscriptionCancelLogic(false)
       } catch {
-        toast.error('Could not process plan cancellation')
+        toast.error(language.t('modals.cancellationSteps.error2'))
       } finally {
         loading.value = false
         viewBaseModal.value = false
@@ -406,7 +408,7 @@ export default defineComponent({
           await applySubscriptionCancelLogic()
         }
       } catch {
-        toast.error('Something went wrong')
+        toast.error(language.t('modals.cancellationSteps.error2'))
       } finally {
         loading.value = false
         viewFirstNegativeModal.value = false
@@ -429,7 +431,7 @@ export default defineComponent({
           await applySubscriptionCancelLogic()
         }
       } catch {
-        toast.error('Something went wrong')
+        toast.error(language.t('modals.cancellationSteps.error2'))
       } finally {
         loading.value = false
         viewSecondNegativeModal.value = false
@@ -478,7 +480,7 @@ export default defineComponent({
 
         return true
       } catch {
-        toast.error('Could not change subscription plan')
+        toast.error(language.t('modals.cancellationSteps.error3'))
         return false
       }
     }

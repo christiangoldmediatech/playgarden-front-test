@@ -16,7 +16,7 @@
               mdi-less-than
             </v-icon>
 
-            Go Back to Home
+            {{ $t('paymentPlan.goBack') }}
           </v-btn>
         </v-col>
 
@@ -25,18 +25,18 @@
           <div
             class="pg-text-4xl pg-text-accent pg-font-bold pg-tracking-[1px] v2-font"
           >
-            Enrollment Plans
+            {{ $t('paymentPlan.title') }}
           </div>
 
           <!-- TEXT -->
           <div
             class="mt-8 mb-0 text-body-1 text-md-h5 pg-m-auto pg-max-w-[900px]"
           >
-            <div>Choose the plan that works best for your family!</div>
+            <div>{{ $t('paymentPlan.description1') }}</div>
             <div>
-              All our plans are <strong>FREE for the first 15 days</strong> followed by monthly payments, which you can cancel anytime.
+              {{ $t('paymentPlan.description2') }}
             </div>
-            <div>We offer important discounts to those families that commit for a semester of school.</div>
+            <div>{{ $t('paymentPlan.description3') }}</div>
           </div>
         </v-col>
 
@@ -53,8 +53,8 @@
           >
             {{
               isTrialExpired
-                ? 'YOUR TRIAL PERIOD HAS EXPIRED'
-                : 'YOUR TRIAL PERIOD IS EXPIRING'
+                ? $t('paymentPlan.trialExpired')
+                : $t('paymentPlan.trialExpiring')
             }}
           </div>
 
@@ -62,7 +62,7 @@
             v-else
             class="pg-text-4xl pg-text-[#BA89EB] pg-font-bold pg-tracking-[1px] v2-font"
           >
-            Change Plan
+            {{ $t('membership.changePlan') }}
           </div>
 
           <!-- TEXT -->
@@ -70,23 +70,21 @@
             v-if="!isTrialExpired"
             class="mt-8 mb-6 text-body-1 text-md-h5 pg-m-auto pg-max-w-[900px]"
           >
-            Your trial period
-            {{ isTrialExpired ? 'ended' : 'will end' }} on
+            {{ $t('paymentPlan.trialPeriod1') }}
+            {{ isTrialExpired ? $t('paymentPlan.trialEnded') : $t('paymentPlan.trialWillEnd') }} {{ $t('paymentPlan.trialPeriod2') }}
             <span class="pg-text-primary pg-font-semibold v2-font">
               {{ lastDayOfTrial }}.
             </span>
-            You {{ isTrialExpired ? 'were' : 'are currently' }} trialing the
+            {{ $t('paymentPlan.trialPeriod3') }} {{ isTrialExpired ? $t('paymentPlan.trialWere') : $t('paymentPlan.trialCurrently') }} {{ $t('paymentPlan.trialPeriod4') }}
             <span class="accent--text font-weight-bold">
               {{ userInfo.planSelected.name }}
             </span>
-            plan. After your trial {{ isTrialExpired ? 'ended' : 'ends' }} you
-            {{ isTrialExpired ? 'were' : 'will be' }} automatically placed into
-            the
+            {{ $t('paymentPlan.trialPeriod5') }} {{ isTrialExpired ? $t('paymentPlan.trialEnded') : $t('paymentPlan.trialEnds') }} {{ $t('paymentPlan.trialPeriod6') }}
+            {{ isTrialExpired ? $t('paymentPlan.trialWere') : $t('paymentPlan.trialWillBe') }} {{ $t('paymentPlan.trialPeriod7') }}
             <span class="accent--text font-weight-bold">
               {{ userInfo.planSelected.name }}
             </span>
-            monthly plan. If you would like to trial a different plan, you may
-            do so below!
+            {{ $t('paymentPlan.trialPeriod8') }}
           </div>
         </v-col>
 
@@ -113,7 +111,6 @@ import {
   useRoute,
   useRouter
 } from '@nuxtjs/composition-api'
-
 import SubscriptionPlanSelection from '@/components/app/payment/SubscriptionPlanSelection'
 
 import { useVuetifyHelper } from '@/composables'

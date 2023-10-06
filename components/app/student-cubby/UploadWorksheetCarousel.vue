@@ -51,11 +51,7 @@
                 mdi-plus-circle
               </v-icon>
               <span class="add-upload-text font-bold ">
-                {{
-                  loading
-                    ? 'VERIFYING LESSON'
-                    : 'UPLOAD WORKSHEET'
-                }}
+                {{ loadingText }}
               </span>
             </v-card>
           </v-col>
@@ -79,7 +75,7 @@
 </template>
 
 <script lang="ts">
-import { useVuetifyHelper } from '@/composables'
+import { useLanguageHelper, useVuetifyHelper } from '@/composables'
 import { defineComponent, onMounted, ref, computed, watch } from '@nuxtjs/composition-api'
 import WorksheetCard from '../learn-play/WorksheetCard.vue'
 import UploadedCard from './UploadedCard.vue'
@@ -112,6 +108,8 @@ export default defineComponent({
   },
   emits: ['click:upload'],
   setup(props) {
+    const language = useLanguageHelper()
+
     const worksheetsPaginate = ref<any[]>([])
     const vuetify = useVuetifyHelper()
     const currentPage = ref(1)
@@ -125,6 +123,8 @@ export default defineComponent({
 
       return [...formattedWorksheets, { type: 'upload-btn' }]
     })
+
+    const loadingText = computed(() => props.loading ? language.t('studentCubby.portfolio.verifying') : language.t('studentCubby.portfolio.upload'))
 
     function handleDownloadWorksheetClick(item: any) {
       window.open(item.pdfUrl, '_blank')
@@ -175,7 +175,8 @@ export default defineComponent({
       worksheetsPaginate,
       handleDownloadWorksheetClick,
       nextWorksheets,
-      previousWorksheets
+      previousWorksheets,
+      loadingText
     }
   }
 })

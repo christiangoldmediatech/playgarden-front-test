@@ -1,5 +1,6 @@
 import { get } from 'lodash'
 import dayjs from 'dayjs'
+import { getLanguageCode } from '@/utils'
 import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscriptionWhitelistedRoutes.json'
 import routeHandlerIgnoredRoutes from '~/utils/consts/routeHandlerIgnoredRoutes.json'
@@ -51,12 +52,33 @@ export default async function ({ redirect, route, store, app, req }) {
     }
   }
 
+  isLoggedIn = await store.dispatch('auth/checkAuth', undefined, { root: true })
+
+  if (isLoggedIn && !isUserInStore) {
+    await store.dispatch('auth/fetchUserInfo', undefined, { root: true })
+  }
+
+  user = store.getters['auth/getUserInfo']
+
+  // Set language
+  const availableLanguages = store.getters.getLanguages.map(lang => lang.code)
+  const currentAppliedLanguage = app.i18n.locale
+  const browserLanguage = navigator.language
+  const browserLanguageCode = getLanguageCode(browserLanguage)
+
+  if (user && user.language) {
+    const languageToApply = user.language ? getLanguageCode(user.language.code) : 'en'
+    app.i18n.setLocale(languageToApply)
+  } else if (currentAppliedLanguage && availableLanguages.includes(currentAppliedLanguage)) {
+    app.i18n.setLocale(currentAppliedLanguage)
+  } else if (browserLanguageCode !== currentAppliedLanguage && availableLanguages.includes(browserLanguageCode)) {
+    app.i18n.setLocale(browserLanguageCode)
+  }
+
   const noUserFlow = route.query.noUserFlow
   if (noUserFlow && route.name === 'app-payment-iframe-plan') {
     return
   }
-
-  isLoggedIn = await store.dispatch('auth/checkAuth', undefined, { root: true })
 
   if (route.name === 'app-payment-iframe-plan' && !route.query.isLogged && isLoggedIn) {
     return redirect({ name: 'app-payment-iframe-plan', query: { isLogged: true } })

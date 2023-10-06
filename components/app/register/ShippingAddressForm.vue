@@ -34,7 +34,7 @@
                         clearable
                         :disabled="loading"
                         :error-messages="errors"
-                        label="City"
+                        :label="$t('register.shippingAddress.city')"
                         class="custom-text-field"
                         :loading="loading"
                         solo-labeled
@@ -56,7 +56,7 @@
                         clearable
                         :disabled="loading"
                         :error-messages="errors"
-                        label="State"
+                        :label="$t('register.shippingAddress.state')"
                         class="custom-text-field"
                         :loading="loading"
                         solo-labeled
@@ -76,7 +76,7 @@
                       <v-autocomplete
                         v-model="draft.country"
                         :items="countries"
-                        label="Country"
+                        :label="$t('register.shippingAddress.country')"
                         clearable
                         item-text="name"
                         item-value="code"
@@ -104,7 +104,7 @@
                         clearable
                         :disabled="loading"
                         :error-messages="errors"
-                        label="Zip Code"
+                        :label="$t('register.shippingAddress.zipCode')"
                         class="custom-text-field"
                         :loading="loading"
                         solo-labeled
@@ -124,7 +124,7 @@
                         clearable
                         :disabled="loading"
                         :error-messages="errors"
-                        label="Phone Number"
+                        :label="$t('register.shippingAddress.phoneNumber')"
                         class="custom-text-field"
                         :loading="loading"
                         solo-labeled
@@ -143,7 +143,7 @@
                   type="submit"
                   x-large
                 >
-                  CONTINUE
+                  {{ $t('register.shippingAddress.continue') }}
                 </v-btn>
 
                 <v-btn
@@ -156,7 +156,7 @@
                   x-large
                   @click="viewModal = true"
                 >
-                  SKIP FOR NOW
+                  {{ $t('register.shippingAddress.skip') }}
                 </v-btn>
               </v-col>
             </v-row>
@@ -172,7 +172,7 @@
 import { computed, defineComponent, onMounted, ref, useStore } from '@nuxtjs/composition-api'
 import { jsonCopy } from '@/utils/objectTools'
 import SearchAddressAutocomplete from '@/components/SearchAddressAutocomplete.vue'
-import { useToastHelper } from '@/composables'
+import { useLanguageHelper, useToastHelper } from '@/composables'
 import SkipAddressModal from './SkipAddressModal.vue'
 
 interface AddressDraft {
@@ -212,6 +212,7 @@ export default defineComponent({
     const toast = useToastHelper()
     const loadingCountries = ref(false)
     const store = useStore()
+    const language = useLanguageHelper()
     const draft = ref<AddressDraft>({ ...draftDefault })
 
     const countries = computed(() => store.getters['countries/countries'])
@@ -262,7 +263,7 @@ export default defineComponent({
       try {
         await store.dispatch('countries/getCountries')
       } catch {
-        toast.error('Could not load the countries')
+        toast.error(language.t('register.shippingAddress.loadCountriesError'))
       } finally {
         loadingCountries.value = false
       }

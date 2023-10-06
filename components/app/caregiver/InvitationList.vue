@@ -2,7 +2,7 @@
   <v-row no-gutters>
     <v-col v-if="invitationSent.length === 0" cols="12">
       <p class="account-caregiver-subtitle ma-0">
-        You don´t have any pending invites
+        {{ $t('account.caregivers.pendingDescription') }}
       </p>
     </v-col>
     <v-col v-else cols="12">

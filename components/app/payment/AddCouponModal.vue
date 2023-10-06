@@ -23,7 +23,7 @@
           <p
             class="text-center font-weight-bold pg-text-[20px] pg-leading-[25px]"
           >
-            Add Coupon Code
+            {{ $t('account.membership.addCoupon') }}
           </p>
         </v-col>
       </v-row>
@@ -31,7 +31,7 @@
         <v-col cols="12">
           <pg-text-field
             v-model="promotionCode"
-            label="Promotion Code"
+            :label="$t('account.membership.couponPlaceholder')"
             class="custom-text-field"
             :color="isValidCoupon ? '' : 'error'"
             :suffix="getTextValidateCoupon"
@@ -39,9 +39,7 @@
             solo
           />
           <small class="note-text mt-n4 mb-5">
-            *Note that you may only use one promotion code at a time;
-            adding a new promo code will remove any currently-active
-            coupons that were previously applied.
+            {{ $t('account.membership.couponNote') }}
           </small>
         </v-col>
       </v-row>
@@ -52,7 +50,7 @@
           :loading="loading || isValidatingCoupon"
           @click="savePromotion"
         >
-          APPLY
+          {{ $t('commonWords.apply') }}
         </v-btn>
       </v-col>
       <v-col cols="12" class="text-center pa-0 pb-5">
@@ -63,7 +61,7 @@
           :loading="loading || isValidatingCoupon"
           @click="closeDialog"
         >
-          CANCEL
+          {{ $t('commonWords.cancel') }}
         </v-btn>
       </v-col>
       <img
@@ -100,7 +98,7 @@
         </v-row>
         <v-row no-gutters justify="center">
           <h1 class="cancellation-title pg-text-[#78C383] !pg-text-[20px]">
-            Coupon applied!
+            {{ $t('account.membership.couponApplied2') }}
           </h1>
         </v-row>
       </v-col>
@@ -125,7 +123,7 @@
               }}
             </span>
             <span>
-              discount on your membership
+              {{ $t('account.membership.couponDiscount') }}
             </span>
           </p>
         </v-row>
@@ -139,7 +137,7 @@
           color="#FFAB37"
           @click="closeLastDialog"
         >
-          CANCEL
+          {{ $t('commonWords.cancelUppercase') }}
         </v-btn>
       </v-col>
 
@@ -152,6 +150,7 @@
 </template>
 
 <script lang="ts">
+import { useLanguageHelper } from '@/composables'
 import { TypedStore } from '@/models'
 import { computed, defineComponent, ref, watch, useStore } from '@nuxtjs/composition-api'
 import { debounce } from 'lodash'
@@ -173,6 +172,7 @@ export default defineComponent({
     const promotionId = ref(null)
     const coupon = ref<any>(null)
     const store = useStore<TypedStore>()
+    const language = useLanguageHelper()
     const viewModal = computed({
       get() {
         return props.value
@@ -226,7 +226,7 @@ export default defineComponent({
 
     const getTextValidateCoupon = computed(() => {
       if (promotionCode.value) {
-        return isValidCoupon.value ? 'VALID COUPON' : 'INVALID COUPON'
+        return isValidCoupon.value ? language.t('account.membership.couponValid') : language.t('account.membership.couponInvalid')
       } else {
         return ''
       }

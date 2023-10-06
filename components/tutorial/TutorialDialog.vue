@@ -19,9 +19,9 @@
 
       <VCardText class="!pg-px-14">
         <div class="pg-text-center !pg-text-[#606060] !pg-font-[Quicksand] !pg-font-semibold pg-leading-normal pg-text-2xl pg-mb-5 !pg-tracking-tight">
-          <span class="pg-font-bold">Welcome to PlayGarden Prep Tutorial!</span><br />
-          Let's Get Started!<br />
-          Discover how to make the most of our platform with a quick tutorial. Click 'Start' to begin learning.
+          <span class="pg-font-bold">{{ $localT('title') }}</span><br />
+          {{ $localT('headingLn1') }}<br />
+          {{ $localT('headingLn2') }}
         </div>
 
         <div class="pg-flex pg-justify-center pg-mb-7">
@@ -40,7 +40,7 @@
               :disabled="dialogLoading"
               @click="onRemind"
             >
-              REMIND ME LATER
+              {{ $localT('remindMeLater') }}
             </VBtn>
           </div>
           <div class="pg-w-full pg-order-1 sm:pg-w-1/2 sm:pg-order-2">
@@ -51,7 +51,7 @@
               :loading="dialogLoading"
               @click="onStart"
             >
-              START
+              {{ $localT('start') }}
             </VBtn>
           </div>
         </div>
@@ -68,6 +68,8 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import { useTutorialDialog } from '@/composables/tutorial/use-tutorial.composable'
+import { useLocalLanguageHelper } from '@/composables/i18n/use-local-language-helper.composable'
+
 import TutorialBtn from './TutorialBtn.vue'
 
 export default defineComponent({
@@ -80,6 +82,9 @@ export default defineComponent({
   emits: ['close', 'remind', 'start'],
 
   setup(_, { listeners }) {
+    const { getLocalT } = useLocalLanguageHelper()
+    const $localT = getLocalT('tutorial.dialog')
+
     const { shouldShowTutorialDialog, closeTutorialDialog, dialogLoading } = useTutorialDialog()
 
     async function onClose() {
@@ -108,7 +113,8 @@ export default defineComponent({
       dialogLoading,
       onClose,
       onRemind,
-      onStart
+      onStart,
+      $localT
     }
   }
 })
@@ -131,3 +137,7 @@ export default defineComponent({
   }
 }
 </style>
+
+<i18n src="@/lang/tutorial/tutorial.en.json"></i18n>
+
+<i18n src="@/lang/tutorial/tutorial.es.json"></i18n>

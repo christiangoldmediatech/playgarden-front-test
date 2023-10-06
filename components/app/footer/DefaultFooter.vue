@@ -50,7 +50,7 @@
           <div
             class="pg-text-base pg-leading-9 pg-text-[#68C453] pg-font-semibold"
           >
-            Online School
+            {{ $t('menus.footer.onlineSchool') }}
           </div>
 
           <a
@@ -171,8 +171,7 @@
 
       <!-- COPYRIGHT -->
       <div class="pg-text-center pg-text-xs pg-text-black pg-mb-10">
-        2020 - {{ new Date().getFullYear() }} © Playgarden Prep. All rights
-        reserved.
+        2020 - {{ new Date().getFullYear() }} © Playgarden Prep. {{ $t('menus.footer.rights') }}
       </div>
 
       <!-- COLOR DASHES -->
@@ -185,24 +184,25 @@
 </template>
 
 <script lang="ts">
-import { useVuetifyHelper } from '@/composables'
+import { useLanguageHelper, useVuetifyHelper } from '@/composables'
 import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
     const vuetify = useVuetifyHelper()
+    const language = useLanguageHelper()
     const isMobile = computed(() => vuetify.breakpoint.mdAndDown)
     const footerHeight = computed(() => (isMobile.value ? '1280px' : '435px'))
 
-    const links = ref<{ name: string; href: string }[]>([
-      { name: 'Playgarden Prep', href: 'https://playgardennyc.com/' },
-      { name: 'Preschool', href: 'https://playgardennyc.com/preschool/' },
-      { name: 'Terms of Use', href: 'https://playgardennyc.com/terms-of-use/' },
+    const links = ref<any[]>([
+      { name: language.t('menus.footer.playgardenPrep'), href: 'https://playgardennyc.com/' },
+      { name: language.t('menus.footer.preschool'), href: 'https://playgardennyc.com/preschool/' },
+      { name: language.t('menus.footer.terms'), href: 'https://playgardennyc.com/terms-of-use/' },
       {
-        name: 'Privacy Policy',
+        name: language.t('menus.footer.privacy'),
         href: 'https://playgardennyc.com/privacy-policy/'
       },
-      { name: 'Help', href: 'https://playgardenonline.com/school/help' }
+      { name: language.t('menus.footer.help'), href: 'https://playgardenonline.com/school/help' }
     ])
 
     return {

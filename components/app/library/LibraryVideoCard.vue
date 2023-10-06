@@ -26,7 +26,7 @@
           </div>
 
           <div v-if="hasBeenViewed" class="library-video-viewed">
-            Viewed <img src="@/assets/svg/library/viewed-icon.svg">
+            {{ $t('videoLibrary.videoCard.viewed') }} <img src="@/assets/svg/library/viewed-icon.svg">
           </div>
         </div>
       </div>
@@ -37,6 +37,7 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from '@nuxtjs/composition-api'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
+import { useLanguageHelper } from '@/composables'
 
 export default defineComponent({
   name: 'LibraryVideoCard',
@@ -55,12 +56,13 @@ export default defineComponent({
   },
 
   setup(props, { emit }) {
+    const language = useLanguageHelper()
     const hasBeenViewed = computed(() => {
       return Boolean(props.mediaObject.meta?.watched)
     })
 
     const description = computed(() => {
-      return props.mediaObject.description || (props.mediaObject.meta?.author) ? `With ${props.mediaObject.meta?.author}` : ''
+      return (props.mediaObject.meta?.author) ? `${props.mediaObject.meta.author}` : ''
     })
 
     function handlePlay() {

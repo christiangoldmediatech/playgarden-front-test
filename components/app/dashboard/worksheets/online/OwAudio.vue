@@ -28,7 +28,7 @@
       @next="onNext"
     >
       <template v-if="correct" v-slot:button>
-        Continue
+        {{ $t('commonWords.continue') }}
         <v-icon right small>
           mdi-greater-than
         </v-icon>

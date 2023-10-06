@@ -23,7 +23,7 @@
           <p
             class="text-left pg-text-[25px] pg-text-[#707070] pg-font-[500]"
           >
-            Payment Method
+            {{ $t('account.membership.payment') }}
           </p>
         </v-col>
       </v-row>
@@ -56,7 +56,7 @@
             <v-icon color="white" left>
               mdi-plus-circle
             </v-icon>
-            Change Payment Method
+            {{ $t('account.membership.changePayment') }}
           </v-btn>
         </v-col>
       </v-row>

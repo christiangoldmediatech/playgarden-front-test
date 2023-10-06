@@ -20,6 +20,7 @@
 import { computed, defineComponent, useStore } from '@nuxtjs/composition-api'
 import CancellationSteps from '@/components/app/payment/CancellationSteps.vue'
 import { TypedStore } from '@/models'
+import { useLanguageHelper } from '@/composables'
 
 export default defineComponent({
   name: 'LittleOneNotEngagedModal',
@@ -50,6 +51,7 @@ export default defineComponent({
   },
   emits: ['input', 'closeModal', 'reloadInformation'],
   setup(props, { emit }) {
+    const language = useLanguageHelper()
     const store = useStore<TypedStore>()
 
     const startFlow = computed({
@@ -82,30 +84,31 @@ export default defineComponent({
       return ((discountAmount.value / 100) * props.planInfo.priceMonthly).toFixed(2)
     })
 
-    const subtitle = computed(() => 'We\'re always looking to improve! What could we do to increase engagement with your little one?')
+    const subtitle = computed(() => language.t('modals.littleOneNotEngaged.subtitle'))
 
-    const baseMessage = computed(() => {
+    const baseMessage = computed<any>(() => {
       if (hasPreschoolPlan.value) {
-        return 'We\'re sorry to see you go! Have you tried our LIVE Zoom lessons where your little one can engage in real time with our teachers? Give us another chance and we\'ll provide a ' +
-          `<span class="pg-text-[#78C383]">${discountAmount.value}% off discount</span>` +
-          '—That\'s ' +
-          `<span class="pg-text-[#78C383]">only $${discountedAmount.value} for the next three months.</span>`
+        return language.t('modals.littleOneNotEngaged.baseMessageFirstAlt1') +
+        `<span class="pg-text-[#78C383]"> ${discountAmount.value}% ${language.t('modals.littleOneNotEngaged.baseMessageFirstAlt2')}</span>` +
+        language.t('modals.littleOneNotEngaged.baseMessageFirstAlt3') +
+        `<span class="pg-text-[#78C383]"> ${language.t('modals.littleOneNotEngaged.baseMessageFirstAlt4', { price: discountedAmount.value })}</span>`
       } else if (hasPlayAndLearnLivePlan.value) {
-        return 'We\'re sorry to see you go! Have you tried our LIVE Zoom lessons where your little one can engage in real time with our teachers? Give us another chance and we\'ll provide a ' +
-          `<span class="pg-text-[#78C383]">${discountAmount.value}% off discount </span>` +
-          '—That\'s ' +
-          `<span class="pg-text-[#78C383]">only $${discountedAmount.value} for the next five months.</span>`
+        return language.t('modals.littleOneNotEngaged.baseMessageSecondAlt1') +
+          `<span class="pg-text-[#78C383]"> ${discountAmount.value}% ${language.t('modals.littleOneNotEngaged.baseMessageSecondAlt2')}</span>` +
+          language.t('modals.littleOneNotEngaged.baseMessageSecondAlt3') +
+          `<span class="pg-text-[#78C383]"> ${language.t('modals.littleOneNotEngaged.baseMessageSecondAlt4', { price: discountedAmount.value })}</span>`
       } else {
-        return 'We\'re sorry to see you go! Give us another chance and we\'ll provide a discount—' +
-        '<span class="pg-text-[#78C383]">A Play & Learn membership for only $9.99/month, forever!</span>'
+        return language.t('modals.littleOneNotEngaged.baseMessageThirdAlt1') + '' +
+          language.t('modals.littleOneNotEngaged.baseMessageThirdAlt2') +
+          `<span class="pg-text-[#78C383]"> ${language.t('modals.littleOneNotEngaged.baseMessageThirdAlt3')}</span>`
       }
     })
 
     const confirmationBtnText = computed(() => {
       if (hasPreschoolPlan.value || hasPlayAndLearnLivePlan.value) {
-        return `YES, I WANT ${discountAmount.value}% OFF`
+        return language.t('modals.littleOneNotEngaged.confirmation1', { price: `${discountAmount.value}%` })
       } else {
-        return 'YES, I WANT THIS DEAL'
+        return language.t('modals.littleOneNotEngaged.confirmation2')
       }
     })
 

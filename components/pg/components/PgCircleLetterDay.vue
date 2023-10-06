@@ -31,7 +31,7 @@
             :class="{ 'pg-letter-day-number-light': lightTheme }"
             :style="{ fontSize: `${size * 0.15}px`, marginBottom: `${size * 0.07}px`, letterSpacing }"
           >
-            DAY {{ day }}
+            {{ $t('commonWords.day') }} {{ day }}
           </span>
         </div>
       </div>
