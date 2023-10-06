@@ -28,7 +28,7 @@
       <div class="pg-col-span-full lg:pg-col-span-6">
         <StripePayForm
           :loading="loading"
-          button-text="ENROLL MY CHILD"
+          :button-text="$t('register.payment.button')"
           :is-free-for-days-text-visible="!isUserInactive"
           :is-trial-text-visible="false"
           :is-not-charged-text-visbile="!isUserInactive"
