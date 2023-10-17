@@ -75,10 +75,10 @@
                     {{ section.title }}
                   </h4>
                   <h2 v-if="section.type === 'offline-worksheet'" class="section-type">
-                    {{ $t('lessonEnd.overlay.sectionWorksheet ') }}
+                    {{ $t('lessonEnd.overlay.sectionWorksheet') }}
                   </h2>
                   <h2 v-if="section.type === 'online-worksheet'" class="section-type">
-                    {{ $t('lessonEnd.overlay.sectionOnlineWorksheet ') }}
+                    {{ $t('lessonEnd.overlay.sectionOnlineWorksheet') }}
                   </h2>
                   <v-btn
                     v-if="section.type === 'offline-worksheet'"
@@ -144,7 +144,7 @@
                   <v-icon>
                     mdi-chevron-left
                   </v-icon>
-                  {{ $t('lessonEnd.overlay.watchVideoAgain ') }}
+                  {{ $t('lessonEnd.overlay.watchVideoAgain') }}
                 </v-btn>
               </div>
               <img
@@ -250,7 +250,7 @@ export default defineComponent({
         return [
           {
             type: 'offline-worksheet',
-            title: language.t('lessonEnd.overaly.downloadWorksheet'),
+            title: language.t('lessonEnd.overlay.downloadWorksheet'),
             img: offlineWorksheetThumbnail.value,
             action: downloadWorksheet
           }
@@ -259,14 +259,14 @@ export default defineComponent({
         return [
           {
             type: 'video-library',
-            title: language.t('lessonEnd.overaly.exploreLibrary'),
+            title: language.t('lessonEnd.overlay.exploreLibrary'),
             img: require('@/assets/svg/video-library.svg'),
             extraBgClass: 'position-bg',
             action: () => goTo({ name: 'app-library' })
           },
           {
             type: 'offline-worksheet',
-            title: language.t('lessonEnd.overaly.downloadWorksheet'),
+            title: language.t('lessonEnd.overlay.downloadWorksheet'),
             img: offlineWorksheetThumbnail.value,
             action: downloadWorksheet
           }
@@ -275,13 +275,13 @@ export default defineComponent({
       return [
         {
           type: 'online-worksheet',
-          title: language.t('lessonEnd.overaly.goToOnlineWorksheets'),
+          title: language.t('lessonEnd.overlay.goToOnlineWorksheets'),
           img: require('@/assets/png/onlineWorksheet.png'),
           action: () => goTo({ name: 'app-dashboard-online-worksheet', query: { redirectWorksheets: 'true' } })
         },
         {
           type: 'offline-worksheet',
-          title: language.t('lessonEnd.overaly.downloadWorksheet'),
+          title: language.t('lessonEnd.overlay.downloadWorksheet'),
           img: offlineWorksheetThumbnail.value,
           action: downloadWorksheet
         }
