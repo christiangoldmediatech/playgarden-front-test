@@ -1,5 +1,5 @@
-export // Set language
-const getLanguageCode = (code: string) => {
+// Get language from iso code
+export const getLanguageCode = (code: string) => {
   if (code.includes('-')) {
     return code.split('-')[0]
   } else if (code.includes('_')) {

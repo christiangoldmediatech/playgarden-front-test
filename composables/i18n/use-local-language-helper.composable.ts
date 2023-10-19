@@ -5,7 +5,7 @@ export const useLocalLanguageHelper = () => {
 
   function getLocalT(prefix: string) {
     return (...args: any[]) => {
-      return language.t(`${prefix}.${args[0]}`, ...args.slice(1))
+      return language.t(`LocalComponentTranslations.${prefix}.${args[0]}`, ...args.slice(1))
     }
   }
 
