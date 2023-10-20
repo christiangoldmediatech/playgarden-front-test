@@ -137,7 +137,3 @@ export default defineComponent({
   }
 }
 </style>
-
-<i18n src="@/lang/tutorial/tutorial.en.json"></i18n>
-
-<i18n src="@/lang/tutorial/tutorial.es.json"></i18n>

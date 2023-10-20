@@ -3,7 +3,7 @@ import { sessionBoilerplate, getDataForLiveClases } from './session-mockup-helpe
 
 export const useLiveClassesTutorial = async (i18n: any) => {
   const $localT = (prefix: string) => {
-    return i18n.t(`tutorial.liveClasses.mockup.${prefix}`) as string
+    return i18n.t(`LocalComponentTranslations.tutorial.liveClasses.mockup.${prefix}`) as string
   }
 
   const { getCurriculum, getActivity, getTeacher, week } = await getDataForLiveClases()
