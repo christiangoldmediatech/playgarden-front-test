@@ -119,31 +119,31 @@ export default {
         } else {
           list = [
             {
-              title: 'Home',
+              title: this.$t('menus.header.home'),
               dataTestId: 'home',
               to: { name: 'app-virtual-preschool' },
               exact: true
             },
             {
-              title: 'Social & Emotional',
+              title: this.$t('menus.header.socialEmotional'),
               to: { name: 'app-learn-play' },
               exact: false,
               dataTestId: 'app-learn-play'
             },
             {
-              title: 'Video Library',
+              title: this.$t('menus.header.videoLibrary'),
               to: { name: 'app-library' },
               exact: false,
               dataTestId: 'app-library'
             },
             {
-              title: 'Live Classes',
+              title: this.$t('menus.header.liveClasses'),
               dataTestId: 'app-live-classes',
               to: { name: 'app-live-classes' },
               exact: false
             },
             {
-              title: 'Student Cubby',
+              title: this.$t('menus.header.cubby'),
               dataTestId: 'app-student-cubby',
               to: {
                 name: 'app-student-cubby-puzzle',
