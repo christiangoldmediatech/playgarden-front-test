@@ -120,7 +120,7 @@
             nuxt
             :to="{ name: 'admin-curriculum-management' }"
           >
-            Go Back
+            {{ $t('commonWords.return2') }}
           </v-btn>
 
           <v-btn
