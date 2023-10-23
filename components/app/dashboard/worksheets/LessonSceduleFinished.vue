@@ -40,7 +40,7 @@
       <h3
         class="overlay-subtitle pg-text-[20px] md:pg-text-[20px] pg-mt-7 md:pg-mt-10 pg-mb-5 md:pg-mb-0 pg-w-full md:pg-w-10/12"
       >
-        {{ $t('dailyLessons.scheduledFinished.subtitle') }}
+        {{ $t('dailyLessons.scheduledFinished.subtitleFull') }}
       </h3>
 
       <div
