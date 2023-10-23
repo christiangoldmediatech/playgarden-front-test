@@ -3,7 +3,7 @@
     :value="value"
     :z-index="zIndex"
   >
-    <dashboard-message ref="message" v-bind="{ ...$attrs, returnAction, light: true }">
+    <dashboard-message ref="message" v-bind="{ ...$attrs, returnAction, light: true }" :return-text="this.$t('dailyLessons.onlineWorksheet.returnText')">
       <template v-for="(_, slot) of $scopedSlots" v-slot:[slot]="scope">
         <slot :name="slot" v-bind="scope" />
       </template>
