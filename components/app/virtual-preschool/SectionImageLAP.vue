@@ -48,14 +48,18 @@
               class="section-start-playing pg-relative"
               :src="require('@/assets/svg/virtual-preschool/rainbow-circle.svg')"
             >
-              <div
+              <UiMsg
                 class="pg-absolute pg-inset-0 pg-m-auto pg-text-center pg-font-bold pg-font-quick translate-text"
-                :class="[small ? 'pg-text-[12px] pg-top-[8px]' : $vuetify.breakpoint.width <= 1600 ? 'pg-text-[14px] pg-top-[2px]' : 'pg-text-[22px] pg-top-[0]']"
+                :class="[
+                  small
+                    ? 'pg-text-[12px]'
+                    : $vuetify.breakpoint.width <= 1600
+                      ? 'pg-text-[14px]'
+                      : 'pg-text-[20px]'
+                ]"
                 :style="{ color: section.bubbleText }"
-              >
-                Start <br />
-                Learning
-              </div>
+                :message="`${$t('virtualPreschool.startLearning')}`"
+              />
             </v-img>
           </div>
 
@@ -198,11 +202,11 @@
               small
               to="/app/payment/plan"
             >
-              Upgrade your Plan
+              {{ $t('virtualPreschool.unlock.upgrade') }}
             </v-btn>
             <div class="pg-text-white pg-font-light pg-text-[10px]">
-              Unlock the full section with
-              <span class="pg-text-primary">Online Preschool Plan</span>
+              {{ $t('virtualPreschool.unlock.message1part1') }}
+              <span class="pg-text-primary">{{ $t('virtualPreschool.unlock.message1part2') }}</span>
             </div>
           </div>
         </div>
@@ -227,7 +231,7 @@
         >
           <img src="@/assets/svg/lock.svg" width="40" height="40" class="mb-2">
           <span class="pg-text-white font-weight-bold">
-            To unlock
+            {{ $t('virtualPreschool.unlock.toUnlock') }}
           </span>
           <v-btn
             text
@@ -237,11 +241,11 @@
             link
             to="/app/payment/plan"
           >
-            Upgrade your Plan
+            {{ $t('virtualPreschool.unlock.upgrade') }}
           </v-btn>
           <div class="pg-text-center pg-text-white pg-font-bold pg-text-sm">
-            Unlock this section with <br>
-            <span class="pg-text-primary">Play and Learn Live or Online Preschool</span>
+            {{ $t('virtualPreschool.unlock.message2part1') }} <br>
+            <span class="pg-text-primary">{{ $t('virtualPreschool.unlock.message2part2') }}</span>
           </div>
         </div>
       </v-img>
@@ -252,6 +256,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
 import vuetify from '@gold-media-tech/pg-video-player/src/plugins/vuetify'
+import UiMsg from '~/components/ui/lang/UiMsg.vue'
 
 interface Section {
   imageUrl: string
@@ -266,6 +271,11 @@ interface Section {
 
 export default defineComponent({
   name: 'SectionImage',
+
+  components: {
+    UiMsg
+  },
+
   methods: {
     vuetify() {
       return vuetify
