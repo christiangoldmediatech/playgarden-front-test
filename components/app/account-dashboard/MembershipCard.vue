@@ -17,7 +17,7 @@
         <v-col cols="12" class="mb-4">
           <span class="account-field-label">  {{ $t('account.membership.nextBilling') }}</span>
           <p class="account-field-value ma-0">
-            {{ billing.nextBillingDate }}
+            {{ formatDate(billing.nextBillingDate) }}
           </p>
         </v-col>
 
@@ -119,10 +119,10 @@
           <div v-for="billing in billings" :key="`billing-${billing.id}`">
             <v-row class="mb-2" align="center" no-gutters>
               <v-col cols="6">
-                <span class="account-small-value">{{ billing.dateFormatted }}</span>
+                <span class="account-small-value">{{ formatDate(billing.dateFormatted) }}</span>
               </v-col>
               <v-col cols="6" class="d-flex">
-                <span class="account-small-value">${{ billing.totalFormatted }} {{ billing.currency.toUpperCase() }} /{{ billing.period }} plan<br></span>
+                <span class="account-small-value">{{ formatBilling(billing) }}<br></span>
               </v-col>
             </v-row>
           </div>
@@ -160,6 +160,8 @@ import { TypedStore } from '@/models'
 import { computed, defineComponent, onMounted, ref, useRouter, useStore } from '@nuxtjs/composition-api'
 import { useBilling, useLanguageHelper } from '@/composables'
 import BillingHistoryDialog from '@/components/BillingHistoryDialog.vue'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+dayjs.extend(localizedFormat)
 
 export default defineComponent({
   components: { BillingHistoryDialog },
@@ -191,6 +193,24 @@ export default defineComponent({
       }
       return null
     })
+
+    const formatBilling = (billing: any) => {
+      let period: any = ''
+      if (billing.period === 'Monthly') {
+        period = language.t('account.membership.monthlyPlan')
+      } else if (billing.period === 'Yearly') {
+        period = language.t('account.membership.yearlyPlan')
+      } else if (billing.period === 'Biannually') {
+        period = language.t('account.membership.biannualPlan')
+      }
+
+      return `${billing.totalFormatted} ${billing.currency.toUpperCase()} /${period}`
+    }
+
+    const formatDate = (date: string) => {
+      const currentLocale = language.getLocaleCookie() || 'en'
+      return dayjs(date).locale(currentLocale).format('LL')
+    }
 
     const cardMaskedNumber = computed(() => {
       const card = userCards.value[0]
@@ -300,6 +320,8 @@ export default defineComponent({
     })
 
     return {
+      formatDate,
+      formatBilling,
       viewBillingHistory,
       membershipColor,
       billing,

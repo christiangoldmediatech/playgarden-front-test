@@ -50,7 +50,7 @@
     <v-col v-else cols="12">
       <v-row no-gutters justify="center">
         <p class="account-placeholder-text">
-          Please enter your shipping address.
+          {{ $t('account.shipping.placeholder') }}
         </p>
       </v-row>
     </v-col>
