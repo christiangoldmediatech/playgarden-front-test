@@ -130,7 +130,7 @@
             nuxt
             @click="handleLogoutClick"
           >
-            LOG OUT
+            {{ $t('commonWords.logout') }}
           </v-btn>
         </div>
 

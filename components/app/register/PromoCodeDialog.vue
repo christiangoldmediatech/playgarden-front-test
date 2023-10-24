@@ -53,13 +53,7 @@
         ]"
       >
         <p class="pg-font-semibold pg-text-center pg-leading-6">
-          Families love learning with Playgarden Online! With your PG
-          membership, you will not only receive an elite NYC preschool
-          experience, but parenting tips and well-being content for the whole
-          family as well! Early childhood well-being is often overlooked, and we
-          want to help. Enter this coupon code with your card information to
-          receive your first 2 months after your 15 trial for FREE! That's 75+
-          days of free learning!
+          {{ $t('promoCodeDialog.text') }}
         </p>
 
         <!-- Promo code -->
@@ -85,11 +79,11 @@
         <!-- Actions -->
         <div class="pg-flex pg-flex-col pg-gap-3 pg-mt-4">
           <PgButton color="primary" @click="close">
-            CONTINUE SIGNING UP
+            {{ $t('promoCodeDialog.continue') }}
           </PgButton>
 
           <UnderlinedLink
-            text="No thanks, I don't want a discount"
+            :text="$t('promoCodeDialog.reject')"
             @click="rejectOffer"
           />
         </div>
