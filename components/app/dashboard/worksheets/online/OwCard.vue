@@ -199,7 +199,7 @@ export default {
       const activities = this.lesson.lessonsActivities.map(({ activity }) => activity)
       if (activities.length > 0) {
         result.push({
-          text: 'GO TO ACTIVITIES',
+          text: this.$t('dailyLessons.onlineWorksheet.goToActivities'),
           color: '#FFAB37',
           iconLeft: 'pg-icon-play',
           action: () => {

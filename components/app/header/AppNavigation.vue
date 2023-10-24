@@ -76,7 +76,7 @@
               <div class="container-list-menu-mobile mt-n4">
                 <ul>
                   <li>
-                    <a href="https://playgardenonline.com/">Home</a>
+                    <a href="https://playgardenonline.com/">{{ $t('menuLandingPage.home') }}</a>
                   </li>
                   <v-list-group
                     active-class="accent selected-menu-item more-menu-link"
@@ -84,7 +84,7 @@
                   >
                     <template v-slot:activator>
                       <v-list-item-title>
-                        <span class="menu-mobile-text">Admissions</span>
+                        <span class="menu-mobile-text">{{ $t('menuLandingPage.admissions') }}</span>
                       </v-list-item-title>
                     </template>
 
@@ -92,12 +92,12 @@
                       <li>
                         <a
                           href="https://playgardenonline.com/plans/"
-                        >Enrollment Plans</a>
+                        >{{ $t('menuLandingPage.enrollmentPlans') }}</a>
                       </li>
                       <li>
                         <a
                           href="https://playgardenonline.com/testimonials/"
-                        >Parent Testimonials</a>
+                        >{{ $t('menuLandingPage.parentTestimonials') }}</a>
                       </li>
                     </ul>
                   </v-list-group>
@@ -108,7 +108,7 @@
                   >
                     <template v-slot:activator>
                       <v-list-item-title>
-                        <span class="menu-mobile-text">Virtual Preschool</span>
+                        <span class="menu-mobile-text">{{ $t('menuLandingPage.virtualPreschool') }}</span>
                       </v-list-item-title>
                     </template>
 
@@ -116,25 +116,25 @@
                       <li>
                         <a
                           href="https://playgardenonline.com/virtual-preschool/"
-                        >Preschool and Pre-K</a>
+                        >{{ $t('menuLandingPage.preschool') }}</a>
                       </li>
                       <li>
                         <a
                           href="https://playgardenonline.com/how-it-works/"
-                        >How it Works</a>
+                        >{{ $t('menuLandingPage.howItWorks') }}</a>
                       </li>
                       <!-- <li><a href="https://playgardenonline.com/do-it-yourself/">DIY</a></li> -->
                       <li>
-                        <a href="https://playgardenonline.com/blog">Blog</a>
+                        <a href="https://playgardenonline.com/blog">{{ $t('menuLandingPage.blog') }}</a>
                       </li>
-                      <li><a href="https://playgardenonline.com/your-teachers/">Your Teachers</a></li>
-                      <li><a href="https://playgardenonline.com/specialized-learning/">Specialized Learning</a></li>
-                      <li><a href="https://playgardenonline.com/do-it-yourself/">Do it Yourself</a></li>
+                      <li><a href="https://playgardenonline.com/your-teachers/">{{ $t('menuLandingPage.yourTeachers') }}</a></li>
+                      <li><a href="https://playgardenonline.com/specialized-learning/">{{ $t('menuLandingPage.specializedLearning') }}</a></li>
+                      <li><a href="https://playgardenonline.com/do-it-yourself/">{{ $t('menuLandingPage.doItYourself') }}</a></li>
                     </ul>
                   </v-list-group>
                   <hr class="mx-4">
                   <li>
-                    <a href="https://playgardenonline.com/about-us">About Us</a>
+                    <a href="https://playgardenonline.com/about-us">{{ $t('menuLandingPage.aboutUs') }}</a>
                   </li>
                 </ul>
               </div>
@@ -143,7 +143,7 @@
                 href="https://playgardenonline.com/school/auth/login"
                 class="login-navbar"
               >
-                <span>Login</span>
+                <span>{{ $t('menuLandingPage.login') }}</span>
                 <img
                   loading="lazy"
                   src="https://playgardenonline.com/wp-content/uploads/2022/01/log-in.svg"
@@ -153,9 +153,9 @@
               <a
                 href="https://playgardenonline.com/school/auth/parent"
                 class="try-to-free-navbar"
-              >Try For Free</a>
+              >{{ $t('menuLandingPage.tryForFree') }}</a>
               <div class="call-us-content">
-                <span>CALL US</span>
+                <span>{{ $t('menuLandingPage.callUs') }}</span>
                 <a href="tel:+6465044716">
                   <img
                     loading="lazy"
@@ -183,9 +183,9 @@
 
       <v-row>
         <v-col cols="12" class="pg-w-4/5 pg-text-center">
-          <span class="font-weight-medium">First time using Playgarden?</span>
+          <span class="font-weight-medium">{{ $t('menuLandingPage.firstTime') }}</span>
           <v-btn color="primary" nuxt text :to="{ name: 'app-onboarding' }">
-            WATCH TUTORIAL HERE
+            {{ $t('menuLandingPage.tutorial') }}
           </v-btn>
         </v-col>
 
@@ -197,7 +197,7 @@
             data-test-id="mobile-account-button"
             :to="{ name: 'app-account-index' }"
           >
-            ACCOUNT SETTINGS
+            {{ $t('menuLandingPage.settings') }}
           </v-btn>
         </v-col>
 
@@ -209,7 +209,7 @@
             text
             :to="{ name: 'auth-logout' }"
           >
-            LOG OUT
+            {{ $t('menuLandingPage.logout') }}
           </v-btn>
         </v-col>
 
@@ -222,7 +222,7 @@
             text
             :to="{ name: 'auth-login' }"
           >
-            LOG IN
+            {{ $t('menuLandingPage.login') }}
           </v-btn>
         </v-col>
       </v-row>
@@ -255,9 +255,9 @@ export default {
       appDrawer: false,
       isChild: false,
       appendDrawer: [
-        { title: 'Terms & Conditions', to: { name: 'terms-conditions' } },
-        { title: 'Privacy Policy', to: { name: 'privacy-policy' } },
-        { title: 'Help', to: { name: 'help' } }
+        { title: this.$t('menuLandingPage.terms'), to: { name: 'terms-conditions' } },
+        { title: this.$t('menuLandingPage.privacyPolicy'), to: { name: 'privacy-policy' } },
+        { title: this.$t('menuLandingPage.help'), to: { name: 'help' } }
       ]
     }
   },

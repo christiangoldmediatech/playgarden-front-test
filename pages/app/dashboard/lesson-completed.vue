@@ -6,8 +6,8 @@
       v-if="isIntroLesson && lessonDay === 2"
       class="overlay-title pg-text-[20px] md:pg-text-xl mb-2 pg-px-5 pg-mt-[-30px] md:pg-mt-5 md:pg-px-0"
     >
-      If the schedule doesn’t work for you, check out <br v-if="$vuetify.breakpoint.mdAndUp" />
-      the recommended videos in the Library
+      {{ $t('dailyLessons.scheduledFinished.subtitle1') }} <br v-if="$vuetify.breakpoint.mdAndUp" />
+      {{ $t('dailyLessons.scheduledFinished.subtitle2') }}
     </h2>
 
     <h2
@@ -50,13 +50,13 @@
       v-if="isIntroLesson && (lessonDay === 1 || lessonDay === 2)"
       class="overlay-subtitle pg-text-[20px] md:pg-text-[20px] pg-mt-7 md:pg-mt-6 pg-mb-5 md:pg-mb-[-15px] pg-w-full md:pg-w-10/12"
     >
-      For more daily learning, check out our other features:
+      {{ $t('dailyLessons.scheduledFinished.subtitle3') }}
     </h3>
     <h3
       v-else
       class="overlay-subtitle pg-text-[20px] md:pg-text-[20px] pg-mt-7 md:pg-mt-6 pg-mb-5 md:pg-mb-[-15px] pg-w-full md:pg-w-10/12"
     >
-      {{ $t('dailyLessons.scheduledFinished.subtitle') }}
+      {{ $t('dailyLessons.scheduledFinished.subtitleFull') }}
     </h3>
 
     <div
@@ -214,6 +214,7 @@ import SectionImageLAP from '@/components/app/virtual-preschool/SectionImageLAP.
 import LessonAdvanceMixin from '@/mixins/LessonAdvanceMixin'
 import { useWorksheetsCategories } from '@/composables/worksheets'
 import { mapGetters } from 'vuex'
+import { useLanguageHelper } from '@/composables'
 
 export default defineComponent({
   name: 'LessonScheduleFinished',
@@ -244,6 +245,7 @@ export default defineComponent({
   },
 
   setup(props) {
+    const language = useLanguageHelper()
     const store = useStore()
     const router = useRouter()
     const { getLessonById, lesson: nextLessonData } = useWorksheetsCategories()
@@ -270,7 +272,7 @@ export default defineComponent({
       imageUrl: require('@/assets/png/virtual-preschool/sections-images/video_library.png'),
       title: 'Video Library',
       route: { name: 'app-library' },
-      description: 'Explore our Library, to create playlists and watch your favorite videos to engage little learners!',
+      description: language.t('dailyLessons.scheduledFinished.videoLibrarySubtitle'),
       color: '#BFBFF7',
       textColor: '#8659C6',
       bubbleText: '#8659C6'
@@ -314,14 +316,14 @@ export default defineComponent({
             title: 'Worksheet',
             img: offlineWorksheetThumbnail.value,
             description:
-              'Download the printable worksheets for the video lesson you just learned',
+              language.t('dailyLessons.scheduledFinished.worksheetDescription'),
             action: downloadWorksheet
           }
         ]
       } else if (lessonDay.value === 2) {
         return [
           {
-            title: 'Print Worksheets',
+            title: language.t('dailyLessons.scheduledFinished.offlineWorksheetTitle'),
             img: offlineWorksheetThumbnail.value,
             description: '',
             action: downloadWorksheet
@@ -336,7 +338,7 @@ export default defineComponent({
             action: () => goTo({ name: 'app-dashboard-online-worksheet', query: { redirectWorksheets: 'true' } })
           },
           {
-            title: 'Print Worksheets',
+            title: language.t('dailyLessons.scheduledFinished.offlineWorksheetTitle'),
             img: offlineWorksheetThumbnail.value,
             description: '',
             action: downloadWorksheet
