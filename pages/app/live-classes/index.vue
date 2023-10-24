@@ -795,7 +795,3 @@ export default {
   max-width: 100%;
 }
 </style>
-
-<i18n src="@/lang/tutorial/tutorial.en.json"></i18n>
-
-<i18n src="@/lang/tutorial/tutorial.es.json"></i18n>
