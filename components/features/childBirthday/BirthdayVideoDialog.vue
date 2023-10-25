@@ -10,7 +10,7 @@
         v-if="currentChild && currentChild.firstName"
         class="birthdayWishText my-5"
       >
-        <div>Happy Birthday</div>
+        <div>{{ $t('LocalComponentTranslations.birthdayVideoDialog.happyBirthday') }}</div>
         <div> {{ currentChild.firstName }}!</div>
       </section>
 
@@ -42,7 +42,7 @@
                       v-if="currentChild"
                       class="birthdayWishText my-5"
                     >
-                      <div>Happy Birthday</div>
+                      <div>{{ $t('LocalComponentTranslations.birthdayVideoDialog.happyBirthday') }}</div>
                       <div> {{ currentChild.firstName }}!</div>
                     </section>
                     <img
