@@ -7,8 +7,8 @@
     :placeholder="$t('dailyLessons.childSelect.placeholder')"
     item-value="id"
     item-text="language"
-    class="elevation-0"
-    :background-color="small ? 'transparent' : '#F6F6F6'"
+    :class="[ showShadow ? '!pg-shadow-[0px_4px_4px_rgba(0,0,0,0.15)]' : 'elevation-0']"
+    :background-color="small ? 'transparent' : backgroundColor"
     solo
     dense
     flat
@@ -21,7 +21,7 @@
           <v-img :src="item.icon" />
         </v-list-item-avatar>
 
-        <v-list-item-content v-if="!small">
+        <v-list-item-content v-if="!small && !noText">
           <v-list-item-title class="text-truncate">
             {{ item.language }}
           </v-list-item-title>
@@ -35,7 +35,7 @@
           <v-img :src="item.icon" />
         </v-list-item-avatar>
 
-        <v-list-item-content v-if="!small">
+        <v-list-item-content v-if="!small && !noText">
           <v-list-item-title>
             {{ item.language }}
           </v-list-item-title>
@@ -53,6 +53,18 @@ export default defineComponent({
   name: 'LanguageSelect',
   props: {
     small: {
+      type: Boolean,
+      default: false
+    },
+    noText: {
+      type: Boolean,
+      default: false
+    },
+    backgroundColor: {
+      type: String,
+      default: '#F6F6F6'
+    },
+    showShadow: {
       type: Boolean,
       default: false
     }

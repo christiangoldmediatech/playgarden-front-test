@@ -1,9 +1,14 @@
 <template>
   <v-main>
     <div class="pg-w-[90%] pg-mx-auto">
-      <div class="pg-flex pg-justify-center sm:pg-justify-end pg-my-5">
-        <TutorialBtn @click="onClickTutorialBtn" />
-      </div>
+      <v-row class="pg-flex pg-justify-center sm:pg-justify-end pg-my-5">
+        <v-col cols="12" lg="11" md="10" sm="10" class="pg-flex pg-justify-end">
+          <TutorialBtn @click="onClickTutorialBtn" />
+        </v-col>
+        <v-col cols="4" lg="1" md="2" sm="2" class="ml-auto">
+          <LanguageSelect no-text show-shadow background-color="#FFFFFF" />
+        </v-col>
+      </v-row>
       <div class="pg-grid pg-grid-cols-1 md:pg-grid-cols-2 pg-gap-5 pg-my-5">
         <section-image
           id="pg-tutorial__step-1"
@@ -86,6 +91,7 @@ import { useTutorialQuery, TutorialQueryParams, useTutorialDialog, useTutorialQu
 import VirtualPreschoolTutorial from '@/components/tutorial/pages/VirtualPreschoolTutorial.vue'
 import TutorialBtn from '@/components/tutorial/TutorialBtn.vue'
 import TutorialDialog from '@/components/tutorial/TutorialDialog.vue'
+import LanguageSelect from '@/components/app/user/LanguageSelect.vue'
 
 import type { RawLocation } from 'vue-router'
 
@@ -97,6 +103,7 @@ export default defineComponent({
     SectionImage,
     VirtualPreschoolTutorial,
     TutorialBtn,
+    LanguageSelect,
     TutorialDialog
   },
 
