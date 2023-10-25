@@ -1,6 +1,11 @@
 <template>
   <v-main>
     <div class="pg-w-[90%] pg-mx-auto pg-my-5">
+      <v-row class="pg-flex pg-justify-center sm:pg-justify-end pg-my-5">
+        <v-col cols="4" lg="1" md="2" sm="2" class="ml-auto">
+          <LanguageSelect no-text show-shadow background-color="#FFFFFF" />
+        </v-col>
+      </v-row>
       <div class="pg-grid pg-grid-cols-1 md:pg-grid-cols-2 pg-gap-5">
         <SectionImageLAP
           :section="section.library"
@@ -81,6 +86,7 @@ import BirthdayVideoDialog from '@/components/features/childBirthday/BirthdayVid
 import SectionImageLAP from '@/components/app/virtual-preschool/SectionImageLAP.vue'
 import { useLessonApi } from '@/composables/lesson'
 import SectionImage from '@/components/app/virtual-preschool/SectionImage.vue'
+import LanguageSelect from '@/components/app/user/LanguageSelect.vue'
 import DailyLessonsDialog from './DailyLessonsDialog.vue'
 
 export default defineComponent({
@@ -90,7 +96,8 @@ export default defineComponent({
     BirthdayVideoDialog,
     SectionImageLAP,
     DailyLessonsDialog,
-    SectionImage
+    SectionImage,
+    LanguageSelect
   },
 
   setup() {
