@@ -132,7 +132,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
-import vuetify from '@gold-media-tech/pg-video-player/src/plugins/vuetify'
 import UiMsg from '~/components/ui/lang/UiMsg.vue'
 
 interface Section {
@@ -151,12 +150,6 @@ export default defineComponent({
 
   components: {
     UiMsg
-  },
-
-  methods: {
-    vuetify() {
-      return vuetify
-    }
   },
 
   props: {

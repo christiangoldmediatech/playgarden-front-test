@@ -1394,10 +1394,10 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.1.1.tgz#1a5b1959a528e374e8037c4396c3e825d6cf4a83"
   integrity sha512-m0G6wlnhm/AX0H12IOWtK8gASEMffnX08RtKkCgTdHb9JpHKGloI7icFfLg9ZmQeavcvR0PKmzxClyuFPSjKWw==
 
-"@gold-media-tech/pg-video-player@^0.0.96":
-  version "0.0.96"
-  resolved "https://npm.pkg.github.com/download/@gold-media-tech/pg-video-player/0.0.96/fb092e90f04ea91ccbf532490b965d6352ae65feb3a8f25fa4bb77da5a40eb11#9cc4b6fdaab8bddcdc14f7d8979d2111040dc355"
-  integrity sha512-BS+UZMF1OnfdHbXGlHUqAqx/pPst3dVIg5B8dmWyBz3tecnLuQcZ1qcMWec4A+GdnaTiyDg+FUIiCGM3AvrR6g==
+"@gold-media-tech/pg-video-player@^0.0.98-a":
+  version "0.0.98-a"
+  resolved "https://npm.pkg.github.com/download/@Gold-Media-Tech/pg-video-player/0.0.98-a/e59727f20b61235165acf06bb20ca0b5e1b644f4#e59727f20b61235165acf06bb20ca0b5e1b644f4"
+  integrity sha512-JjJOPsul5aE+yPkO/wt4zhiYeGgKk9yr41wbYXiatEGI/QxKfeQLGLvF4K+DeT6q4rg4ANQHr0qmzP44aWHXDA==
   dependencies:
     "@types/vue" "^2.0.0"
     core-js "^3.6.5"
@@ -1406,6 +1406,7 @@
     uuid "^8.3.2"
     vue "^2.6.11"
     vue-class-component "^7.2.3"
+    vue-i18n "8"
     vue-property-decorator "^9.1.2"
     vue-reactive-provide "^0.3.0"
     vuetify "^2.4.0"
@@ -14482,7 +14483,7 @@ vue-hot-reload-api@^2.3.0:
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
 
-vue-i18n@^8.27.2:
+vue-i18n@8, vue-i18n@^8.27.2:
   version "8.28.2"
   resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.28.2.tgz#913558066e274395c0a9f40b2f3393d5c2636840"
   integrity sha512-C5GZjs1tYlAqjwymaaCPDjCyGo10ajUphiwA922jKt9n7KPpqR7oM1PCwYzhB/E7+nT3wfdG3oRre5raIT1rKA==

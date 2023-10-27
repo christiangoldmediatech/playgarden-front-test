@@ -8,7 +8,7 @@
       }"
       :next-unlock-image="puzzlePieceImg"
       :unlock-number="toUnlock"
-      unlock-text="PUZZLE PIECE"
+      :unlock-text="$t('videoPlayer.puzzlePiece')"
       force-default-poster
       v-bind="{
         isFavoritesLoading

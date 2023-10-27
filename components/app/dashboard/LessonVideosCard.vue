@@ -55,7 +55,7 @@ import { APP_EVENTS, TypedStore } from '@/models'
 import LessonVideoPlayer from '@/components/app/dashboard/LessonVideoPlayer.vue'
 import LessonPuzzlePieces from '@/components/app/dashboard/LessonPuzzlePieces.vue'
 import { isArray } from 'lodash'
-import { useNuxtHelper } from '@/composables'
+import { useLanguageHelper, useNuxtHelper } from '@/composables'
 import { MediaObject } from '@gold-media-tech/pg-video-player/src/types/MediaObject'
 
 export default defineComponent({
@@ -70,6 +70,7 @@ export default defineComponent({
     const route = useRoute()
     const store = useStore<TypedStore>()
     const nuxt = useNuxtHelper()
+    const language = useLanguageHelper()
 
     const getLesson = computed(() => {
       return store.getters['admin/curriculum/getLesson']
@@ -104,8 +105,8 @@ export default defineComponent({
           },
           meta: {
             videoId: id,
-            author: `with ${name}`,
-            videoType: 'VIDEO LESSONS:',
+            author: `${language.t('commonWords.prepositionText')} ${name}`,
+            videoType: `${language.t('videoPlayer.videoLessons')}:`,
             videoIcon: activityType.icon ?? undefined,
             activityType,
             viewed

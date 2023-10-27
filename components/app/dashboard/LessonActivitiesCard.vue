@@ -86,8 +86,8 @@ export default {
             },
             meta: {
               videoId: activity.videos.id,
-              author: `with ${activity.videos.name}`,
-              videoType: 'LESSON ACTIVITIES',
+              author: `${this.$i18n.t('commonWords.prepositionText')} ${activity.videos.name}`,
+              videoType: `${this.$i18n.t('videoPlayer.lessonActivities')}`,
               videoIcon: activity.activityType.icon,
               lessonActivityId: id,
               activityId: activity.id,

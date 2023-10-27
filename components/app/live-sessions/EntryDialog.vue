@@ -583,7 +583,7 @@ export default {
         this.entry.teacher
       ) {
         title = this.entry.activityType.name
-        author = `with ${this.entry.teacher}`
+        author = `${this.$i18n.t('commonWords.prepositionText')} ${this.entry.teacher}`
       }
       let videoIcon
       if (this.entry.activityType && this.entry.activityType.icon) {
@@ -601,7 +601,7 @@ export default {
             videoId: this.entry.videos.id,
             author,
             videoIcon,
-            videoType: 'RECORDED CLASS:'
+            videoType: `${this.$i18n.t('videoPlayer.recordedClass')}:`
           }
         }
       ])
