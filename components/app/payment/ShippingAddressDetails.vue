@@ -49,7 +49,7 @@
                   </v-col>
                   <v-col cols="12" md="6" class="pl-0 pl-md-4">
                     <!-- City -->
-                    <validation-provider v-slot="{ errors }" name="City" rules="required">
+                    <validation-provider v-slot="{ errors }" name="city" rules="required">
                       <span v-if="isMobile" class="d-inline-block account-field-label mb-2"> {{ $t('account.shipping.city') }}</span>
                       <pg-text-field
                         v-model="draft.city"
@@ -79,7 +79,7 @@
             <span class="d-inline-block account-field-label mb-2"> {{ $t('account.shipping.state') }}</span>
             <validation-provider
               v-slot="{ errors }"
-              name="State"
+              name="state"
               rules="required"
             >
               <pg-text-field
@@ -106,7 +106,7 @@
             <span class="d-inline-block account-field-label mb-2"> {{ $t('account.shipping.country') }}</span>
             <validation-provider
               v-slot="{ errors }"
-              name="Country"
+              name="country"
               rules="required"
             >
               <v-autocomplete
@@ -136,7 +136,7 @@
             <span class="d-inline-block account-field-label mb-2"> {{ $t('account.shipping.zip') }}</span>
             <validation-provider
               v-slot="{ errors }"
-              name="Zipcode"
+              name="zipcode"
               rules="required"
             >
               <pg-text-field
@@ -162,7 +162,7 @@
             <!-- Phone Number -->
             <validation-provider
               v-slot="{ errors }"
-              name="Phone"
+              name="phone"
               rules="required"
             >
               <pg-text-field

@@ -60,14 +60,11 @@
 </template>
 
 <script>
-import {
-  required,
-  isValidEmail,
-  isValidPassword
-} from '@/utils/validations/forms'
+import { defineComponent } from '@nuxtjs/composition-api'
+import { useFormValidations } from '@/composables'
 import { jsonCopy } from '@/utils/objectTools'
 
-export default {
+export default defineComponent({
   name: 'LoginForm',
   props: {
     loading: {
@@ -79,14 +76,25 @@ export default {
 
   data () {
     return {
-      required,
-      isValidEmail,
-      isValidPassword,
       isValidForm: true,
       user: {
         email: this.$route.query.email || '',
         password: ''
       }
+    }
+  },
+
+  setup() {
+    const {
+      required,
+      isValidEmail,
+      isValidPassword
+    } = useFormValidations()
+
+    return {
+      required,
+      isValidEmail,
+      isValidPassword
     }
   },
 
@@ -113,7 +121,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

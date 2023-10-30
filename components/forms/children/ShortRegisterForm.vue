@@ -29,7 +29,7 @@
         >
           <validation-provider
             v-slot="{ errors }"
-            name="Disclaimer"
+            name="disclaimer"
             rules="required"
           >
             <VCheckbox

@@ -67,7 +67,7 @@
                 <!-- FIRST NAME -->
                 <validation-provider
                   v-slot="{ errors }"
-                  name="First Name"
+                  name="firstName"
                   rules="required"
                 >
                   <pg-text-field
@@ -87,7 +87,7 @@
                 <!-- LAST NAME -->
                 <validation-provider
                   v-slot="{ errors }"
-                  name="Last Name"
+                  name="lastName"
                   rules="required"
                 >
                   <pg-text-field
@@ -107,7 +107,7 @@
             <!-- EMAIL -->
             <validation-provider
               v-slot="{ errors }"
-              name="Email"
+              name="email"
               rules="required|email"
             >
               <pg-text-field
@@ -125,7 +125,7 @@
             <!-- PHONE NUMBER -->
             <validation-provider
               v-slot="{ errors }"
-              name="Phone Number"
+              name="phoneNumber"
               rules="required|phone"
             >
               <pg-text-field
@@ -163,7 +163,7 @@
                   <!-- FIRST NAME -->
                   <validation-provider
                     v-slot="{ errors }"
-                    name="First Name (Gift Recipient)"
+                    name="firstNameGiftRecipient"
                     rules="required"
                   >
                     <pg-text-field
@@ -183,7 +183,7 @@
                   <!-- LAST NAME -->
                   <validation-provider
                     v-slot="{ errors }"
-                    name="Last Name (Gift Recipient)"
+                    name="lastNameGiftRecipient"
                     rules="required"
                   >
                     <pg-text-field
@@ -203,7 +203,7 @@
               <!-- EMAIL -->
               <validation-provider
                 v-slot="{ errors }"
-                name="Email (Gift Recipient)"
+                name="emailGiftRecipient"
                 rules="required|email"
               >
                 <pg-text-field
@@ -221,7 +221,7 @@
               <!-- SEND TO PHONE NUMBER -->
               <validation-provider
                 v-slot="{ errors }"
-                name="Phone Number (Gift Recipient)"
+                name="phoneNumberGiftRecipient"
                 rules="required|phone"
               >
                 <pg-text-field
@@ -242,7 +242,7 @@
             <validation-provider
               v-slot="{ errors }"
               :class="{ 'mt-3': giftTarget === 'me' }"
-              name="Send To Child Name"
+              name="sendToChildName"
               rules="required"
             >
               <pg-text-field
@@ -268,7 +268,7 @@
             <!-- STREET -->
             <validation-provider
               v-slot="{ errors }"
-              name="Street"
+              name="street"
               rules="required"
             >
               <search-address-autocomplete
@@ -280,7 +280,7 @@
             </validation-provider>
 
             <!-- STREET 2 -->
-            <validation-provider v-slot="{ errors }" name="Street">
+            <validation-provider v-slot="{ errors }" name="street2">
               <pg-text-field
                 v-model="form.street2"
                 class="custom-text-field"
@@ -297,7 +297,7 @@
             <!-- CITY -->
             <validation-provider
               v-slot="{ errors }"
-              name="City"
+              name="city"
               rules="required"
             >
               <pg-text-field
@@ -317,7 +317,7 @@
                 <!-- STATE -->
                 <validation-provider
                   v-slot="{ errors }"
-                  name="State"
+                  name="state"
                   rules="required"
                 >
                   <pg-text-field
@@ -337,7 +337,7 @@
                 <!-- ZIP CODE -->
                 <validation-provider
                   v-slot="{ errors }"
-                  name="Zip Code"
+                  name="zipcode"
                   rules="required"
                 >
                   <pg-text-field
@@ -370,7 +370,7 @@
             <!-- CREDIT CARD -->
             <validation-provider
               class="mt-3"
-              name="Card number"
+              name="cardNumber"
               rules="required"
             >
               <stripe-card v-model="form.token" class="mb-4" />

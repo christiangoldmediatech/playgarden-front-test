@@ -10,7 +10,7 @@
             <!-- First name -->
             <validation-provider
               v-slot="{ errors }"
-              name="Name"
+              name="name"
               rules="required"
             >
               <pg-text-field
@@ -32,7 +32,7 @@
             <!-- Last name -->
             <validation-provider
               v-slot="{ errors }"
-              name="Last Name"
+              name="lastName"
               rules="required"
             >
               <pg-text-field
@@ -53,7 +53,7 @@
                 <!-- Phone number -->
                 <validation-provider
                   v-slot="{ errors }"
-                  name="Phone number"
+                  name="phoneNumber"
                   rules="required|min:7|max:20|phone"
                 >
                   <pg-text-field
@@ -73,7 +73,7 @@
                 <!-- Email -->
                 <validation-provider
                   v-slot="{ errors }"
-                  name="Email"
+                  name="email"
                   rules="required|email"
                 >
                   <pg-text-field
@@ -104,7 +104,7 @@
                     <template v-slot:activator="{ on, attrs }">
                       <validation-provider
                         v-slot="{ errors }"
-                        name="Password"
+                        name="password"
                         rules="required|min:6|max:20|w_number|w_special|w_upper"
                         vid="password_field"
                       >
@@ -144,7 +144,7 @@
                   <!-- Password confirmation -->
                   <validation-provider
                     v-slot="{ errors }"
-                    name="Password"
+                    name="password"
                     rules="required|confirmed:password_field"
                   >
                     <pg-password-field

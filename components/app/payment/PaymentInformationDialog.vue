@@ -45,7 +45,7 @@
             {{ $t('paymentPlan.paymentInformation.couponQuestion') }}
           </h2>
           <div class="d-flex justify-space-between">
-            <validation-provider v-slot="{ errors }" class="w-100" name="Promotion Code" rules="min:5">
+            <validation-provider v-slot="{ errors }" class="w-100" name="promotionCode" rules="min:5">
               <pg-text-field
                 v-model="promotionCode"
                 :error-messages="errors"

@@ -12,7 +12,7 @@
     <v-form class="mt-7" @submit.prevent="passes(onSubmit)">
       <!-- Card -->
       <validation-provider
-        name="Card number"
+        name="cardNumber"
         rules="required"
       >
         <stripe-card v-model="draft.token" class="mb-4" />
@@ -20,7 +20,7 @@
 
       <validation-provider
         v-slot="{ errors }"
-        name="Promotion Code"
+        name="promotionCode"
       >
         <pg-text-field
           v-model="draft.promotion_code"
@@ -33,7 +33,7 @@
       </validation-provider>
 
       <v-row v-if="!noTerms" class="mb-6">
-        <validation-provider v-slot="{ errors }" name="Terms" rules="required">
+        <validation-provider v-slot="{ errors }" name="terms" rules="required">
           <v-checkbox
             v-model="draft.acceptTerms"
             class="pt-0 mt-0 ml-3 accept-terms"

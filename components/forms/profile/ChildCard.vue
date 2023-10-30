@@ -11,9 +11,7 @@
       >
         <!-- Backpack -->
         <validation-provider
-          :name="
-            (isRemovable ? `Child #${index + 1} - ` : '') + 'Backpack'
-          "
+          :name="removable ? `${$t('vee-validate.childBackpack'), { number: index + 1 }}` : 'backpack'"
           rules="required"
         >
           <!-- Delete Child Profile Button -->
@@ -93,9 +91,7 @@
             <span class="d-inline-block account-field-label mb-2">{{ $t('commonWords.firstName') }}</span>
             <validation-provider
               v-slot="{ errors }"
-              :name="
-                (isRemovable ? `Child #${index + 1} - ` : '') + 'Name'
-              "
+              :name="removable ? `${$t('vee-validate.childFirstName', { number: index + 1 })}` : 'name'"
               rules="required"
             >
               <pg-text-field
@@ -121,9 +117,7 @@
             <span class="d-inline-block account-field-label mb-2">{{ $t('commonWords.lastName') }}</span>
             <validation-provider
               v-slot="{ errors }"
-              :name="
-                (isRemovable ? `Child #${index + 1} - ` : '') + 'Name'
-              "
+              :name="removable ? `${$t('vee-validate.childLastName'), { number: index + 1 }}` : 'lastName'"
               rules="required"
             >
               <pg-text-field
@@ -155,10 +149,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <validation-provider
                   v-slot="{ errors }"
-                  :name="
-                    (isRemovable ? `Child #${index + 1} - ` : '') +
-                      'Birthday date'
-                  "
+                  :name="removable ? `${$t('vee-validate.childBirthdayDate'), { number: index + 1 }}` : 'birthdayDate'"
                   rules="required"
                 >
                   <div v-on="on">
@@ -193,9 +184,7 @@
             <span class="d-inline-block account-field-label mb-2">{{ $t('account.student.gender') }}</span>
             <validation-provider
               v-slot="{ errors }"
-              :name="
-                (isRemovable ? `Child #${index + 1} - ` : '') + 'Gender'
-              "
+              :name="removable ? `${$t('vee-validate.childGender'), { number: index + 1 }}` : 'gender'"
               rules="required"
             >
               <pg-select

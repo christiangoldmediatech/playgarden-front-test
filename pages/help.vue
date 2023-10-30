@@ -198,7 +198,7 @@
                         <!-- Name -->
                         <validation-provider
                           v-slot="{ errors }"
-                          name="Name"
+                          name="name"
                           rules="required"
                         >
                           <pg-text-field
@@ -219,7 +219,7 @@
                         <!-- E-mail -->
                         <validation-provider
                           v-slot="{ errors }"
-                          name="E-mail"
+                          name="email"
                           rules="required|email"
                         >
                           <pg-text-field
@@ -240,7 +240,7 @@
                     <!-- Subject -->
                     <validation-provider
                       v-slot="{ errors }"
-                      name="Subject"
+                      name="subject"
                       rules="required"
                     >
                       <pg-text-field
@@ -260,7 +260,7 @@
                     <!-- How can we help you? -->
                     <validation-provider
                       v-slot="{ errors }"
-                      name="How can we help you?"
+                      name="howCanWeHelpYou"
                       rules="required"
                     >
                       <pg-textarea

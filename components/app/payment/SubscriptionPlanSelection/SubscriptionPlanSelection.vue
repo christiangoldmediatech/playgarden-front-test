@@ -139,7 +139,8 @@ import {
 
 import { UserFlow } from '@/models'
 import CreditCardModal from '@/components/app/payment/CreditCardModal.vue'
-import isCreditCard from 'validator/es/lib/isCreditCard'
+// Appears to not be in use
+// import isCreditCard from 'validator/es/lib/isCreditCard'
 import PaymentInformationDialog from '../PaymentInformationDialog.vue'
 import PlanDescription from './PlanDescription.vue'
 

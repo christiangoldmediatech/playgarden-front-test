@@ -8,7 +8,7 @@
             <!-- First name -->
             <validation-provider
               v-slot="{ errors }"
-              name="Name"
+              name="name"
               rules="required"
             >
               <pg-text-field
@@ -27,7 +27,7 @@
             <!-- Last name -->
             <validation-provider
               v-slot="{ errors }"
-              name="Last Name"
+              name="lastName"
               rules="required"
             >
               <pg-text-field
@@ -49,7 +49,7 @@
                 <validation-provider
                   v-if="isPhoneNumberRequired"
                   v-slot="{ errors }"
-                  name="Phone Number (optional)"
+                  name="phoneNumberOptional"
                   rules="phone"
                 >
                   <pg-text-field
@@ -69,7 +69,7 @@
                 <!-- Email -->
                 <validation-provider
                   v-slot="{ errors }"
-                  name="Email"
+                  name="email"
                   rules="required|email"
                 >
                   <pg-text-field
@@ -90,7 +90,7 @@
                 <v-row no-gutters>
                   <v-col v-if="isAddressRequired" class="pr-2" cols="12" md="6">
                     <!-- Address component -->
-                    <validation-provider v-slot="{errors}" name="Address" rules="required">
+                    <validation-provider v-slot="{errors}" name="address" rules="required">
                       <search-address-autocomplete
                         v-model="addressDraft.address1"
                         class="custom-text-field"
@@ -104,7 +104,7 @@
                     <validation-provider
                       v-if="isPhoneNumberRequired"
                       v-slot="{ errors }"
-                      name="Phone Number (optional)"
+                      name="phoneNumberOptional"
                       rules="phone"
                     >
                       <pg-text-field
@@ -135,7 +135,7 @@
                     <template v-slot:activator="{ on, attrs }">
                       <validation-provider
                         v-slot="{ errors }"
-                        name="Password"
+                        name="password"
                         rules="required|min:6|max:20|w_number|w_special|w_upper|w_strong_password"
                         vid="password_field"
                       >
@@ -177,7 +177,7 @@
                   <validation-provider
                     v-if="!isCreditCardRequired && isCouponNeeded"
                     v-slot="{ errors }"
-                    name="Coupon"
+                    name="coupon"
                     vid="coupon_field"
                   >
                     <pg-text-field
@@ -208,7 +208,7 @@
                 <v-row v-if="!noTerms" no-gutters>
                   <validation-provider
                     v-slot="{ errors }"
-                    name="Terms"
+                    name="terms"
                     rules="required"
                   >
                     <v-checkbox

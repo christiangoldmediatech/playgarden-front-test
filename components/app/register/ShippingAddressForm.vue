@@ -10,7 +10,7 @@
                 <v-row no-gutters>
                   <v-col cols="12">
                     <!-- Address component -->
-                    <validation-provider v-slot="{errors}" name="Address" rules="required">
+                    <validation-provider v-slot="{errors}" name="address" rules="required">
                       <search-address-autocomplete
                         v-model="draft.address1"
                         class="custom-text-field"
@@ -26,7 +26,7 @@
                     <!-- City -->
                     <validation-provider
                       v-slot="{ errors }"
-                      name="City"
+                      name="city"
                       rules="required"
                     >
                       <pg-text-field
@@ -48,7 +48,7 @@
                     <!-- State -->
                     <validation-provider
                       v-slot="{ errors }"
-                      name="State"
+                      name="state"
                       rules="required"
                     >
                       <pg-text-field
@@ -70,7 +70,7 @@
                     <!-- Country -->
                     <validation-provider
                       v-slot="{ errors }"
-                      name="Country"
+                      name="country"
                       rules="required"
                     >
                       <v-autocomplete
@@ -96,7 +96,7 @@
                     <!-- Zip Code -->
                     <validation-provider
                       v-slot="{ errors }"
-                      name="Zip Code"
+                      name="zipcode"
                       rules="required"
                     >
                       <pg-text-field
@@ -116,7 +116,7 @@
                     <!-- Phone number -->
                     <validation-provider
                       v-slot="{ errors }"
-                      name="Phone Number"
+                      name="phoneNumber"
                       rules="phone|required"
                     >
                       <pg-text-field
