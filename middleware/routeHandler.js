@@ -1,7 +1,6 @@
 import { get } from 'lodash'
 import dayjs from 'dayjs'
 import { getLanguageCode } from '@/utils'
-// import { localeChanged } from 'vee-validate'
 import { localize } from 'vee-validate'
 import unauthenticatedRoutes from '~/utils/consts/unauthenticatedRoutes.json'
 import parentSubscriptionWhitelistedRoutes from '~/utils/consts/parentSubscriptionWhitelistedRoutes.json'
@@ -71,19 +70,13 @@ export default async function ({ redirect, route, store, app, req }) {
   if (user && user.language) {
     const languageToApply = user.language ? getLanguageCode(user.language.code) : 'en'
     app.i18n.setLocale(languageToApply)
-    // localeChanged()
     localize(languageToApply)
-    // console.log('languageToApply', languageToApply)
   } else if (currentAppliedLanguage && availableLanguages.includes(currentAppliedLanguage)) {
     app.i18n.setLocale(currentAppliedLanguage)
-    // localeChanged()
     localize(currentAppliedLanguage)
-    // console.log('currentAppliedLanguage', currentAppliedLanguage)
   } else if (browserLanguageCode !== currentAppliedLanguage && availableLanguages.includes(browserLanguageCode)) {
     app.i18n.setLocale(browserLanguageCode)
-    // localeChanged()
     localize(browserLanguageCode)
-    // console.log('browserLanguageCode', browserLanguageCode)
   }
 
   const noUserFlow = route.query.noUserFlow
