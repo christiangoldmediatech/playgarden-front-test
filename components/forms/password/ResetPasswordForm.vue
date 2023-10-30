@@ -36,10 +36,11 @@
 </template>
 
 <script>
-import { required, isValidPassword } from '@/utils/validations/forms.js'
+import { defineComponent } from '@nuxtjs/composition-api'
+import { useFormValidations } from '@/composables'
 import { jsonCopy } from '@/utils/objectTools'
 
-export default {
+export default defineComponent({
   name: 'ResetPasswordForm',
 
   props: {
@@ -52,10 +53,20 @@ export default {
 
   data () {
     return {
-      required,
-      isValidPassword,
       isValidForm: true,
       password: ''
+    }
+  },
+
+  setup() {
+    const {
+      required,
+      isValidPassword
+    } = useFormValidations()
+
+    return {
+      required,
+      isValidPassword
     }
   },
 
@@ -81,7 +92,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

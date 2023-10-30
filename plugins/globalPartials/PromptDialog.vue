@@ -31,7 +31,7 @@
               <p class="text-center">
                 {{ confirmationText }}
               </p>
-              <validation-provider v-slot="{ errors }" name="Confirmation Word">
+              <validation-provider v-slot="{ errors }" name="confirmationWord">
                 <pg-text-field
                   v-model="wordConfirm"
                   :error-messages="errors"

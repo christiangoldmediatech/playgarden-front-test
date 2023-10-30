@@ -4,7 +4,7 @@
       <!-- Email -->
       <validation-provider
         v-slot="{ errors }"
-        name="Email"
+        name="email"
         rules="required|email"
       >
         <pg-text-field

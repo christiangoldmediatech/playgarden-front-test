@@ -8,7 +8,7 @@
       <!-- First name -->
       <validation-provider
         v-slot="{ errors }"
-        name="First name"
+        name="firstName"
         rules="required"
       >
         <pg-text-field
@@ -26,7 +26,7 @@
       <!-- Last name -->
       <validation-provider
         v-slot="{ errors }"
-        name="Last name"
+        name="lastName"
         rules="required"
       >
         <pg-text-field
@@ -44,7 +44,7 @@
       <!-- Phone number -->
       <validation-provider
         v-slot="{ errors }"
-        name="Phone number"
+        name="phoneNumber"
         rules="required|min:7|max:20|phone"
       >
         <pg-text-field

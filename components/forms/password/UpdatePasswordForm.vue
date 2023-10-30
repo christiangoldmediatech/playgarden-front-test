@@ -4,7 +4,7 @@
       <!-- New password -->
       <validation-provider
         v-slot="{ errors }"
-        name="New password"
+        name="newPassword"
         rules="required|min:8|max:20|w_number|w_special|w_upper"
         vid="password_field"
       >

@@ -55,7 +55,7 @@
       <validation-observer v-slot="{ invalid, passes }">
         <v-form @submit.prevent="passes(onSubmit)">
           <v-col cols="12" class="py-0">
-            <validation-provider v-slot="{ errors }" name="Name of Library" rules="required">
+            <validation-provider v-slot="{ errors }" name="nameOfLibrary" rules="required">
               <pg-text-field
                 v-model="draft.libraryName"
                 clearable
@@ -70,7 +70,7 @@
           </v-col>
 
           <v-col cols="12" class="py-0">
-            <validation-provider v-slot="{ errors }" name="Library Address" rules="required">
+            <validation-provider v-slot="{ errors }" name="libraryAddress" rules="required">
               <search-address-autocomplete
                 v-model="addressDraft.address1"
                 class="custom-text-field"
@@ -82,7 +82,7 @@
           </v-col>
 
           <v-col cols="12" class="py-0">
-            <validation-provider v-slot="{ errors }" name="Email" rules="required|email">
+            <validation-provider v-slot="{ errors }" name="email" rules="required|email">
               <pg-text-field
                 v-model="draft.userEmail"
                 clearable

@@ -46,7 +46,7 @@
             <span class="text-decoration-underline">{{ $t('paymentPlan.cards.delete') }}</span>
           </v-btn>
         </div>
-        <validation-provider name="Card number" rules="required">
+        <validation-provider name="cardNumber" rules="required">
           <stripe-card v-model="token" class="mb-4" />
         </validation-provider>
         <div class="d-flex flex-column align-center mb-2">

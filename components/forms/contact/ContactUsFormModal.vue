@@ -17,7 +17,7 @@
       <validation-observer v-slot="{ invalid, passes }">
         <validation-provider
           v-slot="{ errors }"
-          name="First Name"
+          name="firstName"
           rules="required"
         >
           <pg-text-field
@@ -31,7 +31,7 @@
 
         <validation-provider
           v-slot="{ errors }"
-          name="Last Name"
+          name="lastName"
           rules="required"
         >
           <pg-text-field
@@ -45,7 +45,7 @@
 
         <validation-provider
           v-slot="{ errors }"
-          name="Email"
+          name="email"
           rules="required|email"
         >
           <pg-text-field
@@ -59,7 +59,7 @@
 
         <validation-provider
           v-slot="{ errors }"
-          name="How can we help you?"
+          name="howCanWeHelpYou"
           rules="required"
         >
           <pg-textarea

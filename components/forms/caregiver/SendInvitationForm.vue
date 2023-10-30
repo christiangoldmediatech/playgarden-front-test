@@ -8,7 +8,7 @@
       <!-- Email -->
       <validation-provider
         v-slot="{ errors }"
-        name="Email"
+        name="email"
         :rules="{
           required: !draft.phone,
           email: true
@@ -46,7 +46,7 @@
       <!-- Phone -->
       <!-- <validation-provider
         v-slot="{ errors }"
-        name="Phone"
+        name="phone"
         :rules="{
           required: !draft.email,
           min: 7,
