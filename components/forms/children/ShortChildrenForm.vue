@@ -8,7 +8,7 @@
     <!-- Name -->
     <validation-provider
       v-slot="{ errors }"
-      :name="(removable ? `Child #${index + 1} - ` : '') + 'Name'"
+      :name="removable ? `${$t('vee-validate.childFirstName', { number: index + 1 })}` : 'name'"
       rules="required"
     >
       <pg-text-field
@@ -24,7 +24,7 @@
 
     <!-- Gender -->
     <validation-provider
-      :name="(removable ? `Child #${index + 1} - ` : '') + 'Gender'"
+      :name="removable ? `${$t('vee-validate.childGender'), { number: index + 1 }}` : 'gender'"
       rules="required"
     >
       <v-row class="mb-6">
@@ -53,7 +53,7 @@
       </small>
     </center>
     <validation-provider
-      :name="(removable ? `Child #${index + 1} - ` : '') + 'Backpack'"
+      :name="removable ? `${$t('vee-validate.childBackpack'), { number: index + 1 }}` : 'backpack'"
       rules="required"
     >
       <v-row no-gutters>

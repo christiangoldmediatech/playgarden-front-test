@@ -10,7 +10,7 @@
       <!-- Name -->
       <validation-provider
         v-slot="{ errors }"
-        :name="(removable ? `Child #${index + 1} - ` : '') + 'Name'"
+        :name="removable ? `${$t('vee-validate.childFirstName', { number: index + 1 })}` : 'name'"
         rules="required"
       >
         <pg-text-field
@@ -27,7 +27,7 @@
       <!-- Lastname -->
       <validation-provider
         v-slot="{ errors }"
-        :name="(removable ? `Child #${index + 1} - ` : '') + 'Lastname'"
+        :name="removable ? `${$t('vee-validate.childLastName'), { number: index + 1 }}` : 'lastName'"
         rules="required"
       >
         <pg-text-field
@@ -75,7 +75,7 @@
 
       <!-- Gender -->
       <validation-provider
-        :name="(removable ? `Child #${index + 1} - ` : '') + 'Gender'"
+        :name="removable ? `${$t('vee-validate.childGender'), { number: index + 1 }}` : 'gender'"
         rules="required"
       >
         <v-row>
@@ -108,7 +108,7 @@
     >
       <!-- Backpack -->
       <validation-provider
-        :name="(removable ? `Child #${index + 1} - ` : '') + 'Backpack'"
+        :name="removable ? `${$t('vee-validate.childBackpack'), { number: index + 1 }}` : 'backpack'"
         rules="required"
       >
         <child-icon-selector :value="itemCurrent.backpackId" :backpacks="backpacks" @update:value="updateBackpackId" />
