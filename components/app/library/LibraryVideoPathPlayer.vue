@@ -5,7 +5,7 @@
       unlock: (patchImg && toUnlock !== null)
     }"
     :unlock-number="toUnlock"
-    unlock-text="PATCH"
+    :unlock-text="$t('videoPlayer.patch')"
     v-bind="{ isFavoritesLoading }"
     @ready="onPlayerReady"
     @on-favorites-clicked="handleFavoritesClicked"

@@ -252,8 +252,8 @@ export default defineComponent({
             },
             meta: {
               videoId: activity.videos.id,
-              author: `with ${activity.videos.name}`,
-              videoType: 'LESSON ACTIVITIES',
+              author: `${language.t('commonWords.prepositionText')} ${activity.videos.name}`,
+              videoType: `${language.t('videoPlayer.lessonActivities')}`,
               videoIcon: activity.activityType.icon,
               activityType: activity.activityType,
               curriculumType: activity.curriculumType,
