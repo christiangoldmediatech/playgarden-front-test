@@ -142,6 +142,7 @@
 <script >
 import {
   defineComponent,
+  watch,
   computed,
   useStore,
   useRouter,
@@ -215,6 +216,10 @@ export default defineComponent({
         await getLessonById(nextLessonId.value)
       }
     }
+
+    watch(nextLessonId, async () => {
+      await getNextLesson()
+    })
 
     onMounted(async () => {
       await getUpcomingMeeting()
