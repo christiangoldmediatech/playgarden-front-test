@@ -1,5 +1,5 @@
 <template>
-  <validation-observer v-slot="{ invalid, passes, reset }">
+  <validation-observer v-slot="{ invalid, reset }">
     <slot name="header">
       <p
         class="text-center text-md-left"
@@ -17,7 +17,7 @@
       </p>
     </slot>
 
-    <v-form class="mt-7" @submit.prevent="passes(onSubmit)">
+    <v-form class="mt-7" @submit.prevent="onSubmit">
       <!-- Card -->
       <validation-provider name="cardNumber" rules="required">
         <stripe-card v-model="draft.token" class="mb-4" />
@@ -37,7 +37,7 @@
       </validation-provider>
 
       <v-row v-if="!noTerms" class="mb-0">
-        <validation-provider v-slot="{ errors }" name="terms" rules="required">
+        <validation-provider v-slot="{ errors }" name="terms">
           <v-checkbox
             v-model="draft.acceptTerms"
             class="pt-0 mt-0 ml-3 accept-terms"
@@ -67,7 +67,7 @@
         :class="{'!pg-block pg-mx-auto pg-w-10/12': isPreschoolFlow, 'ml-md-0': !isPreschoolFlow }"
         min-height="60"
         color="primary"
-        :disabled="invalid || lockButton"
+        :disabled="disableButton(invalid)"
         :loading="loading"
         type="submit"
         :x-large="!$vuetify.breakpoint.smAndDown"
@@ -173,6 +173,7 @@ export default {
   data: vm => ({
     lockButton: false,
     isValidCoupon: true,
+    oneHundredPercentOff: false,
     isValidatingCoupon: false,
     checkValid: debounce(vm._checkValid, 1050)
   }),
@@ -197,6 +198,7 @@ export default {
         }
       } else {
         this.lockButton = false
+        this.oneHundredPercentOff = false
         this.draft.promotion_id = null
       }
     }
@@ -204,6 +206,22 @@ export default {
 
   methods: {
     ...mapActions('coupons', ['getCoupons']),
+
+    disableButton(isCardNoValid) {
+      if ((!this.noTerms && !this.draft.acceptTerms) || this.lockButton) {
+        return true
+      }
+
+      if (this.oneHundredPercentOff) {
+        return false
+      }
+
+      if (this.draft.token) {
+        return isCardNoValid
+      }
+
+      return true
+    },
 
     getSubmittableData() {
       return {
@@ -223,13 +241,16 @@ export default {
           this.lockButton = true
           const coupons = await this.getCoupons({ active: true, code: this.draft.promotion_code })
           if (coupons.length > 0) {
-            this.draft.promotion_id = coupons[0].promotion_id
-            this.$nuxt.$emit('send-coupon', coupons[0])
+            const coupon = coupons[0]
+            this.draft.promotion_id = coupon.promotion_id
+            this.oneHundredPercentOff = coupon.percent_off === 100 && coupon.duration === 'forever'
+            this.$nuxt.$emit('send-coupon', coupon)
             this.isValidCoupon = true
             this.lockButton = false
           } else {
             this.isValidCoupon = false
             this.lockButton = true
+            this.oneHundredPercentOff = false
             this.$nuxt.$emit('send-coupon', null)
             this.draft.promotion_id = null
           }
@@ -237,6 +258,7 @@ export default {
       } catch (error) {
         this.isValidCoupon = false
         this.lockButton = true
+        this.oneHundredPercentOff = false
       } finally {
         this.isValidatingCoupon = false
       }
