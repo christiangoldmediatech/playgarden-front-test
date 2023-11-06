@@ -112,7 +112,7 @@
                     text
                     small
                   >
-                    {{ $t('lessonEnd.overlay.goToOnlineWorksheets ') }}
+                    {{ $t('lessonEnd.overlay.goToOnlineWorksheets') }}
                     <v-icon>
                       mdi-chevron-right
                     </v-icon>
