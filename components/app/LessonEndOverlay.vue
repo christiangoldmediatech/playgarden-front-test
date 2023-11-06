@@ -99,7 +99,7 @@
                     text
                     small
                   >
-                    {{ $t('lessonEnd.overlay.goToLibrary ') }}
+                    {{ $t('lessonEnd.overlay.goToLibrary') }}
                     <v-icon>
                       mdi-chevron-right
                     </v-icon>
