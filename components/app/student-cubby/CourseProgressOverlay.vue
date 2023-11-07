@@ -43,7 +43,7 @@
             <v-row
               class="fill-height flex-nowrap "
               :justify="
-                currentLetter && currentLetter.name === 'Intro'
+                currentLetter && currentLetter.letter === 'In'
                   ? 'center'
                   : undefined
               "

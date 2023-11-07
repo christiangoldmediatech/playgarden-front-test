@@ -236,8 +236,9 @@ export default defineComponent({
       })
 
       if (this.hasPlayAndLearnPlan || this.isPlayAndLearn) {
+        // Corresponds to Intro and Nature
         return letters.filter(
-          (item) => item.name !== 'Intro' && item.name !== 'Nature'
+          (item) => item.letter !== 'In' && item.letter !== 'Nt'
         )
       } else {
         return letters
