@@ -223,7 +223,10 @@ export default defineComponent({
   }),
 
   computed: {
-    ...mapGetters('auth', ['isUserLoggedIn', 'getUserInfo'])
+    ...mapGetters('auth', ['isUserLoggedIn', 'getUserInfo']),
+    isReactivatingUser() {
+      return this.$route.query.mode === 'activate-user'
+    }
   },
 
   async created() {
@@ -268,7 +271,7 @@ export default defineComponent({
     },
 
     doAction(plan) {
-      if (this.inSignUpProcess) {
+      if (this.inSignUpProcess || this.isReactivatingUser) {
         this.onSubmit(plan)
       } else {
         this.openDialog(plan)

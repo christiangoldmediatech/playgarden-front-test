@@ -155,7 +155,8 @@ export default defineComponent({
       if (this.mode === 'activate-user') {
         await this.fetchUserInfo()
         page = {
-          name: 'app-payment-plan'
+          name: 'app-payment-plan',
+          query: { mode: 'activate-user' }
         }
       } else {
         page = {
