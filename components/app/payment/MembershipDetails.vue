@@ -281,7 +281,7 @@
             >
               <membership-btn
                 v-if="!isCaregiver"
-                title="Create membership"
+                :title="$t('account.membership.create')"
                 color="#F89838"
                 text-color="#FFFFFF"
                 @click="selectPlan"

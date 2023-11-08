@@ -36,7 +36,7 @@
           <UnderlinedTitle
             font-size="26px"
             font-size-mobile="20px"
-            text="Our family loves Playgarden Prep Online!"
+            :text="$t('payment.family')"
           />
         </div>
       </slot>
