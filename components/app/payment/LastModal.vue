@@ -161,8 +161,7 @@ export default defineComponent({
 
     const viewModal = computed({
       get() {
-        // return props.value
-        return true
+        return props.value
       },
       set(val: boolean) {
         emit('input', val)
