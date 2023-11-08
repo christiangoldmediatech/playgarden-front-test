@@ -223,7 +223,13 @@ export default defineComponent({
   }),
 
   computed: {
-    ...mapGetters('auth', ['isUserLoggedIn', 'getUserInfo'])
+    ...mapGetters('auth', ['isUserLoggedIn', 'getUserInfo']),
+    isReactivatingUser() {
+      return this.$route.query.mode === 'activate-user'
+    },
+    userCardNeeded() {
+      return !(this.getUserInfo?.subscription?.discount?.coupon?.percent_off === 100 && this.getUserInfo?.subscription?.discount?.coupon?.duration === 'forever')
+    }
   },
 
   async created() {
@@ -268,7 +274,7 @@ export default defineComponent({
     },
 
     doAction(plan) {
-      if (this.inSignUpProcess) {
+      if (this.inSignUpProcess || this.isReactivatingUser) {
         this.onSubmit(plan)
       } else {
         this.openDialog(plan)
@@ -334,7 +340,7 @@ export default defineComponent({
           if (this.Auth.userInfo.value.flow === UserFlow.NOCREDITCARD) {
             const userCards = await this.Billing.fetchBillingCards()
 
-            if (userCards?.length === 0) {
+            if (userCards?.length === 0 && this.userCardNeeded) {
               this.isCreditCardModalVisible = true
               this.loading = false
               return
