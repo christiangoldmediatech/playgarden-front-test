@@ -226,6 +226,9 @@ export default defineComponent({
     ...mapGetters('auth', ['isUserLoggedIn', 'getUserInfo']),
     isReactivatingUser() {
       return this.$route.query.mode === 'activate-user'
+    },
+    userCardNeeded() {
+      return !(this.getUserInfo?.subscription?.discount?.coupon?.percent_off === 100 && this.getUserInfo?.subscription?.discount?.coupon?.duration === 'forever')
     }
   },
 
@@ -337,7 +340,7 @@ export default defineComponent({
           if (this.Auth.userInfo.value.flow === UserFlow.NOCREDITCARD) {
             const userCards = await this.Billing.fetchBillingCards()
 
-            if (userCards?.length === 0) {
+            if (userCards?.length === 0 && this.userCardNeeded) {
               this.isCreditCardModalVisible = true
               this.loading = false
               return
