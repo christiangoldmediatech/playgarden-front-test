@@ -137,8 +137,8 @@ export default defineComponent({
   computed: {
     getTextButton() {
       return this.mode === 'activate-user'
-        ? 'REACTIVATE ACCOUNT'
-        : 'START YOUR FREE TRIAL'
+        ? this.$i18n.t('account.membership.reactivate')
+        : this.$i18n.t('account.membership.startTrial')
     },
     isUserInactive() {
       return this.mode === 'activate-user'

@@ -14,10 +14,17 @@
       <v-col cols="4" class="px-4">
         <v-btn
           color="#97D2F8"
-          class="w-100 white--text elevation-0"
+          class="kids-corner-btn w-100 white--text elevation-0"
           @click="goToKidsCorner"
         >
-          {{ $t('modals.last.kidsCorner').toUpperCase() }}
+          <template v-if="$i18n.locale === 'es'">
+            <div class="pg-max-w-full pg-whitespace-normal">
+              {{ $t('modals.last.kidsCorner').toUpperCase() }}
+            </div>
+          </template>
+          <template v-else>
+            {{ $t('modals.last.kidsCorner').toUpperCase() }}
+          </template>
         </v-btn>
       </v-col>
       <v-col cols="4" class="px-4">
@@ -75,4 +82,12 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '~/assets/scss/cancellation-flow.scss';
+
+::v-deep {
+  .v-btn.kids-corner-btn {
+    .v-btn__content {
+      max-width: 100%;
+    }
+  }
+}
 </style>
