@@ -273,7 +273,6 @@ export default {
           })
           this.$router.push(route)
         } else if (curriculumType === 'In') {
-          console.log('here')
           const offlineWorksheets = this.lesson.worksheets.filter((worksheet) => worksheet.type === 'OFFLINE')
           this.fileUpload = (offlineWorksheets && offlineWorksheets.length > 0)
           const uploadedFiles = await this.getUploadedFiles()

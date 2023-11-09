@@ -68,6 +68,7 @@ export const useLessonVideoPlayerCallbacks = ({
     event: PlayerInstanceEvent,
     completeOverride = false
   ) {
+    let isVideoCompleted = false
     try {
       if (!currentChildren.value || !lesson.value || !lesson.value.id || isSavingProgess || lesson.value.previewMode) {
         return
@@ -76,6 +77,7 @@ export const useLessonVideoPlayerCallbacks = ({
       isSavingProgess = true
       const promises: Promise<any>[] = []
       const video = determineSaveVideoProgressPayload(event, completeOverride)
+      isVideoCompleted = video.completed
       currentChildren.value.forEach((child) => {
         if (child && child.id) {
           promises.push(
@@ -89,7 +91,9 @@ export const useLessonVideoPlayerCallbacks = ({
     } catch (error) {
       return Promise.reject(error)
     } finally {
-      nuxt.$emit('dashboard-panel-update')
+      if (isVideoCompleted) {
+        nuxt.$emit('dashboard-panel-update')
+      }
       isSavingProgess = false
     }
   }
