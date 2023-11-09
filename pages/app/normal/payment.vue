@@ -82,7 +82,7 @@ import {
 } from '@nuxtjs/composition-api'
 import { useGtm } from '@/composables/web/gtm'
 import { useUTM } from '@/composables/web/utm'
-import { usePayment, useToastHelper } from '@/composables'
+import { useLanguageHelper, usePayment, useToastHelper } from '@/composables'
 import { useUser } from '@/composables/users'
 import StripePayForm from '@/components/forms/payment/StripePayForm.vue'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
@@ -108,6 +108,7 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const toast = useToastHelper()
+    const language = useLanguageHelper()
 
     const Gtm = useGtm()
     const Utm = useUTM({ route: route.value })
@@ -127,8 +128,8 @@ export default defineComponent({
 
     const stripeButtonText = computed(() => {
       return isUserInactive.value
-        ? 'REACTIVATE ACCOUNT'
-        : 'START YOUR FREE TRIAL'
+        ? language.t('account.membership.reactivate')
+        : language.t('account.membership.startTrial')
     })
 
     async function goToNextStep() {

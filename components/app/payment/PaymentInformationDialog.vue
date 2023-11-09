@@ -150,7 +150,7 @@ export default defineComponent({
     const isValidCoupon = ref(false)
     const isValidatingCoupon = ref(false)
     const lockButton = ref(false)
-    const disableBtn = computed(() => userCards.value?.length === 0)
+    const disableBtn = computed(() => userCards.value?.length === 0 && isPaymentMethodNeeded.value)
     const btnConfirmationText = computed(() => `${language.t('paymentPlan.paymentInformation.btnConfirmation')} ${planToSwitchTo.value}`)
     const getTextValidateCoupon = computed(() => {
       if (promotionCode.value) {
@@ -160,6 +160,12 @@ export default defineComponent({
       }
     })
 
+    const coupon = computed(() => {
+      return store.getters['auth/getUserInfo']?.subscription?.discount?.coupon
+    })
+
+    const isPaymentMethodNeeded = ref(true)
+
     const onSubmit = async () => {
       loading.value = true
       const plan = { ...props.draft }
@@ -167,7 +173,7 @@ export default defineComponent({
       plan.type = props.billAnnually ? 'biannual' : 'monthly'
       plan.fromPlaydates = props.fromPlaydates
       try {
-        if (userCards.value?.length === 0) {
+        if (userCards.value?.length === 0 && isPaymentMethodNeeded.value) {
           toast.error(language.t('paymentPlan.paymentInformation.error1'))
           loading.value = false
           return
@@ -198,10 +204,12 @@ export default defineComponent({
           const coupons = await store.dispatch('coupons/getCoupons', { active: true, code: promotionCode.value })
           if (coupons.length > 0) {
             promotionId.value = coupons[0].promotion_id
+            isPaymentMethodNeeded.value = !(coupons[0].percent_off === 100 && coupons[0].duration === 'forever')
             isValidCoupon.value = true
             lockButton.value = false
           } else {
             isValidCoupon.value = false
+            isPaymentMethodNeeded.value = true
             lockButton.value = true
             promotionId.value = null
           }
@@ -227,12 +235,14 @@ export default defineComponent({
         }
       } else {
         lockButton.value = false
+        isPaymentMethodNeeded.value = true
         promotionId.value = null
       }
     })
 
     onMounted(async () => {
       await getCards()
+      isPaymentMethodNeeded.value = !(coupon.value?.percent_off === 100 && coupon.value?.duration === 'forever')
     })
 
     return {
@@ -249,7 +259,8 @@ export default defineComponent({
       getTextValidateCoupon,
       isValidatingCoupon,
       lockButton,
-      disableBtn
+      disableBtn,
+      isPaymentMethodNeeded
     }
   }
 })

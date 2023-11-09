@@ -137,8 +137,8 @@ export default defineComponent({
   computed: {
     getTextButton() {
       return this.mode === 'activate-user'
-        ? 'REACTIVATE ACCOUNT'
-        : 'START YOUR FREE TRIAL'
+        ? this.$i18n.t('account.membership.reactivate')
+        : this.$i18n.t('account.membership.startTrial')
     },
     isUserInactive() {
       return this.mode === 'activate-user'
@@ -155,7 +155,8 @@ export default defineComponent({
       if (this.mode === 'activate-user') {
         await this.fetchUserInfo()
         page = {
-          name: 'app-payment-plan'
+          name: 'app-payment-plan',
+          query: { mode: 'activate-user' }
         }
       } else {
         page = {
