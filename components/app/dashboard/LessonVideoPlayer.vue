@@ -30,7 +30,7 @@
         @exit="triggerScheduleDialog"
         @return="onLessonCompletedDialogClose"
       />
-      <LessonScheduleFinished v-model="isShowingScheduleDialog" :should-advance="lessonData.curriculumType.name === 'Intro'" />
+      <LessonScheduleFinished v-model="isShowingScheduleDialog" :should-advance="lessonData.curriculumType.letter === 'In'" />
       <PuzzleClipPath />
     </PgVideoPlayer>
   </div>

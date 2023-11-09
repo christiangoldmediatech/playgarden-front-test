@@ -187,7 +187,7 @@ export default {
     letters() {
       return this.unfilteredLetters.filter((letter) => {
         // remove intro and nature from music library ch2621
-        return !['Intro', 'Nature'].includes(letter.name)
+        return !['In', 'Nt'].includes(letter.letter)
       })
     },
 

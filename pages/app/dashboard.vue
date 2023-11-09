@@ -221,7 +221,7 @@ export default {
       if (this.lesson) {
         const lessonDay = this.lesson.day
         const goToVideos = this.prevRoute === 'app-welcome'
-        const curriculumName = this.lesson.curriculumType.name
+        const curriculumType = this.lesson.curriculumType.letter
         const shouldRedirect = this.$route.query.shouldRedirect !== 'false' // This is use to avoid redirection loops
         const redirectToWorksheets = this.$route.query.redirectWorksheets === 'true'
         const cancelWelcomePage = this.highestProgress > 1
@@ -245,7 +245,7 @@ export default {
           return
         }
 
-        if ((lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro' && shouldRedirect && !wasProgressMade && !cancelWelcomePage) {
+        if ((lessonDay === 2 || lessonDay === 3) && curriculumType === 'In' && shouldRedirect && !wasProgressMade && !cancelWelcomePage) {
           this.$router.push({ name: 'app-welcome', query: { step: lessonDay } })
           return
         }
@@ -255,7 +255,7 @@ export default {
           return
         }
 
-        if (((lessonDay === 1 || lessonDay === 2 || lessonDay === 3) && curriculumName === 'Intro') && !redirectToWorksheets && goToVideos) {
+        if (((lessonDay === 1 || lessonDay === 2 || lessonDay === 3) && curriculumType === 'In') && !redirectToWorksheets && goToVideos) {
           this.$router.push(this.generateNuxtRoute('lesson-videos', {
             id: this.getNextId(this.videos.items)
           }))
@@ -272,7 +272,7 @@ export default {
             id: this.getNextId(this.worksheets.ONLINE)
           })
           this.$router.push(route)
-        } else if (curriculumName === 'Intro') {
+        } else if (curriculumType === 'In') {
           const offlineWorksheets = this.lesson.worksheets.filter((worksheet) => worksheet.type === 'OFFLINE')
           this.fileUpload = (offlineWorksheets && offlineWorksheets.length > 0)
           const uploadedFiles = await this.getUploadedFiles()

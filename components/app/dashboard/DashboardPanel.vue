@@ -192,7 +192,7 @@
               :key="onlineWorksheet.id"
               :is-admin="isAdmin"
               :online-worksheet="onlineWorksheet"
-              :progress="lesson.curriculumType.name === 'Intro' ? 100 : videos.progress"
+              :progress="lesson.curriculumType.letter === 'In' ? 100 : videos.progress"
               :no-link-mode="noLinkMode"
               :to="
                 noLinkMode
@@ -201,7 +201,7 @@
                       worksheet: onlineWorksheetIndex
                     })
               "
-              :enabled="lesson.curriculumType.name === 'Intro' || completedOnlineWorksheets >= onlineWorksheetIndex"
+              :enabled="lesson.curriculumType.letter === 'In' || completedOnlineWorksheets >= onlineWorksheetIndex"
               :active="worksheetQuery === onlineWorksheetIndex"
             />
           </template>
@@ -215,7 +215,7 @@
                 :key="onlineWorksheet.id"
                 :is-admin="isAdmin"
                 :online-worksheet="onlineWorksheet"
-                :progress="lesson.curriculumType.name === 'Intro' ? 100 : videos.progress"
+                :progress="lesson.curriculumType.letter === 'In' ? 100 : videos.progress"
                 :no-link-mode="noLinkMode"
                 :to="
                   noLinkMode
@@ -224,7 +224,7 @@
                         worksheet: onlineWorksheetIndex
                       })
                 "
-                :enabled="lesson.curriculumType.name === 'Intro' || completedOnlineWorksheets >= onlineWorksheetIndex"
+                :enabled="lesson.curriculumType.letter === 'In' || completedOnlineWorksheets >= onlineWorksheetIndex"
                 :active="worksheetQuery === onlineWorksheetIndex"
               />
             </v-col>
@@ -294,7 +294,7 @@
             <!-- WORKSHEET VIDEO -->
             <v-card
               v-if="!displayMode && worksheets.OFFLINE && worksheets.OFFLINE.videoDetail"
-              :disabled="lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100 || noLinkMode"
+              :disabled="lesson.curriculumType.letter === 'In' ? false : videos.progress < 100 || noLinkMode"
               :to="generateNuxtRoute('offline-worksheet')"
               :ripple="false"
               class="dashboard-item"
@@ -324,7 +324,7 @@
                   <div
                     class="text-uppercase dashboard-item-title"
                     :class="{
-                      'dashboard-item-disabled': lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100
+                      'dashboard-item-disabled': lesson.curriculumType.letter === 'In' ? false : videos.progress < 100
                     }"
                   >
                     {{ worksheets.OFFLINE.name }}
@@ -340,7 +340,7 @@
             <!-- UPLOAD WORKSHEETS -->
             <v-card
               v-if="!displayMode"
-              :disabled="lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100"
+              :disabled="lesson.curriculumType.letter === 'In' ? false : videos.progress < 100"
               :ripple="false"
               class="dashboard-item"
               active-class="dashboard-item-active"
@@ -367,7 +367,7 @@
                     id="upload-worksheets-button"
                     class="text-uppercase dashboard-item-title"
                     :class="{
-                      'dashboard-item-disabled': lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100
+                      'dashboard-item-disabled': lesson.curriculumType.letter === 'In' ? false : videos.progress < 100
                     }"
                   >
                     {{ $t('dailyLessons.panel.uploadWorksheet') }}
@@ -388,7 +388,7 @@
               <v-col cols="4" class="pa-0">
                 <v-card
                   v-if="!displayMode && worksheets.OFFLINE"
-                  :disabled="lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100 || noLinkMode"
+                  :disabled="lesson.curriculumType.letter === 'In' ? false : videos.progress < 100 || noLinkMode"
                   :to="generateNuxtRoute('offline-worksheet')"
                   :ripple="false"
                   class="dashboard-item"
@@ -412,7 +412,7 @@
                       <div
                         class="text-uppercase dashboard-item-title"
                         :class="{
-                          'dashboard-item-disabled': lesson.curriculumType.name === 'Intro' ? false : videos.progress < 100
+                          'dashboard-item-disabled': lesson.curriculumType.letter === 'In' ? false : videos.progress < 100
                         }"
                       >
                         {{ worksheets.OFFLINE.name }}

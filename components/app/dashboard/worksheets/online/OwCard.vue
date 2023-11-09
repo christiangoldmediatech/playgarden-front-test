@@ -294,7 +294,7 @@ export default {
       await this.saveProgress()
       if (this.lastQuestion) {
         this.$nuxt.$emit(APP_EVENTS.DASHBOARD_ONLINE_WORKSHEET_COMPLETED)
-        if (this.lesson.curriculumType.name !== 'Intro') {
+        if (this.lesson.curriculumType.letter !== 'In') {
           this.completed = true
         } else {
           this.returnAction()

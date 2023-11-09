@@ -395,13 +395,15 @@ export default defineComponent({
       }
     },
     formattedLetterName() {
+      const letter = (this.getCurrentLetter as any)?.letter
       const letterName = (this.getCurrentLetter as any)?.name
 
       if (!letterName) {
         return ''
       }
 
-      if (letterName === 'Intro' || letterName === 'Nature') {
+      // Corresponds to Intro and Nature
+      if (letter === 'In' || letter === 'Nt') {
         return letterName
       }
 

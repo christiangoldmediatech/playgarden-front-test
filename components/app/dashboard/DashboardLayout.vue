@@ -235,7 +235,7 @@ export default {
     //   return !this.overrideMode && (this.lesson && this.lesson.curriculumType.id > 1) && (today < monday)
     // }
     canAdvance() {
-      if (this.lesson && this.lesson.curriculumType.name === 'Intro') {
+      if (this.lesson && this.lesson.curriculumType.letter === 'In') {
         return true
       }
 
