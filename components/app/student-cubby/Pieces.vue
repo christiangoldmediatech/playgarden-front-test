@@ -20,7 +20,7 @@
           "
           class="d-flex"
         >
-          <div class="mt-auto w-100">
+          <div v-if="false" class="mt-auto w-100">
             <span class="font-weight-black text-progress">
               {{ $t('studentCubby.puzzle.progress') }}
             </span>
