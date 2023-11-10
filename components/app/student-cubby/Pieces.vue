@@ -16,11 +16,11 @@
         <v-col
           v-if="
             !$vuetify.breakpoint.smAndDown &&
-              puzzle.piecesUnclocked !== puzzle.pieces
+              puzzle.piecesUnclocked < puzzle.pieces
           "
           class="d-flex"
         >
-          <div v-if="false" class="mt-auto w-100">
+          <div class="mt-auto w-100">
             <span class="font-weight-black text-progress">
               {{ $t('studentCubby.puzzle.progress') }}
             </span>
