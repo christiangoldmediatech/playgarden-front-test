@@ -85,7 +85,7 @@ import PaymentStep from '@/components/app/register/PaymentStep.vue'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import { useGtm } from '@/composables/web/gtm'
 import { useAccessorHelper } from '@/composables'
-import { AuthFlow, Flow } from '@/composables/users/enums'
+import { AuthFlow } from '@/composables/users/enums'
 
 export default defineComponent({
   name: 'Parent',

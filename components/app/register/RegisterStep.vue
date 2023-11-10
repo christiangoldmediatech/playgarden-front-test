@@ -64,11 +64,13 @@
 import {
   defineComponent,
   ref,
-  useRoute
+  useRoute,
+  useRouter,
+  useStore
 } from '@nuxtjs/composition-api'
 import RegisterForm from '@/components/forms/auth/RegisterForm.vue'
 import CardInfo from '@/components/app/register/CardInfo.vue'
-import { useToastHelper, useAccessorHelper, useLanguageHelper } from '@/composables'
+import { useToastHelper, useAccessorHelper, useLanguageHelper, usePayment } from '@/composables'
 import { useModal } from '@/composables/web/modal'
 import {
   useParentSignup,
@@ -78,6 +80,7 @@ import {
 import { useAuth } from '@/composables/users'
 import { ParentSignupPayload } from '@/composables/web/signup/types'
 import { SignupType } from '@/composables/users/types'
+import { useUTM } from '@/composables/web/utm'
 
 export default defineComponent({
   name: 'RegisterStep',
@@ -101,6 +104,10 @@ export default defineComponent({
     const signupStore = useAccessorHelper().auth.signup
     const hasValidLibraryCard = signupStore.hasValidLibraryCard
     const libraryCardNumber = signupStore.libraryCardNumber
+    const router = useRouter()
+    const Payment = usePayment()
+    const store = useStore()
+    const Utm = useUTM({ route: route.value })
 
     const SignupFlow = useSignupFlow({
       route: route.value
@@ -117,7 +124,18 @@ export default defineComponent({
     const signupType = SignupType.PLAYGARDEN
 
     function goToNextStep() {
-      emit('click:change-step')
+      if (hasValidLibraryCard) {
+        router.push({
+          name: 'app-children',
+          query: {
+            step: '4',
+            process: 'signup',
+            ...Utm.utmContent.value
+          }
+        })
+      } else {
+        emit('click:change-step')
+      }
     }
 
     const handleSubmit = async (data: ParentSignupPayload) => {
@@ -125,6 +143,12 @@ export default defineComponent({
         loading.value = true
         await ParentSignup.signup(data, signupType)
         toast.success(language.t('register.success'))
+
+        if (hasValidLibraryCard) {
+          await Payment.payShorterSubscription({ token: '' })
+          await store.dispatch('auth/fetchUserInfo', undefined, { root: true })
+        }
+
         goToNextStep()
       } catch (e) {
         const error = e as any

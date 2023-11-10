@@ -105,7 +105,7 @@ export default actionTree(
 
       commit('SET_LIBRARY_ID', response.id)
       commit('SET_LIBRARY_CARD_NUMBER', libraryCardNumber)
-      commit('SET_AB_FLOW', Flow.NOCREDITCARD)
+      commit('SET_AB_FLOW', Flow.CREDITCARD)
       commit('SET_AUTH_FLOW', AuthFlow.PRESCHOOL)
 
       return true

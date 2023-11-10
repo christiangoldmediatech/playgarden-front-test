@@ -72,7 +72,7 @@
               color="#B2E68D"
               min-height="60"
               class="main-btn !pg-text-white !pg-normal-case"
-              :disabled="loading"
+              :disabled="loading || !isValidForm"
               :loading="loading"
               type="submit"
               x-large
