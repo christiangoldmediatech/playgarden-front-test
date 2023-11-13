@@ -47,48 +47,50 @@
           </div>
 
           <!-- CARD VALIDATION FORM -->
-          <v-form
-            ref="cardValidationForm"
-            v-model="isValidForm"
-            @submit.prevent="onSubmit"
-          >
-            <pg-text-field
-              v-model="libraryCardNumber"
-              :label="$t('register.libraryCard.label')"
-              clearable
-              :disabled="loading"
-              :loading="loading"
-              :rules="[isValidLibraryCard]"
-              :error-messages="errorMessages"
-              maxlength="14"
-              max
-              solo
-              type="text"
-              class="custom-text-field"
-            />
-
-            <v-btn
-              block
-              color="#B2E68D"
-              min-height="60"
-              class="main-btn !pg-text-white !pg-normal-case"
-              :disabled="loading || !isValidForm"
-              :loading="loading"
-              type="submit"
-              x-large
+          <validation-observer v-slot="{ invalid, passes }">
+            <v-form
+              ref="cardValidationForm"
+              @submit.prevent="passes(onSubmit)"
             >
-              {{ $t('register.libraryCard.submit') }}
-            </v-btn>
+              <validation-provider v-slot="{ errors }" name="libraryCardNumber" rules="required|length:14">
+                <pg-text-field
+                  v-model="libraryCardNumber"
+                  :label="$t('register.libraryCard.label')"
+                  clearable
+                  :disabled="loading"
+                  :loading="loading"
+                  :rules="[isValidLibraryCard]"
+                  :error-messages="errors"
+                  maxlength="14"
+                  max
+                  solo
+                  type="text"
+                  class="custom-text-field"
+                />
+              </validation-provider>
+              <v-btn
+                block
+                color="#B2E68D"
+                min-height="60"
+                class="main-btn !pg-text-white !pg-normal-case"
+                :disabled="loading || invalid"
+                :loading="loading"
+                type="submit"
+                x-large
+              >
+                {{ $t('register.libraryCard.submit') }}
+              </v-btn>
 
-            <p class="pg-mt-6 mt-md-4 pg-text-center md:pg-text-left">
-              {{ $t('register.libraryCard.info') }}
-            </p>
+              <p class="pg-mt-6 mt-md-4 pg-text-center md:pg-text-left">
+                {{ $t('register.libraryCard.info') }}
+              </p>
 
-            <!-- Hidden until link is provided -->
-            <p class="pg-hidden pg-mt-6 mt-md-4 pg-text-center md:pg-text-left">
-              {{ $t('register.libraryCard.whatIsALibraryCard') }} <a class="!pg-text-[#F89838] pg-font-[800] !pg-underline" href="#">{{ $t('register.libraryCard.clickHere') }}</a>
-            </p>
-          </v-form>
+              <!-- Hidden until link is provided -->
+              <p class="pg-hidden pg-mt-6 mt-md-4 pg-text-center md:pg-text-left">
+                {{ $t('register.libraryCard.whatIsALibraryCard') }} <a class="!pg-text-[#F89838] pg-font-[800] !pg-underline" href="#">{{ $t('register.libraryCard.clickHere') }}</a>
+              </p>
+            </v-form>
+          </validation-observer>
         </div>
       </v-col>
     </v-row>
