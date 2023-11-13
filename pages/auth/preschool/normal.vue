@@ -21,7 +21,7 @@
       </div>
 
       <v-stepper v-model="currentStep" alt-labels flat class="stepper-wrapper">
-        <v-stepper-header class="elevation-0">
+        <v-stepper-header v-if="!hasValidLibraryCard" class="elevation-0">
           <v-stepper-step color="#68C453" :complete="currentStep > 1" complete-icon="mdi-numeric-1" step="1">
             <h1 class="pg-text-center pg-font-quick pg-text-base pg-font-normal pg-tracking-[5px]" :class="{ 'pg-text-[#68C453]': currentStep >= 1 }">
               {{ $t('register.step1') }}
@@ -85,7 +85,7 @@ import PaymentStep from '@/components/app/register/PaymentStep.vue'
 import BackButton from '@/components/shared/BackButton/BackButton.vue'
 import { useGtm } from '@/composables/web/gtm'
 import { useAccessorHelper } from '@/composables'
-import { AuthFlow, Flow } from '@/composables/users/enums'
+import { AuthFlow } from '@/composables/users/enums'
 
 export default defineComponent({
   name: 'Parent',
@@ -109,6 +109,8 @@ export default defineComponent({
     const route = useRoute()
     const store = useAccessorHelper().auth.signup
     const Gtm = useGtm()
+    const signupStore = useAccessorHelper().auth.signup
+    const hasValidLibraryCard = signupStore.hasValidLibraryCard
 
     const currentStep = ref(1)
 
@@ -141,6 +143,7 @@ export default defineComponent({
     }
 
     return {
+      hasValidLibraryCard,
       handleGoBack,
       currentStep,
       changeStep
