@@ -11,6 +11,7 @@ import {
   digits,
   email,
   integer,
+  length,
   max,
   min,
   min_value as minValue,
@@ -33,6 +34,7 @@ extend('min', min)
 extend('min_value', minValue)
 extend('required', required)
 extend('size', size)
+extend('length', length)
 
 // Custom
 // 4242424242424242
@@ -156,6 +158,7 @@ const dictionary = {
       howCanWeHelpYou: 'How can we help you?',
       nameOfLibrary: 'Name of Library',
       libraryAddress: 'Library Address',
+      libraryCardNumber: 'Library Card Number',
       cardNumber: 'Card number',
       promotionCode: 'Promotion Code',
       explanation: 'explanation',
@@ -207,6 +210,7 @@ const dictionary = {
       howCanWeHelpYou: '¿Cómo podemos ayudarte?',
       nameOfLibrary: 'Nombre de la biblioteca',
       libraryAddress: 'Dirección de la biblioteca',
+      libraryCardNumber: 'Número de tarjeta de la biblioteca',
       cardNumber: 'Número de tarjeta',
       promotionCode: 'Código de promoción',
       explanation: 'Explicación',
