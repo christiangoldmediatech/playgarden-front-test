@@ -32,11 +32,11 @@
                   <v-img
                     aspect-ratio="1.7"
                     :src="
-                      puzzle.piecesUnclocked >= puzzle.pieces ? puzzle.src : ''
+                      puzzle.piecesUnclocked >= puzzle.pieces ? (puzzle.thumbnail || puzzle.src) : ''
                     "
                     :[puzzle.srcType]="
                       puzzle.lazy
-                        ? puzzle.src
+                        ? (puzzle.thumbnail || puzzle.src)
                         : require('@/assets/png/student-cubby/puzzle-piece.png')
                     "
                   >
@@ -49,7 +49,7 @@
                           width="300"
                         >
                           <v-row
-                            v-if="puzzle.piecesUnclocked !== puzzle.pieces"
+                            v-if="puzzle.piecesUnclocked < puzzle.pieces"
                             justify="center"
                             no-gutters
                           >
