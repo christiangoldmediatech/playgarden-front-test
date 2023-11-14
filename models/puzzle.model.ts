@@ -6,6 +6,7 @@ export interface Puzzle extends Entity {
   completed: boolean
   curriculumType: CurriculumType
   image: string
+  thumbnail: string
   level: 'BEGINNER'
   name: string
   pieces: number
@@ -27,6 +28,7 @@ export interface PuzzleResponse {
   piecesUnclocked: number
   percentageCompleted: number
   puzzleChildrenId : number
+  thumbnail: string
   src: string
   srcType? : string
   columns: number
