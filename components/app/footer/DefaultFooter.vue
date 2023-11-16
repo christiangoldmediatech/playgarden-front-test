@@ -110,7 +110,7 @@
           <div
             class="pg-text-base pg-leading-9 pg-text-[#68C453] pg-font-semibold"
           >
-            Park avenue Learning Lab
+            Park Avenue Learning Lab
           </div>
 
           <a
