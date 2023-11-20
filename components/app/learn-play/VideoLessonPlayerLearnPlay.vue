@@ -65,8 +65,8 @@
           <span class="title-dashboard">{{ $t('socialEmotional.common.moreLikeThis') }}</span>
         </div>
         <videos-scroll
-          v-if="videos.length > 0"
-          :learn-play-videos="videos"
+          v-if="videosList.length > 0"
+          :learn-play-videos="videosList"
           :height="playerHeight"
           @change-video-track="changeVideoTrack"
         />
@@ -83,7 +83,7 @@
 import PgVideoPlayer from '@gold-media-tech/pg-video-player'
 import VideosScroll from '@/components/app/learn-play/VideosScroll.vue'
 import { PlayerInstance, PlayerInstanceEvent } from '@gold-media-tech/pg-video-player/src/types/PlayerInstance'
-import { defineComponent, onMounted, onUnmounted, ref, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, onUnmounted, ref, useStore, computed } from '@nuxtjs/composition-api'
 import {
   useLearnPlayV2,
   useCommonPlayerFunctions,
@@ -129,6 +129,8 @@ export default defineComponent({
 
       playerHeight.value = height
     }))
+
+    const videosList = computed(() => learnPlayV2.playAndLearnVideos.value.slice(1))
 
     function onPlayerReady(payload: {
       player: PlayerInstance
@@ -288,6 +290,7 @@ export default defineComponent({
 
     return {
       videos: learnPlayV2.playAndLearnVideos,
+      videosList,
       loading: learnPlayV2.loadingPlayAndLearnVideos,
       ...commonPlayerFunctions,
       title,
