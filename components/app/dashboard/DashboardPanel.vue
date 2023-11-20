@@ -133,7 +133,7 @@
       <div v-if="lesson" class="lesson-panel-content">
         <v-btn
           large
-          color="accent"
+          color="accent text-wrap dynamic-width"
           class="mb-5"
           @click.stop="downloadWorksheetsAllLesson()"
           :disabled="loadingDownloadLessonsFile"
@@ -143,15 +143,15 @@
               mdi-download
             </v-icon>
           </v-avatar>
-          <span
+          <p
             id="lesson-weekly-letter-worksheets"
-            class="pr-6"
+            class="pr-6 text-wrap dynamic-width ma-0"
             :class="{
               'title-download-mobile': $vuetify.breakpoint.mobile
             }"
           >
             {{ $t('dailyLessons.panel.downloadWorksheets1') + ` ${getLetter} ` + $t('dailyLessons.panel.downloadWorksheets2') }}
-          </span>
+          </p>
         </v-btn>
         <!-- VIDEO LESSONS -->
         <content-section
@@ -1083,5 +1083,13 @@ span.admin-view-worksheets {
 
 .pass-through {
   pointer-events: auto !important;
+}
+
+.dynamic-width {
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: 100%; /* Adjust this value based on your needs */
 }
 </style>
