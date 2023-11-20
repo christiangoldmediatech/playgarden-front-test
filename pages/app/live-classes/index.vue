@@ -269,65 +269,53 @@
       </v-card>
     </pg-dialog>
 
-    <pg-dialog
-      :value="timezoneDialog"
+    <v-overlay
+      v-model="timezoneDialog"
+      :dark="false"
       content-class="elevation-0"
-      :fullscreen="fullscreen"
       persistent
+      z-index="4000"
     >
-      <v-card class="dialog-overlay">
-        <v-row no-gutters justify="start" class="mt-0">
-          <v-col class="mt-16">
-            <v-row
-              class="mt-16 mb-15"
-              justify="center"
-              align-content="center"
-              no-gutters
+      <v-card
+        cols="12"
+        sm="4"
+        class="px-3 mt-16"
+        width="400"
+        height="200"
+        tile
+      >
+        <v-card-text>
+          <v-row justify="center" no-gutters>
+            {{ $t('liveClasses.timezone') }}
+          </v-row>
+          <v-row>
+            <pg-select
+              v-model="selectedTimezone"
+              clearable
+              hide-details
+              item-text="name"
+              item-value="value"
+              :label="$t('liveClasses.timezoneLowercase')"
+              solo-labeled
+              :items="timezoneOptions"
+              class="select"
+            />
+          </v-row>
+          <v-row justify="center">
+            <v-btn
+              class="mt-3 mr-4"
+              color="accent"
+              @click="saveTimeZone"
             >
-              <v-card
-                cols="12"
-                sm="4"
-                class="px-3 mt-16"
-                width="400"
-                height="200"
-                tile
-              >
-                <v-card-text>
-                  <v-row justify="center" no-gutters>
-                    {{ $t('liveClasses.timezone') }}
-                  </v-row>
-                  <v-row>
-                    <pg-select
-                      v-model="selectedTimezone"
-                      clearable
-                      hide-details
-                      item-text="name"
-                      item-value="value"
-                      :label="$t('liveClasses.timezoneLowercase')"
-                      solo-labeled
-                      :items="timezoneOptions"
-                      class="select"
-                    />
-                  </v-row>
-                  <v-row justify="center">
-                    <v-btn
-                      class="mt-3 mr-4"
-                      color="accent"
-                      @click="saveTimeZone"
-                    >
-                      {{ $t('commonWords.save') }}
-                    </v-btn>
-                    <v-btn class="mt-3" color="" @click="closeTimezoneModal">
-                      {{ $t('commonWords.close') }}
-                    </v-btn>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </v-row>
-          </v-col>
-        </v-row>
+              {{ $t('commonWords.save') }}
+            </v-btn>
+            <v-btn class="mt-3" color="" @click="closeTimezoneModal">
+              {{ $t('commonWords.close') }}
+            </v-btn>
+          </v-row>
+        </v-card-text>
       </v-card>
-    </pg-dialog>
+    </v-overlay>
   </v-main>
 </template>
 
@@ -355,7 +343,13 @@ import { useLiveClassesTutorial } from '@/composables/tutorial/use-live-classes-
 import { jsonCopy } from '@/utils'
 import dayjs from 'dayjs'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
 dayjs.extend(isSameOrBefore)
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.extend(advancedFormat)
 
 export default {
   name: 'Index',
@@ -408,26 +402,12 @@ export default {
 
     getAcronymCurrent() {
       let acronym = ''
-      switch (this.selectedTimezone) {
-        case 'America/New_York':
-          acronym = 'EST'
-          break
-        case 'Pacific/Honolulu':
-          acronym = 'HST'
-          break
-        case 'America/Anchorage':
-          acronym = 'AKST'
-          break
-        case 'America/Los_Angeles':
-          acronym = 'PST'
-          break
-        case 'America/Denver':
-          acronym = 'MST'
-          break
-        case 'America/Chicago':
-          acronym = 'CST'
-          break
+      const timezone = this.getUserInfo.timezone
+
+      if (timezone) {
+        acronym = dayjs().tz(timezone).format('z')
       }
+
       return acronym
     },
 
@@ -691,7 +671,8 @@ export default {
     async saveTimeZone() {
       try {
         this.loading = true
-        await this.setTimezone({ timezone: this.selectedTimezone })
+        const timezone = this.selectedTimezone === 'GUESS_TIMEZONE' ? dayjs.tz.guess() : this.selectedTimezone
+        await this.setTimezone({ timezone })
         await this.fetchUserInfo()
         await this.getUserLiveSessions(this.days)
         this.viewModeVal = 0

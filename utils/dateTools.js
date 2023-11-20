@@ -8,8 +8,16 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 export const timezoneOptions = [{
+  name: 'Detect my timezone',
+  value: 'GUESS_TIMEZONE'
+},
+{
   name: 'Hawaii Standard Time',
   value: 'Pacific/Honolulu'
+},
+{
+  name: 'Central African Time',
+  value: 'Africa/Kinshasa'
 },
 {
   name: 'Alaska Standard Time',
