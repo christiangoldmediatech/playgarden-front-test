@@ -130,7 +130,7 @@
               <v-btn
                 block
                 height="45"
-                class="social-btn"
+                class="social-btn text-wrap dynamic-width"
                 @click="goToLibraryCardValidator"
               >
                 <img
@@ -139,7 +139,9 @@
                   src="@/assets/svg/library-card-signup.svg"
                 />
 
-                <span class="spanSocialNetwork">{{ $t('register.registerForm.registerWithLibraryCard') }}</span>
+                <p class="spanSocialNetwork text-wrap dynamic-width ma-0">
+                  {{ $t('register.registerForm.registerWithLibraryCard') }}
+                </p>
               </v-btn>
             </v-col>
           </v-row>
@@ -469,6 +471,14 @@ export default {
 .go-back {
   top: 60px;
   left: 10px;
+}
+.dynamic-width {
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  text-align: center;
+  max-width: 100%; /* Adjust this value based on your needs */
 }
 
 @media (max-width: $breakpoint-md) {
