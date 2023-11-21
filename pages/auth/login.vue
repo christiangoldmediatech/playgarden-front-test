@@ -124,6 +124,24 @@
                 <span class="spanSocialNetwork">{{ $t('login.loginWithFb') }}</span>
               </v-btn>
             </v-col>
+
+            <!-- LIBRARY CARD -->
+            <v-col class="mb-6 mb-md-4 mt-4" cols="12" order="2" order-md="0">
+              <v-btn
+                block
+                height="45"
+                class="social-btn"
+                @click="goToLibraryCardValidator"
+              >
+                <img
+                  alt="Facebook"
+                  class="mr-1"
+                  src="@/assets/svg/library-card-signup.svg"
+                />
+
+                <span class="spanSocialNetwork">{{ $t('register.registerForm.registerWithLibraryCard') }}</span>
+              </v-btn>
+            </v-col>
           </v-row>
         </div>
       </v-col>
