@@ -113,7 +113,7 @@
             </v-col>
 
             <!-- GOOGLE -->
-            <v-col class="mb-4 mb-md-0 pl-md-4" cols="12" md="6">
+            <v-col class="mb-4 mb-md-0" cols="12" md="6">
               <v-btn block height="45" class="social-btn" @click="googleSignIn">
                 <img
                   alt="Google"
