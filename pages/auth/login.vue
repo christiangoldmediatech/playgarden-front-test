@@ -113,7 +113,7 @@
             </v-col>
 
             <!-- GOOGLE -->
-            <v-col class="mb-4 mb-md-0 pl-md-4" cols="12" md="6">
+            <v-col class="mb-4 mb-md-0" cols="12" md="6">
               <v-btn block height="45" class="social-btn" @click="googleSignIn">
                 <img
                   alt="Google"
@@ -122,6 +122,26 @@
                 />
 
                 <span class="spanSocialNetwork">{{ $t('login.loginWithFb') }}</span>
+              </v-btn>
+            </v-col>
+
+            <!-- LIBRARY CARD -->
+            <v-col class="mb-6 mb-md-4 mt-4" cols="12" order="2" order-md="0">
+              <v-btn
+                block
+                height="45"
+                class="social-btn text-wrap dynamic-width"
+                @click="goToLibraryCardValidator"
+              >
+                <img
+                  alt="Facebook"
+                  class="mr-1"
+                  src="@/assets/svg/library-card-signup.svg"
+                />
+
+                <p class="spanSocialNetwork text-wrap dynamic-width ma-0">
+                  {{ $t('register.registerForm.registerWithLibraryCard') }}
+                </p>
               </v-btn>
             </v-col>
           </v-row>
@@ -451,6 +471,14 @@ export default {
 .go-back {
   top: 60px;
   left: 10px;
+}
+.dynamic-width {
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  text-align: center;
+  max-width: 100%; /* Adjust this value based on your needs */
 }
 
 @media (max-width: $breakpoint-md) {
