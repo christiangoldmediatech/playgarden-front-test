@@ -67,7 +67,7 @@
             </v-col>
             <v-col v-if="amzLink " cols="3">
               <div class="mb-2">
-                {{ $t('socialEmotional.commmon.buyNowOn') }}:
+                {{ $t('socialEmotional.common.buyNowOn') }}:
               </div>
               <v-btn color="#B2E68D" block @click="goToLink">
                 <img src="@/assets/svg/amazon.svg" />
