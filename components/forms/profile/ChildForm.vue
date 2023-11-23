@@ -84,7 +84,8 @@ export default {
 
   data: () => ({
     loading: false,
-    items: []
+    items: [],
+    progressChildren: []
   }),
 
   computed: {
@@ -165,7 +166,7 @@ export default {
         this.loading = true
         await this.loadBackpacks()
         if (this.childrenProgress.length === 0) {
-          await this.getUserChildrenProgress()
+          this.progressChildren = await this.getUserChildrenProgress()
         }
 
         if (this.rows.length === 0) {
@@ -187,8 +188,7 @@ export default {
       index = null
     ) {
       const _birthdayPicker = (birthday) ? new Date(birthday).toISOString().substr(0, 10) : dayjs(`${new Date().getFullYear() - 2}-01-01`).format('YYYY-MM-DD')
-
-      const progress = this.childrenProgress.find((progress) => {
+      const progress = this.progressChildren.find((progress) => {
         if (progress && progress.children && progress.children.id) {
           return progress.children.id === id
         }

@@ -281,7 +281,7 @@
             <div class="ml-md-auto mr-auto">
               <span class="child-base-text pg-text-[#78C383]">{{ $t('account.student.currentLetter') }}</span>
               <span class="child-base-text">
-                {{ draft.progress.curriculumType.letter ? `Letter ${draft.progress.curriculumType.letter}` : undefined }}
+                {{ draft.progress.curriculumType.letter ? `${draft.progress.curriculumType.letter}` : undefined }}
               </span>
             </div>
           </v-col>
@@ -290,7 +290,7 @@
             <div class="ml-md-auto mr-auto">
               <span class="child-base-text pg-text-[#78C383]">{{ $t('account.student.currentDay') }}</span>
               <span class="child-base-text">
-                {{ draft.progress.day ? `Day ${draft.progress.day}` : undefined }}
+                {{ draft.progress.day ? `${draft.progress.day}` : undefined }}
               </span>
             </div>
           </v-col>
