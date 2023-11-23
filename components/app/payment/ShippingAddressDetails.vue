@@ -356,7 +356,7 @@ export default {
       return `${this.draft.address1} ${this.draft.address2 ? `, ${this.draft.address2}` : ''}`
     },
     formattedCountry() {
-      if (typeof this.draft.country === 'object') {
+      if (typeof this.draft?.country && this.draft?.country === 'object') {
         return this.draft.country.name
       }
 
