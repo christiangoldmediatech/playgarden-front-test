@@ -144,7 +144,7 @@ export default defineComponent({
 
 .category-icon {
   width: 100px;
-  height: 60px;
+  height: auto;
   object-fit: cover;
 }
 
