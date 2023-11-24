@@ -234,7 +234,7 @@ export default defineComponent({
     }
 
     @media screen and (min-width: 1264px) {
-      width: 126px;
+      width: 112px;
     }
 
     img {
