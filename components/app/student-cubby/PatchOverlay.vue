@@ -86,5 +86,8 @@ export default {
 .patch-overlay-dialog {
   background-color: rgba(0, 0, 0, 0.68) !important;
   border-color: rgba(0, 0, 0, 0.68) !important;
+  height: 100% !important;
+  width: 100% !important;
+  padding-bottom: 20vh !important;
 }
 </style>

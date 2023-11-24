@@ -1,8 +1,7 @@
 <template>
   <div>
-    <patch-overlay />
-
     <v-card flat>
+      <patch-overlay />
       <v-card-text>
         <div class="text-center">
           <!-- Section Title and Description -->
