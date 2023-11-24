@@ -153,7 +153,7 @@ export default defineComponent({
     order: 0;
     text-align: center;
     @media screen and (min-width: 1264px) {
-      width: 30%;
+      width: 37%;
       order: 1;
     }
   }
@@ -234,7 +234,7 @@ export default defineComponent({
     }
 
     @media screen and (min-width: 1264px) {
-      width: 112px;
+      width: 126px;
     }
 
     img {
@@ -253,7 +253,7 @@ export default defineComponent({
       font-weight: 700;
       line-height: 1.5;
       @media screen and (min-width: 1264px) {
-        font-size: 17px;
+        font-size: 15px;
       }
     }
   }
