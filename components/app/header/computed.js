@@ -98,7 +98,8 @@ export default {
               title: this.$t('menus.header.community'),
               dataTestId: 'app-community',
               external: true,
-              link: `https://community.playgardenprep.com/login/?atoken=${this.getAccessToken}`,
+              // link: `https://community.playgardenprep.com/login/?atoken=${this.getAccessToken}`,
+              link: 'https://community.playgardenprep.com/access-login/',
               openInNewTab: true
             }
             // {
