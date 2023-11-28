@@ -59,7 +59,7 @@
 
           <v-col class="pt-0 lsess-schedule" cols="11">
             <v-row
-              class="my-0 pos-relative pt-md-2 pg-max-w-5xl pg-mx-auto"
+              class="my-0 pos-relative pt-md-2 pg-max-w-100"
               justify="center"
               align="center"
             >
