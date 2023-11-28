@@ -59,7 +59,7 @@
 
           <v-col class="pt-0 lsess-schedule" cols="11">
             <v-row
-              class="my-0 pos-relative pt-md-2 pg-max-w-5xl pg-mx-auto"
+              class="my-0 pos-relative pt-md-2 pg-max-w-100"
               justify="center"
               align="center"
             >
@@ -109,7 +109,7 @@
                 </template>
               </v-col>
 
-              <live-classes-tutorial-btn class="!pg-absolute pg-right-0" />
+              <live-classes-tutorial-btn class="!pg-absolute pg-right-2" />
             </v-row>
 
             <v-row>
