@@ -109,7 +109,7 @@
                 </template>
               </v-col>
 
-              <live-classes-tutorial-btn class="!pg-absolute pg-right-0" />
+              <live-classes-tutorial-btn class="!pg-absolute pg-right-2" />
             </v-row>
 
             <v-row>
