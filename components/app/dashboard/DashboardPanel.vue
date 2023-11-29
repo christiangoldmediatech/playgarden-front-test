@@ -150,7 +150,7 @@
               'title-download-mobile': $vuetify.breakpoint.mobile
             }"
           >
-            {{ $t('dailyLessons.panel.downloadWorksheets1') + ` ${getLetter} ` + $t('dailyLessons.panel.downloadWorksheets2') }}
+            {{ $t('dailyLessons.panel.downloadWorksheets', {letter: getLetter}) }}
           </p>
         </v-btn>
         <!-- VIDEO LESSONS -->
