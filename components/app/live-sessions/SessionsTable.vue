@@ -292,7 +292,7 @@ export default defineComponent({
       date.setFullYear(parts[0])
       date.setMonth(parts[1] - 1)
       date.setDate(parts[2])
-      return date.getDay() - 2
+      return date.getDay()
     },
 
     getDaysFormatted() {
