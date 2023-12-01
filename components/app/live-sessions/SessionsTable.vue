@@ -6,7 +6,7 @@
           <v-col
             v-for="(day, index) in getDaysFormatted"
             :key="`days-row-column-${index}`"
-            class="lsess-table-col lsess-table-col-header pg-relative pg-z-0"
+            class="lsess-table-col lsess-table-col-header d-flex align-center justify-center pg-relative pg-z-0"
             :class="{ 'active-day': index === activeDay }"
           >
             <span class="pg-relative pg-z-10">{{ day.name }}</span>
@@ -292,7 +292,7 @@ export default defineComponent({
       date.setFullYear(parts[0])
       date.setMonth(parts[1] - 1)
       date.setDate(parts[2])
-      return date.getDay()
+      return date.getDay() - 2
     },
 
     getDaysFormatted() {
@@ -476,7 +476,7 @@ export default defineComponent({
       flex-direction: column;
       &-header {
         position: relative;
-        font-size: 1.1rem;
+        font-size: 0.9rem;
         line-height: 1.5;
         text-align: center;
         max-height: 160px;
@@ -576,6 +576,7 @@ export default defineComponent({
   background-image: url("~@/assets/svg/meetings/day-selected.svg");
   background-position-x: center;
   background-position-y: center;
+  background-size: 100% 95%;
 
   span {
     font-weight: bold;
