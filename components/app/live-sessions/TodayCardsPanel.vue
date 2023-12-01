@@ -32,7 +32,7 @@
           <span class="lsess-title !pg-font-normal">{{ $t('liveClasses.todayCardPanel.myPlaydates') }}</span>
         </v-row>
         <v-row class="mx-0 pl-5" align="center" justify="start">
-          <img class="mr-3" src="@/assets/svg/sessions-camera.svg" />
+          <img class="mr-3" src="@/assets/svg/meetings/camera.svg" />
           <span class="lsess-title">{{ $t('liveClasses.todayCardPanel.nextClasses') }}</span>
         </v-row>
 
@@ -40,20 +40,22 @@
           <v-col cols="12" class="pl-2 pr-3 lsess-schedule-container-col">
             <template v-if="nextSessions.length > 0">
               <template v-if="$vuetify.breakpoint.smAndDown">
-                <today-card
+                <meeting-card
                   v-for="i in nextSessions"
                   :key="`today-card-${i.id}`"
-                  :entry="i"
-                  :block="block"
+                  :meeting="i"
+                  :small="true"
+                  :show-time="true"
                 />
               </template>
 
               <perfect-scrollbar v-else>
-                <today-card
+                <meeting-card
                   v-for="i in nextSessions"
                   :key="`today-card-${i.id}`"
-                  :entry="i"
-                  :block="block"
+                  :meeting="i"
+                  :small="true"
+                  :show-time="true"
                 />
               </perfect-scrollbar>
             </template>
@@ -75,15 +77,14 @@
 import { mapGetters, mapState } from 'vuex'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import dayjs from 'dayjs'
-
-import TodayCard from './TodayCard.vue'
+import MeetingCard from '../MeetingCard.vue'
 
 export default {
   name: 'TodayCardsPanel',
 
   components: {
     PerfectScrollbar,
-    TodayCard
+    MeetingCard
   },
 
   props: {
@@ -190,7 +191,7 @@ export default {
   .ps {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 500px;
     max-height: 100%;
     overflow: hidden;
     overflow-anchor: none;

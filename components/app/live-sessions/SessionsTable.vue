@@ -6,19 +6,16 @@
           <v-col
             v-for="(day, index) in getDaysFormatted"
             :key="`days-row-column-${index}`"
-            class="lsess-table-col lsess-table-col-header"
+            class="lsess-table-col lsess-table-col-header d-flex align-center justify-center pg-relative pg-z-0"
+            :class="{ 'active-day': index === activeDay }"
           >
-            {{ day.name }}
+            <span class="pg-relative pg-z-10">{{ day.name }}</span>
             <holiday-card
               v-if="day.holiday"
               :holiday="day.holiday"
               :height="holidaysWeekHeight"
               top-position="60px"
               holiday-type="week"
-            />
-            <div
-              v-if="index === activeDay"
-              class="lsess-table-col-header-active"
             />
           </v-col>
         </v-row>
@@ -149,7 +146,7 @@
 import { mapGetters, mapState } from 'vuex'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import dayjs from 'dayjs'
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
 import { useLanguageHelper } from '@/composables'
 import TableEntry from './TableEntry.vue'
 import HolidayCard from './HolidayCard.vue'
@@ -167,6 +164,11 @@ export default defineComponent({
     today: {
       type: String,
       required: true
+    },
+    startAndEndDate: {
+      type: Object,
+      required: false,
+      default: () => {}
     },
     dayMode: {
       type: Boolean,
@@ -191,20 +193,30 @@ export default defineComponent({
     }
   },
 
-  setup() {
+  setup(props) {
     const holidaysWeekHeight = ref('0px')
     const holidaysDayHeight = ref('0px')
     const language = useLanguageHelper()
 
-    const days = ref([
-      language.t('liveClasses.days.sunday'),
-      language.t('liveClasses.days.monday'),
-      language.t('liveClasses.days.tuesday'),
-      language.t('liveClasses.days.wednesday'),
-      language.t('liveClasses.days.thursday'),
-      language.t('liveClasses.days.friday'),
-      language.t('liveClasses.days.saturday')
-    ])
+    const startDate = computed(() => {
+      if (props.startAndEndDate) {
+        const sunday = dayjs(props.startAndEndDate.sunday)
+        return sunday
+      }
+      return null
+    })
+
+    const days = computed(() => {
+      return [
+        language.t('liveClasses.days.sunday') + ' ' + startDate.value.add(0, 'day').date(),
+        language.t('liveClasses.days.monday') + ' ' + startDate.value.add(1, 'day').date(),
+        language.t('liveClasses.days.tuesday') + ' ' + startDate.value.add(2, 'day').date(),
+        language.t('liveClasses.days.wednesday') + ' ' + startDate.value.add(3, 'day').date(),
+        language.t('liveClasses.days.thursday') + ' ' + startDate.value.add(4, 'day').date(),
+        language.t('liveClasses.days.friday') + ' ' + startDate.value.add(5, 'day').date(),
+        language.t('liveClasses.days.saturday') + ' ' + startDate.value.add(6, 'day').date()
+      ]
+    })
 
     const resizeOb = ref(
       new ResizeObserver(function(entries) {
@@ -249,7 +261,7 @@ export default defineComponent({
       }
     }
 
-    return { days, holidaysWeekHeight, holidaysDayHeight, setObserver, unsetObserver, language }
+    return { days, holidaysWeekHeight, holidaysDayHeight, setObserver, unsetObserver, language, startDate }
   },
 
   data: () => {
@@ -280,7 +292,6 @@ export default defineComponent({
       date.setFullYear(parts[0])
       date.setMonth(parts[1] - 1)
       date.setDate(parts[2])
-
       return date.getDay()
     },
 
@@ -465,18 +476,10 @@ export default defineComponent({
       flex-direction: column;
       &-header {
         position: relative;
-        font-size: 1.1rem;
+        font-size: 0.9rem;
         line-height: 1.5;
         text-align: center;
         max-height: 160px;
-        &-active {
-          width: 75%;
-          height: 3px;
-          margin: 0 auto;
-          margin-top: 8px;
-          background-color: #8ab591;
-          border-radius: 3px;
-        }
       }
     }
     &-day {
@@ -566,6 +569,17 @@ export default defineComponent({
   .ps__rail-y.ps--clicking .ps__thumb-y {
     background-color: #b2e68d;
     width: 14px;
+  }
+}
+
+.active-day {
+  background-image: url("~@/assets/svg/meetings/day-selected.svg");
+  background-position-x: center;
+  background-position-y: center;
+  background-size: 100% 95%;
+
+  span {
+    font-weight: bold;
   }
 }
 </style>
