@@ -9,6 +9,7 @@
           color="white"
           class="pg-bg-[#F6B7D2] !pg-absolute pg-top-[-20px] md:pg-top-0 pg-right-2 lg:pg-right-0 xl:pg-right-[-150px]"
           x-large
+          :loading="loading"
           @click="closeDialog"
         >
           <v-icon>
@@ -154,6 +155,7 @@ import TodayCard from '@/components/app/live-sessions/TodayCard.vue'
 import LessonAdvanceMixin from '@/mixins/LessonAdvanceMixin'
 import { useWorksheetsCategories } from '@/composables/worksheets'
 import { mapGetters } from 'vuex'
+import DashboardMixin from '@/mixins/DashboardMixin'
 
 export default defineComponent({
   name: 'LessonScheduleFinished',
@@ -163,9 +165,9 @@ export default defineComponent({
     MeetingCard
   },
 
-  emits: ['advance'],
+  emits: ['advance', 'close'],
 
-  mixins: [LessonAdvanceMixin],
+  mixins: [LessonAdvanceMixin, DashboardMixin],
 
   props: {
     value: {
@@ -187,6 +189,12 @@ export default defineComponent({
     }
   },
 
+  data() {
+    return {
+      loading: false
+    }
+  },
+
   setup(props) {
     const store = useStore()
     const router = useRouter()
@@ -203,10 +211,6 @@ export default defineComponent({
 
     const goToLibrary = () => {
       router.push({ name: 'app-library' })
-    }
-
-    function closeDialog() {
-      router.push({ name: 'app-virtual-preschool' })
     }
 
     async function getNextLesson() {
@@ -229,8 +233,17 @@ export default defineComponent({
     return {
       goToLibrary,
       upcomingMeeting,
-      closeDialog,
       nextLessonData
+    }
+  },
+  methods: {
+    async closeDialog() {
+      if (this.lessonCompleted) {
+        this.loading = true
+        await this.advance()
+        this.loading = false
+      }
+      this.$emit('close')
     }
   }
 })

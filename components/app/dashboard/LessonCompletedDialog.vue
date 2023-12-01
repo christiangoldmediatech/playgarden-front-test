@@ -7,7 +7,7 @@
           color="white"
           class="pg-bg-[#F6B7D2] !pg-absolute pg-top-[-10px] md:pg-top-0 pg-right-2 lg:pg-right-0 xl:pg-right-[-150px]"
           x-large
-          @click="$emit('exit' )"
+          @click="$emit('exit')"
         >
           <v-icon>
             mdi-close
@@ -75,7 +75,7 @@
           <v-icon class="pg-mr-2">
             mdi-chevron-left
           </v-icon>
-          {{ $t('commonWords.returnToLesson') }}
+          {{ $t('dailyLessons.lessonCompleted.goToHomescreen') }}
         </v-btn>
       </div>
 

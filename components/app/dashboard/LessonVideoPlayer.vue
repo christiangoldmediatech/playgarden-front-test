@@ -30,7 +30,7 @@
         @exit="triggerScheduleDialog"
         @return="onLessonCompletedDialogClose"
       />
-      <LessonScheduleFinished v-model="isShowingScheduleDialog" :should-advance="lessonData.curriculumType.letter === 'In'" />
+      <LessonScheduleFinished v-model="isShowingScheduleDialog" :should-advance="lessonData.curriculumType.letter === 'In'" @close="closeDialog" />
       <PuzzleClipPath />
     </PgVideoPlayer>
   </div>
@@ -155,10 +155,16 @@ export default defineComponent({
       nuxt.$off('open-lesson-video-player')
     })
 
+    const closeDialog = () => {
+      isLessonCompleted.value = false
+      player.close()
+    }
+
     // Close player when we close the lesson completed dialog
     function onLessonCompletedDialogClose() {
       isLessonCompleted.value = false
       player.close()
+      router.push('/')
     }
 
     function triggerScheduleDialog() {
@@ -204,7 +210,8 @@ export default defineComponent({
       onFavoritesClicked,
       callbacks,
       isShowingScheduleDialog,
-      triggerScheduleDialog
+      triggerScheduleDialog,
+      closeDialog
     }
   }
 })
