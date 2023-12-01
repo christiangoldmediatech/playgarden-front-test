@@ -11,7 +11,7 @@
       </v-icon>
     </v-btn>
 
-    <underlined-title :text="currentWeek" font-size="1.75rem" />
+    <underlined-title :text="currentWeek" font-size="1.75rem" font-size-mobile="1.2rem" />
 
     <v-btn
       icon

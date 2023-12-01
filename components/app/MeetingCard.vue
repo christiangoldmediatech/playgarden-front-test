@@ -1,70 +1,89 @@
 <template>
   <div
-    class="elevation-3 meeting-card py-4 px-8 v2-font pg-relative"
+    class="pg-relative"
     :class="{
-      'playdate-card': meeting.type === 'Playdate',
-      'liveclass-card': meeting.type === 'LiveClass',
+      'pt-6': showTime,
+      'meeting-card-large': !small,
+      'meeting-card-small': small
     }"
   >
-    <div class="meeting-card-icon">
-      <img
-        :src="
-          meeting.type === 'LiveClass'
-            ? require('@/assets/svg/sessions-liveclass-camera.svg')
-            : require('@/assets/svg/sessions-playdate-camera.svg')
-        "
-      />
+    <div v-if="showTime" class="pg-text-right mb-1">
+      {{ time }}
     </div>
-
-    <div class="pg-flex pg-items-center pg-gap-2 pg-mt-3">
-      <div v-if="meeting.teacher" class="pg-relative">
+    <div
+      class="elevation-3 meeting-card v2-font"
+      :class="{
+        'playdate-card': meeting.type === 'Playdate',
+        'liveclass-card': meeting.type === 'LiveClass',
+        'py-4': !small,
+        'py-2': small,
+        'px-8': !small,
+        'px-4': small,
+      }"
+    >
+      <div class="meeting-card-icon">
         <img
-          class="meeting-card-type pg-object-cover"
-          :src="meeting.teacher.img"
+          :src="
+            meeting.type === 'LiveClass'
+              ? require('@/assets/svg/sessions-liveclass-camera.svg')
+              : require('@/assets/svg/sessions-playdate-camera.svg')
+          "
         />
-        <div
-          v-if="meeting.type !== 'Playdate'"
-          class="pg-w-[30px] pg-h-[30px] pg-bg-white pg-rounded-full pg-p-0 pg-shadow-sm pg-absolute pg-bottom-0 pg-right-[-5px] pg-flex pg-items-center pg-justify-center"
-        >
+      </div>
+      <div class="pg-flex pg-items-center pg-gap-2 pg-mt-3">
+        <div v-if="meeting.teacher" class="pg-relative">
           <img
-            class="pg-w-[20px] pg-h-[20px] pg-object-contain"
+            class="meeting-card-type pg-object-cover"
+            :src="meeting.teacher.img"
+          />
+          <div
+            v-if="meeting.type !== 'Playdate'"
+            class="pg-w-[30px] pg-h-[30px] pg-bg-white pg-rounded-full pg-p-0 pg-shadow-sm pg-absolute pg-bottom-0 pg-right-[-5px] pg-flex pg-items-center pg-justify-center"
+          >
+            <img
+              class="pg-w-[20px] pg-h-[20px] pg-object-contain"
+              :src="meeting.activityType.icon"
+            />
+          </div>
+        </div>
+        <div v-else>
+          <img
+            class="meeting-card-type"
             :src="meeting.activityType.icon"
           />
         </div>
+        <div class="d-flex flex-column">
+          <span class="meeting-title" :class="{ 'meeting-title-large': !small }">
+            {{
+              meeting.type === 'LiveClass' ? meeting.activityType.name : meeting.title
+            }}
+          </span>
+          <span v-if="meeting.teacher" class="meeting-subtitle" :class="{ 'meeting-title-subtitle': !small }">
+            {{
+              meeting.teacher.name
+            }}
+          </span>
+          <br />
+        </div>
       </div>
-      <div v-else>
-        <img
-          class="meeting-card-type"
-          :src="meeting.activityType.icon"
-        />
+      <div class="meeting-description" :class="{ 'meeting-title-description': !small }">
+        <p>{{ meeting.description }}</p>
       </div>
-      <div class="d-flex flex-column">
-        <span class="meeting-title">
-          {{
-            meeting.type === 'LiveClass' ? meeting.activityType.name : meeting.title
-          }}
-        </span>
-        <span v-if="meeting.teacher" class="meeting-subtitle">
-          {{
-            meeting.teacher.name
-          }}
-        </span>
-        <br />
+      <div v-if="!small" class="d-flex justify-center">
+        <v-btn class="btn-meeting white--text" color="#F89838" @click="goToLiveClasses">
+          {{ $t('lessonEnd.meetingCard.button') }}
+        </v-btn>
       </div>
-    </div>
-    <div class="meeting-description">
-      <p>{{ meeting.description }}</p>
-    </div>
-    <div class="d-flex justify-center">
-      <v-btn class="btn-meeting white--text" color="#F89838" @click="goToLiveClasses">
-        {{ $t('lessonEnd.meetingCard.button') }}
-      </v-btn>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, useRouter } from '@nuxtjs/composition-api'
+<script>
+import { computed, defineComponent, useRoute, useRouter, useStore } from '@nuxtjs/composition-api'
+import { sameDay, isTomorrow } from '@/utils/dateTools.js'
+import moment from 'moment'
+import { formatTimezone } from '@/utils/dateTools'
+import dayjs from 'dayjs'
 
 export default defineComponent({
   name: 'MeetingCard',
@@ -73,17 +92,68 @@ export default defineComponent({
     meeting: {
       type: Object,
       required: true
+    },
+    small: {
+      type: Boolean,
+      default: false
+    },
+    showTime: {
+      type: Boolean,
+      default: false
     }
   },
 
-  setup() {
+  setup(props) {
     const router = useRouter()
+    const route = useRoute()
+    const store = useStore()
+
+    const days = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday'
+    ]
+
+    const userInfo = computed(() => store.getters['auth/getUserInfo'])
 
     const goToLiveClasses = () => {
       router.push({ name: 'app-live-classes' })
     }
 
+    const getToday = () => {
+      if (route.value.query.tutorial) {
+        return dayjs().startOf('week').add(1, 'day').add(10, 'hours').toDate()
+      }
+      return new Date()
+    }
+
+    const time = computed(() => {
+      const today = getToday()
+      const date = new Date(props.meeting.dateStart)
+      let word = days[date.getDay()]
+      if (date.getFullYear() === today.getFullYear()) {
+        if (sameDay(today, date)) {
+          word = 'Today'
+        } else if (isTomorrow(date)) {
+          word = 'Tomorrow'
+        }
+      }
+
+      const start = moment(props.meeting.dateStart)
+      const { timezone } = userInfo.value
+      return `${word} ${formatTimezone(start, {
+        format: 'hh:mma',
+        timezone,
+        returnObject: false
+      })}`
+    })
+
     return {
+      time,
       goToLiveClasses
     }
   }
@@ -93,7 +163,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 
 .meeting-card {
-  width: 500px;
   position: relative;
   transition: transform 250ms;
   overflow: hidden;
@@ -102,6 +171,14 @@ export default defineComponent({
   border-style: solid;
   border-color: #f89838;
   background-color: #fff7f0;
+}
+
+.meeting-card-large {
+  width: 500px;
+}
+
+.meeting-card-small {
+  width: calc(100% - 24px);
 }
 
 .liveclass-card {
@@ -140,16 +217,22 @@ export default defineComponent({
   font-family: 'Quicksand';
   font-style: normal;
   font-weight: 700;
-  font-size: 22px;
   color: #606060;
+}
+
+.meeting-title-large {
+  font-size: 22px;
 }
 
 .meeting-subtitle {
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;
-  font-size: 18px;
   color: #707070;
+}
+
+.meeting-subtitle-large {
+  font-size: 18px;
 }
 
 .meeting-description {
@@ -157,9 +240,14 @@ export default defineComponent({
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 400;
-    font-size: 16px;
     line-height: 28px;
     color: #707070;
+  }
+}
+
+.meeting-description-large {
+  p {
+    font-size: 16px;
   }
 }
 

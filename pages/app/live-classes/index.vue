@@ -17,47 +17,18 @@
         />
 
         <v-row class="fill-height">
-          <v-col>
-            <v-navigation-drawer
-              :mini-variant="drawer"
-              absolute
-              bottom
-              mini-variant-width="80"
-              width="400"
-              class="!pg-z-50"
-            >
-              <v-row>
-                <v-col
-                  cols="12"
-                  class="d-flex"
-                  :class="[
-                    !drawer ? 'pg-justify-end pg-pr-12' : 'pg-justify-center'
-                  ]"
-                >
-                  <v-btn icon @click="drawer = !drawer">
-                    <img
-                      v-if="drawer"
-                      src="@/assets/svg/meetings/open-menu.svg"
-                      alt="Open Menu"
-                    />
-                    <img
-                      v-else
-                      src="@/assets/svg/meetings/close-menu.svg"
-                      alt="Open Menu"
-                    />
-                  </v-btn>
-                </v-col>
-                <v-col v-if="!drawer" class="lsess-daily" cols="12">
-                  <today-cards-panel
-                    :type="filterType"
-                    @change="filterMeetings($event)"
-                  />
-                </v-col>
-              </v-row>
-            </v-navigation-drawer>
+          <v-col cols="2">
+            <v-row>
+              <v-col class="lsess-daily" cols="12">
+                <today-cards-panel
+                  :type="filterType"
+                  @change="filterMeetings($event)"
+                />
+              </v-col>
+            </v-row>
           </v-col>
 
-          <v-col class="pt-0 lsess-schedule" cols="11">
+          <v-col class="pt-0 lsess-schedule" cols="10">
             <v-row
               class="my-0 pos-relative pt-md-2 pg-max-w-100"
               justify="center"
@@ -120,7 +91,7 @@
                     class=" text-decoration-underline font-weight-bold timezone"
                     @click="timezoneDialog = true"
                   >
-                    {{ $t('commonWords.here') }}
+                    {{ $t('liveClasses.click') }}
                   </span>
                 </span>
               </v-col>
@@ -131,6 +102,7 @@
               :day-mode="viewMode === 'DAY'"
               :today="today"
               :holidays="getHolidays"
+              :start-and-end-date="days"
             />
           </v-col>
         </v-row>
