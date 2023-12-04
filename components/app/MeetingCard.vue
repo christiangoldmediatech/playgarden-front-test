@@ -81,6 +81,7 @@
 <script>
 import { computed, defineComponent, useRoute, useRouter, useStore } from '@nuxtjs/composition-api'
 import { sameDay, isTomorrow } from '@/utils/dateTools.js'
+import { useLanguageHelper } from '@/composables'
 import moment from 'moment'
 import { formatTimezone } from '@/utils/dateTools'
 import dayjs from 'dayjs'
@@ -104,21 +105,30 @@ export default defineComponent({
   },
 
   setup(props) {
+    const language = useLanguageHelper()
     const router = useRouter()
     const route = useRoute()
     const store = useStore()
-
-    const days = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday'
-    ]
-
     const userInfo = computed(() => store.getters['auth/getUserInfo'])
+    const days = (userInfo.value.language.language === 'Spanish')
+      ? [
+          'Domingo',
+          'Lunes',
+          'Martes',
+          'Miércoles',
+          'Jueves',
+          'Viernes',
+          'Sábado'
+        ]
+      : [
+          'Sunday',
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday'
+        ]
 
     const goToLiveClasses = () => {
       router.push({ name: 'app-live-classes' })
@@ -137,9 +147,9 @@ export default defineComponent({
       let word = days[date.getDay()]
       if (date.getFullYear() === today.getFullYear()) {
         if (sameDay(today, date)) {
-          word = 'Today'
+          word = language.t('lessonEnd.meetingCard.today')
         } else if (isTomorrow(date)) {
-          word = 'Tomorrow'
+          word = language.t('lessonEnd.meetingCard.tomorrow')
         }
       }
 
