@@ -24,17 +24,6 @@
 
       <v-spacer class="d-none d-md-flex" />
 
-      <v-col cols="12" class="d-flex align-center justify-center mt-4 d-sm-none">
-        <div class="music-letter-select">
-          <music-carousel-letter
-            :is-full-width="true"
-            :value="selectedLetterId"
-            :disabled-letters="disabledLetters"
-            @select="$emit('select-letter', $event)"
-          />
-        </div>
-      </v-col>
-
       <v-col cols="12" md="" class="d-flex justify-center justify-md-end">
         <v-btn
           large
@@ -151,7 +140,6 @@
 import { mapGetters, mapActions } from 'vuex'
 
 import LetterSongs from '@/components/app/music/LetterSongs.vue'
-import MusicCarouselLetter from '@/components/app/music/MusicLetterCarousel.vue'
 
 import { jsonCopy } from '@/utils/objectTools'
 
@@ -159,8 +147,7 @@ export default {
   name: 'MusicSongList',
 
   components: {
-    LetterSongs,
-    MusicCarouselLetter
+    LetterSongs
   },
 
   emits: ['addSong', 'newPlayList'],
