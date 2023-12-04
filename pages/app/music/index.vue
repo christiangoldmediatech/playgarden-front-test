@@ -12,33 +12,39 @@
     <pg-loading :loading="loading" fullscreen>
       <v-container fluid class="pa-0">
         <horizontal-ribbon-card :is-minimized.sync="isTopRibbonMinimized">
-          <v-row no-gutters class="pg-pt-20 ml-md-10 mr-md-6 mx-4 mt-4">
-            <v-col cols="12" md="3" align-self="center">
-              <child-select
-                v-if="id"
-                hide-details
-                :value="id"
-                :management-button="false"
-                @input="id = $event"
-              />
-            </v-col>
-            <v-col
-              cols="12"
-              md="9"
-              align-self="center"
-              class="px-2 mt-2 mt-md-0 d-none d-sm-flex carousel-wrapper"
-            >
-              <music-carousel-letter
-                :is-full-width="true"
-                :value="selectedLetterId"
-                :disabled-letters="disabledLetters"
-                @select="selectLetter"
-              />
-            </v-col>
-            <v-col cols="12" class="mt-4">
-              <new-compact-music-player @favorite="handleFavorite" />
-            </v-col>
-          </v-row>
+          <template v-slot:fixed>
+            <v-row no-gutters class="pg-pt-20 ml-md-10 mr-md-6 mx-4 mt-4">
+              <v-col cols="12" md="3" align-self="center">
+                <child-select
+                  v-if="id"
+                  hide-details
+                  :value="id"
+                  :management-button="false"
+                  @input="id = $event"
+                />
+              </v-col>
+              <v-col
+                cols="12"
+                md="9"
+                align-self="center"
+                class="px-0 px-sm-2 mt-2 mt-md-0 carousel-wrapper"
+              >
+                <music-carousel-letter
+                  :is-full-width="true"
+                  :value="selectedLetterId"
+                  :disabled-letters="disabledLetters"
+                  @select="selectLetter"
+                />
+              </v-col>
+            </v-row>
+          </template>
+          <template v-slot:expandable>
+            <v-row no-gutters class="ml-md-10 mr-md-6 mx-4 mt-4">
+              <v-col cols="12" class="mt-4">
+                <new-compact-music-player @favorite="handleFavorite" />
+              </v-col>
+            </v-row>
+          </template>
         </horizontal-ribbon-card>
         <v-expand-transition>
           <new-music-player

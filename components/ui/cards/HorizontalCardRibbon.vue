@@ -4,14 +4,18 @@
     :class="[
       'pg-transition pg-duration-200',
       'pg-fixed pg-top-14 md:pg-top-20 pg-z-50 pg-w-full',
-      'pg-bg-white pg-shadow-toolbar pg-rounded-b-[40px]'
+      'pg-bg-white pg-shadow-toolbar',
+      !$vuetify.breakpoint.smAndDown ? 'pg-rounded-b-[10px]' : 'pg-rounded-b-[40px]'
     ]"
   >
     <v-row no-gutters>
+      <v-col cols="12" class="pb-5" :class="[ !$vuetify.breakpoint.smAndDown ? 'pg-rounded-b-[40px] pg-shadow-[0px_8px_24px_rgba(0,0,0,0.1)]' : '' ]">
+        <slot name="fixed"></slot>
+      </v-col>
       <v-col cols="12">
         <v-expand-transition>
           <div v-show="!isMinimized" data-test-id="hcr-content">
-            <slot />
+            <slot name="expandable" />
           </div>
         </v-expand-transition>
       </v-col>
@@ -21,7 +25,7 @@
         data-test-id="hcr-minimize-button"
         @click="$emit('update:isMinimized', !isMinimized)"
       >
-        <v-icon :class="{ 'pg-pt-20': isMinimized }">
+        <v-icon color="#F89838" large>
           {{ isMinimized ? 'mdi-chevron-down' : 'mdi-chevron-up' }}
         </v-icon>
       </v-col>
