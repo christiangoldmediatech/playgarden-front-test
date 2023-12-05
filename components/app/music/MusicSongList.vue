@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4" v-bind="$attrs">
+  <div class="pa-4" v-bind="$attrs">
     <!-- Filters -->
     <v-row no-gutters>
       <v-col v-if="$vuetify.breakpoint.mdAndUp" class="pg-mb-5">
