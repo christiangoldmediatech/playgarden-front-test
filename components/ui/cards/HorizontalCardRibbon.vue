@@ -65,15 +65,15 @@ export default defineComponent({
       const scroll = window.scrollY
 
       if (horizontalCard) {
-        if (this.$vuetify.breakpoint.mdAndDown) {
-          if (scroll > this.currentScroll) {
-            horizontalCard.style.top = '0rem'
-            this.currentScroll = scroll
-          } else if (scroll < this.currentScroll) {
-            horizontalCard.style.top = null
-            this.currentScroll = scroll
-          }
-        }
+        // if (this.$vuetify.breakpoint.mdAndDown) {
+        //   if (scroll > this.currentScroll) {
+        //     horizontalCard.style.top = '0rem'
+        //     this.currentScroll = scroll
+        //   } else if (scroll < this.currentScroll) {
+        //     horizontalCard.style.top = null
+        //     this.currentScroll = scroll
+        //   }
+        // }
 
         if (scroll > 80 && scroll > this.currentScroll) {
           this.$emit('update:isMinimized', true)
