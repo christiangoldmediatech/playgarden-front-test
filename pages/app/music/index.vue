@@ -54,7 +54,7 @@
             @favorite="handleFavorite"
           />
         </v-expand-transition>
-        <div class="pg-h-[21rem] md:pg-h-80" />
+        <div class="pg-h-[20rem] md:pg-h-72" />
         <music-song-list
           id="music-song-list"
           :show-only-favorites="showOnlyFavorites"
@@ -63,6 +63,7 @@
           :songs-by-curriculum-type="songsByCurriculumTypeWithFavorites"
           :selected-letter-id="selectedLetterId"
           class="mx-auto music-song-list"
+          :class="{ 'pt-16': !isTopRibbonMinimized }"
           @addSong="addSongToPlaylist"
           @newPlayList="createNewPlaylist"
           @favorite="handleFavorite"
@@ -404,6 +405,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .music-song-list {
   max-width: 1400px;
+  transition: padding-top .3s linear
 }
 .carousel-wrapper {
   position: relative;
