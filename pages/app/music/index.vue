@@ -63,7 +63,7 @@
           :songs-by-curriculum-type="songsByCurriculumTypeWithFavorites"
           :selected-letter-id="selectedLetterId"
           class="mx-auto music-song-list"
-          :class="{ 'pt-16': !isTopRibbonMinimized }"
+          :class="{ 'music-song-list-padding': !isTopRibbonMinimized }"
           @addSong="addSongToPlaylist"
           @newPlayList="createNewPlaylist"
           @favorite="handleFavorite"
@@ -409,5 +409,12 @@ export default defineComponent({
 }
 .carousel-wrapper {
   position: relative;
+}
+.music-song-list-padding {
+  padding-top: 110px !important;
+
+  @media screen and (min-width: 600px) {
+    padding-top: 65px !important;
+  }
 }
 </style>
