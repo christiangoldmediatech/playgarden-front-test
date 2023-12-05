@@ -1,7 +1,7 @@
 <template>
   <div class="pa-4" v-bind="$attrs">
     <!-- Filters -->
-    <v-row no-gutters>
+    <v-row no-gutters class="pt-3">
       <v-col v-if="$vuetify.breakpoint.mdAndUp" class="pg-mb-5">
         <div v-if="!showOnlyFavorites" class="pg-flex pg-items-center pg-gap-7">
           <img
