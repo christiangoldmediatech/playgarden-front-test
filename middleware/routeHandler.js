@@ -72,8 +72,10 @@ export default async function ({ redirect, route, store, app, req }) {
     app.i18n.setLocale(languageToApply)
     localize(languageToApply)
   } else if (currentAppliedLanguage && availableLanguages.includes(currentAppliedLanguage)) {
-    app.i18n.setLocale(currentAppliedLanguage)
-    localize(currentAppliedLanguage)
+    // app.i18n.setLocale(currentAppliedLanguage)
+    // localize(currentAppliedLanguage)
+    app.i18n.setLocale('en')
+    localize('en')
   } else if (browserLanguageCode !== currentAppliedLanguage && availableLanguages.includes(browserLanguageCode)) {
     app.i18n.setLocale(browserLanguageCode)
     localize(browserLanguageCode)
