@@ -67,15 +67,22 @@ export default async function ({ redirect, route, store, app, req }) {
   const browserLanguage = navigator.language
   const browserLanguageCode = getLanguageCode(browserLanguage)
 
+  // ADD LOGIC TO FORCE LANGUAGE VIA QUERY PARAM
   if (user && user.language) {
     const languageToApply = user.language ? getLanguageCode(user.language.code) : 'en'
     app.i18n.setLocale(languageToApply)
     localize(languageToApply)
   } else if (currentAppliedLanguage && availableLanguages.includes(currentAppliedLanguage)) {
+    const routeLangOverride = route.query && route.query.lang
+    if (routeLangOverride && availableLanguages.includes(routeLangOverride)) {
+      app.i18n.setLocale(routeLangOverride)
+      localize(routeLangOverride)
+    } else {
+      app.i18n.setLocale('en')
+      localize('en')
+    }
     // app.i18n.setLocale(currentAppliedLanguage)
     // localize(currentAppliedLanguage)
-    app.i18n.setLocale('en')
-    localize('en')
   } else if (browserLanguageCode !== currentAppliedLanguage && availableLanguages.includes(browserLanguageCode)) {
     app.i18n.setLocale(browserLanguageCode)
     localize(browserLanguageCode)
