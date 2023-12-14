@@ -23,7 +23,7 @@
           <template v-if="child">
             <div class="timeline-header pl-2 pl-md-9">
               <span class="timeline-name">
-                {{ child.firstName }}{{ $t('account.student.timeline') }}
+                {{ $t('account.student.timeline', { name: child.firstName }) }}
               </span>
 
               <div class="timeline-letter-selector pr-2 pr-md-9 pt-2">
@@ -46,8 +46,8 @@
             <div v-else-if="entries.length === 0" class="timeline-loading">
               <div class="timeline-content-title">
                 {{
-                  `${child.firstName} has not yet started${
-                    selectedLetter ? " on this letter" : ""
+                  `${$t('account.student.childHasNotStarted', {name: child.firstName})} ${
+                    selectedLetter ? ` ${$t('account.student.thisLetter')}` : ""
                   }.`
                 }}
               </div>
@@ -158,20 +158,28 @@ export default {
         const date = new Date(entry.dateFinished)
         const month = date.toLocaleString('default', { month: 'long' })
 
-        return `Done on ${month} ${date
-          .getDate()
-          .toString()
-          .padStart(2, '0')}, ${date.getFullYear()}`
+        return this.$t('account.student.doneOn', {
+          month,
+          date: date
+            .getDate()
+            .toString()
+            .padStart(2, '0'),
+          year: date.getFullYear()
+        })
       } else if (entry.dateStarted) {
         const date = new Date(entry.dateStarted)
         const month = date.toLocaleString('default', { month: 'long' })
 
-        return `Started on ${month} ${date
-          .getDate()
-          .toString()
-          .padStart(2, '0')}, ${date.getFullYear()}`
+        return this.$t('account.student.startedOn', {
+          month,
+          date: date
+            .getDate()
+            .toString()
+            .padStart(2, '0'),
+          year: date.getFullYear()
+        })
       }
-      return 'Not started.'
+      return this.$t('account.student.notStarted')
     },
 
     openLesson (lessonId) {
