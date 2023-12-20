@@ -6,7 +6,7 @@
           <v-col
             v-for="(day, index) in getDaysFormatted"
             :key="`days-row-column-${index}`"
-            class="lsess-table-col lsess-table-col-header d-flex align-center justify-center pg-relative pg-z-0"
+            class="lsess-table-col lsess-table-col-header d-flex align-center justify-center"
             :class="{ 'active-day': index === activeDay }"
           >
             <span class="pg-relative pg-z-10">{{ day.name }}</span>
@@ -14,7 +14,7 @@
               v-if="day.holiday"
               :holiday="day.holiday"
               :height="holidaysWeekHeight"
-              top-position="60px"
+              top-position="45px"
               holiday-type="week"
             />
           </v-col>
