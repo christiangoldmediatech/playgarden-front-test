@@ -24,14 +24,34 @@
                 mdi-chevron-down
               </v-icon>
             </a>
-            <div class="container-submenu">
-              <ul class="submenu">
-                <li><a href="https://playgardenonline.com/virtual-preschool/">{{ $t('menuLandingPage.virtualPreschool') }}</a></li>
-                <li><a href="https://playgardenonline.com/plans/">{{ $t('menuLandingPage.enrollmentPlans') }}</a></li>
-                <li><a href="https://playgardenonline.com/testimonials/">{{ $t('menuLandingPage.parentTestimonials') }}</a></li>
-                <li><a href="https://playgardenprep.com/group-solutions/">{{ $t('menuLandingPage.groupSolutions') }}</a></li>
-                <li><a href="https://playgardenonline.com/esl/">{{ $t('menuLandingPage.englishASL') }}</a></li>
-              </ul>
+            <div class="container-submenu-double">
+              <v-row no-gutters class="submenu-col-container d-flex">
+                <div class="submenu-col-wrapper">
+                  <ul class="submenu-col">
+                    <a href="#" class="submenu-col-title">{{ $t('menuLandingPage.signingUp') }}</a>
+                    <li><a href="https://playgardenonline.com/plans/">{{ $t('menuLandingPage.enrollmentPlans') }}</a></li>
+                    <li><a href="https://playgardenonline.com/testimonials/">{{ $t('menuLandingPage.parentTestimonials') }}</a></li>
+                    <li><a href="https://playgardenonline.com/how-it-works/">{{ $t('menuLandingPage.howItWorks') }}</a></li>
+                    <li><a href="https://playgardenonline.com/school/help/">{{ $t('menuLandingPage.faqs') }}</a></li>
+                  </ul>
+                </div>
+                <div class="py-4">
+                  <v-divider vertical></v-divider>
+                </div>
+                <div class="submenu-col-wrapper">
+                  <ul class="submenu-col">
+                    <a href="#" class="submenu-col-title">{{ $t('menuLandingPage.waysToUse') }}</a>
+                    <li><a href="https://playgardenonline.com/homeschool/">{{ $t('menuLandingPage.homeschool') }}</a></li>
+                    <li><a href="https://playgardenonline.com/virtual-preschool/">{{ $t('menuLandingPage.virtualPreschool') }}</a></li>
+                    <li><a href="https://playgardenonline.com/specialized-learning/">{{ $t('menuLandingPage.specializedLearning') }}</a></li>
+                    <li><a href="https://playgardenonline.com/esl/">{{ $t('menuLandingPage.englishASL') }}</a></li>
+                    <li><a href="https://playgardenprep.com/group-solutions/">{{ $t('menuLandingPage.groupSolutions') }}</a></li>
+                    <li><a href="https://playgardenonline.com/playgarden-vs-abcmouse/">{{ $t('menuLandingPage.playgardenVsAbcMouse') }}</a></li>
+                    <li><a href="https://playgardenonline.com/kindergarten-readiness/">{{ $t('menuLandingPage.kindergartenReadiness') }}</a></li>
+                    <li><a href="https://playgardenonline.com/librarypreschool/">{{ $t('menuLandingPage.libraryPreschool') }}</a></li>
+                  </ul>
+                </div>
+              </v-row>
             </div>
           </li>
           <li class="only-desktop link-option link-option-with-icon">
@@ -43,11 +63,9 @@
             </a>
             <div class="container-submenu">
               <ul class="submenu">
-                <li><a href="https://playgardenonline.com/how-it-works/">{{ $t('menuLandingPage.howItWorks') }}</a></li>
-                <!-- <li><a href="https://playgardenonline.com/do-it-yourself/">DIY</a></li> -->
                 <li><a href="https://playgardenonline.com/blog">{{ $t('menuLandingPage.blog') }}</a></li>
-                <li><a href="https://playgardenonline.com/specialized-learning/">{{ $t('menuLandingPage.specializedLearning') }}</a></li>
                 <li><a href="https://playgardenonline.com/do-it-yourself/">{{ $t('menuLandingPage.doItYourself') }}</a></li>
+                <li><a href="https://playgardenonline.com/teacher-tips/">{{ $t('menuLandingPage.teacherTips') }}</a></li>
               </ul>
             </div>
           </li>
@@ -60,9 +78,11 @@
             </a>
             <div class="container-submenu">
               <ul class="submenu">
-                <li><a href="https://playgardenonline.com/school/help/">{{ $t('menuLandingPage.faqs') }}</a></li>
                 <li><a href="https://playgardenonline.com/about-us/">{{ $t('menuLandingPage.aboutUs') }}</a></li>
                 <li><a href="https://playgardenonline.com/your-teachers/">{{ $t('menuLandingPage.yourTeachers') }}</a></li>
+                <li><a href="https://playgardenonline.com/news/">{{ $t('menuLandingPage.news') }}</a></li>
+                <li><a href="https://playgardenprep.com/">{{ $t('menuLandingPage.moreFromPlaygarden') }}</a></li>
+                <li><a href="https://playgardenonline.com/research/">{{ $t('menuLandingPage.research') }}</a></li>
               </ul>
             </div>
           </li>
@@ -623,10 +643,20 @@ nav.sticky {
     height: auto;
     padding-top: 20px;
     top: 40px;
-    right: -30px;
+    left: 0;
     z-index: 9;
 }
-.menu-header > li .submenu{
+.menu-header > li .container-submenu-double{
+    width: calc(290px * 2);
+    display: none;
+    position: absolute;
+    height: auto;
+    padding-top: 20px;
+    top: 40px;
+    left: 0;
+    z-index: 9;
+}
+.menu-header > li .submenu {
     list-style: none;
     position: relative;
     width: 100%;
@@ -634,16 +664,43 @@ nav.sticky {
     display: grid;
     align-items: center;
     background: #ffffff;
-    box-shadow: 8px 8px 24px rgba(0, 0, 0, 0.25);
-    -webkit-box-shadow: 8px 8px 24px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 8px 8px 24px rgba(0, 0, 0, 0.25);
-    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.25);;
+    -webkit-box-shadow: 0 4px 12px rgba(0,0,0,.25);;
+    -moz-box-shadow: 0 4px 12px rgba(0,0,0,.25);;
+}
+.submenu-col-title {
+    font-weight: 700 !important;
+    color: #FAA938 !important;
+    cursor: default;
+    padding: 10px 20px 10px 34px!important;
+}
+.submenu-col-container {
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(0,0,0,.25);
+    -webkit-box-shadow: 0 4px 12px rgba(0,0,0,.25);
+    -moz-box-shadow: 0 4px 12px rgba(0,0,0,.25);
+}
+.submenu-col, .submenu {
+  padding: 0;
+}
+.menu-header > li .submenu-col {
+    list-style: none;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
 }
 
 .menu-header > li a:active .container-submenu,
 .menu-header > li a:focus + .container-submenu,
 .menu-header > li a:focus ~ .container-submenu,
-.menu-header > li:hover .container-submenu{
+.menu-header > li:hover .container-submenu,
+.menu-header > li a:active .container-submenu-double,
+.menu-header > li a:focus + .container-submenu-double,
+.menu-header > li a:focus ~ .container-submenu-double,
+.menu-header > li:hover .container-submenu-double{
     display: block;
 }
 .menu-header .submenu::after{
@@ -657,59 +714,59 @@ nav.sticky {
     z-index: -2;
     cursor: default;
 }
-.menu-header .submenu::before{
+.menu-header .submenu::before,
+.menu-header .submenu-col-container::before {
     content: "";
     position: absolute;
     height: 40px;
     width: 40px;
-    top: -20px;
     background: #ffffff;
     box-shadow: 0px -8px 12px rgba(0, 0, 0, 0.1);
     -webkit-box-shadow: 0px -8px 12px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0px -8px 12px rgba(0, 0, 0, 0.1);
     border-radius: 3px;
-    right: 36px;
+    left: 36px;
     transform: rotate(45deg);
     z-index: -1;
 }
-.menu-header .submenu li{
+.menu-header .submenu::before {
+    top: -20px;
+}
+.menu-header .submenu-col-container::before {
+    top: 0;
+}
+.menu-header .submenu li, .menu-header .submenu-col li{
     width: 100%;
     position: relative;
 }
-.menu-header .submenu li::before{
-    content: "";
-    position: absolute;
-    bottom: 0;
-    height: 1px;
-    width: 188px;
-    background-color: #E8E8E8;
-    left: 50%;
-    transform: translateX(-50%);
-}
-.menu-header .submenu li:last-child::before{
+.menu-header .submenu li:last-child::before,
+.menu-header .submenu-col li:last-child::before {
     display: none;
 }
-.menu-header .submenu li:first-child a{
+.menu-header .submenu li:first-child a {
     border-radius: 8px 8px 0 0;
 }
-.menu-header .submenu li:last-child a{
+.menu-header .submenu li:last-child a {
     border-radius: 0 0 8px 8px;
 }
-.menu-header .submenu a{
+.menu-header .submenu a,
+.menu-header .submenu-col a {
     font-size: 18px;
     line-height: 27px;
+    font-weight: 400;
     color: #606060;
     text-decoration: none;
     text-align: start;
     display: block;
-    padding: 15px 24px;
-    padding-left: 49px;
+    padding: 10px 20px 10px 34px!important;
     width: 100%;
 }
-.menu-header .submenu a span{
+.menu-header .submenu a span,
+.menu-header .submenu-col a span {
     margin-left: 9px;
 }
-.menu-header .submenu li:hover a{
+.menu-header .submenu li:hover a,
+.menu-header .submenu-col li:hover a {
     background-color: #E8E8E8;
 }
 .menu-header.menu-mobile{
@@ -717,6 +774,9 @@ nav.sticky {
 }
 .menu-header.menu-mobile .more-menu{
     display: none
+}
+.submenu-col-wrapper {
+  width: 49%;
 }
 
 @media (max-width:1200px) {
@@ -912,16 +972,6 @@ nav.sticky {
 .container-list-menu-mobile a:active,
 .container-list-menu-mobile li.more-menu.open > a{
     color: #68C453;
-}
-.container-list-menu-mobile li.more-menu.open a.link-more::before,
-.container-list-menu-mobile a::before{
-    content: "";
-    position: absolute;
-    height: 1px;
-    width: calc(100% - 40px);
-    bottom: 0;
-    left: 18px;
-    background: #B6B6B6;
 }
 .container-list-menu-mobile li.more-menu.open a.link-more{
     color: #68C453;
