@@ -75,6 +75,7 @@
             :day-mode="viewMode === 'DAY'"
             :today="today"
             :holidays="getHolidays"
+            :start-and-end-date="days"
             disable-open-dialog
             disable-weekends
           />
