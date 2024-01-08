@@ -121,7 +121,7 @@
                   src="@/assets/svg/google_icon.svg"
                 />
 
-                <span class="spanSocialNetwork">{{ $t('login.loginWithFb') }}</span>
+                <span class="spanSocialNetwork">{{ $t('login.loginWithGoogle') }}</span>
               </v-btn>
             </v-col>
 
