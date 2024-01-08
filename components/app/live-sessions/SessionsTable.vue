@@ -206,17 +206,15 @@ export default defineComponent({
       return null
     })
 
-    const days = computed(() => {
-      return [
-        language.t('liveClasses.days.sunday') + ' ' + startDate.value.add(0, 'day').date(),
-        language.t('liveClasses.days.monday') + ' ' + startDate.value.add(1, 'day').date(),
-        language.t('liveClasses.days.tuesday') + ' ' + startDate.value.add(2, 'day').date(),
-        language.t('liveClasses.days.wednesday') + ' ' + startDate.value.add(3, 'day').date(),
-        language.t('liveClasses.days.thursday') + ' ' + startDate.value.add(4, 'day').date(),
-        language.t('liveClasses.days.friday') + ' ' + startDate.value.add(5, 'day').date(),
-        language.t('liveClasses.days.saturday') + ' ' + startDate.value.add(6, 'day').date()
-      ]
-    })
+    const days = ref([
+      language.t('liveClasses.days.sunday') + ' ' + startDate.value.add(0, 'day').date(),
+      language.t('liveClasses.days.monday') + ' ' + startDate.value.add(1, 'day').date(),
+      language.t('liveClasses.days.tuesday') + ' ' + startDate.value.add(2, 'day').date(),
+      language.t('liveClasses.days.wednesday') + ' ' + startDate.value.add(3, 'day').date(),
+      language.t('liveClasses.days.thursday') + ' ' + startDate.value.add(4, 'day').date(),
+      language.t('liveClasses.days.friday') + ' ' + startDate.value.add(5, 'day').date(),
+      language.t('liveClasses.days.saturday') + ' ' + startDate.value.add(6, 'day').date()
+    ])
 
     const resizeOb = ref(
       new ResizeObserver(function(entries) {
