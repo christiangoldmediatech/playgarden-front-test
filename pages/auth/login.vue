@@ -256,34 +256,37 @@ export default {
       }
       return nameProvider
     },
-    getDataFirebase() {
-      this.loadingDataSocial = true
-      const fireAuthObj = this.$fireAuthObj()
-      fireAuthObj
-        .getRedirectResult()
-        .then((result) => {
-          if (result) {
-            if (result.additionalUserInfo) {
-              const profile = { ...result.additionalUserInfo.profile }
-              this.loginWithSocialNetwork({
-                firstName: profile.given_name || profile.first_name || '',
-                lastName: profile.family_name || profile.last_name || '',
-                email: profile.email,
-                socialNetwork: this.getProviderSignIn(
-                  result.additionalUserInfo.providerId
-                ),
-                socialNetworkId: profile.id
-              })
-            } else {
-              this.loadingDataSocial = false
-            }
+    async getDataFirebase() {
+      this.loadingDataSocial = true;
+      const fireAuthObj = this.$fireAuthObj();
+
+      try {
+        const result = await fireAuthObj.getRedirectResult();
+
+        if (result) {
+          if (result.additionalUserInfo) {
+            const profile = { ...result.additionalUserInfo.profile };
+            await this.loginWithSocialNetwork({
+              firstName: profile.given_name || profile.first_name || '',
+              lastName: profile.family_name || profile.last_name || '',
+              email: profile.email,
+              socialNetwork: this.getProviderSignIn(result.additionalUserInfo.providerId),
+              socialNetworkId: profile.id
+            });
+          } else {
+            this.loadingDataSocial = false;
           }
-        })
-        .catch((e) => {
-          this.loadingDataSocial = false
-        })
-        .finally(() => fireAuthObj.signOut())
+        }
+      } catch (error) {
+        console.error('Error during redirect result check:', error);
+        this.$toast.error(error.message);
+      } finally {
+        // Sign out to clear any lingering redirect state
+        fireAuthObj.signOut();
+        this.loadingDataSocial = false;
+      }
     },
+
     facebookSignIn() {
       this.socialSignIn(
         'FACEBOOK',
