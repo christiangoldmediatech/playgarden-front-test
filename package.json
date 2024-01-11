@@ -23,7 +23,8 @@
     "deasync": "0.1.28"
   },
   "engines": {
-    "node": "16.x"
+    "node": "16.x",
+    "yarn": ">=1.22.0"
   },
   "dependencies": {
     "@gold-media-tech/pg-video-player": "^0.0.98-a",
